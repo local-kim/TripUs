@@ -1,0 +1,24 @@
+server:
+  port: 9001
+spring:
+#  mvc:
+#    view:
+#      prefix: /WEB-INF/
+#      suffix: .jsp
+  devtools:
+    livereload:
+      enabled: true
+#mysql#
+ # datasource:
+ #   driver-class-name: com.mysql.jdbc.Driver
+ #  url: jdbc:mysql://localhost:3306/bitcamp?serverTimezone=Asia/Seoul
+ #   username: angel
+ #   password: 1234
+    
+#mybatis
+mybatis:
+  type-aliases-package: data.mapper,data.dto
+  mapper-locations:
+  - /mapper/**/*.xml
+
+
