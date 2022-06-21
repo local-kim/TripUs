@@ -9,11 +9,11 @@ spring:
     livereload:
       enabled: true
 #mysql#
- # datasource:
- #   driver-class-name: com.mysql.jdbc.Driver
- #  url: jdbc:mysql://localhost:3306/bitcamp?serverTimezone=Asia/Seoul
- #   username: angel
- #   password: 1234
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://boccu.cemjnnwtaor1.us-west-2.rds.amazonaws.com:3306/final_project?serverTimezone=Aisa/Seoul
+    username: boccu
+    password: 12341234
     
 #mybatis
 mybatis:
