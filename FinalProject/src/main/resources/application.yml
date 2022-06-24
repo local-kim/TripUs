@@ -10,7 +10,7 @@ spring:
       enabled: true
 #mysql#
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://boccu.cemjnnwtaor1.us-west-2.rds.amazonaws.com:3306/final_project?serverTimezone=Aisa/Seoul
     username: boccu
     password: 12341234
