@@ -1,0 +1,99 @@
+/**************************************************/
+/* Calendar.js */
+#plan-calendar{
+  text-align: center;
+}
+
+#plan-calendar .rdrDefinedRangesWrapper{
+  display: none;
+}
+
+/* Plan.js */
+#plan{
+  text-align: center;
+}
+
+#plan .day span{
+  font-size: 27px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/**************************************************/
+/* DayPlan.js */
+/* #day-plan{
+  text-align: center;
+} */
+
+#day-plan .title{
+  font-size: 30px;
+  font-weight: 500;
+  margin: 0 100px;
+}
+
+#day-plan .list-container{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#day-plan .left{
+  width: 400px;
+  background-color: rgb(238, 238, 238);
+  border-radius: 20px;
+  margin-right: 10px;
+  padding: 20px;
+}
+
+#day-plan .right{
+  width: 400px;
+  background-color: rgb(238, 238, 238);
+  border-radius: 20px;
+  margin-left: 10px;
+  padding: 20px;
+}
+
+#day-plan .right input{
+  width: 100%;
+}
+
+#day-plan .right .api-place-list{
+  height: 400px;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+#day-plan .label{
+  font-size: 20px;
+}
+
+/* PlaceItem.js */
+#day-plan .api-place-list .place-container{
+  display: flex;
+  align-items: center;
+  /* border-bottom: 1px solid lightgray; */
+  padding: 10px;
+  /* width: 400px; */
+}
+
+#day-plan .api-place-list .place-container img{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 100px;
+}
+
+/* 장소 목록 사이에 보더 넣기 */
+#day-plan .api-place-list .place-container:not(:last-child){
+  display: flex;
+  border-bottom: 1px solid lightgray;
+  padding: 10px;
+}
+
+#day-plan .api-place-list .place-container .place-item{
+  margin-right: 10px;
+}
+
+/* #day-plan .api-place-list .container + #day-plan .api-place-list .container{
+  border-top: 1px solid lightgray;
+} */
