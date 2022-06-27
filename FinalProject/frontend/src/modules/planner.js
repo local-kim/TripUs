@@ -2,23 +2,23 @@
 // Ducks 패턴을 따를땐 액션의 이름에 접두사를 넣어주세요.
 // 이렇게 하면 다른 모듈과 액션 이름이 중복되는 것을 방지 할 수 있습니다.
 const ADD_PLACE = 'plan/ADD_PLACE';
+const ADD_PLAN = 'plan/ADD_PLAN';
 const SET_DATE = 'plan/SET_DATE';
-// const SHOW_PLAN = 'plan/SHOW_PLAN';
 
 // Action Creators
-// export const showPlan = (state) => (
-// 	{
-// 		type: SHOW_PLAN,
-// 		state.plan
-// 	}
-// )
-
 export const addPlace = (place) => (
 	{
-		type: ADD_PLACE,  // 앞서 선언한 액션명
+		type: ADD_PLACE,
 		place: place
 	}
 );
+
+export const addPlan = (plan) => (
+	{
+		type: ADD_PLAN,
+		plan: plan
+	}
+)
 
 export const setDate = (start, end, days) => (
 	{
@@ -46,6 +46,12 @@ export default function reducer(state = initialState, action){
 				...state,
 				plan: [...state.plan, action.place]
 			};
+		case ADD_PLAN:
+			console.log(state);
+			return {
+				...state,
+				plan: [...state.plan, action.plan]	// 배열에 배열 추가
+			}
 		case SET_DATE:
 			// console.log();
 			return {

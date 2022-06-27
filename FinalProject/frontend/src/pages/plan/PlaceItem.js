@@ -20,7 +20,8 @@ const PlaceItem = (props) => {
       </div>
       
       {/* TODO: 나중에 버튼 대신 장소 이름 클릭하면 추가되게 변경 */}
-      <button type='button' className='place-item btn btn-light btn-sm' onClick={() => dispatch(addPlace(props.place))}>+</button>
+      {/* <button type='button' className='place-item btn btn-light btn-sm' onClick={() => dispatch(addPlace(props.place))}>+</button> */}
+      <button type='button' className='place-item btn btn-light btn-sm' onClick={() => props.addPlace(props.place)}>+</button>
     </div>
   );
 };

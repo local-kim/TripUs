@@ -1,24 +1,17 @@
 server:
   port: 9001
 spring:
-#  mvc:
-#    view:
-#      prefix: /WEB-INF/
-#      suffix: .jsp
   devtools:
     livereload:
       enabled: true
-#mysql#
+# mysql
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://boccu.cemjnnwtaor1.us-west-2.rds.amazonaws.com:3306/final_project?serverTimezone=Aisa/Seoul
+    url: jdbc:mysql://boccu.cemjnnwtaor1.us-west-2.rds.amazonaws.com:3306/final_project?serverTimezone=Asia/Seoul
     username: boccu
     password: 12341234
-    
-#mybatis
+# mybatis
 mybatis:
   type-aliases-package: data.mapper,data.dto
   mapper-locations:
   - /mapper/**/*.xml
-
-
