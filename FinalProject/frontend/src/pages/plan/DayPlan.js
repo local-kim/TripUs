@@ -1,15 +1,23 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import '../../styles/plan.css';
 import { PlaceItem } from ".";
 import TextField from '@mui/material/TextField';
+import { connect, ReactReduxContext, useSelector } from 'react-redux'
+// import reducers from './modules';
 
 const DayPlan = () => {
+  const plan = useSelector(state => state.planner.plan);
+  const days = useSelector(state => state.planner.days);
+  // console.log(a);
+  console.log(plan);
+  // const { store } = useContext(ReactReduxContext);
+  
   const navigate = useNavigate();
   const location = useLocation();
   const {day} = useParams();
-  const days = location.state.days;
+  // const days = location.state.days;
 
   // TODO: city_num을 넘겨받고 DB에서 city_num을 이용하여 areaCode, sigunguCode 얻기..?
   const areaCode = location.state.areaCode;
@@ -26,7 +34,7 @@ const DayPlan = () => {
 
     axios.get(apiUrl)
     .then((res) => {
-      console.dir(res.data.response.body.items.item);
+      // console.dir(res.data.response.body.items.item);
       setPlaces(res.data.response.body.items.item);
     }).catch((err) => {
 
@@ -70,6 +78,22 @@ const DayPlan = () => {
       <div className='list-container'>
         <div className='left'>
           <span className='label'>나의 일정</span>
+          <div>
+            {
+              plan.map((place, index) => (
+                <div className='place-container'>
+                  <img className='place-item' src={place.firstimage} alt=''/>
+
+                  <div className='place-item'>
+                    <div>{place.title}</div>
+                    <div>{place.cat3}</div>
+                    {/* <div>{place.contentid}</div> */}
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+          
         </div>
 
         <div className='right'>
@@ -81,7 +105,7 @@ const DayPlan = () => {
           <span className='label'>추천 장소</span>
           <div className='api-place-list'>
             {
-              places.map((place, index) => <PlaceItem place={place} key={index}/>)
+              places.map((place, index) => <PlaceItem day={day} place={place} key={index}/>)
             }
           </div>
           
@@ -107,4 +131,12 @@ const DayPlan = () => {
   );
 };
 
+const mapStateToProps = (state) => {
+  // getState와 같은 이름으로 지어도 되지만,
+  // 관행상 mapStateToProps를 사용한다
+  console.log(state)
+  return { plan: state.plan }
+}
+
+// export default connect(mapStateToProps, {addPlace})(DayPlan);
 export default DayPlan;

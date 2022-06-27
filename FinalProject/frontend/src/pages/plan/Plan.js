@@ -1,30 +1,30 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { setDate } from '../../modules/planner';
 import '../../styles/plan.css';
 
 const Plan = () => {
+  // const dispatch = useDispatch();
+  const days = useSelector(state => state.planner.days);
+
+  const startDate = useSelector(state => state.planner.startDate);
+  const endDate = useSelector(state => state.planner.endDate);
+
   const navigate = useNavigate();
   const location = useLocation();
-  const period = location.state.period;
-  const start = period[0].startDate;
-  const end = period[0].endDate;
 
   const areaCode = location.state.areaCode;
   const sigunguCode = location.state.sigunguCode;
 
-  const startDate = `${start.getFullYear()}-${start.getMonth() + 1}-${start.getDate()}`;
-  const endDate = `${end.getFullYear()}-${end.getMonth() + 1}-${end.getDate()}`;
-
-  const days = (end.getTime() - start.getTime()) / (1000*60*60*24) + 1;
-
   // TODO: day 별로 일정 저장할 배열 필요..(전역 변수)
 
   // useEffect(() => {
-  //   console.dir(startDate);
-  //   console.log(startDate.getFullYear()); // 2022
-  //   console.log(startDate.getMonth() + 1);  // 6
-  //   console.log(startDate.getDate()); // 24
-  //   // console.log(startDate.getUTCDay());
+  //   console.dir(start);
+  //   console.log(start.getFullYear()); // 2022
+  //   console.log(start.getMonth() + 1);  // 6
+  //   console.log(start.getDate()); // 24
+  //   // console.log(start.getUTCDay());
   //   console.log(days);
   // }, []);
 
@@ -41,7 +41,7 @@ const Plan = () => {
               <button type='button' className='btn btn-outline-primary btn-sm' onClick={() => {
                 navigate(`/plan/${index + 1}`, {
                   state: {
-                    days: days,
+                    // days: days,
                     areaCode: areaCode,
                     sigunguCode: sigunguCode
                   }
