@@ -1,0 +1,296 @@
+.clear {
+    clear: both;
+}
+/* scroll-item > left fixed */
+#plan-detail .scroll-item {
+    position: fixed;
+    
+    /* (Header + Menu)'s height */
+    top: 67.18;
+
+    width: 144px;
+    left: 50%;
+    margin-left: -700px;
+    height: 200px;
+    background: white;
+
+    border: 1px solid black;
+}
+
+
+
+        /* main-image */
+
+#plan-detail .main-image {
+    width: 1092px;
+    height: 350px;
+    margin: 0 auto;
+    background-size: cover;
+    border: 1px solid blueviolet;
+}
+/* 
+#plan-detail .main-image:before {
+    content: '';
+    background: linear-gradient(to bottom,#f8f8fa, black);
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    height: 50%;
+}
+ */
+
+#plan-detail .main-image .top-box {
+    position: relative;
+    top: 20px;
+    right: 20px;
+    float: right;
+    
+    border: 1px solid blue;
+}
+
+#plan-detail .main-image .bottom-box {
+    position: relative;
+    left: 25px;
+    top: 170px;
+    float: left;
+    
+    border: 1px solid red;
+}
+
+
+
+        /* top-box */
+
+/* .top-box .like {
+    border: 1px solid gray;
+    border-radius: 100px;
+    width: 45px;
+    height: 45px;
+} */
+
+.top-box .like img {
+    width: 40px;
+    height: 40px;
+    line-height: 45px;
+}
+
+
+
+        /* bottom-box */
+
+.bottom-box .bottom-head img {
+    width: 50px;
+    height: 50px;
+    border-radius: 100px;
+    background-color: white;
+    margin-right: 15px;
+}
+
+.bottom-box .bottom-body {
+    padding-top: 10px;
+    color: white;
+}
+
+.bottom-bottom-box {
+    display: flex;
+}
+
+.bottom-bottom-box .bottom-count {
+    border: 2px solid white;
+}
+
+.bottom-bottom-box .bottom-price {
+    margin-left: 10px;
+    border: 2px solid white;
+    width: 170px;
+}
+
+.bottom-bottom-box .bottom-price .bottom-number {
+    float: right;
+    margin-right: 5px;
+}
+
+.bottom-bottom-box .bottom-price select {
+    background: none;
+    color: white;
+    outline: none;
+}
+
+
+
+        /* main-list */
+
+#plan-detail .main-list {
+    width: 1092px;
+    margin: 0 auto;
+}
+
+#plan-detail .main-list .list-header {
+    position: sticky;
+    top: 0px;
+    height: 70px;
+    background-color: white;
+
+    border: 1px solid #c8c8ca;
+    border-top: none;
+}
+
+.header-menu {
+    display: block;
+    height: 70px;
+    line-height: 70px;
+    padding-left: 35px;
+    padding-right: 35px;
+    font-size: 18px;
+    color: #808080;
+    float: left;
+}
+
+.header-menu-line {
+    float: left;
+    width: 1px;
+    height: 24px;
+    background: #b3b3b3;
+    margin-top: 22px;
+}
+
+.header-menu-right1 {
+    display: inline-block;
+    background: #ededed;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 23px;
+    padding-right: 23px;
+    float: right;
+    margin-top: 14px;
+    margin-right: 15px;
+}
+
+.header-menu-right2 {
+    display: block;
+    background: #49b2e9;
+    border: 1px solid #3099dd;
+    color: white;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 23px;
+    padding-right: 23px;
+    float: right;
+    margin-top: 14px;
+    margin-right: 15px;
+}
+
+
+        /* menu list  */
+
+#plan-detail .main-list .wrap-list {
+    display: flex;
+    padding-top: 25px;
+}
+
+
+        /* Left */
+
+.list-left {
+    height: 2000px;
+    width: 750px;
+    padding-right: 25px;
+
+    border: 1px solid hotpink;
+}
+
+.list-left .day-box {
+    width: 100%;
+
+    border: 1px solid red;
+}
+
+.day-box-title {
+    width: 100%;
+    height: 60px;
+}
+
+.day-num {
+    float: left;
+    background: #203341;
+    height: 60px;
+    line-height: 60px;
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+    width: 110px;
+    text-align: center;
+}
+
+.day-date {
+    float: left;
+    
+    /* total(750) - (day)110 - padding(25) border's */
+    width: 611px;
+
+    background: white;
+    border-top: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;
+    height: 60px;
+}
+
+.day-date-left {
+    float: left;
+    width: 430px;
+    padding-left: 10px;
+}
+.day-date-left .date {
+    font-size: 12px;
+    color: #b3b3b3;
+    font-weight: bold;
+    padding-top: 7px;
+}
+.day-date-left .day-title {
+    color: #363636;
+    font-weight: bold;
+    font-size: 18px;
+    padding-top: 1px;
+}
+
+.day-date-right {
+    /* day-date(611) - -left(430) */
+    width: 179px;
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+    color: #555555;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 15px;
+}
+
+
+.day-box-list {
+    width: 172px;
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    font-size: 16px;
+    color: #555555;
+    font-weight: bold;
+    text-align: right;
+    padding-right: 15px;
+
+    border: 1px solid cyan;
+}
+
+        /* Right */
+
+.list-right {
+    position: sticky;
+    top: 95px;
+
+    /* Full - list-lefr ( 1092 - 750 ) */
+    width: 342px;
+    height: 300px;
+    background: white;
+
+    border: 1px solid lightpink   
+}
