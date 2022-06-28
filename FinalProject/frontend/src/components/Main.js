@@ -99,7 +99,7 @@ const Main=()=>{
                 
             <FullpageSection style={sectionStyle}>
                 <div className="page silver" style={{paddingTop:"30px"}}>    
-                <div className="wrap">
+                <div className="wrap" style={{width:'1150px'}}>
                     <div className="page_title" >
                         <div> 인기 여행일정</div>
                     </div>
@@ -183,6 +183,36 @@ const Main=()=>{
 }
 
 export default Main;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
