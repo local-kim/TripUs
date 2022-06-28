@@ -9,27 +9,30 @@ import { PlanDetail } from "./pages/detail";
 
 const RouteMain = () => {
   return (
-    <div>
+    <div className="main-main-back">
       <Menu/>
-     
-      <Routes>
-        <Route path="/" element={<Main/>} />
 
-        {/* cityinfo */}
-        <Route path="/cityinfo" element={<CityInfoMain/>} />
+      <div id="main">
+        <Routes>
+          <Route path="/" element={<Main/>} />
 
-        {/* Planning */}
-        <Route path="/plan/calendar" element={<Calendar/>} />
-        <Route path="/plan" element={<Plan/>} />
-        <Route path="/plan/:day" element={<DayPlan/>} />
-        
-        {/* PlaceInfo */}
-        <Route path="/place/citydetail" element={<PlaceInfo/>}/>
+          {/* cityinfo */}
+          <Route path="/cityinfo" element={<CityInfoMain/>} />
 
-        {/* Detail-Plan */}
-        <Route path="/plan/detail" element={<PlanDetail />} />
+          {/* Planning */}
+          <Route path="/plan/calendar" element={<Calendar/>} />
+          <Route path="/plan" element={<Plan/>} />
+          <Route path="/plan/:day" element={<DayPlan/>} />
+          
+          {/* PlaceInfo */}
+          <Route path="/place/citydetail" element={<PlaceInfo/>}/>
 
-      </Routes>
+          {/* Detail-Plan */}
+          <Route path="/plan/detail" element={<PlanDetail />} />
+
+        </Routes>
+      </div>
+      
     </div>
   )
 }
