@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { Footer, Header, Main, Menu } from "./components";
 import './App.css';
+import './AppHeemin.css';
 import { CityInfoMain } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
 import { PlanDetail } from "./pages/detail";
@@ -9,8 +10,8 @@ import { PlanDetail } from "./pages/detail";
 const RouteMain = () => {
   return (
     <div>
-      <Header/>
       <Menu/>
+     
       <Routes>
         <Route path="/" element={<Main/>} />
 
@@ -26,9 +27,10 @@ const RouteMain = () => {
         <Route path="/plan/detail" element={<PlanDetail />} />
 
       </Routes>
-      <Footer/>
     </div>
   )
 }
 
 export default RouteMain;
+
+
