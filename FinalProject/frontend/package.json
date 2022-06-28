@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ap.cx/react-fullpage": "^0.2.0",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
@@ -23,6 +24,7 @@
     "react-scroll-button": "^2.0.0",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
+    "swiper": "^8.2.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

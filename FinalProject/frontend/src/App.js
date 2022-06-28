@@ -5,11 +5,9 @@ import './App.css';
 
 function App() {
   return (
-    <div className="main-main-back">
-      <BrowserRouter>
-        <RouteMain/>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <RouteMain/>
+    </BrowserRouter>
   );
 }
 
