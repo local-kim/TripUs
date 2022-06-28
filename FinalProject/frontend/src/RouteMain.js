@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Footer, Header, Main, Menu } from "./components";
+import { FinalHead, Footer, Header, Main, Menu } from "./components";
 import './App.css';
 import { CityInfoMain, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
