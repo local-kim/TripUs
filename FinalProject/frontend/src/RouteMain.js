@@ -4,6 +4,7 @@ import { Footer, Header, Main, Menu } from "./components";
 import './App.css';
 import { CityInfoMain } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
+import PlaceInfo from "./pages/cityinfo/PlaceInfo";
 
 const RouteMain = () => {
   return (
@@ -15,6 +16,9 @@ const RouteMain = () => {
 
         {/* cityinfo */}
         <Route path="/cityinfo" element={<CityInfoMain/>} />
+
+        {/* PlaceInfo */}
+        <Route path="/place/citydetail" element={<PlaceInfo/>}/>
 
         {/* Planning */}
         <Route path="/plan/calendar" element={<Calendar/>} />
