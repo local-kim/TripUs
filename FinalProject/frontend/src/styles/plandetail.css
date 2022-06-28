@@ -1,6 +1,14 @@
 .clear {
     clear: both;
 }
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
 /* scroll-item > left fixed */
 #plan-detail .scroll-item {
     position: fixed;
@@ -9,14 +17,53 @@
     top: 67.18;
 
     width: 144px;
+    border-top: 2px solid #dedede;
+    border-bottom: 2px solid #dedede;
     left: 50%;
     margin-left: -700px;
-    height: 200px;
     background: white;
-
-    border: 1px solid black;
+}
+.scroll-item-prev {
+    height: 30px;
+    background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_prev.png) no-repeat;
+    background-position: center center;
+    margin-bottom: 3px;
+}
+.scroll-item-list {
+    width: 100%;
+    max-height: 360px;
+    overflow-y: hidden;
 }
 
+/* 스크롤 아이템 버튼 이벤트 */
+.scroll-item-btn.on {
+    background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_line_on.gif) no-repeat;
+    background-position: left center;
+    color: #ff9320;
+}
+.scroll-item-btn {
+    width: 100%;
+    color: #b3b3b3;
+    font-size: 11px;
+    padding-left: 37px;
+    background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_line.gif) no-repeat;
+    background-position: left center;
+    height: 30px;
+    line-height: 12px;
+    cursor: pointer;
+}
+.scroll-item-btn.last {
+    background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_line_last.gif) no-repeat;
+    background-position: left center;
+    height: 10px;
+}
+
+.scroll-item-next {
+    height: 30px;
+    background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_next.png) no-repeat;
+    background-position: center center;
+    margin-top: 3px;
+}
 
 
         /* main-image */
@@ -26,7 +73,8 @@
     height: 350px;
     margin: 0 auto;
     background-size: cover;
-    border: 1px solid blueviolet;
+    background-image: linear-gradient(white, black);
+    border: 0px solid blueviolet;
 }
 /* 
 #plan-detail .main-image:before {
@@ -46,17 +94,32 @@
     right: 20px;
     float: right;
     
-    border: 1px solid blue;
+    border: 0px solid blue;
 }
 
 #plan-detail .main-image .bottom-box {
     position: relative;
-    left: 25px;
-    top: 170px;
+    padding-left: 25px;
+    top: 125px;
     float: left;
     
-    border: 1px solid red;
+    background: url(https://www.earthtory.com/res/img/mypage/plan/sub/cover_bg.png) repeat-x;
+    height: 180px;
+    width: 100%;
+    border: 0px solid red;
 }
+
+/* .cover-bottom {
+    width: 100%;
+    height: 204px;
+    position: relative;
+    z-index: 2;
+    left: 0px;
+    bottom: 0px;
+    padding-top: 90px;
+    padding-left: 25px;
+    padding-right: 25px;
+} */
 
 
 
@@ -69,10 +132,28 @@
     height: 45px;
 } */
 
-.top-box .like img {
+/* .top-box .like img {
     width: 40px;
     height: 40px;
     line-height: 45px;
+
+    color: white;
+} */
+.like-btn {
+    float: right;
+    border-radius: 50%;
+    background: url(https://www.earthtory.com/res/img/component/bg/bgw_80.png) repeat;
+    margin-left: 15px;
+    cursor: pointer;
+    width: 45px;
+    height: 45px;
+    position: relative;
+    z-index: 30;
+}
+.like-btn .ico {
+    width: 45px;
+    height: 45px;
+    background: url(https://www.earthtory.com/res/img/mypage/plan/sub/btn_like.png) no-repeat;
 }
 
 
@@ -145,6 +226,10 @@
     font-size: 18px;
     color: #808080;
     float: left;
+    cursor: pointer;
+}
+.header-menu:hover, .header-menu.on {
+    color: #49b2e9;
 }
 
 .header-menu-line {
@@ -197,13 +282,14 @@
     width: 750px;
     padding-right: 25px;
 
-    border: 1px solid hotpink;
+    border: 0px solid hotpink;
 }
 
 .list-left .day-box {
     width: 100%;
+    padding-bottom: 30px;
 
-    border: 1px solid red;
+    border: 0px solid red;
 }
 
 .day-box-title {
@@ -227,7 +313,7 @@
     float: left;
     
     /* total(750) - (day)110 - padding(25) border's */
-    width: 611px;
+    width: 615px;
 
     background: white;
     border-top: 1px solid #e5e5e5;
@@ -266,19 +352,121 @@
     padding-right: 15px;
 }
 
-
+        /* 날짜별 일정 리스트 */
 .day-box-list {
-    width: 172px;
+    width: 100%;
+    border: 1px solid #e5e5e5;
+    background: white;
+    min-height: 100px;
+}
+.day-box-distance {
+    width: 725px;
+    border-left: 1px solid #e5e5e5;
+    border-right: 1px solid #e5e5e5;
+    height: 28px;
+    line-height: 30px;
+    background: url(https://www.earthrtory.com/res/img/mypage/plan/sub/distance_line.gif) no-repeat;
+    background-position: 57px center;
+    padding-left: 117px;
+    color: #555555;
+    font-size: 12px;
+}
+.day-list-num {
+    height: 100%;
+    text-align: center;
     float: left;
-    height: 60px;
-    line-height: 60px;
-    font-size: 16px;
+    width: 110px;
+}
+.list-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: white;
+    background: #223b68;
+    margin: 0 auto;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 32px;
+    text-align: center;
+    margin-top: 35px;
+}
+.list-content {
+    width: 604px;
+    float: left;
+    padding-top: 15px;
+}
+    /* spot 박스 */
+.spot-img {
+    float: left;
+    width: 70px;
+    height: 70px;
+    border: 1px solid #555555;
+}
+.spot-content-box {
+    width: 425px;
+    float: left;
+    padding-left: 10px;
+}
+.spot-name {
+    font-size: 17px;
     color: #555555;
     font-weight: bold;
-    text-align: right;
+}
+.spot-info {
+    height: 41px;
+    padding-top: 10px;
+}
+.spot-info img.star {
+    float: left;
+    margin-top: 1px;
+}
+.sinfo-line {
+    background: #808080;
+    width: 1px;
+    height: 10px;
+    float: left;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+}
+.sinfo-txt {
+    float: left;
+    font-size: 12px;
+    color: #555555;
+    line-height: 23px;
+    /* 좋아요 이미지 url */
+    background: url(https://www.earthtory.com/res/img/city/spot_rate_icon.png) no-repeat;
+    padding-left: 20px;
+}
+.spot-btn-box {
+    width: 109px;
+    float: left;
+    height: 100%;
     padding-right: 15px;
-
-    border: 1px solid cyan;
+    margin-top: 20px;
+}
+.spot-btn {
+    float: right;
+    margin-left: 15px;
+    cursor: pointer;
+}
+.list-use-price {
+    width: 100%;
+    padding-left: 190px;
+    padding-right: 15px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.use-price {
+    color: #555555;
+    font-size: 13px;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+.use-memo {
+    font-size: 13px;
+    color: #808080;
+    line-height: 18px;
 }
 
         /* Right */
@@ -289,8 +477,19 @@
 
     /* Full - list-lefr ( 1092 - 750 ) */
     width: 342px;
-    height: 300px;
+    height: 100%;
     background: white;
 
     border: 1px solid lightpink   
+}
+
+.list-right-map {
+    width: 348px;
+    height: 303px;
+}
+.spot-list-box {
+    width: 348px;
+    height: 195px;
+
+    border-top: 1px solid lightpink;
 }
