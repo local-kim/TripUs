@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import '../../styles/plandetail.css';
 // import ScrollButton from 'react-scroll-button';
 
@@ -22,7 +22,10 @@ const PlanDetail = () => {
             <div className='scroll-item'>
                 <div className='scroll-item-prev'></div>
                 <div className='scroll-item-list'>
-                    <div className='scroll-item-btn on'>D1 Place</div>
+                    <div className='scroll-item-btn on'
+                        onClick={() => {
+                            
+                        }}>D1 Place</div>
                     <div className='scroll-item-btn'>D2 Place</div>
                     <div className='scroll-item-btn'>D3 Place</div>
                     <div className='scroll-item-btn'>D4 Place</div>
@@ -220,7 +223,9 @@ const PlanDetail = () => {
                                 </div>
                             </div>
                             {/* 같은날짜 spot 간격 */}
-                            <div className='day-box-distance'></div>
+                            <div className='day-box-distance'>
+
+                            </div>
 
                             {/* 리스트-하단바 */}
                             <div className='day-box-list'>
