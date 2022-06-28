@@ -5,26 +5,54 @@ import '../../styles/plan.css';
 import { PlaceItem } from ".";
 import TextField from '@mui/material/TextField';
 import { connect, ReactReduxContext, useDispatch, useSelector } from 'react-redux'
+import { savePlan } from '../../modules/planner';
 // import reducers from './modules';
 
 const DayPlan = () => {
+  // redux에서 변수 얻기
   const dispatch = useDispatch();
-  const plan = useSelector(state => state.planner.plan);
+  // const plan = useSelector(state => state.planner.plan);
   const days = useSelector(state => state.planner.days);
-  // console.log(a);
-  console.log(plan);
-  // const { store } = useContext(ReactReduxContext);
+  const areaCode = useSelector(state => state.planner.areaCode);
+  const sigunguCode = useSelector(state => state.planner.sigunguCode);
+
+  const contentTypeId = {
+    A01010100: '국립공원',
+    A01010200: '도립공원',
+    A01010300: '군립공원',
+    A01010400: '산',
+    A01010500: '자연생태관광지',
+    A01010600: '자연휴양림',
+    A01010700: '수목원',
+    A01010800: '폭포',
+    A01010900: '계곡',
+    A01011000: '약수터',
+    A01011100: '해안절경',
+    A01011200: '해수욕장',
+    A01011300: '섬',
+    A01011400: '항구/포구',
+    A01011500: '어촌',
+    A01011600: '등대',
+    A01011700: '호수',
+    A01011800: '강',
+    A01011900: '동굴',
+    A02020300: '온천/욕장/스파',
+    A02010800: '사찰',
+    A02020700: '공원',
+    A02020800: '유람선/잠수함관광',
+  }
+
+  const statePlan = useSelector(state => state.planner.plan);
+  const [plan, setPlan] = useState(statePlan);
   
   const navigate = useNavigate();
-  const location = useLocation();
   const {day} = useParams();
-  const [dayPlan, setDayPlan] = useState([]); // 초기값: Redux store의 plan[day]
-  // const [dayPlan, setDayPlan] = useState(plan[day]); // TODO: plan이 빈 배열이면 try-catch?
-  // const days = location.state.days;
+  // const [plan, setPlan] = useState(Array.from(Array(days), () => new Array())); // [days x n] 2차원 배열
+  const [dayPlan, setDayPlan] = useState(plan[day]);
+  // const [dayPlan, setDayPlan] = useState(plan[day]); // 초기값: Redux store의 plan[day] TODO: plan이 빈 배열이면 try-catch?
 
-  // TODO: city_num을 넘겨받고 DB에서 city_num을 이용하여 areaCode, sigunguCode 얻기..?
-  const areaCode = location.state.areaCode;
-  const sigunguCode = location.state.sigunguCode; // 있을 수도, 없을 수도 있음
+  // console.log(plan);
+  // console.log(dayPlan);
 
   const [places, setPlaces] = useState([]);
 
@@ -33,8 +61,6 @@ const DayPlan = () => {
 
   // 처음 렌더링 시 api에서 목록 받아옴
   useEffect(() => {
-    // console.log(areaCode);
-
     axios.get(apiUrl)
     .then((res) => {
       // console.dir(res.data.response.body.items.item);
@@ -44,24 +70,42 @@ const DayPlan = () => {
     });
   }, []);
 
+  // useEffect(() => {
+  //   console.log(plan[day]);
+  //   setDayPlan(plan[day]);
+  // }, [plan, day]);
+
   const prevDay = () => {
     addPlan();
+    setDayPlan(plan[Number(day) - 2]);
+    // console.log(plan);
+    // console.log(plan.at(0));
+    // console.log(plan.at(1));
+    // console.log(plan.at(2));
+    // console.log(plan[Number(day)]);
+    // console.log(dayPlan);
     navigate(`/plan/${Number(day) - 1}`, {
       state: {
-        days: days,
-        areaCode: areaCode,
-        sigunguCode: sigunguCode
+        // days: days,
+        // areaCode: areaCode,
+        // sigunguCode: sigunguCode
       }
     })
   }
 
   const nextDay = () => {
     addPlan();
+    setDayPlan(plan[Number(day)]);
+    // console.log(plan);
+    // console.log(plan.at(0));
+    // console.log(plan.at(1));
+    // console.log(plan.at(2));
+    // console.log(dayPlan);
     navigate(`/plan/${Number(day) + 1}`, {
       state: {
-        days: days,
-        areaCode: areaCode,
-        sigunguCode: sigunguCode
+        // days: days,
+        // areaCode: areaCode,
+        // sigunguCode: sigunguCode
       }
     })
   }
@@ -74,7 +118,14 @@ const DayPlan = () => {
   }
 
   const addPlan = () => {
-    dispatch(addPlan(dayPlan));
+    // dispatch(addPlan(dayPlan));
+    setPlan([
+      ...plan.slice(0, day - 1), // 0 <= x < day - 1
+      dayPlan,  // day - 1
+      ...plan.slice(day)  // day <= x
+    ]);
+    // console.log(dayPlan);
+    // console.log(plan);
   }
 
   return (
@@ -96,13 +147,15 @@ const DayPlan = () => {
           <span className='label'>나의 일정</span>
           <div>
             {
-              dayPlan.map((place, index) => (
-                <div className='place-container'>
+              // dayPlan이 있을 때만 표시
+              dayPlan && dayPlan.map((place, index) => (
+                <div className='place-container' key={index}>
                   <img className='place-item' src={place.firstimage} alt=''/>
 
                   <div className='place-item'>
                     <div>{place.title}</div>
-                    <div>{place.cat3}</div>
+                    {/* <div>{place.cat3}</div> */}
+                    <div className='content-type-id'>{contentTypeId[place.cat3]}</div>
                     {/* <div>{place.contentid}</div> */}
                   </div>
                 </div>
@@ -133,15 +186,11 @@ const DayPlan = () => {
         </div>
       </div>
 
-      {/* <button type='button' onClick={() => {
-        navigate("/plan", {
-          state: {
-            days: days,
-            areaCode: areaCode,
-            sigunguCode: sigunguCode
-          }
-        });
-      }}>완료</button> */}
+      <button type='button' onClick={() => {
+        // plan을 redux 전역 변수에 저장
+        dispatch(savePlan(plan));
+        navigate("/plan");
+      }}>완료</button>
       
     </div>
   );

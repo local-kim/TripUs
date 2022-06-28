@@ -3,7 +3,8 @@
 // 이렇게 하면 다른 모듈과 액션 이름이 중복되는 것을 방지 할 수 있습니다.
 const ADD_PLACE = 'plan/ADD_PLACE';
 const ADD_PLAN = 'plan/ADD_PLAN';
-const SET_DATE = 'plan/SET_DATE';
+const SET_PLAN_INFO = 'plan/SET_PLAN_INFO';
+const SAVE_PLAN = 'plan/SAVE_PLAN';
 
 // Action Creators
 export const addPlace = (place) => (
@@ -20,12 +21,21 @@ export const addPlan = (plan) => (
 	}
 )
 
-export const setDate = (start, end, days) => (
+export const setPlanInfo = (start, end, days, areaCode, sigunguCode) => (
 	{
-		type: SET_DATE,
+		type: SET_PLAN_INFO,
 		start: start,
 		end: end,
-		days: days
+		days: days,
+		areaCode: areaCode,
+		sigunguCode: sigunguCode
+	}
+);
+
+export const savePlan = (plan) => (
+	{
+		type: SAVE_PLAN,
+		plan: plan
 	}
 );
 
@@ -34,7 +44,7 @@ const initialState = {
 	startDate: "",
 	endDate: "",
 	days: null,
-	plan: []
+	plan: [],
 }
 
 // Reducer
@@ -52,13 +62,21 @@ export default function reducer(state = initialState, action){
 				...state,
 				plan: [...state.plan, action.plan]	// 배열에 배열 추가
 			}
-		case SET_DATE:
-			// console.log();
+		case SAVE_PLAN:
+			return {
+				...state,
+				plan: action.plan
+			}
+		case SET_PLAN_INFO:
+			console.log(state);
 			return {
 				...state,
 				startDate: action.start,
 				endDate: action.end,
-				days: action.days
+				days: action.days,
+				areaCode: action.areaCode,
+				sigunguCode: action.sigunguCode,
+				plan: Array.from(Array(action.days), () => new Array()),
 			}
 		default:
 			return state; //반드시 default는 state return
