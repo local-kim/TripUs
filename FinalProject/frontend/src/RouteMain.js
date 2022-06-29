@@ -6,6 +6,8 @@ import './AppHeemin.css';
 import { CityInfoMain, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
 import { PlanDetail } from "./pages/detail";
+import {Mypage, Dashboard} from "./pages/mypage";
+// import { Dashboard } from "./pages/mypage";
 
 const RouteMain = () => {
   return (
@@ -29,6 +31,10 @@ const RouteMain = () => {
 
           {/* Detail-Plan */}
           <Route path="/plan/detail" element={<PlanDetail />} />
+
+          {/* mypage */}
+          <Route path="/Mypage" element={<Mypage/>}/>
+          <Route path="/Dashboard" element={<Dashboard/>}/>
 
         </Routes>
       </div>
