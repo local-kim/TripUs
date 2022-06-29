@@ -13,6 +13,11 @@
   text-align: center;
 }
 
+#plan .day{
+  width: 500px;
+  margin: 0 auto;
+}
+
 #plan .day span{
   font-size: 27px;
   font-weight: 500;
@@ -68,15 +73,16 @@
 }
 
 /* PlaceItem.js */
-#day-plan .api-place-list .place-container{
+.place-container{
   display: flex;
   align-items: center;
   /* border-bottom: 1px solid lightgray; */
   padding: 10px;
   /* width: 400px; */
+  text-align: left;
 }
 
-#day-plan .api-place-list .place-container img{
+.place-container img{
   width: 50px;
   height: 50px;
   object-fit: cover;
@@ -84,16 +90,21 @@
 }
 
 /* 장소 목록 사이에 보더 넣기 */
-#day-plan .api-place-list .place-container:not(:last-child){
+.place-container:not(:last-child){
   display: flex;
   border-bottom: 1px solid lightgray;
   padding: 10px;
 }
 
-#day-plan .api-place-list .place-container .place-item{
+.place-container .place-item{
   margin-right: 10px;
 }
 
 /* #day-plan .api-place-list .container + #day-plan .api-place-list .container{
   border-top: 1px solid lightgray;
 } */
+
+.place-item .content-type-id{
+  font-size: 14px;
+  color: rgb(100, 100, 100);
+}

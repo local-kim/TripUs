@@ -1,34 +1,45 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Footer, Header, Main, Menu } from "./components";
+import { FinalHead, Footer, Header, Main, Menu } from "./components";
 import './App.css';
-import { CityInfoMain } from "./pages/cityinfo";
+import './AppHeemin.css';
+import { CityInfoMain, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
 import JoinForm from "./pages/login/JoinForm";
+import { PlanDetail } from "./pages/detail";
 
 const RouteMain = () => {
   return (
-    <div>
-      <Header/>
+    <div className="main-main-back">
       <Menu/>
-      <Routes>
-        <Route path="/" element={<Main/>} />
 
-        {/* cityinfo */}
-        <Route path="/cityinfo" element={<CityInfoMain/>} />
+      <div id="main">
+        <Routes>
+          <Route path="/" element={<Main/>} />
 
-        {/* Planning */}
-        <Route path="/plan/calendar" element={<Calendar/>} />
-        <Route path="/plan" element={<Plan/>} />
-        <Route path="/plan/:day" element={<DayPlan/>} />
+          {/* cityinfo */}
+          <Route path="/cityinfo" element={<CityInfoMain/>} />
 
-        {/* Member */}
-        <Route path="/join" element={<JoinForm/>} />
+          {/* Member */}
+          <Route path="/join" element={<JoinForm/>} />
 
-      </Routes>
-      <Footer/>
+          {/* Planning */}
+          <Route path="/plan/calendar" element={<Calendar/>} />
+          <Route path="/plan" element={<Plan/>} />
+          <Route path="/plan/:day" element={<DayPlan/>} />
+          
+          {/* PlaceInfo */}
+          <Route path="/place/citydetail" element={<PlaceInfo/>}/>
+
+          {/* Detail-Plan */}
+          <Route path="/plan/detail" element={<PlanDetail />} />
+
+        </Routes>
+      </div>
     </div>
   )
 }
 
 export default RouteMain;
+
+

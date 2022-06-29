@@ -5,11 +5,9 @@ import './App.css';
 
 function App() {
   return (
-    <div>
-      <BrowserRouter>
-        <RouteMain/>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <RouteMain/>
+    </BrowserRouter>
   );
 }
 
