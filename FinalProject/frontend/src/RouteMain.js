@@ -4,6 +4,7 @@ import { Footer, Header, Main, Menu } from "./components";
 import './App.css';
 import { CityInfoMain } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
+import JoinForm from "./pages/login/JoinForm";
 
 const RouteMain = () => {
   return (
@@ -20,6 +21,9 @@ const RouteMain = () => {
         <Route path="/plan/calendar" element={<Calendar/>} />
         <Route path="/plan" element={<Plan/>} />
         <Route path="/plan/:day" element={<DayPlan/>} />
+
+        {/* Member */}
+        <Route path="/join" element={<JoinForm/>} />
 
       </Routes>
       <Footer/>
