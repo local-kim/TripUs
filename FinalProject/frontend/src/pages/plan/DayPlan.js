@@ -48,7 +48,7 @@ const DayPlan = () => {
   const navigate = useNavigate();
   const {day} = useParams();
   // const [plan, setPlan] = useState(Array.from(Array(days), () => new Array())); // [days x n] 2차원 배열
-  const [dayPlan, setDayPlan] = useState(plan[day]);
+  const [dayPlan, setDayPlan] = useState(plan[day - 1]);
   // const [dayPlan, setDayPlan] = useState(plan[day]); // 초기값: Redux store의 plan[day] TODO: plan이 빈 배열이면 try-catch?
 
   // console.log(plan);
@@ -84,32 +84,21 @@ const DayPlan = () => {
     // console.log(plan.at(2));
     // console.log(plan[Number(day)]);
     // console.log(dayPlan);
-    navigate(`/plan/${Number(day) - 1}`, {
-      state: {
-        // days: days,
-        // areaCode: areaCode,
-        // sigunguCode: sigunguCode
-      }
-    })
+    navigate(`/plan/${Number(day) - 1}`);
   }
 
   const nextDay = () => {
     addPlan();
-    setDayPlan(plan[Number(day)]);
+    setDayPlan(plan[Number(day)]);  // dayPlan에 다음날의 일정을 저장
     // console.log(plan);
     // console.log(plan.at(0));
     // console.log(plan.at(1));
     // console.log(plan.at(2));
     // console.log(dayPlan);
-    navigate(`/plan/${Number(day) + 1}`, {
-      state: {
-        // days: days,
-        // areaCode: areaCode,
-        // sigunguCode: sigunguCode
-      }
-    })
+    navigate(`/plan/${Number(day) + 1}`);
   }
 
+  // 선택한 장소를 dayPlan에 저장
   const addPlace = (place) => {
     setDayPlan([
       ...dayPlan,
@@ -117,6 +106,7 @@ const DayPlan = () => {
     ]);
   }
 
+  // dayPlan을 plan에 저장
   const addPlan = () => {
     // dispatch(addPlan(dayPlan));
     setPlan([
@@ -149,14 +139,14 @@ const DayPlan = () => {
             {
               // dayPlan이 있을 때만 표시
               dayPlan && dayPlan.map((place, index) => (
-                <div className='place-container' key={index}>
+                <div className='place-container'>
                   <img className='place-item' src={place.firstimage} alt=''/>
 
                   <div className='place-item'>
                     <div>{place.title}</div>
                     {/* <div>{place.cat3}</div> */}
-                    <div className='content-type-id'>{contentTypeId[place.cat3]}</div>
-                    {/* <div>{place.contentid}</div> */}
+                    <div className='place-info'>{contentTypeId[place.cat3]}</div>
+                    <div className='place-info'>{place.contentid}</div>
                   </div>
                 </div>
               ))
@@ -174,7 +164,7 @@ const DayPlan = () => {
           <span className='label'>추천 장소</span>
           <div className='api-place-list'>
             {
-              places.map((place, index) => <PlaceItem day={day} place={place} addPlace={addPlace} key={index}/>)
+              places.map((place, index) => <PlaceItem place={place} addPlace={addPlace} key={index}/>)
             }
           </div>
           
@@ -187,6 +177,7 @@ const DayPlan = () => {
       </div>
 
       <button type='button' onClick={() => {
+        addPlan();
         // plan을 redux 전역 변수에 저장
         dispatch(savePlan(plan));
         navigate("/plan");

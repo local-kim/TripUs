@@ -42,8 +42,8 @@ const PlaceItem = (props) => {
       <div className='place-item'>
         <div>{props.place.title}</div>
         {/* <div>{props.place.cat3}</div> */}
-        {/* <div>{props.place.contentid}</div> */}
-        <div className='content-type-id'>{contentTypeId[props.place.cat3]}</div>
+        <div className='place-info'>{contentTypeId[props.place.cat3]}</div>
+        <div className='place-info'>{props.place.contentid}</div>
       </div>
       
       {/* TODO: 나중에 버튼 대신 장소 이름 클릭하면 추가되게 변경 */}

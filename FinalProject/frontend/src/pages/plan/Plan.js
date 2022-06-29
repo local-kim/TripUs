@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../../styles/plan.css';
+import PlaceItem from './PlaceItem';
 
 const Plan = () => {
   // redux에서 변수 얻기
@@ -39,7 +40,7 @@ const Plan = () => {
     A02020800: '유람선/잠수함관광',
   }
 
-  console.log(plan);
+  // console.log(plan);
 
   const navigate = useNavigate();
 
@@ -58,27 +59,21 @@ const Plan = () => {
               <div>
                 {
                   plan[index] && plan[index].map((place, index) => (
-                    <div className='place-container' key={index}>
+                    <div className='place-container'>
                       <img className='place-item' src={place.firstimage} alt=''/>
 
                       <div className='place-item'>
                         <div>{place.title}</div>
                         {/* <div>{place.cat3}</div> */}
-                        {/* <div>{place.contentid}</div> */}
-                        <div className='content-type-id'>{contentTypeId[place.cat3]}</div>
+                        <div className='place-info'>{contentTypeId[place.cat3]}</div>
+                        <div className='place-info'>{place.contentid}</div>
                       </div>
                     </div>
                   ))
                 }
               </div>
               <button type='button' className='btn btn-outline-primary btn-sm' onClick={() => {
-                navigate(`/plan/${index + 1}`, {
-                  state: {
-                    // days: days,
-                    // areaCode: areaCode,
-                    // sigunguCode: sigunguCode
-                  }
-                })
+                navigate(`/plan/${index + 1}`);
               }}>장소 추가</button>
               <button type='button' className='btn btn-outline-secondary btn-sm'>메모 추가</button>
             </div>

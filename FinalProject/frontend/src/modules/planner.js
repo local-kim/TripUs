@@ -57,18 +57,19 @@ export default function reducer(state = initialState, action){
 				plan: [...state.plan, action.place]
 			};
 		case ADD_PLAN:
-			console.log(state);
+			console.log(action.plan);
 			return {
 				...state,
 				plan: [...state.plan, action.plan]	// 배열에 배열 추가
 			}
 		case SAVE_PLAN:
+			console.log(action.plan);
 			return {
 				...state,
 				plan: action.plan
 			}
 		case SET_PLAN_INFO:
-			console.log(state);
+			// console.log(state);
 			return {
 				...state,
 				startDate: action.start,
