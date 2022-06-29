@@ -5,6 +5,7 @@ import './App.css';
 import './AppHeemin.css';
 import { CityInfoMain, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
+import JoinForm from "./pages/login/JoinForm";
 import { PlanDetail } from "./pages/detail";
 import {Mypage, Dashboard} from "./pages/mypage";
 // import { Dashboard } from "./pages/mypage";
@@ -20,6 +21,9 @@ const RouteMain = () => {
 
           {/* cityinfo */}
           <Route path="/cityinfo" element={<CityInfoMain/>} />
+
+          {/* Member */}
+          <Route path="/join" element={<JoinForm/>} />
 
           {/* Planning */}
           <Route path="/plan/calendar" element={<Calendar/>} />
@@ -38,7 +42,6 @@ const RouteMain = () => {
 
         </Routes>
       </div>
-      
     </div>
   )
 }
