@@ -36,19 +36,15 @@ const PlaceItem = (props) => {
   }
 
   return (
-    <div className='place-container'>
-      <img className='place-item' src={props.place.firstimage} alt=''/>
+    <div className='place-info-wrap'>
+      <img src={props.place.firstimage} alt=''/>
 
-      <div className='place-item'>
+      <div>
         <div>{props.place.title}</div>
         {/* <div>{props.place.cat3}</div> */}
         <div className='place-info'>{contentTypeId[props.place.cat3]}</div>
         <div className='place-info'>{props.place.contentid}</div>
       </div>
-      
-      {/* TODO: 나중에 버튼 대신 장소 이름 클릭하면 추가되게 변경 */}
-      {/* <button type='button' className='place-item btn btn-light btn-sm' onClick={() => dispatch(addPlace(props.place))}>+</button> */}
-      <button type='button' className='place-item btn btn-light btn-sm' onClick={() => props.addPlace(props.place)}>+</button>
     </div>
   );
 };

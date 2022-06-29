@@ -16,32 +16,6 @@ const DayPlan = () => {
   const areaCode = useSelector(state => state.planner.areaCode);
   const sigunguCode = useSelector(state => state.planner.sigunguCode);
 
-  const contentTypeId = {
-    A01010100: '국립공원',
-    A01010200: '도립공원',
-    A01010300: '군립공원',
-    A01010400: '산',
-    A01010500: '자연생태관광지',
-    A01010600: '자연휴양림',
-    A01010700: '수목원',
-    A01010800: '폭포',
-    A01010900: '계곡',
-    A01011000: '약수터',
-    A01011100: '해안절경',
-    A01011200: '해수욕장',
-    A01011300: '섬',
-    A01011400: '항구/포구',
-    A01011500: '어촌',
-    A01011600: '등대',
-    A01011700: '호수',
-    A01011800: '강',
-    A01011900: '동굴',
-    A02020300: '온천/욕장/스파',
-    A02010800: '사찰',
-    A02020700: '공원',
-    A02020800: '유람선/잠수함관광',
-  }
-
   const statePlan = useSelector(state => state.planner.plan);
   const [plan, setPlan] = useState(statePlan);
   
@@ -49,10 +23,6 @@ const DayPlan = () => {
   const {day} = useParams();
   // const [plan, setPlan] = useState(Array.from(Array(days), () => new Array())); // [days x n] 2차원 배열
   const [dayPlan, setDayPlan] = useState(plan[day - 1]);
-  // const [dayPlan, setDayPlan] = useState(plan[day]); // 초기값: Redux store의 plan[day] TODO: plan이 빈 배열이면 try-catch?
-
-  // console.log(plan);
-  // console.log(dayPlan);
 
   const [places, setPlaces] = useState([]);
 
@@ -70,31 +40,24 @@ const DayPlan = () => {
     });
   }, []);
 
+  useEffect(() => {
+    addPlan();
+  }, [dayPlan]);
+
   // useEffect(() => {
   //   console.log(plan[day]);
   //   setDayPlan(plan[day]);
   // }, [plan, day]);
 
   const prevDay = () => {
-    addPlan();
+    // addPlan();
     setDayPlan(plan[Number(day) - 2]);
-    // console.log(plan);
-    // console.log(plan.at(0));
-    // console.log(plan.at(1));
-    // console.log(plan.at(2));
-    // console.log(plan[Number(day)]);
-    // console.log(dayPlan);
     navigate(`/plan/${Number(day) - 1}`);
   }
 
   const nextDay = () => {
-    addPlan();
+    // addPlan();
     setDayPlan(plan[Number(day)]);  // dayPlan에 다음날의 일정을 저장
-    // console.log(plan);
-    // console.log(plan.at(0));
-    // console.log(plan.at(1));
-    // console.log(plan.at(2));
-    // console.log(dayPlan);
     navigate(`/plan/${Number(day) + 1}`);
   }
 
@@ -110,49 +73,39 @@ const DayPlan = () => {
   const addPlan = () => {
     // dispatch(addPlan(dayPlan));
     setPlan([
-      ...plan.slice(0, day - 1), // 0 <= x < day - 1
+      ...plan.slice(0, day - 1), // 0 ~ day - 2
       dayPlan,  // day - 1
-      ...plan.slice(day)  // day <= x
+      ...plan.slice(day)  // day ~
     ]);
-    // console.log(dayPlan);
-    // console.log(plan);
   }
 
   return (
     <div id='day-plan'>
-      <div style={{textAlign:'center'}}>
+      <div className='title-wrap'>
         {
           // day1이면 이전 날짜 버튼 안보임
-          day == 1 ? "" : <button type='button' className='btn btn-secondary btn-sm' onClick={prevDay}>ᐸ</button>
+          day == 1 ? <button style={{opacity:'0',cursor:'default'}}>ᐸ</button> : <button type='button' className='btn btn-secondary btn-sm' onClick={prevDay}>ᐸ</button>
         }
         <span className='title'>DAY {day}</span>
         {
           // 마지막 날이면 다음 날짜 버튼 안보임
-          day == days ? "" : <button type='button' className='btn btn-secondary btn-sm' onClick={nextDay}>ᐳ</button>
+          day == days ? <button style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-secondary btn-sm' onClick={nextDay}>ᐳ</button>
         }
       </div>
 
       <div className='list-container'>
         <div className='left'>
           <span className='label'>나의 일정</span>
-          <div>
+          <div className='plan-place-list'>
             {
               // dayPlan이 있을 때만 표시
               dayPlan && dayPlan.map((place, index) => (
-                <div className='place-container'>
-                  <img className='place-item' src={place.firstimage} alt=''/>
-
-                  <div className='place-item'>
-                    <div>{place.title}</div>
-                    {/* <div>{place.cat3}</div> */}
-                    <div className='place-info'>{contentTypeId[place.cat3]}</div>
-                    <div className='place-info'>{place.contentid}</div>
-                  </div>
+                <div className='place-list-item'>
+                  <PlaceItem place={place} key={index}/>
                 </div>
               ))
             }
           </div>
-          
         </div>
 
         <div className='right'>
@@ -164,7 +117,12 @@ const DayPlan = () => {
           <span className='label'>추천 장소</span>
           <div className='api-place-list'>
             {
-              places.map((place, index) => <PlaceItem place={place} addPlace={addPlace} key={index}/>)
+              places.map((place, index) => (
+                <div className='place-list-item'>
+                  <PlaceItem place={place} addPlace={addPlace} key={index}/>
+                  <button type='button' className='btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
+                </div>
+              ))
             }
           </div>
           
@@ -175,14 +133,15 @@ const DayPlan = () => {
           </div>
         </div>
       </div>
-
-      <button type='button' onClick={() => {
-        addPlan();
-        // plan을 redux 전역 변수에 저장
-        dispatch(savePlan(plan));
-        navigate("/plan");
-      }}>완료</button>
       
+      <div style={{textAlign:'center', marginTop:'10px'}}>
+        <button type='button' className='btn btn-secondary' onClick={() => {
+          // addPlan();
+          // plan을 redux 전역 변수에 저장
+          dispatch(savePlan(plan));
+          navigate("/plan");
+        }}>완료</button>
+      </div>
     </div>
   );
 };
