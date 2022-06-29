@@ -36,12 +36,12 @@
 }
 
 /* 스크롤 아이템 버튼 이벤트 */
-#plan-detail .scroll-item-btn.on {
+#plan-detail .scroll-item-btn.on a {
     background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_line_on.gif) no-repeat;
     background-position: left center;
     color: #ff9320;
 }
-#plan-detail .scroll-item-btn {
+#plan-detail .scroll-item-btn a {
     width: 100%;
     color: #b3b3b3;
     font-size: 11px;
@@ -52,7 +52,7 @@
     line-height: 12px;
     cursor: pointer;
 }
-#plan-detail .scroll-item-btn.last {
+#plan-detail .scroll-item-btn.last a {
     background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_line_last.gif) no-repeat;
     background-position: left center;
     height: 10px;
@@ -480,7 +480,7 @@
     height: 100%;
     background: white;
 
-    border: 1px solid lightpink   
+    border: 0px solid lightpink   
 }
 
 #plan-detail .list-right-map {
@@ -491,5 +491,5 @@
     width: 341px;
     height: 195px;
 
-    border-top: 1px solid lightpink;
+    border: 1px solid lightpink;
 }

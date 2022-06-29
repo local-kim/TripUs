@@ -1,8 +1,144 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../../styles/plandetail.css';
 // import ScrollButton from 'react-scroll-button';
+import { useNavigate,useLocation } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import Rating from '@mui/material/Rating';
+import Typography from '@mui/material/Typography';
+import axios from 'axios';
+
+
+
+// 카카오맵
+
+const { kakao } = window;
 
 const PlanDetail = () => {
+
+//stars rating
+
+    //mui
+    const [value, setValue] = React.useState('1');
+    const [starsvalue, setStarsValue] = React.useState(0);
+
+
+    const handleChange = (event, newValue) => {
+    setValue(newValue);
+    if(newValue==='1'){
+    return kakaomapscript();
+    }
+    };
+
+    //지도api & 관광지 api 
+    const contentId=127419; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기
+    const [placeTitle, setPlaceTitle] = useState();
+    const [placeAddr, setPlaceAddr] = useState();
+    const [placeImg,setPlaceImg]= useState();
+    const [review,setReview]= useState();
+
+    const [cat1name,setCat1name] =useState();
+    const [cat2name,setCat2name] = useState();
+    const [cat3name,setCat3name] =useState();
+    const [placeCategory, setPlaceCategory]=useState();
+
+    console.log("let cat1:",cat1name,"let cat2:",cat2name,"let cat3:",cat3name);
+
+    // 사진이 있는 장소만 받는 url(arrange=P)
+     let apiUrl=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&contentId=${contentId}&defaultYN=Y&mapinfoYN=Y&addrinfoYN=Y&firstImageYN=Y&catcodeYN=Y&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     let apiUrl2=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/categoryCode?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&cat1=${cat1name}&cat2=${cat2name}&cat3=${cat3name}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+
+    //후기 작성
+    const [photo,setPhoto]=useState('');
+    const [subject,setSubject]=useState('');
+    const [content,setContent]=useState('');
+
+    
+    useEffect(() => {
+        kakaomapscript();
+    });
+
+    //kakomap + tourapi3
+    const kakaomapscript = () => {
+        
+        const container = document.getElementById('place_map');
+
+        axios.get(apiUrl)
+        .then((res) => {
+        console.dir(res.data.response.body.items.item);
+
+        const apidata=res.data.response.body.items.item;
+        const placex=apidata.mapx;  //관광지 위치(x좌표)
+        const placey=apidata.mapy;  //관광지 위치(y좌표)
+        const placetitle=apidata.title; //관광지명
+        const placeaddr1=apidata.addr1; //관광지 주소 
+        const placeaddr2=apidata.addr2; //관광지 상세주소
+        const placeimg=apidata.firstimage; //관광지 대표 이미지
+        
+        const cat1 =apidata.cat1; //관광지 대분류
+        const cat2=apidata.cat2; //관광지 중분류
+        const cat3=apidata.cat3; //관광지 소분류
+
+        setCat1name(cat1);
+        setCat2name(cat2);
+        setCat3name(cat3);
+
+        
+        // console.log("placeimgurl:",placeimg);
+        //console.log("placeaddr2:",placeaddr2);
+
+        setPlaceTitle(placetitle);
+            if(placeaddr2===undefined){
+                setPlaceAddr(placeaddr1);
+            }else{
+                setPlaceAddr(placeaddr1+placeaddr2);
+            }
+        setPlaceImg(placeimg);
+
+        const options = {
+            center: new kakao.maps.LatLng(placey,placex),
+            //center: new kakao.maps.LatLng(35.1591243474,129.1603078991),
+            //new kakao.maps.LatLng(y좌표,x좌표)
+            level: 2
+        };
+        
+        const map = new kakao.maps.Map(container, options);
+    
+        //마커가 표시 될 위치
+        let markerPosition = new kakao.maps.LatLng(placey,placex);
+
+        // 마커를 생성
+        let marker = new kakao.maps.Marker({position: markerPosition,
+        });
+
+        // 마커를 지도 위에 표시
+        marker.setMap(map);
+        //setPlaces(res.data.response.body.items.item);
+        }).catch((err) => {
+    
+        });
+    };
+
+    axios.get(apiUrl2).then((res) => {
+
+        console.log("apiUrl2",res.data.response.body.items.item);
+        const api2data=res.data.response.body.items.item;
+        const servicetypecodename=api2data.name;
+        setPlaceCategory(servicetypecodename);
+
+    }).catch((err) => {
+    
+    });
+
+
+
+    
+    
+    
+    
 
     // const ScrollComponent = () => {
     //     return (
@@ -24,12 +160,12 @@ const PlanDetail = () => {
                 <div className='scroll-item-list'>
                     <div className='scroll-item-btn on'
                         onClick={() => {
-                            
-                        }}>D1 Place</div>
-                    <div className='scroll-item-btn'>D2 Place</div>
-                    <div className='scroll-item-btn'>D3 Place</div>
-                    <div className='scroll-item-btn'>D4 Place</div>
-                    <div className='scroll-item-btn last'>D5 Place</div>
+                            window.scroll(0,400);
+                        }}><a href='#page-1'>D1 Place</a></div>
+                    <div className='scroll-item-btn'><a href='#page-2'>D2 Place</a></div>
+                    <div className='scroll-item-btn'><a href='#page-3'>D3 Place</a></div>
+                    <div className='scroll-item-btn'><a href='#page-4'>D4 Place</a></div>
+                    <div className='scroll-item-btn last'><a href='#page-5'>D5 Place</a></div>
                 </div>
                 <div className='scroll-item-next'></div>
             </div>
@@ -99,7 +235,7 @@ const PlanDetail = () => {
                         <div className='day-box'>
                             {/* 리스트-상단바 */}
                             <div className='day-box-title'>
-                                <div className='day-num'>
+                                <div className='day-num' id='page-1'>
                                     Day01
                                 </div>
                                 <div className='day-date'>
@@ -108,7 +244,7 @@ const PlanDetail = () => {
                                             Start date
                                         </div>
                                         <div className='day-title'>
-                                            Place
+                                            {placeAddr}
                                         </div>
                                         <div className='clear' />
                                     </div>
@@ -125,10 +261,10 @@ const PlanDetail = () => {
                                     <div className='list-num'>1</div>
                                 </div>
                                 <div className='list-content'>
-                                    <img alt='spot' src='' className='spot-img'/>
+                                    <img alt='spot' src={placeImg} className='spot-img'/>
                                     <div className='spot-content-box'>
                                         <div className='spot-name'>
-                                            Spot-name
+                                            {placeTitle}
                                         </div>
                                         <div className='spot-info'>
                                             <img alt src='https://www.earthtory.com/res//img/common/web/hotel_star_1.5.png' className='star' />
@@ -151,7 +287,7 @@ const PlanDetail = () => {
                                             use-price
                                         </div>
                                         <div className='use-memo'>
-                                            write or not
+                                            {placeCategory}
                                         </div>
                                     </div>
                                     <div className='clear' />
@@ -163,7 +299,7 @@ const PlanDetail = () => {
                         <div className='day-box'>
                             {/* 리스트-상단바 */}
                             <div className='day-box-title'>
-                                <div className='day-num'>
+                                <div className='day-num' id='page-2'>
                                     Day02
                                 </div>
                                 <div className='day-date'>
@@ -259,7 +395,7 @@ const PlanDetail = () => {
                                             use-price
                                         </div>
                                         <div className='use-memo'>
-                                            write or not
+                                            {placeCategory}
                                         </div>
                                     </div>
                                     <div className='clear' />
@@ -269,8 +405,8 @@ const PlanDetail = () => {
                         </div>
                     </div>
                     <div className='list-right'>
-                        <div className='list-right-map'>
-                            position for map
+                        <div className='list-right-map' id='place_map'>
+                            
                         </div>
                         <div className='spot-list-box'>
                         
