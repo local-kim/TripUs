@@ -8,6 +8,8 @@ import { Calendar, Plan, DayPlan } from "./pages/plan";
 import JoinForm from "./pages/login/JoinForm";
 import { PlanDetail } from "./pages/detail";
 import LoginForm from "./pages/login/LoginForm";
+import {Mypage, Dashboard, Profile} from "./pages/mypage";
+// import { Dashboard } from "./pages/mypage";
 
 const RouteMain = () => {
   return (
@@ -36,6 +38,11 @@ const RouteMain = () => {
 
           {/* Detail-Plan */}
           <Route path="/plan/detail" element={<PlanDetail />} />
+
+          {/* mypage */}
+          <Route path="/mypage" element={<Mypage/>}/>
+          <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/mypage/profile" element={<Profile/>}/>
 
         </Routes>
       </div>

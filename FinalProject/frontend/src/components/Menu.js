@@ -13,14 +13,21 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import MainLogo from '../assets/images/MainLogo.png';
+
 
 
 const pages = ['CityList', 'TravelRank', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['mypage', 'Dashboard','logout'];
+const link= ['mypage', 'dashboard','logout']
+
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navi=useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -57,7 +64,7 @@ const ResponsiveAppBar = () => {
               textDecoration: 'none',
             }}
           >
-            <img src='MainLogo.png' alt='' style={{width:'60px', marginTop:'10px'}}/>
+            <img src={MainLogo} alt='' style={{width:'60px', marginTop:'10px'}}/>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -123,6 +130,7 @@ const ResponsiveAppBar = () => {
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
                 {page}
+
               </Button>
             ))}
           </Box>
@@ -149,9 +157,10 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {settings.map((setting,index) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                  <Typography textAlign="center" onClick={()=>{navi(link[index])}}>{setting}</Typography>
+                  {/* <Typography textAlign="center" onClick={()=>{navi(setting)}}>{setting}</Typography> */}
                 </MenuItem>
               ))}
             </Menu>

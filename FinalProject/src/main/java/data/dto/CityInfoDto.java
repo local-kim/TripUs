@@ -4,7 +4,7 @@ import org.apache.ibatis.type.Alias;
 
 import lombok.Data;
 
-@Alias("/")
+@Alias("/weathero")
 @Data
 public class CityInfoDto {
 

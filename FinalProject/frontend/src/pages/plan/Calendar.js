@@ -43,15 +43,7 @@ const Calendar = () => {
           // 시작 날짜 : state[0].startDate
           // 끝 날짜 : state[0].endDate
           // 여기서 다음 페이지로 시작 날짜, 끝 날짜 넘겨주면서 이동
-          navigate("/plan", {
-            state: {
-              // startDate: state[0].startDate,
-              // endDate: state[0].endDate
-              // period: state,
-              // areaCode: areaCode,
-              // sigunguCode: sigunguCode
-            }
-          });
+          navigate("/plan");
 
           const start = `${state[0].startDate.getFullYear()}-${state[0].startDate.getMonth() + 1}-${state[0].startDate.getDate()}`;
           const end = `${state[0].endDate.getFullYear()}-${state[0].endDate.getMonth() + 1}-${state[0].endDate.getDate()}`;

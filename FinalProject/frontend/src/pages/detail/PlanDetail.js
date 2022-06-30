@@ -151,6 +151,10 @@ const PlanDetail = () => {
     // };
     
     //별점 이미지 = https://www.earthtory.com/res//img/common/web/hotel_star_?.?.png
+
+    const btnChange = (e) => {
+        
+    }
     
     return (
         <div id = 'plan-detail'>
@@ -158,10 +162,7 @@ const PlanDetail = () => {
             <div className='scroll-item'>
                 <div className='scroll-item-prev'></div>
                 <div className='scroll-item-list'>
-                    <div className='scroll-item-btn on'
-                        onClick={() => {
-                            window.scroll(0,400);
-                        }}><a href='#page-1'>D1 Place</a></div>
+                    <div className='scroll-item-btn on'><a href='#page-1'>D1 Place</a></div>
                     <div className='scroll-item-btn'><a href='#page-2'>D2 Place</a></div>
                     <div className='scroll-item-btn'><a href='#page-3'>D3 Place</a></div>
                     <div className='scroll-item-btn'><a href='#page-4'>D4 Place</a></div>
@@ -235,7 +236,12 @@ const PlanDetail = () => {
                         <div className='day-box'>
                             {/* 리스트-상단바 */}
                             <div className='day-box-title'>
-                                <div className='day-num' id='page-1'>
+                                <div id='page-1'
+                                    style={{
+                                        position:'relative',
+                                        top:'-100px'
+                                    }}></div>
+                                <div className='day-num'>
                                     Day01
                                 </div>
                                 <div className='day-date'>
@@ -299,7 +305,12 @@ const PlanDetail = () => {
                         <div className='day-box'>
                             {/* 리스트-상단바 */}
                             <div className='day-box-title'>
-                                <div className='day-num' id='page-2'>
+                            <div id='page-2'
+                                    style={{
+                                        position:'relative',
+                                        top:'-100px'
+                                    }}></div>
+                                <div className='day-num'>
                                     Day02
                                 </div>
                                 <div className='day-date'>
@@ -410,7 +421,44 @@ const PlanDetail = () => {
                         </div>
                         <div className='spot-list-box'>
                         
-                            position for list
+                            <div className="row">
+                                <div className="col-sm-4 rlist">
+                                    <div className="spot-number">1</div>
+                                    <div className="spot-title">spot-title</div>
+                                </div>
+                                <div className="col-sm-4 rlist">
+                                    <div className="spot-number">2</div>
+                                    <div className="spot-title">spot-title</div>
+                                </div>
+                                <div className="col-sm-4 rlist">
+                                    <div className="spot-number">3</div>
+                                    <div className="spot-title">spot-title</div>
+                                </div>
+                                <div className="col-sm-4 rlist">
+                                    <div className="spot-number">4</div>
+                                    <div className="spot-title">spot-title</div>
+                                </div>
+                                <div className="col-sm-4 rlist">
+                                    <div className="spot-number">5</div>
+                                    <div className="spot-title">spot-title</div>
+                                </div>
+                                <div className="col-sm-4 rlist">
+                                    <div className="spot-number">6</div>
+                                    <div className="spot-title">spot-title</div>
+                                </div>
+                                <div className="col-sm-4 rlist">
+                                    <div className="spot-number">7</div>
+                                    <div className="spot-title">spot-title</div>
+                                </div>
+                                <div className="col-sm-4 rlist">
+                                    <div className="spot-number">8</div>
+                                    <div className="spot-title">spot-title</div>
+                                </div>
+                                <div className="col-sm-4 rlist">
+                                    <div className="spot-number">9</div>
+                                    <div className="spot-title">spot-title</div>
+                                </div>
+                            </div>
                             
                         </div>
                     </div>

@@ -10,6 +10,7 @@ spring:
     url: jdbc:mysql://boccu.cemjnnwtaor1.us-west-2.rds.amazonaws.com:3306/final_project?serverTimezone=Asia/Seoul
     username: boccu
     password: 12341234
+
 # mybatis
 mybatis:
   type-aliases-package: data.mapper,data.dto
