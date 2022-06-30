@@ -32,10 +32,14 @@
 #plan-detail .scroll-item-list {
     width: 100%;
     max-height: 360px;
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 /* 스크롤 아이템 버튼 이벤트 */
+#plan-detail .scroll-item-btn {
+    height: 30px;
+}
+
 #plan-detail .scroll-item-btn.on a {
     background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_line_on.gif) no-repeat;
     background-position: left center;
@@ -491,5 +495,40 @@
     width: 341px;
     height: 195px;
 
-    border: 1px solid lightpink;
+    border-top: 1px solid goldenrod;
+}
+#plan-detail .row {
+    width: 339px;
+    height: 170px;
+    padding: 20px 25px 0px;
+    margin: 0;
+}
+#plan-detail .row .rlist {
+    display: flex;
+    width: 33.33%;
+    height: 18px;
+    margin-bottom: 20px;
+
+    border: 0px solid black;
+}
+#plan-detail .spot-number {
+    float: left;
+    width: 18px;
+    height: 18px;
+    line-height: 20px;
+    color: white;
+    font-weight: bold;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 50%;
+    background: #223b68;
+}
+#plan-detail .spot-title {
+    float: left;
+    font-size: 12px;
+    color: #555555;
+    padding-left: 5px;
+    line-height: 18px;
+    width: 54px;
+    overflow: hidden;
 }
