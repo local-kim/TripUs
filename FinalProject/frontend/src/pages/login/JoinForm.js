@@ -118,6 +118,20 @@ const JoinForm = (props) => {
             }
         });
     }
+    //이메일 중복 체크 버튼 이벤트
+    const onEmailCheck=()=>{
+        const url=process.env.REACT_APP_SPRING_URL+"member/emailcheck?email="+data.email;
+        axios.get(url)
+        .then(res=>{
+            if(res.data===0){
+                setBtnOk(true);
+                alert("가입가능 이메일주소")
+            }else{
+                setBtnOk(false);
+                alert("이미있는 이미있는 이메일주소")
+            }
+        });
+    }
 
         // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
         const handlePostCode = (data) => {
@@ -166,7 +180,7 @@ const JoinForm = (props) => {
                         <tr>
                             <th>아이디<span class="ico">*</span></th>
                             <td>
-                            <input type="text" name="id" value={data.id} max_length="16" required label="아이디"
+                            <input type="text" name="id" value={data.id} maxLength="16" required label="아이디"
                             className="form-control"
                             
                             onChange={onDataChange}
@@ -205,14 +219,7 @@ const JoinForm = (props) => {
                             <input type="text" name="email" value={data.email} size="30" onChange={onDataChange}
                             label="이메일" placeholder="예: bitrip@bitrip.com" className="form-control" required/>
                             <button type='button' className='btn'
-                             onClick={()=>{
-                                setData({
-                                    ...data,
-                                    email:`${email}`,
-                                    emailCheck:true
-                                });
-                                alert("이메일 중복확인")
-                            }}>중복확인</button>
+                             onClick={onEmailCheck}>중복확인</button>
                             </td>
                         </tr>
                         <tr>
