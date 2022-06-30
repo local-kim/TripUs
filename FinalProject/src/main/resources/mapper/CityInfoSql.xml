@@ -2,4 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="data.mapper.CityInfoMapper">
 	
+	<select id="getDatas" parameterType="int" resultType="weather">
+		select * from weather where num=#{num}
+	</select>
 </mapper>
