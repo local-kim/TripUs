@@ -20,8 +20,8 @@ import MainLogo from '../assets/images/MainLogo.png';
 
 
 const pages = ['CityList', 'TravelRank', 'Blog'];
-const settings = ['Mypage', 'Dashboard','logout'];
-const link= ['Mypage', 'Dashboard','logout']
+const settings = ['mypage', 'Dashboard','logout'];
+const link= ['mypage', 'dashboard','logout']
 
 
 const ResponsiveAppBar = () => {

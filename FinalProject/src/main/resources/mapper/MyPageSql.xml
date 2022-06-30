@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="data.mapper.MyPageMapper">
+	
+
+	<delete id="userDelete" parameterType="int">
+		delete from member where num=#{num}
+	</delete>
+	
+		<select id="getUserId" parameterType="String" resultType="int">
+		select id from member where id=#{id}
+	</select>
+	
+	
+</mapper>

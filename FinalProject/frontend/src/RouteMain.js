@@ -7,7 +7,7 @@ import { CityInfoMain, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
 import JoinForm from "./pages/login/JoinForm";
 import { PlanDetail } from "./pages/detail";
-import {Mypage, Dashboard} from "./pages/mypage";
+import {Mypage, Dashboard, Profile} from "./pages/mypage";
 // import { Dashboard } from "./pages/mypage";
 
 const RouteMain = () => {
@@ -37,8 +37,9 @@ const RouteMain = () => {
           <Route path="/plan/detail" element={<PlanDetail />} />
 
           {/* mypage */}
-          <Route path="/Mypage" element={<Mypage/>}/>
-          <Route path="/Dashboard" element={<Dashboard/>}/>
+          <Route path="/mypage" element={<Mypage/>}/>
+          <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/mypage/profile" element={<Profile/>}/>
 
         </Routes>
       </div>
