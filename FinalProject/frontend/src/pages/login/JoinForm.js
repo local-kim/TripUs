@@ -17,7 +17,6 @@ const JoinForm = (props) => {
         name:'',
         password:'',
         email:'',
-        hp:'',
         address1:'',
         address2:'',
         tel:'',
@@ -35,7 +34,7 @@ const JoinForm = (props) => {
     const [btnOk,setBtnOk]=useState(false);
     const [email,setEmail]=useState(false);
     const [open, setOpen] = React.useState(false);
-    const [color,setColor]=useState('green');
+    const [color,setColor]=useState('red');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     
@@ -188,7 +187,7 @@ const JoinForm = (props) => {
                             <input type="password" className="form-control" name="password" required
                             onChange={onPassChange} autoComplete="off"
                             label="비밀번호확인" maxLength="16" placeholder="비밀번호를 한번 더 입력해주세요"/>
-                            <span style={{marginLeft:'5px',color:'red'}}>{passOk?'사용가능':'동일한 비밀번호를 입력해주세요'}</span>
+                            <span style={{marginLeft:'5px',color:passOk?'':'green'}}>{passOk?'사용가능':'동일한 비밀번호를 입력해주세요'}</span>
                            
   
                             </td>
@@ -203,7 +202,7 @@ const JoinForm = (props) => {
                         <tr>
                             <th>이메일<span class="ico">*</span></th>
                             <td>
-                            <input type="text" name="email" value={data.email} size="30" 
+                            <input type="text" name="email" value={data.email} size="30" onChange={onDataChange}
                             label="이메일" placeholder="예: bitrip@bitrip.com" className="form-control" required/>
                             <button type='button' className='btn'
                              onClick={()=>{
@@ -253,7 +252,7 @@ const JoinForm = (props) => {
                                 <Typography id="modal-modal-title" variant="h6" component="h2">
                                 
                                 <DaumPostcode onComplete={handlePostCode} />
-                                <button type='button' onClick={handleClose} className='postCode_btn'>닫기</button>
+                                <button type='button' onClick={handleClose} className='btn'>닫기</button>
                                 </Typography>
                                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                     Test
@@ -273,11 +272,11 @@ const JoinForm = (props) => {
                             <div className='birth_day'>
                             <td>
                                 <div value={data.birthday}>
-                                <input type="text" name="birth_year" id="birth_year" pattern="[0-9]*" label="생년월일" size="4" max_length="4" placeholder="YYYY"/>
+                                <input type="text" name="birth_year" id="birth_year" pattern="[0-9]*" label="생년월일" size="4" maxLength="4" placeholder="YYYY"/>
                                 <span class="bar"></span>
-                                <input type="text" name="birth[]" id="birth_month" pattern="[0-9]*" label="생년월일" size="2" max_length="2" placeholder="MM"/>
+                                <input type="text" name="birth[]" id="birth_month" pattern="[0-9]*" label="생년월일" size="2" maxLength="2" placeholder="MM"/>
                                 <span class="bar"></span>
-                                <input type="text" name="birth[]" id="birth_day" pattern="[0-9]*" label="생년월일" size="2" max_length="2" placeholder="DD"/>
+                                <input type="text" name="birth[]" id="birth_day" pattern="[0-9]*" label="생년월일" size="2" maxLength="2" placeholder="DD"/>
                                 </div>
                             </td>
                             </div>

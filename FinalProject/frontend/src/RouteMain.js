@@ -7,6 +7,7 @@ import { CityInfoMain, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
 import JoinForm from "./pages/login/JoinForm";
 import { PlanDetail } from "./pages/detail";
+import LoginForm from "./pages/login/LoginForm";
 
 const RouteMain = () => {
   return (
@@ -22,6 +23,8 @@ const RouteMain = () => {
 
           {/* Member */}
           <Route path="/join" element={<JoinForm/>} />
+          <Route path="/login" element={<LoginForm/>} />
+
 
           {/* Planning */}
           <Route path="/plan/calendar" element={<Calendar/>} />
