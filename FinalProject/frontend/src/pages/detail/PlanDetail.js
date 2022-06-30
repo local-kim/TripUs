@@ -34,7 +34,7 @@ const PlanDetail = () => {
     };
 
     //지도api & 관광지 api 
-    const contentId=127419; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기
+    const contentId=126674; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
     const [placeImg,setPlaceImg]= useState();
@@ -135,20 +135,30 @@ const PlanDetail = () => {
 
 
 
+    //  데이터 가져오기
+    const [ddata, setDdata] = useState('');
     
+    const SPRING_URL = process.env.REACT_APP_SPRING_URL;
     
+    let detailUrl = SPRING_URL + "plan/list"
+    
+    const planGetData = () => {
+        axios.get(detailUrl)
+        .then(res => {
+            console.log(res.data)
+            setDdata(res.data);
+        }).catch(err => {
+            alert(err.data);
+        })
+    }
+
+    useEffect(() => {
+        planGetData();
+    },[])
     
     
 
-    // const ScrollComponent = () => {
-    //     return (
-    //         <ScrollButton
-    //             behavior = "smooth"
-    //             buttonBackgroundColor = "red"
-    //             style = {{fontSize: '24px'}}
-    //         />
-    //     );
-    // };
+    
     
     //별점 이미지 = https://www.earthtory.com/res//img/common/web/hotel_star_?.?.png
 
@@ -162,6 +172,7 @@ const PlanDetail = () => {
             <div className='scroll-item'>
                 <div className='scroll-item-prev'></div>
                 <div className='scroll-item-list'>
+                    
                     <div className='scroll-item-btn on'><a href='#page-1'>D1 Place</a></div>
                     <div className='scroll-item-btn'><a href='#page-2'>D2 Place</a></div>
                     <div className='scroll-item-btn'><a href='#page-3'>D3 Place</a></div>
@@ -232,188 +243,91 @@ const PlanDetail = () => {
                 <div className='wrap-list'>
                     <div className='list-left'>
 
-                        {/* 날짜별 */}
-                        <div className='day-box'>
-                            {/* 리스트-상단바 */}
-                            <div className='day-box-title'>
-                                <div id='page-1'
-                                    style={{
-                                        position:'relative',
-                                        top:'-100px'
-                                    }}></div>
-                                <div className='day-num'>
-                                    Day01
-                                </div>
-                                <div className='day-date'>
-                                    <div className='day-date-left'>
-                                        <div className='date'>
-                                            Start date
-                                        </div>
-                                        <div className='day-title'>
-                                            {placeAddr}
-                                        </div>
-                                        <div className='clear' />
+                        {
+                            // day 만큼 반복문 돌리기
+                            [...ddata] && [...ddata].map((day, index) => (
+                                
+                                <div className='day-box'>
+                                {/* 상단바 첫스케쥴 기준 반복 */}
+                                    {day.order == 1 ? 
+                                    <div className='day-box-title'>
+                                        <div className='undistance' />
+                                    <div className='last-box' id={'page-'+day.day}
+                                        style={{
+                                            position:'relative',
+                                            top:'-100px'
+                                        }}></div>
+                                    <div className='day-num'>
+                                        Day{day.day}
                                     </div>
-                                    <div className='day-date-right'>
-                                        Used price?
-                                        <div className='clear' />
-                                    </div>
-                                </div>
-                                <div className='clear'></div>
-                            </div>
-                            {/* 리스트-하단바 */}
-                            <div className='day-box-list'>
-                                <div className='day-list-num'>
-                                    <div className='list-num'>1</div>
-                                </div>
-                                <div className='list-content'>
-                                    <img alt='spot' src={placeImg} className='spot-img'/>
-                                    <div className='spot-content-box'>
-                                        <div className='spot-name'>
-                                            {placeTitle}
+                                    <div className='day-date'>
+                                        <div className='day-date-left'>
+                                            <div className='date'>
+                                                Start date
+                                            </div>
+                                            <div className='day-title'>
+                                                {placeAddr}
+                                            </div>
+                                            <div className='clear' />
                                         </div>
-                                        <div className='spot-info'>
-                                            <img alt src='https://www.earthtory.com/res//img/common/web/hotel_star_1.5.png' className='star' />
-                                            <div className='sinfo-line' />
-                                            <div className='sinfo-txt'>commit text</div>
+                                        <div className='day-date-right'>
+                                            Used price?
                                             <div className='clear' />
                                         </div>
                                     </div>
-                                    <div className='spot-btn-box'>
-                                        <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/map_ico.png' className='spot-btn map_view' />
-                                        <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/info_ico.png' className='spot-btn spot-info-btn' />
-                                        <div className='clear' />
-                                    </div>
-                                    <div className='clear' />
+                                    <div className='clear'></div>
                                 </div>
-                                <div className='clear' />
-                                <div className='list-add-content'>
-                                    <div className='list-use-price'>
-                                        <div className='use-price'>
-                                            use-price
+                                     : ''}
+                                    {/* 리스트-하단바 */}
+                                    <div className='day-box-list'>
+                                        <div className='day-list-num'>
+                                            <div className='list-num'>{day.order}</div>
                                         </div>
-                                        <div className='use-memo'>
-                                            {placeCategory}
-                                        </div>
-                                    </div>
-                                    <div className='clear' />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* 날짜별 */}
-                        <div className='day-box'>
-                            {/* 리스트-상단바 */}
-                            <div className='day-box-title'>
-                            <div id='page-2'
-                                    style={{
-                                        position:'relative',
-                                        top:'-100px'
-                                    }}></div>
-                                <div className='day-num'>
-                                    Day02
-                                </div>
-                                <div className='day-date'>
-                                    <div className='day-date-left'>
-                                        <div className='date'>
-                                            Start date
-                                        </div>
-                                        <div className='day-title'>
-                                            Place
+                                        <div className='list-content'>
+                                            <img alt='spot' src={placeImg} className='spot-img'/>
+                                            <div className='spot-content-box'>
+                                                <div className='spot-name'>
+                                                    {placeTitle}
+                                                </div>
+                                                <div className='spot-info'>
+                                                    <img alt src='https://www.earthtory.com/res//img/common/web/hotel_star_1.5.png' className='star' />
+                                                    <div className='sinfo-line' />
+                                                    <div className='sinfo-txt'>commit text</div>
+                                                    <div className='clear' />
+                                                </div>
+                                            </div>
+                                            <div className='spot-btn-box'>
+                                                <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/map_ico.png' className='spot-btn map_view' />
+                                                <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/info_ico.png' className='spot-btn spot-info-btn' />
+                                                <div className='clear' />
+                                            </div>
+                                            <div className='clear' />
                                         </div>
                                         <div className='clear' />
-                                    </div>
-                                    <div className='day-date-right'>
-                                        Used price?
-                                        <div className='clear' />
-                                    </div>
-                                </div>
-                                <div className='clear'></div>
-                            </div>
-                            
-                            {/* 리스트-하단바 */}
-                            <div className='day-box-list'>
-                                <div className='day-list-num'>
-                                    <div className='list-num'>1</div>
-                                </div>
-                                <div className='list-content'>
-                                    <img alt='spot' src='' className='spot-img'/>
-                                    <div className='spot-content-box'>
-                                        <div className='spot-name'>
-                                            Spot-name
-                                        </div>
-                                        <div className='spot-info'>
-                                            <img alt src='https://www.earthtory.com/res//img/common/web/hotel_star_1.5.png' className='star' />
-                                            <div className='sinfo-line' />
-                                            <div className='sinfo-txt'>commit text</div>
+                                        <div className='list-add-content'>
+                                            <div className='list-use-price'>
+                                                <div className='use-price'>
+                                                    use-price
+                                                </div>
+                                                <div className='use-memo'>
+                                                    {placeCategory}
+                                                </div>
+                                            </div>
                                             <div className='clear' />
                                         </div>
                                     </div>
-                                    <div className='spot-btn-box'>
-                                        <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/map_ico.png' className='spot-btn map_view' />
-                                        <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/info_ico.png' className='spot-btn spot-info-btn' />
-                                        <div className='clear' />
-                                    </div>
-                                    <div className='clear' />
-                                </div>
-                                <div className='clear' />
-                                <div className='list-add-content'>
-                                    <div className='list-use-price'>
-                                        <div className='use-price'>
-                                            use-price
-                                        </div>
-                                        <div className='use-memo'>
-                                            write or not
-                                        </div>
-                                    </div>
-                                    <div className='clear' />
-                                </div>
-                            </div>
-                            {/* 같은날짜 spot 간격 */}
-                            <div className='day-box-distance'>
+                                    {/* 같은날짜 spot 간격 */}
+                                        <div className='day-box-distance'>
 
-                            </div>
-
-                            {/* 리스트-하단바 */}
-                            <div className='day-box-list'>
-                                <div className='day-list-num'>
-                                    <div className='list-num'>2</div>
-                                </div>
-                                <div className='list-content'>
-                                    <img alt='spot' src='' className='spot-img'/>
-                                    <div className='spot-content-box'>
-                                        <div className='spot-name'>
-                                            Spot-name
                                         </div>
-                                        <div className='spot-info'>
-                                            <img alt src='https://www.earthtory.com/res//img/common/web/hotel_star_1.5.png' className='star' />
-                                            <div className='sinfo-line' />
-                                            <div className='sinfo-txt'>commit text</div>
-                                            <div className='clear' />
-                                        </div>
-                                    </div>
-                                    <div className='spot-btn-box'>
-                                        <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/map_ico.png' className='spot-btn map_view' />
-                                        <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/info_ico.png' className='spot-btn spot-info-btn' />
-                                        <div className='clear' />
-                                    </div>
-                                    <div className='clear' />
-                                </div>
-                                <div className='clear' />
-                                <div className='list-add-content'>
-                                    <div className='list-use-price'>
-                                        <div className='use-price'>
-                                            use-price
-                                        </div>
-                                        <div className='use-memo'>
-                                            {placeCategory}
-                                        </div>
-                                    </div>
-                                    <div className='clear' />
-                                </div>
-                            </div>
-                            
-                        </div>
+                                    {day.order == null
+                                    
+                                    }
+                                   </div>
+                                
+                            ))
+                        }
+                        
                     </div>
                     <div className='list-right'>
                         <div className='list-right-map' id='place_map'>
@@ -422,42 +336,15 @@ const PlanDetail = () => {
                         <div className='spot-list-box'>
                         
                             <div className="row">
+                            {
+                            // day 만큼 반복문 돌리기
+                            [...ddata] && [...ddata].map((day, index) => (
                                 <div className="col-sm-4 rlist">
-                                    <div className="spot-number">1</div>
-                                    <div className="spot-title">spot-title</div>
+                                    <div className="spot-number">{index+1}</div>
+                                    <div className="spot-title">{day.name}</div><span>···</span>
                                 </div>
-                                <div className="col-sm-4 rlist">
-                                    <div className="spot-number">2</div>
-                                    <div className="spot-title">spot-title</div>
-                                </div>
-                                <div className="col-sm-4 rlist">
-                                    <div className="spot-number">3</div>
-                                    <div className="spot-title">spot-title</div>
-                                </div>
-                                <div className="col-sm-4 rlist">
-                                    <div className="spot-number">4</div>
-                                    <div className="spot-title">spot-title</div>
-                                </div>
-                                <div className="col-sm-4 rlist">
-                                    <div className="spot-number">5</div>
-                                    <div className="spot-title">spot-title</div>
-                                </div>
-                                <div className="col-sm-4 rlist">
-                                    <div className="spot-number">6</div>
-                                    <div className="spot-title">spot-title</div>
-                                </div>
-                                <div className="col-sm-4 rlist">
-                                    <div className="spot-number">7</div>
-                                    <div className="spot-title">spot-title</div>
-                                </div>
-                                <div className="col-sm-4 rlist">
-                                    <div className="spot-number">8</div>
-                                    <div className="spot-title">spot-title</div>
-                                </div>
-                                <div className="col-sm-4 rlist">
-                                    <div className="spot-number">9</div>
-                                    <div className="spot-title">spot-title</div>
-                                </div>
+                            ))
+                            }
                             </div>
                             
                         </div>
