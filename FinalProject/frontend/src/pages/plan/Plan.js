@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../../styles/plan.css';
-import PlaceItem from './PlaceItem';
+import axios from 'axios';
+import { PlaceItem } from '.';
 
 const Plan = () => {
   // redux에서 변수 얻기
@@ -14,16 +15,29 @@ const Plan = () => {
   const sigunguCode = useSelector(state => state.planner.sigunguCode);
   const plan = useSelector(state => state.planner.plan);
 
-  // console.log(plan);
-
   const navigate = useNavigate();
 
-  // TODO: day 별로 일정 저장할 배열 필요..(전역 변수)
+  let insertUrl = process.env.REACT_APP_SPRING_URL + `plan/insert`;
+
+  const insertPlan = () => {
+    // axios: post로 DB에 insert
+    axios.post(insertUrl)
+    .then(res => {
+      console.log("insert success");
+    })
+    .catch(err => {
+      alert(err);
+    });
+
+    // insert 후 일정 상세 페이지로 이동
+    navigate("/plan/detail");
+  }
 
   return (
     <div id='plan'>
       <h3>나의 부산 여행</h3>
       <h5>{startDate} ~ {endDate} ({days}일)</h5>
+      <button type='button' className='btn btn-primary btn-sm' onClick={insertPlan}>일정 만들기</button>
       {
         // days 만큼 반복문 돌리기
         [...Array(days)].map((day, index) => (

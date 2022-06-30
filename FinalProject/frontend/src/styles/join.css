@@ -1,8 +1,8 @@
-* {
+/* * {
     font-family: 'noto sans';
     font-weight: 400;
     letter-spacing: 0;
-}
+} */
 .member_join{
     margin: 0 auto;
     width: 1080px;
@@ -104,7 +104,7 @@ tbody {
     vertical-align: middle;
     border-color: inherit;
 }
-.btn {
+/* .btn {
     border: 1px solid #5f0080;
     background-color: #fff;
     color: #5f0080;
@@ -113,7 +113,7 @@ tbody {
     margin-left: 5px;
     vertical-align: top;
   
-}
+} */
 #addressSearch {
     display: block;
     overflow: hidden;
