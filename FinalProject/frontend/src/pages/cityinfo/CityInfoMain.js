@@ -34,7 +34,23 @@ const CityInfoMain = () => {
 
 
     const naVi=useNavigate();
-    const [data0,setData0]=useState(['1','2','3'])
+    const [data0,setData0]=useState([
+        {
+            name: "명소",
+            content: "내용1",
+            clip: 111
+
+        },
+        {
+            name: "음식점",
+            content: "내용2",
+            clip: 222
+        },
+        {
+            name: "쇼핑",
+            content: "내용3",
+            clip: 333
+        }])
     const [data,setData]=useState(['1','2','3','4','5','6']);
     const [data2,setData2]=useState([
         {
@@ -176,106 +192,43 @@ const CityInfoMain = () => {
                                     <Tab label="식 당" value="3" />
                                 </TabList>
                             </Box>
-                            <TabPanel value="1">
-                                <div style={{display:'flex'}} className='row'>
-                                    {
-                                        data && data.map((item, idx) => (
-                                            <div className='col-sm-4'>
-                                                <Card value={item} sx={{ width: 220, height: 220, marginRight: 2 }}>
-                                                    <CardActionArea>
-                                                        <CardMedia
-                                                        component="img"
-                                                        height="150"
-                                                        image={cityinfoImg}
-                                                        alt=""
-                                                        />
-                                                        <CardContent>
-                                                        <Typography gutterBottom variant="h7" component="div">
-                                                            명소
-                                                        </Typography>
-                                                        <Typography variant="h7" color="red">
-                                                            Lizards 
-                                                        </Typography>
-                                                        </CardContent>
-                                                    </CardActionArea>
-                                                    <CardActions>
-                                                        <Button className='clipBtn' size="small" color="primary">
-                                                            Clip
-                                                        </Button>
-                                                    </CardActions>
-                                                </Card>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            </TabPanel>
-                            <TabPanel value="2">
-                                <div style={{display:'flex'}} className='row'>
-                                    {
-                                        data && data.map((item) => (
-                                            <div className='col-sm-4'>
-                                                <Card sx={{ width: 220, height: 220, marginRight: 2 }}>
-                                                    <CardActionArea>
-                                                        <CardMedia
-                                                        component="img"
-                                                        height="150"
-                                                        image={cityinfoImg}
-                                                        alt=""
-                                                        />
-                                                        <CardContent>
-                                                        <Typography gutterBottom variant="h7" component="div">
-                                                            음식점
-                                                        </Typography>
-                                                        <Typography variant="h7" color="red">
-                                                            Lizards 
-                                                        </Typography>
-                                                        </CardContent>
-                                                    </CardActionArea>
-                                                    <CardActions>
-                                                        <Button size="small" color="primary">
-                                                            Clip
-                                                        </Button>
-                                                    </CardActions>
-                                                </Card>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            </TabPanel>
-                            
-                            <TabPanel value="3">
-                                <div style={{display:'flex'}} className='row'>
-                                    {
-                                        data && data.map((item) => (
-                                            <div className='col-sm-4'>
-                                                <Card sx={{ width: 220, height: 220, marginRight: 2 }}>
-                                                    <CardActionArea>
-                                                        <CardMedia
-                                                        component="img"
-                                                        height="150"
-                                                        image={cityinfoImg}
-                                                        alt=""
-                                                        />
-                                                        <CardContent>
-                                                        <Typography gutterBottom variant="h7" component="div">
-                                                            식당
-                                                        </Typography>
-                                                        <Typography variant="h7" color="red">
-                                                            Lizards 
-                                                        </Typography>
-                                                        </CardContent>
-                                                    </CardActionArea>
-                                                    <CardActions>
-                                                        <Button size="small" color="primary">
-                                                            Clip
-                                                        </Button>
-                                                    </CardActions>
-                                                </Card>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                            </TabPanel>
+                            {
+                                data0 && data0.map((item, idx) => (
+                                    <TabPanel value={item}>
+                                        <div style={{display:'flex'}} className='row'>
+                                            {
+                                                data && data.map((item, idx) => (
+                                                    <div className='col-sm-4'>
+                                                        <Card value={item} sx={{ width: 220, height: 220, marginRight: 2 }}>
+                                                            <CardActionArea>
+                                                                <CardMedia
+                                                                component="img"
+                                                                height="150"
+                                                                image={cityinfoImg}
+                                                                alt=""
+                                                                />
+                                                                <CardContent>
+                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                    {item.name}
+                                                                </Typography>
+                                                                <Typography variant="h7" color="red">
+                                                                    {item.content} 
+                                                                </Typography>
+                                                                </CardContent>
+                                                            </CardActionArea>
+                                                            <CardActions>
+                                                                <Button className='clipBtn' size="small" color="primary">
+                                                                    {item.Clip}
+                                                                </Button>
+                                                            </CardActions>
+                                                        </Card>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    </TabPanel>
+                                ))
+                            }
                         </TabContext>
                     </Box>
                 </div>

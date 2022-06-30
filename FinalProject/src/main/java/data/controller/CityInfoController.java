@@ -17,8 +17,7 @@ import data.service.CityInfoService;
 public class CityInfoController {
 
 	
-	@Autowired
-	private CityInfoMapper cimapper;
+	
 	
 	@Autowired
 	private CityInfoService ciservice;

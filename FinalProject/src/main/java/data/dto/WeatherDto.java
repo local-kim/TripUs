@@ -4,7 +4,7 @@ import org.apache.ibatis.type.Alias;
 
 import lombok.Data;
 
-@Alias("/weather")
+@Alias("weather")
 @Data
 public class WeatherDto {
 	private int num;
