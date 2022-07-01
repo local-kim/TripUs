@@ -1,15 +1,16 @@
 import axios from 'axios';
 import React, { useEffect,useState } from 'react';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate,useLocation} from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import '../../styles/placeinfo.css';
-
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
+import Ayong from '../../assets/images/IMG_1503.JPG';
+
 
 
 //kakao map
@@ -17,13 +18,34 @@ const { kakao } = window;
 
 const PlaceInfo=()=>{
 
-    //stars rating
+       //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
+       const location = useLocation();
+       console.log("location",location.state.state.pcontentId);
 
     //mui
     const [value, setValue] = React.useState('1');
-    const [starsvalue, setStarsValue] = React.useState(0);
+    const [starsvalue, setStarsValue] = React.useState('0');
+   
+    const [isChecked, setIsChecked] = useState(false);
+    const [liked,setLiked]=useState(0);
 
+     const handleChecked = (event) => {
 
+        setIsChecked(event.target.checked);
+
+        if(!isChecked){
+       alert("좋아요+1");
+       setLiked(liked+1);
+       console.log("liked value:",liked);
+    }else{
+        alert("좋아요-1");
+        setLiked(liked-1);
+        console.log("-liked value:",liked);
+    }
+     };
+   
+
+    //tab화면전환시 지도 출력        
     const handleChange = (event, newValue) => {
     setValue(newValue);
     if(newValue==='1'){
@@ -32,60 +54,70 @@ const PlaceInfo=()=>{
     };
 
     //지도api & 관광지 api 
-    const contentId=127419; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기
+    const contentId=location.state.state.pcontentId; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078]
+    //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; 내인증키
+    const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
     const [placeImg,setPlaceImg]= useState();
-    const [review,setReview]= useState();
 
     const [cat1name,setCat1name] =useState();
     const [cat2name,setCat2name] = useState();
     const [cat3name,setCat3name] =useState();
     const [cattypename,setCattypename]=useState();
 
-    console.log("let cat1:",cat1name,"let cat2:",cat2name,"let cat3:",cat3name);
+    //console.log("let cat1:",cat1name,"let cat2:",cat2name,"let cat3:",cat3name); 대/중/소 분류
 
     // 사진이 있는 장소만 받는 url(arrange=P)
-     let apiUrl=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&contentId=${contentId}&defaultYN=Y&mapinfoYN=Y&addrinfoYN=Y&firstImageYN=Y&catcodeYN=Y&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-     let apiUrl2=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/categoryCode?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&cat1=${cat1name}&cat2=${cat2name}&cat3=${cat3name}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     let apiUrl=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey=${placeApikey}&contentId=${contentId}&defaultYN=Y&mapinfoYN=Y&addrinfoYN=Y&firstImageYN=Y&catcodeYN=Y&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     let apiUrl2=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/categoryCode?ServiceKey=${placeApikey}&cat1=${cat1name}&cat2=${cat2name}&cat3=${cat3name}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
-    //후기 작성
-    const [photo,setPhoto]=useState('');
-    const [subject,setSubject]=useState('');
-    const [content,setContent]=useState('');
 
-    //url선언
+
+    //review
+     const [review,setReview]=useState();
+     const [avgStars,setAvgStars]=useState(0);
+     const reviewdata0="후기글을 작성해주세요";
+    // const [sta,setContent]=useState('');
+    const [reviewData,setReviewData]=useState([]); //data 받아오기
+    
+
+
+    //Spring url선언
+    let pagelistUrl=process.env.REACT_APP_SPRING_URL+"review/allreview?place_id="+contentId;
+    let placeStarsAvgUrl=process.env.REACT_APP_SPRING_URL+"review/avgstars?place_id="+contentId;
     // let uploadUrl=process.env.REACT_APP_SPRING_URL+"board/upload";
     // let insertUrl=process.env.REACT_APP_SPRING_URL+"board/insert";
     // let photoUrl=process.env.REACT_APP_SPRING_URL+"save/";
 
-    //이미지 업로드 이벤트
-    // const imageUpload=(e)=>{
-    //     const uploadFile=e.target.files[0]; //
-    //     const imageFile=new FormData();
-    //     imageFile.append("uploadFile",uploadFile);
+    //ReviewList 호출
+    const pageList=()=>{
+        axios.get(pagelistUrl).then(res=>{
+            setReviewData(res.data);
+        })
+        .catch(err => {
+            alert(err);
+        })
+    }
 
-    //     axios({
-    //         method:'post',
-    //         url:uploadUrl,
-    //         data:imageFile,
-    //         headers:{'Content-Type':'multipart/form-data'}
-    //     }).then(res=>{
-    //         console.log(res.data);
-    //         setPhoto(res.data);
-    //     })
-    //      }
+    //ReviewAvgStars 호출
+    const AvgStars=()=>{
+      axios.get(placeStarsAvgUrl).then(res=>{
+        setAvgStars(res.data);
+      }).catch(err => {
+        alert("별0",err);
+    })
+    }
 
-    //submit 이벤트
-    // const onBoardInsert=(e)=>{
-    //     e.preventDefault();
-
-    //     axios.post(insertUrl,{id,photo,subject,content}).then(res=>{navi("/board/list/1");})
-    // }
-
-useEffect(() => {
+    useEffect(() => {
        kakaomapscript();
+       
     });
+
+    useEffect(()=>{
+      pageList();
+     AvgStars();
+    },[]);
 
     //kakomap + tourapi3
     const kakaomapscript = () => {
@@ -94,8 +126,6 @@ useEffect(() => {
 
         axios.get(apiUrl)
         .then((res) => {
-        console.dir(res.data.response.body.items.item);
-
         const apidata=res.data.response.body.items.item;
         const placex=apidata.mapx;  //관광지 위치(x좌표)
         const placey=apidata.mapy;  //관광지 위치(y좌표)
@@ -150,7 +180,7 @@ useEffect(() => {
 
     axios.get(apiUrl2).then((res) => {
 
-        console.log("apiUrl2",res.data.response.body.items.item);
+        //console.log("apiUrl2",res.data.response.body.items.item); 대/중/소분류 axios
         const api2data=res.data.response.body.items.item;
         const servicetypecodename=api2data.name;
         setCattypename(servicetypecodename);
@@ -178,56 +208,63 @@ useEffect(() => {
                 <div id='place_map'>
                 </div>
             </TabPanel>
-            <TabPanel value="2">Item Two</TabPanel>
+            <TabPanel value="2">
+                 <div style={{width:'700px',height:'500px',display:'flex'}}>
+                  <div>
+                    {
+                      reviewData&&reviewData.map((row,idx)=>(
+                        <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}}>
+                        <div style={{flexDirection:'column',justifyContent:'center'}}>
+                          <div>
+                         <img src={Ayong} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                          </div>
+                          <div style={{marginTop:'5px'}}>
+                          {row.name}
+                          </div>
+                          </div>  
+                          <div style={{display:'flex',flexDirection:'column',marginLeft:'15px'}}>
+                          <div style={{backgroundColor:'white',height:'50px',width:'600px',padding:'5px 0px 0px 5px'}}>
+                       {row.content}
+                       </div>
+                       <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
+                        <div style={{flexGrow:'3'}}>
+                        {row.created_at}&nbsp;&nbsp;&nbsp;
+                       <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
+                       </div>
+                       <div style={{flexGrow:'0',marginRight:'10px'}}>
+                       <span>수정</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span>삭제</span>
+                       </div>
+                       </div></div>
+                      </div>
+                      ))
+
+                    }
+                  </div>
+                </div> 
+            </TabPanel>
                 {/* <TabPanel value="3">Item Three</TabPanel> */}
             </TabContext>
             </Box>
         
             <div className='place_all_data'>
             <div className='place_sub_data'>
-                <img src={placeImg} alt={placeTitle} className='place_img'/>
+                {/* <img src={placeImg} alt={placeTitle} className='place_img'/> */}
         
                 <div className='place_img_name_type'>
-                    <h3>PlaceName : {placeTitle}</h3>
-                    <i className="fa-solid fa-map-location-dot"></i>&nbsp;&nbsp;{placeAddr}<br/>
-                    {cattypename}
-                </div>
-            </div>
-            <br/>
 
-            <div className='stars_like'>
+                    <div style={{display:'inline-flex',marginBottom:'13px'}}>
+                    <span style={{fontSize:'30px',fontWeight:'bold'}}>{placeTitle}</span>
+                    
+                    <div id="main-content">
+                    <input type="checkbox" id="checkbox"  checked={isChecked} onChange={handleChecked} value={liked}/>
+                    <label for="checkbox" id="heartlabel">
+  <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
 
-            <Box
-            sx={{
-    '& > legend': { mt: 2 },
-  }}
->
-   <Typography component="legend">Stars</Typography>
-  <Rating
-    name="simple-controlled"
-    value={starsvalue}
-    onChange={(event, newValue) => {
-      setStarsValue(newValue);
-      alert(newValue);
-    }}
-  
-  />
-
-</Box>
-
-<Box>
-<Typography>Like</Typography>
-  <Typography>
-  <div id="main-content">
-  {/* <div> */}
-<input type="checkbox" id="checkbox" />
-<label for="checkbox">
-  <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg" style={{marginBottom:'-25px'}}>
-  {/* {onMouseUp={()=>{alert(1)}}} */}
     <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
       <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
       <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
 
+        {/* 하트 클릭시 나오는 폭죽 */}
       <g id="grp7" opacity="0" transform="translate(7 6)">
         <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
         <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
@@ -265,20 +302,72 @@ useEffect(() => {
     </g>
   </svg>
 </label>
-{/* </div> */}
 </div>
-  </Typography>
-  </Box>
-
-
 </div>
+
+                    <p style={{fontSize:'14px',margin:'0 auto'}}>{cattypename}</p>
+                    <i className="fa-solid fa-map-location-dot" style={{color:'#1976d2'}}></i>&nbsp;&nbsp;{placeAddr}<br/>
+                    {/*별점 좋아요수 */}
+                    <i className="fa-solid fa-star" style={{color:'#faaf00'}}></i>&nbsp;&nbsp;{avgStars}<br/>
+                    <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{liked}
+                </div>
+            </div>
+            <br/>
+
+            <div className='stars'>
+            <Box
+            sx={{
+    '& > legend': { mt: 2 },
+  }}
+>
+   <Typography component="legend">Stars</Typography> 
+   <Rating
+    name="half-rating"
+    value={starsvalue} precision={0.5}
+    onChange={(event, newValue) => {
+      setStarsValue(newValue);
+      alert(newValue); 
+    }}/> 
+ </Box> 
+             </div> 
             <div className='place_review_write'>
             
                 <textarea placeholder='50글자내로 작성해주세요🥕' className='review'onChange={(e)=>{setReview(e.target.value)}}/>
                 <button type='submit' className='btn_review_write'>글쓰기</button>
             </div>
-            <br/>
-                {review}
+
+                   {/* 상세보기 */}
+          <div style={{width:'500px',height:'800px',backgroundColor:'white'}}>
+              <div style={{display:'inline-flex'}}>
+
+                <div>
+              <img src={Ayong} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+              </div>
+
+                <div style={{marginLeft:'10px'}}>
+                  <div>
+                <label>단춘식</label>
+                  </div>
+                  <div>
+                <label>2022-06-30</label>
+                <label>🌟🌟🌟</label>
+                </div>
+                </div>
+
+              </div>
+
+              <div>
+              <img src={Ayong} alt="프로필사진"/>
+              </div>
+              <div>
+                  <input tye='text' value= {review} style={{width:'400px',height:'180px'}}/>
+              </div>
+              <div style={{justifyContent:'center',display:'inline-flex'}}>
+                <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>수정</button>
+                <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>삭제</button>
+              </div>
+          </div>
+        
         </div>
         </div>
     );

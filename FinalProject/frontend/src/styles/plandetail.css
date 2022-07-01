@@ -39,6 +39,9 @@
 }
 
 /* 스크롤 아이템 버튼 이벤트 */
+#plan-detail .scroll-item-btn.first {
+    display: none;
+}
 #plan-detail .scroll-item-btn {
     height: 30px;
 }
@@ -285,9 +288,10 @@
         /* Left */
 
 #plan-detail .list-left {
-    height: 2000px;
+    height: 100%;
     width: 750px;
     padding-right: 25px;
+    margin-bottom: 400px;
 
     border: 0px solid hotpink;
 }

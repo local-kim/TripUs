@@ -36,7 +36,7 @@ const RouteMain = () => {
           <Route path="/plan/:day" element={<DayPlan/>} />
           
           {/* PlaceInfo */}
-          <Route path="/place/citydetail" element={<PlaceInfo/>}/>
+          <Route path="/place/placedetail" element={<PlaceInfo/>}/>
 
           {/* Detail-Plan */}
           <Route path="/plan/detail" element={<PlanDetail />} />

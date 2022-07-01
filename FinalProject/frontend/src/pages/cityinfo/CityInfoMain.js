@@ -12,10 +12,15 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import axios from "axios";
 import '../../styles/cityinfo.css';
 import cityinfoImg from '../../assets/images/IMG_1503.JPG';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 
 const CityInfoMain = () => {
-    
+
+    //////////////////////////////관광명소 api contentId 받아오기
+     const pcontentId=126078; //2360786
+    // const pnavi =useNavigate();
+    // const [pid,setPid]=useState();
+    // setPid(contentId);
 
     //////////////////////////////// MUi 메뉴 탭
     const [value, setValue] = useState("1");
@@ -187,6 +192,9 @@ const CityInfoMain = () => {
 
     return (
         <div id='cityinfo' style={muiStyle} >
+       <Link to={'/place/placedetail'} state={{state:{pcontentId}}}>춘식이를 눌러주세요</Link>
+
+
             <div style={{display:'flex', marginBottom:'20px'}}>
                 <div className='title'>
                     <b>{}</b>

@@ -16,17 +16,17 @@ div.place_all_data{
     margin-top:80px;
 }
 
-img.place_img{
+/* img.place_img{
     width:100px;
     height:100px;
-}
+} */
 
 div.place_all_data div.place_sub_data{
     display:inline-flex;
 }
 
 div.place_img_name_type{
-    margin-left:15px;
+    /* margin-left:15px; */
     text-align:left;
 }
 
@@ -47,13 +47,17 @@ div.place_review_write button.btn_review_write{
     border:none;
     border-radius: 5px;
 }
-div.stars_like{
-    display:flex;
+label.css-dqr9h-MuiRating-label{
+  
+    display: unset;
 }
+
+
+
 /*좋아요 test*/
 #main-content {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     /* display:flex;
     align-items:baseline;
      justify-content:row;
@@ -88,135 +92,135 @@ div.stars_like{
     display: none;
   }
   
-  #checkbox:checked + label svg #heart {
+  #checkbox:checked + label#heartlabel svg #heart {
     transform: scale(0.2);
     fill: #E2264D;
     animation: animateHeart 0.3s linear forwards 0.25s;
   }
-  #checkbox:checked + label svg #main-circ {
+  #checkbox:checked + label#heartlabel svg #main-circ {
     transition: all 2s;
     animation: animateCircle 0.3s linear forwards;
     opacity: 1;
   }
-  #checkbox:checked + label svg #grp1 {
+  #checkbox:checked + label#heartlabel svg #grp1 {
     opacity: 1;
     transition: 0.1s all 0.3s;
   }
-  #checkbox:checked + label svg #grp1 #oval1 {
+  #checkbox:checked + label#heartlabel svg #grp1 #oval1 {
     transform: scale(0) translate(0, -30px);
     transform-origin: 0 0 0;
     transition: 0.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp1 #oval2 {
+  #checkbox:checked + label#heartlabel svg #grp1 #oval2 {
     transform: scale(0) translate(10px, -50px);
     transform-origin: 0 0 0;
     transition: 1.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp2 {
+  #checkbox:checked + label#heartlabel svg #grp2 {
     opacity: 1;
     transition: 0.1s all 0.3s;
   }
-  #checkbox:checked + label svg #grp2 #oval1 {
+  #checkbox:checked + label#heartlabel svg #grp2 #oval1 {
     transform: scale(0) translate(30px, -15px);
     transform-origin: 0 0 0;
     transition: 0.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp2 #oval2 {
+  #checkbox:checked + label#heartlabel svg #grp2 #oval2 {
     transform: scale(0) translate(60px, -15px);
     transform-origin: 0 0 0;
     transition: 1.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp3 {
+  #checkbox:checked + label#heartlabel svg #grp3 {
     opacity: 1;
     transition: 0.1s all 0.3s;
   }
-  #checkbox:checked + label svg #grp3 #oval1 {
+  #checkbox:checked + label#heartlabel svg #grp3 #oval1 {
     transform: scale(0) translate(30px, 0px);
     transform-origin: 0 0 0;
     transition: 0.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp3 #oval2 {
+  #checkbox:checked + label#heartlabel svg #grp3 #oval2 {
     transform: scale(0) translate(60px, 10px);
     transform-origin: 0 0 0;
     transition: 1.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp4 {
+  #checkbox:checked + label#heartlabel svg #grp4 {
     opacity: 1;
     transition: 0.1s all 0.3s;
   }
-  #checkbox:checked + label svg #grp4 #oval1 {
+  #checkbox:checked + label#heartlabel svg #grp4 #oval1 {
     transform: scale(0) translate(30px, 15px);
     transform-origin: 0 0 0;
     transition: 0.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp4 #oval2 {
+  #checkbox:checked + label#heartlabel svg #grp4 #oval2 {
     transform: scale(0) translate(40px, 50px);
     transform-origin: 0 0 0;
     transition: 1.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp5 {
+  #checkbox:checked + label#heartlabel svg #grp5 {
     opacity: 1;
     transition: 0.1s all 0.3s;
   }
-  #checkbox:checked + label svg #grp5 #oval1 {
+  #checkbox:checked + label#heartlabel svg #grp5 #oval1 {
     transform: scale(0) translate(-10px, 20px);
     transform-origin: 0 0 0;
     transition: 0.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp5 #oval2 {
+  #checkbox:checked + label#heartlabel svg #grp5 #oval2 {
     transform: scale(0) translate(-60px, 30px);
     transform-origin: 0 0 0;
     transition: 1.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp6 {
+  #checkbox:checked + label#heartlabel svg #grp6 {
     opacity: 1;
     transition: 0.1s all 0.3s;
   }
-  #checkbox:checked + label svg #grp6 #oval1 {
+  #checkbox:checked + label#heartlabel svg #grp6 #oval1 {
     transform: scale(0) translate(-30px, 0px);
     transform-origin: 0 0 0;
     transition: 0.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp6 #oval2 {
+  #checkbox:checked + label#heartlabel svg #grp6 #oval2 {
     transform: scale(0) translate(-60px, -5px);
     transform-origin: 0 0 0;
     transition: 1.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp7 {
+  #checkbox:checked + label#heartlabel svg #grp7 {
     opacity: 1;
     transition: 0.1s all 0.3s;
   }
-  #checkbox:checked + label svg #grp7 #oval1 {
+  #checkbox:checked + label#heartlabel svg #grp7 #oval1 {
     transform: scale(0) translate(-30px, -15px);
     transform-origin: 0 0 0;
     transition: 0.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp7 #oval2 {
+  #checkbox:checked + label#heartlabel svg #grp7 #oval2 {
     transform: scale(0) translate(-55px, -30px);
     transform-origin: 0 0 0;
     transition: 1.5s transform 0.3s;
   }
-  #checkbox:checked + label svg #grp2 {
+  #checkbox:checked + label#heartlabel svg #grp2 {
     opacity: 1;
     transition: 0.1s opacity 0.3s;
   }
-  #checkbox:checked + label svg #grp3 {
+  #checkbox:checked + label#heartlabel svg #grp3 {
     opacity: 1;
     transition: 0.1s opacity 0.3s;
   }
-  #checkbox:checked + label svg #grp4 {
+  #checkbox:checked + label#heartlabel svg #grp4 {
     opacity: 1;
     transition: 0.1s opacity 0.3s;
   }
-  #checkbox:checked + label svg #grp5 {
+  #checkbox:checked + label#heartlabel svg #grp5 {
     opacity: 1;
     transition: 0.1s opacity 0.3s;
   }
-  #checkbox:checked + label svg #grp6 {
+  #checkbox:checked + label#heartlabel svg #grp6 {
     opacity: 1;
     transition: 0.1s opacity 0.3s;
   }
-  #checkbox:checked + label svg #grp7 {
+  #checkbox:checked + label#heartlabel svg #grp7 {
     opacity: 1;
     transition: 0.1s opacity 0.3s;
   }
@@ -285,7 +289,4 @@ div.stars_like{
       transform: scale(1);
     }
   }
-
-  .css-ahj2mt-MuiTypography-root{
-    margin-bottom: -50px;
-  }
+  
