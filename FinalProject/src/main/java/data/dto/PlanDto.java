@@ -15,6 +15,6 @@ public class PlanDto {
 	private int id;
 	private int city_num;
 	private String type;
-	private String name;
-	private String category;
+	private String title;
+	private String cat3;
 }

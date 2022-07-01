@@ -10,13 +10,22 @@ import Modal from '@mui/material/Modal';
 
 
 
-const JoinForm = (props) => {
+
+const Profile = (props) => {
+
+    //url
+    let deleteUrl = process.env.REACT_APP_SPRING_URL + "mypage/delete";
+
+    
+
+    const [dto,setDto] =useState('');
     const navi=useNavigate();
     const [data,setData]=useState({
         id:'',
         name:'',
         password:'',
         email:'',
+        hp:'',
         address1:'',
         address2:'',
         tel:'',
@@ -34,7 +43,7 @@ const JoinForm = (props) => {
     const [btnOk,setBtnOk]=useState(false);
     const [email,setEmail]=useState(false);
     const [open, setOpen] = React.useState(false);
-    const [color,setColor]=useState('red');
+    const [color,setColor]=useState('green');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     
@@ -51,22 +60,38 @@ const JoinForm = (props) => {
       };
 
   
- 
 
+        const deleteUser=()=>{
+            axios.get(deleteUrl)
+            .then(res=>{
+                setDto(res.data);
+
+                alert('삭제ok');
+            })
+            .catch(err => {
+                alert(err);
+            })
+        }
+   
+    
+
+    
+
+    
 
     //submit 호출될 함수
     const onSave=(e)=>{
         e.preventDefault(); //기본이벤트(submit이 action으로 넘어가는것)를 무효화
 
     
-        if(!btnOk){
-            alert("아이디 중복체크를 해주세요");
-            return;
-        }
-        if(!passOk){
-            alert("비밀번호 확인");
-            return;
-        }
+        // if(!btnOk){
+        //     alert("아이디 중복체크를 해주세요");
+        //     return;
+        // }
+        // if(!passOk){
+        //     alert("비밀번호 확인");
+        //     return;
+        // }
 
         const url = process.env.REACT_APP_SPRING_URL + "member/insert";
             axios.post(url, ({
@@ -118,20 +143,6 @@ const JoinForm = (props) => {
             }
         });
     }
-    //이메일 중복 체크 버튼 이벤트
-    const onEmailCheck=()=>{
-        const url=process.env.REACT_APP_SPRING_URL+"member/emailcheck?email="+data.email;
-        axios.get(url)
-        .then(res=>{
-            if(res.data===0){
-                setBtnOk(true);
-                alert("가입가능 이메일주소")
-            }else{
-                setBtnOk(false);
-                alert("이미있는 이미있는 이메일주소")
-            }
-        });
-    }
 
         // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
         const handlePostCode = (data) => {
@@ -173,65 +184,57 @@ const JoinForm = (props) => {
         <div className='member_join'>
             <div className='member_join'>
             <form className="form-inline" onSubmit={onSave}>
-                <caption><h3 className='tit'>회원가입</h3></caption> 
+                <caption><h3 className='tit'>개인 정보 수정</h3></caption> 
                 <p className="page_sub"><span class="ico">*</span>필수입력사항</p>
                 <table className="tbl_comm">
                     <tbody>
-                        <tr>
-                            <th>아이디<span class="ico">*</span></th>
-                            <td>
-                            <input type="text" name="id" value={data.id} maxLength="16" required label="아이디"
-                            className="form-control"
-                            
-                            onChange={onDataChange}
-                            placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"/>
-                            <button type='button' className='btn' onClick={onIdCheck} >중복확인</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>비밀번호<span class="ico">*</span></th>
-                            <td>
-                            <input type="password" name="password"  className="form-control" autoComplete="off" required
-                            onChange={onDataChange} label="비밀번호" maxLength="16" placeholder="비밀번호를 입력해주세요"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>비밀번호확인<span class="ico">*</span></th>
-                            <td>
-                            <input type="password" className="form-control" name="password" required
-                            onChange={onPassChange} autoComplete="off"
-                            label="비밀번호확인" maxLength="16" placeholder="비밀번호를 한번 더 입력해주세요"/>
-                            <span style={{marginLeft:'5px',color:passOk?'':'green'}}>{passOk?'사용가능':'동일한 비밀번호를 입력해주세요'}</span>
-                           
-  
-                            </td>
-                        </tr>
-                        <tr>
+                    <tr>
                             <th>이름<span class="ico">*</span></th>
                             <td>
                             <input type="text" name="name" className="form-control" value={data.name}
                             label="이름" onChange={onDataChange} placeholder="이름을 입력해주세요" required />
                             </td>
                         </tr>
+{/* 
+                        <tr>
+                            <th>아이디<span class="ico">*</span></th>
+                            <td>
+                            <input type="text" name="id" value={data.id} max_length="16" required label="아이디"
+                            className="form-control"
+                            
+                            onChange={onDataChange}
+                            placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"/>
+                           
+                            </td>
+                        </tr> */}
+                 
+              
                         <tr>
                             <th>이메일<span class="ico">*</span></th>
                             <td>
-                            <input type="text" name="email" value={data.email} size="30" onChange={onDataChange}
+                            <input type="text" name="email" value={data.email} size="30" 
                             label="이메일" placeholder="예: bitrip@bitrip.com" className="form-control" required/>
                             <button type='button' className='btn'
-                             onClick={onEmailCheck}>중복확인</button>
+                             onClick={()=>{
+                                setData({
+                                    ...data,
+                                    email:`${email}`,
+                                    emailCheck:true
+                                });
+                                alert("이메일 중복확인")
+                            }}>중복확인</button>
                             </td>
                         </tr>
                         <tr>
                             <th>연락처<span class="ico">*</span></th>
                             <td>
-                            <input type="text" value={data.tel} pattern="[0-9]*" name="mobileInp" className="form-control" placeholder="숫자만 입력해주세요"
+                            {/* <input type="pass" value={data.tel} pattern="[0-9]*" name="mobileInp" className="form-control" placeholder="숫자만 입력해주세요"
                             onChange={onDataChange}
-                            required/>
-                            <button id="" className='btn' type="button">인증번호 받기</button>
+                            required/> */}
+                            {/* <button id="" className='btn' type="button">인증번호 받기</button> */}
                             </td>
                         </tr>
-                        <tr>
+                        {/* <tr>
                             <th>주소<span class="ico">*</span></th>
                             <td>
                             <input type='text' className="form-control"
@@ -259,7 +262,7 @@ const JoinForm = (props) => {
                                 <Typography id="modal-modal-title" variant="h6" component="h2">
                                 
                                 <DaumPostcode onComplete={handlePostCode} />
-                                <button type='button' onClick={handleClose} className='btn'>닫기</button>
+                                <button type='button' onClick={handleClose} className='postCode_btn'>닫기</button>
                                 </Typography>
                                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                     Test
@@ -273,25 +276,13 @@ const JoinForm = (props) => {
 
 
                             </td>
-                        </tr>
-                        <tr>
-                            <th>생년월일</th>
-                            <div className='birth_day'>
-                            <td>
-                                <div value={data.birthday}>
-                                <input type="text" name="birth_year" id="birth_year" pattern="[0-9]*" label="생년월일" size="4" maxLength="4" placeholder="YYYY"/>
-                                <span class="bar"></span>
-                                <input type="text" name="birth[]" id="birth_month" pattern="[0-9]*" label="생년월일" size="2" maxLength="2" placeholder="MM"/>
-                                <span class="bar"></span>
-                                <input type="text" name="birth[]" id="birth_day" pattern="[0-9]*" label="생년월일" size="2" maxLength="2" placeholder="DD"/>
-                                </div>
-                            </td>
-                            </div>
+                        </tr> */}
 
-                        </tr>
                         <tr>
                             <td colSpan={2} style={{textAlign:'center'}}>
-                            <button type="submit" className="btn btn_active">가입하기</button>
+                            <button type="submit" className="btn btn_active" style={{margin:'10px'}}>비밀번호 변경하기</button>
+                            <button type="submit" className="btn btn_active" style={{margin:'10px'}}>수정하기</button>
+                            <button type="submit" className="btn btn_active" style={{margin:'10px'}} onClick={deleteUser}>탈퇴하기</button>
                       
                             </td>
                         </tr>
@@ -306,4 +297,4 @@ const JoinForm = (props) => {
     );
 };
 
-export default JoinForm;
+export default Profile;

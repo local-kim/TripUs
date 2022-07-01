@@ -45,9 +45,9 @@
 }
 
 
-element.style {
+/* element.style {
     width: 130px;
-}
+} */
 .member_join input{
     width: 332px;
     display:inline-block;
@@ -99,12 +99,12 @@ element.style {
     line-height: 42px;
     text-align: center;
 }
-tbody {
+.member_join tbody {
     display: table-row-group;
     vertical-align: middle;
     border-color: inherit;
 }
-/* .btn {
+.member_join .btn {
     border: 1px solid #5f0080;
     background-color: #fff;
     color: #5f0080;
@@ -112,8 +112,8 @@ tbody {
     width: 140px;
     margin-left: 5px;
     vertical-align: top;
-  
-} */
+}
+
 #addressSearch {
     display: block;
     overflow: hidden;
@@ -133,4 +133,87 @@ tbody {
     background-color: #5f0080;
     color: #fff;
 
+}
+
+
+.section_login {
+    width: 340px;
+    margin: 0 auto;
+    padding-top: 90px;
+    letter-spacing: -.6px;
+}
+.section_login .tit_login {
+    font-weight: 800;
+    font-size: 20px;
+    line-height: 20px;
+    text-align: center;
+}
+.section_login input{
+    width: 100%;
+    height: 54px;
+    padding: 0 19px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #fff;
+    font-size: 14px;
+    line-height: 20px;
+    outline: none;
+    margin-top: 10px;
+}
+.section_login .link {
+    float: left;
+    font-size: 13px;
+    line-height: 1;
+}
+.btn_type1 {
+    border: 1px solid #5f0081;
+    background-color: #5f0080;
+   
+}
+.btn_type2 {
+    border: 1px solid #5f0081;
+    background-color: #fff;
+}
+.btn_type1, .btn_type2 {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    height: 54px;
+    border-radius: 3px;
+    font-size: 0;
+    text-align: center;
+}
+
+.section_login .btn_member {
+    margin-top: 10px;
+}
+.btn_type1 .txt_type {
+    color: #fff;
+}
+.btn_type2 .txt_type {
+    color: #5f0080;
+}
+.btn_type1 .txt_type, .btn_type2 .txt_type {
+    display: inline-block;
+    height: 100%;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 51px;
+    text-align: center;
+}
+.section_login a{
+    color: #5f0080;
+
+}
+.section_login .login_search .bar {
+    float: left;
+    width: 1px;
+    height: 10px;
+    margin: 3px 6px 0;
+    background-color: #333;
+    margin-top: 12px;
+}
+.section_login .login_search {
+    float: right;
+    padding-top: 13px;
 }
