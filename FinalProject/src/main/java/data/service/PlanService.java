@@ -33,6 +33,10 @@ public class PlanService implements PlanServiceInter {
 	}
 	
 	//////////////////////////////////////////
+	public List<PlanDto> getNavNum() {
+		return planMapper.getNavNum();
+	}
+	
 	public List<PlanDto> getPlanDatas() {
 		return planMapper.getPlanDatas();
 	}

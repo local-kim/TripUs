@@ -14,5 +14,6 @@ public interface PlanMapper {
 	public void insertPlan(PlaceDto place);
 	public void insertTrip(TripDto trip);
 	public void insertItinerary(ItineraryDto itinerary);
+	public List<PlanDto> getNavNum();
 	public List<PlanDto> getPlanDatas();
 }

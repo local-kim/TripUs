@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, state } from 'react';
 import '../../styles/plandetail.css';
 // import ScrollButton from 'react-scroll-button';
 import { useNavigate,useLocation } from 'react-router-dom';
@@ -10,6 +10,7 @@ import TabPanel from '@mui/lab/TabPanel';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
+import { daysToWeeks } from 'date-fns';
 
 
 
@@ -34,7 +35,7 @@ const PlanDetail = () => {
     };
 
     //지도api & 관광지 api 
-    const contentId=126674; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기
+    const [contentId, setContentId] = useState(126674); //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
     const [placeImg,setPlaceImg]= useState();
@@ -137,10 +138,12 @@ const PlanDetail = () => {
 
     //  데이터 가져오기
     const [ddata, setDdata] = useState('');
+    const [ndata, setNdata] = useState('');
     
     const SPRING_URL = process.env.REACT_APP_SPRING_URL;
     
     let detailUrl = SPRING_URL + "plan/list"
+    let navUrl = SPRING_URL + "plan/nav"
     
     const planGetData = () => {
         axios.get(detailUrl)
@@ -152,32 +155,63 @@ const PlanDetail = () => {
         })
     }
 
+    const planGetNav = () => {
+        axios.get(navUrl)
+        .then(res => {
+            setNdata(res.data);
+        }).catch(err => {
+            alert(err.data);
+        })
+    }
+
     useEffect(() => {
         planGetData();
+        planGetNav();
     },[])
     
-    
-
     
     
     //별점 이미지 = https://www.earthtory.com/res//img/common/web/hotel_star_?.?.png
 
-    const btnChange = (e) => {
+    const imgChange = (e) => {
         
     }
+    
+    // const [asd, setAsd] = useState(...Array(ndata.day))
+
+    const navClick = event => {
+        let parent = document.querySelector('#nav-list')
+        let allchild = parent.childNodes;
+
+        event.currentTarget.classList.remove('on');
+        
+        event.currentTarget.classList.add('on');
+    }
+
+    const setOn = el => {
+        [...el.parentElement.children].forEach(sib => sib.currentTarget.classList.remove('on'))
+        el.currentTarget.classList.add('on')
+        }
     
     return (
         <div id = 'plan-detail'>
             {/* 좌측 이동 리스트 */}
             <div className='scroll-item'>
                 <div className='scroll-item-prev'></div>
-                <div className='scroll-item-list'>
+                <div className='scroll-item-list' id='nav-list'>
                     
-                    <div className='scroll-item-btn on'><a href='#page-1'>D1 Place</a></div>
+                {
+                            // day 만큼 반복문 돌리기
+                            [...ndata] && [...ndata].map((nav, index) => (
+                                <div className={'scroll-item-btn'} 
+                                 onClick={navClick}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div>
+                            ))
+                }
+                    {/* <div className='scroll-item-btn on'><a href='#page-1'>D1 Place</a></div>
                     <div className='scroll-item-btn'><a href='#page-2'>D2 Place</a></div>
                     <div className='scroll-item-btn'><a href='#page-3'>D3 Place</a></div>
                     <div className='scroll-item-btn'><a href='#page-4'>D4 Place</a></div>
-                    <div className='scroll-item-btn last'><a href='#page-5'>D5 Place</a></div>
+                    <div className='scroll-item-btn last'><a href='#page-5'>D5 Place</a></div> */}
                 </div>
                 <div className='scroll-item-next'></div>
             </div>
@@ -287,7 +321,7 @@ const PlanDetail = () => {
                                             <img alt='spot' src={placeImg} className='spot-img'/>
                                             <div className='spot-content-box'>
                                                 <div className='spot-name'>
-                                                    {placeTitle}
+                                                    {day.title}
                                                 </div>
                                                 <div className='spot-info'>
                                                     <img alt src='https://www.earthtory.com/res//img/common/web/hotel_star_1.5.png' className='star' />
@@ -310,19 +344,16 @@ const PlanDetail = () => {
                                                     use-price
                                                 </div>
                                                 <div className='use-memo'>
-                                                    {placeCategory}
+                                                    {day.cat3}
                                                 </div>
                                             </div>
                                             <div className='clear' />
                                         </div>
                                     </div>
                                     {/* 같은날짜 spot 간격 */}
-                                        <div className='day-box-distance'>
+                                        <div className='day-box-distance' />
 
-                                        </div>
-                                    {day.order == null
                                     
-                                    }
                                    </div>
                                 
                             ))
@@ -339,12 +370,21 @@ const PlanDetail = () => {
                             {
                             // day 만큼 반복문 돌리기
                             [...ddata] && [...ddata].map((day, index) => (
+
                                 <div className="col-sm-4 rlist">
                                     <div className="spot-number">{index+1}</div>
-                                    <div className="spot-title">{day.name}</div><span>···</span>
+                                    <div className="spot-title"
+                                    onClick={() => {
+                                        setContentId(day.id)
+                                    }}>{day.title}</div><span>···</span>
                                 </div>
                             ))
                             }
+                                {/* <div className="col-sm-4 rlist">
+                                    <div className="spot-number">10</div>
+                                    <div className="spot-title">zz</div><span>···</span>
+                                </div> */}
+
                             </div>
                             
                         </div>
