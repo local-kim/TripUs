@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="data.mapper.ReviewMapper">
+	
+	<!--<insert id="insertReview" parameterType="review">
+		insert into review (place_id,member_num,stars,content,create_at) values (#{place_id},#{member_num},#{stars},#{content},#{content},now())
+	</insert> -->
+	
+	<!--  <select id="getTotalCount" resultType="int">
+		select count(*) from reactboard
+	</select>
+	<select id="getPagingList" resultType="board" parameterType="Map">
+		select * from reactboard order by num desc limit #{start},#{perpage}
+	</select>-->
+	
+	<select id="getAllDatas" resultType="review" parameterType="String">
+		SELECT review.num,place_id,review.member_num,member.name,stars,content,created_at FROM review, `member` where place_id=#{place_id} and review.member_num = member.num 
+	</select>
+	<select id="getAvgStars" parameterType="String" resultType="double">
+		SELECT truncate(avg(stars),2) from review where place_id=#{place_id}
+	</select>
+	
+	 <select id="getData" resultType="review" parameterType="int">	
+		select * from review where num=#{num}
+	</select> 
+	<!-- 상세보기-->
+</mapper>
