@@ -16,14 +16,17 @@ import data.service.CityInfoService;
 @RequestMapping("/cityinfo")
 public class CityInfoController {
 
-	
-	
-	
+
 	@Autowired
 	private CityInfoService ciservice;
 	
 	@GetMapping("/weather")
-	public WeatherDto getDatas(@RequestParam int num) {
-		return ciservice.getDatas(num);
+	public WeatherDto getData(@RequestParam int num) {
+		return ciservice.getData(num);
+	}
+	
+	@GetMapping("/placename")
+	public void getName(@RequestParam String name) {
+		ciservice.getName(name);
 	}
 }
