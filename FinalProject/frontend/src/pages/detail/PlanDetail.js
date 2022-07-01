@@ -70,7 +70,7 @@ const PlanDetail = () => {
         axios.get(apiUrl)
         .then((res) => {
         console.dir(res.data.response.body.items.item);
-
+        
         const apidata=res.data.response.body.items.item;
         const placex=apidata.mapx;  //관광지 위치(x좌표)
         const placey=apidata.mapy;  //관광지 위치(y좌표)
@@ -78,6 +78,8 @@ const PlanDetail = () => {
         const placeaddr1=apidata.addr1; //관광지 주소 
         const placeaddr2=apidata.addr2; //관광지 상세주소
         const placeimg=apidata.firstimage; //관광지 대표 이미지
+        
+                
         
         const cat1 =apidata.cat1; //관광지 대분류
         const cat2=apidata.cat2; //관광지 중분류
@@ -181,7 +183,7 @@ const PlanDetail = () => {
 
     const navClick = event => {
         let parent = document.querySelector('#nav-list')
-        let allchild = parent.childNodes;
+        let allchild = parent.chil;
 
         event.currentTarget.classList.remove('on');
         
@@ -189,22 +191,37 @@ const PlanDetail = () => {
     }
 
     const setOn = el => {
-        [...el.parentElement.children].forEach(sib => sib.currentTarget.classList.remove('on'))
-        el.currentTarget.classList.add('on')
+        let second = document.querySelector("#nav-list");
+        let preSibling = second.previousSibling;
+        let nexSibling = second.nextSibling;
+
+        preSibling.classList.remove('on');
+        nexSibling.classList.remove('on');
+        console.log(preSibling);
+        console.log(nexSibling);
+        el.currentTarget.classList.add('on');
         }
     
+        const imgadd1 = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&contentId=`
+        const imgadd2 = `&defaultYN=Y&mapinfoYN=Y&addrinfoYN=Y&firstImageYN=Y&catcodeYN=Y&MobileOS=ETC&MobileApp=AppTest&_type=json`
+        
     return (
         <div id = 'plan-detail'>
             {/* 좌측 이동 리스트 */}
             <div className='scroll-item'>
                 <div className='scroll-item-prev'></div>
-                <div className='scroll-item-list' id='nav-list'>
-                    
+                <div className='scroll-item-list' >
+                    <div className={'scroll-item-btn first'}/>
                 {
                             // day 만큼 반복문 돌리기
                             [...ndata] && [...ndata].map((nav, index) => (
-                                <div className={'scroll-item-btn'} 
-                                 onClick={navClick}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div>
+                                
+                                <div className={'scroll-item-btn'} id='nav-list'
+                                 onClick={((e) => {
+                                    e.currentTarget.previousElementSibling.classList.remove('on')
+                                    e.currentTarget.nextElementSibling.classList.remove('on')
+                                    e.currentTarget.classList.add('on')
+                                 })}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div>
                             ))
                 }
                     {/* <div className='scroll-item-btn on'><a href='#page-1'>D1 Place</a></div>
