@@ -27,13 +27,14 @@ const DayPlan = () => {
   const [places, setPlaces] = useState([]);
 
   // 사진이 있는 장소만 받는 url(arrange=P)
-  let apiUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&areaCode=${areaCode}&contentTypeId=12&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  // let apiUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&areaCode=${areaCode}&contentTypeId=12&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let apiUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&areaCode=${areaCode}&numOfRows=30&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
   // 처음 렌더링 시 api에서 목록 받아옴
   useEffect(() => {
     axios.get(apiUrl)
     .then((res) => {
-      // console.dir(res.data.response.body.items.item);
+      console.dir(res.data.response.body.items.item);
       setPlaces(res.data.response.body.items.item);
     }).catch((err) => {
       console.log(err.data);

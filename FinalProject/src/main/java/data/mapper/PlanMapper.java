@@ -12,8 +12,9 @@ import data.dto.TripDto;
 @Mapper
 public interface PlanMapper {
 	public int insertTrip(TripDto trip);
-	public void insertPlan(PlaceDto place);
 	public void insertItinerary(ItineraryDto itinerary);
+	public int checkPlace(String contentId);
+	public void insertPlace(PlaceDto place);
 	public List<PlanDto> getNavNum();
 	public List<PlanDto> getPlanDatas();
 }
