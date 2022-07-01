@@ -128,7 +128,7 @@ const CityInfoMain = () => {
     //const weather_url=`https://pro.openweathermap.org/data/2.5/forecast/hourly?q=${location}&appid=${API_KEY}`    // 4일간 예측 (유료)
     // const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}        
     //                    &numOfRows=3&dataType=xml&dataCd=ASOS&dateCd=DAY&startDtn=20210630&edDt=20210702&stnIds=${wthNum}`       // 기상청 과거데이터 다됨
-    const weather_url=`https://api.aerisapi.com/conditions/summary/${location}?format=json&from=${startdt}&to=${enddt}&client_id=${API_ID}&client_secret=${API_KEY}`
+    const weather_url=`https://api.aerisapi.com/conditions/summary/${location}?format=json&from=&to=&client_id=${API_ID}&client_secret=${API_KEY}`
 
     const [location,setLocation]=useState('');
     const [result,setResult]=useState([]);
