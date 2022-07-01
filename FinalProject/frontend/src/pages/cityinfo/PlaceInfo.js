@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect,useState } from 'react';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate,useLocation} from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -18,7 +18,9 @@ const { kakao } = window;
 
 const PlaceInfo=()=>{
 
-    //stars rating
+       //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
+       const location = useLocation();
+       console.log("location",location.state.state.pcontentId);
 
     //mui
     const [value, setValue] = React.useState('1');
@@ -52,9 +54,9 @@ const PlaceInfo=()=>{
     };
 
     //지도api & 관광지 api 
-    const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 126078
+    const contentId=location.state.state.pcontentId; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078]
     //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; 내인증키
-    const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";
+    const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
     const [placeImg,setPlaceImg]= useState();
@@ -75,7 +77,7 @@ const PlaceInfo=()=>{
     //review
      const [review,setReview]=useState();
      const [avgStars,setAvgStars]=useState(0);
-    // const [content,setContent]=useState('');
+     const reviewdata0="후기글을 작성해주세요";
     // const [sta,setContent]=useState('');
     const [reviewData,setReviewData]=useState([]); //data 받아오기
     
@@ -101,10 +103,9 @@ const PlaceInfo=()=>{
     //ReviewAvgStars 호출
     const AvgStars=()=>{
       axios.get(placeStarsAvgUrl).then(res=>{
-        console.log("palceStarsAvgUrl:",res.data);
         setAvgStars(res.data);
       }).catch(err => {
-        alert(err);
+        alert("별0",err);
     })
     }
 
@@ -163,7 +164,7 @@ const PlaceInfo=()=>{
         const map = new kakao.maps.Map(container, options);
     
         //마커가 표시 될 위치
-        let markerPosition = new kakao.maps.LatLng(37.6473759,126.8376361);
+        let markerPosition = new kakao.maps.LatLng(placey,placex);
 
         // 마커를 생성
         let marker = new kakao.maps.Marker({position: markerPosition,
@@ -336,8 +337,8 @@ const PlaceInfo=()=>{
             </div>
 
                    {/* 상세보기 */}
-          <div style={{width:'500px',height:'800px',backgroundColor:'white',display:'flex'}}>
-              <div style={{display:'flex'}}>
+          <div style={{width:'500px',height:'800px',backgroundColor:'white'}}>
+              <div style={{display:'inline-flex'}}>
 
                 <div>
               <img src={Ayong} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
@@ -355,13 +356,13 @@ const PlaceInfo=()=>{
 
               </div>
 
-              <div style={{justifyContent:'row'}}>
+              <div>
               <img src={Ayong} alt="프로필사진"/>
               </div>
               <div>
                   <input tye='text' value= {review} style={{width:'400px',height:'180px'}}/>
               </div>
-              <div style={{justifyContent:'center'}}>
+              <div style={{justifyContent:'center',display:'inline-flex'}}>
                 <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>수정</button>
                 <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>삭제</button>
               </div>
