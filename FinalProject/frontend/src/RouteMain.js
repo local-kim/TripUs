@@ -7,7 +7,8 @@ import { CityInfoMain, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
 import JoinForm from "./pages/login/JoinForm";
 import { PlanDetail } from "./pages/detail";
-import {Mypage, Dashboard} from "./pages/mypage";
+import LoginForm from "./pages/login/LoginForm";
+import {Mypage, Dashboard, Profile} from "./pages/mypage";
 // import { Dashboard } from "./pages/mypage";
 
 const RouteMain = () => {
@@ -26,6 +27,8 @@ const RouteMain = () => {
 
           {/* Member */}
           <Route path="/join" element={<JoinForm/>} />
+          <Route path="/login" element={<LoginForm/>} />
+
 
           {/* Planning */}
           <Route path="/plan/calendar" element={<Calendar/>} />
@@ -39,8 +42,9 @@ const RouteMain = () => {
           <Route path="/plan/detail" element={<PlanDetail />} />
 
           {/* mypage */}
-          <Route path="/Mypage" element={<Mypage/>}/>
-          <Route path="/Dashboard" element={<Dashboard/>}/>
+          <Route path="/mypage" element={<Mypage/>}/>
+          <Route path="/dashboard" element={<Dashboard/>}/>
+          <Route path="/mypage/profile" element={<Profile/>}/>
 
         </Routes>
       </div>

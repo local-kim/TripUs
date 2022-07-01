@@ -8,12 +8,13 @@ import data.dto.MemberDto;
 
 
 @Mapper
-public interface LoginMapper {
+public interface MemberMapper {
 	public void insertMember(MemberDto dto);
 	public String getName(String id);
 	public int logincheck(Map<String, String> map);
 	public void deleteMember(int num);
 	public int idcheck(String id);
+	public int emailcheck(String email);
 	
 
 }

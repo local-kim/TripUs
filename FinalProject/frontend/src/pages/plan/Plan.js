@@ -20,16 +20,19 @@ const Plan = () => {
   let insertUrl = process.env.REACT_APP_SPRING_URL + `plan/insert`;
 
   const insertPlan = () => {
+    console.log(plan);
+    
     // axios: post로 DB에 insert
-    axios.post(insertUrl)
+    axios.post(insertUrl, plan)
     .then(res => {
       console.log("insert success");
+      // 지금 만든 일정 num 받아옴
     })
     .catch(err => {
       alert(err);
     });
 
-    // insert 후 일정 상세 페이지로 이동
+    // 해당 일정 상세 페이지로 이동(num 이용)
     navigate("/plan/detail");
   }
 

@@ -291,7 +291,7 @@
 
 #plan-detail .list-left .day-box {
     width: 100%;
-    padding-bottom: 30px;
+    
 
     border: 0px solid red;
 }
@@ -362,6 +362,19 @@
     border: 1px solid #e5e5e5;
     background: white;
     min-height: 100px;
+}
+
+
+#plan-detail .undistance {
+    width: 730px;
+    height: 40px;
+    border: 0px solid black;
+    background: #f8f8fa;
+    z-index: 100;
+    margin-top: -27px;
+}
+#plan-detail .day-box:last-child .day-box-distance {
+    display: none;
 }
 #plan-detail .day-box-distance {
     width: 725px;
