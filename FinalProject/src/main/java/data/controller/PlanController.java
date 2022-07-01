@@ -74,6 +74,11 @@ public class PlanController {
 	
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	@GetMapping("/nav")
+	public List<PlanDto> getNavNum(){
+		return planService.getNavNum();
+	}
+	
 	@GetMapping("/list")
 	public List<PlanDto> getPlanDatas(){
 		return planService.getPlanDatas();
