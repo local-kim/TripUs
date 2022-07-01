@@ -1,10 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import './Mypage2.css';
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Mypage = () => {
     const navi=useNavigate();
+    const [dto,setDto] =useState('');
+    const[memberList,setMemberList]=useState([]);
+    
+    //데이타 가져오는 함수
+    const list=()=>{
+        let url="http://localhost:9001/mypage"
+
+
+        axios.get(url)
+        .then(res=>{
+            //스프링으로부터 받아온 List를 MemberList에 넣기
+            setMemberList(res.data);
+            
+            
+        })
+    }
+
+    //처음 랜더링시 딱 한번 데이타 가져오기
+    useEffect(()=>{
+       // console.log("list");
+    list();
+
+    },[]);
+
+
+    let mypageUrl = process.env.REACT_APP_SPRING_URL+"mypage/getprofile";
+
+    const getData=()=>{
+        axios.get(mypageUrl)
+        .then(res=>{
+            setDto(res.data);
+            
+        })
+        .catch(err => {
+            alert(err);
+        })
+
+    }
+
+    useEffect(()=>{
+        getData();
+    },[]);
+
+
 
     return (
         <div>
@@ -18,7 +63,7 @@ const Mypage = () => {
                         <div className="profilePhoto-text" id="profilePhote">a</div>
                     </div>
 
-                    <div className="text">acwell</div>
+                    <div className="text">{dto.id}</div>
                     <button className="btn-normal"  onClick={()=>{navi("/mypage/profile")}}>프로필 수정</button>
                 </div>
                 <div>
@@ -88,17 +133,19 @@ const Mypage = () => {
                     <div className="uk-width-expand@m uk-first-column" style={{padding: "16px"}}>
                         <div className="uk-grid" uk-grid="" style={{margin:"0", height: "50%"}}>
                             <div className="uk-width-1-2 info-container-top uk-first-column">
-                                <div className="small-title">
+                                <div className="small-title" >
                                     여행이름
                                     <div className="uk-inline">
-                                        <a className="uk-form-icon uk-form-icon-flip uk-icon" uk-icon="icon: file-edit"  id="inputTravelNameBtn_idx_0"><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" d="M18.65,1.68 C18.41,1.45 18.109,1.33 17.81,1.33 C17.499,1.33 17.209,1.45 16.98,1.68 L8.92,9.76 L8,12.33 L10.55,11.41 L18.651,3.34 C19.12,2.87 19.12,2.15 18.65,1.68 L18.65,1.68 L18.65,1.68 Z"></path><polyline fill="none" stroke="#000" points="16.5 8.482 16.5 18.5 3.5 18.5 3.5 1.5 14.211 1.5"></polyline></svg></a>
+                                        
 
                                         <input className="
                                                 uk-input
                                                 uk-form-blank
                                                 uk-form-width-medium
                                                 small-text
-                                            " type="text" placeholder="여행이름" id="inputTravelName_idx_0" value=""/>
+                                            " type="text" placeholder="여행이름" id="inputTravelName_idx_0" value="" style={{width:'150px'}}/>
+
+<a className="uk-form-icon uk-form-icon-flip uk-icon" uk-icon="icon: file-edit"  id="inputTravelNameBtn_idx_0"><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" d="M18.65,1.68 C18.41,1.45 18.109,1.33 17.81,1.33 C17.499,1.33 17.209,1.45 16.98,1.68 L8.92,9.76 L8,12.33 L10.55,11.41 L18.651,3.34 C19.12,2.87 19.12,2.15 18.65,1.68 L18.65,1.68 L18.65,1.68 Z"></path><polyline fill="none" stroke="#000" points="16.5 8.482 16.5 18.5 3.5 18.5 3.5 1.5 14.211 1.5"></polyline></svg></a>
                                     </div>                        
                                 </div>
                             </div>

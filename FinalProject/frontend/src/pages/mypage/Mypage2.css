@@ -366,3 +366,29 @@ audio, canvas, iframe, img, svg, video {
   letter-spacing: 1px;
   padding: 8px;
 }
+
+.uk-grid > * > :last-child {
+  margin-bottom: 0;
+}
+
+.uk-inline {
+    display: inline-block;
+    position: relative;
+    max-width: 100%;
+    vertical-align: middle;
+    
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+.uk-form-icon-flip ~ .uk-input {
+  padding-right: 40px !important;
+}
+
+
+.uk-width-expand\@m {
+    flex: 1;
+    min-width: 1px;
+}
