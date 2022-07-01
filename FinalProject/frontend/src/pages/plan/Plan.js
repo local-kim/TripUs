@@ -11,6 +11,7 @@ const Plan = () => {
   const days = useSelector(state => state.planner.days);
   const startDate = useSelector(state => state.planner.startDate);
   const endDate = useSelector(state => state.planner.endDate);
+  const cityNum = useSelector(state => state.planner.cityNum);
   const areaCode = useSelector(state => state.planner.areaCode);
   const sigunguCode = useSelector(state => state.planner.sigunguCode);
   const plan = useSelector(state => state.planner.plan);
@@ -21,9 +22,18 @@ const Plan = () => {
 
   const insertPlan = () => {
     console.log(plan);
+    console.log({cityNum,startDate,endDate,days});
     
     // axios: post로 DB에 insert
-    axios.post(insertUrl, plan)
+    axios.post(insertUrl, {
+      plan: plan,
+      trip: {
+        cityNum: cityNum,
+        startDate: startDate,
+        endDate: endDate,
+        days: days
+      }
+    })
     .then(res => {
       console.log("insert success");
       // 지금 만든 일정 num 받아옴
@@ -32,7 +42,7 @@ const Plan = () => {
       alert(err);
     });
 
-    // 해당 일정 상세 페이지로 이동(num 이용)
+    // 해당 일정 상세 페이지로 이동(trip_num 이용)
     navigate("/plan/detail");
   }
 

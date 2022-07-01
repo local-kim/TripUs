@@ -18,13 +18,13 @@ public class PlanService implements PlanServiceInter {
 	private PlanMapper planMapper;
 	
 	@Override
-	public void insertPlan(PlaceDto place) {
-		planMapper.insertPlan(place);
+	public int insertTrip(TripDto trip) {
+		return planMapper.insertTrip(trip);
 	}
 	
 	@Override
-	public void insertTrip(TripDto trip) {
-		planMapper.insertTrip(trip);
+	public void insertPlan(PlaceDto place) {
+		planMapper.insertPlan(place);
 	}
 	
 	@Override

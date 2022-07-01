@@ -1,6 +1,7 @@
 package data.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,8 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
 import data.dto.PlanDto;
+import data.dto.PlanInsertDto;
+import data.dto.TripDto;
 import data.service.PlanService;
 
 @RestController
@@ -24,21 +28,48 @@ public class PlanController {
 	
 	@PostMapping("/insert")
 	public void insert(
-//			@RequestBody Map<String, Object> paramMap,
-			@RequestBody List<List<PlaceDto>> param
-//			@RequestBody String plan
+//			@RequestBody List<List<PlaceDto>> plan,
+//			@RequestBody TripDto trip
+			@RequestBody PlanInsertDto dto
 			) throws Exception {
-//		System.out.println(param);
-//		System.out.println(param.get(0));
-//		System.out.println(param.get(0).get(0));
+		List<List<PlaceDto>> plan = dto.getPlan();
+		TripDto trip = dto.getTrip();
 		
-		for(int i = 0; i < param.size(); i++) {
-			for(int j = 0; j < param.get(i).size(); j++) {
+//		System.out.println(plan);
+//		System.out.println(trip);
+//		List<List<PlaceDto>> plan = paramMap.plan;
+		
+		// trip(여행 전체 정보)를 insert
+		// member_num, city_num, start_date, end_date, days
+		trip.setMemberNum(1);	// 임시값
+//		trip.setCity_num(2);		// 임시값
+		
+		System.out.println(trip);
+		
+		// trip_num을 받아와서 리턴
+		int tripNum = planService.insertTrip(trip);
+		System.out.println(tripNum);
+		
+		for(int i = 0; i < plan.size(); i++) {
+			for(int j = 0; j < plan.get(i).size(); j++) {
+				PlaceDto place = plan.get(i).get(j);
+				
 				System.out.println("day " + (i+1) + " - place " + (j+1));
-				System.out.println(param.get(i).get(j));
+				System.out.println(plan.get(i).get(j));
+				
+				// place가 테이블에 없으면 insert
+				// place_id,,,
+//				System.out.println(place.getContentid());
+				
+				// itinerary(여행 일정 순서)를 insert
+				// trip_num, day, order, place_id
+				ItineraryDto itinerary = new ItineraryDto();
+				itinerary.setTrip_num(tripNum);
+				itinerary.setDay(i + 1);
+				itinerary.setOrder(j + 1);
+				itinerary.setPlace_id(place.getContentid());
 			}
 		}
-//		JSONObject jObject = new JSONObject(jsonString);
 	}
 	
 	

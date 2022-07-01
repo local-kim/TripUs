@@ -21,12 +21,13 @@ export const addPlan = (plan) => (
 	}
 )
 
-export const setPlanInfo = (start, end, days, areaCode, sigunguCode) => (
+export const setPlanInfo = (start, end, days, cityNum, areaCode, sigunguCode) => (
 	{
 		type: SET_PLAN_INFO,
 		start: start,
 		end: end,
 		days: days,
+		cityNum: cityNum,
 		areaCode: areaCode,
 		sigunguCode: sigunguCode
 	}
@@ -75,6 +76,7 @@ export default function reducer(state = initialState, action){
 				startDate: action.start,
 				endDate: action.end,
 				days: action.days,
+				cityNum: action.cityNum,
 				areaCode: action.areaCode,
 				sigunguCode: action.sigunguCode,
 				plan: Array.from(Array(action.days), () => new Array()),

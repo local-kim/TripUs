@@ -5,7 +5,7 @@ import data.dto.PlaceDto;
 import data.dto.TripDto;
 
 public interface PlanServiceInter {
+	public int insertTrip(TripDto trip);
 	public void insertPlan(PlaceDto place);
-	public void insertTrip(TripDto trip);
 	public void insertItinerary(ItineraryDto itinerary);
 }

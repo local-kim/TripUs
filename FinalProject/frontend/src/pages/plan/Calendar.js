@@ -11,8 +11,9 @@ import { setPlanInfo } from '../../modules/planner';
 const Calendar = () => {
   const dispatch = useDispatch();
 
-  // TODO: 어느 도시인지 areaCode, sigunguCode 넘겨받기 (useParams로 할지, useNavigate의 state로 할지 나중에 결정..)
-  // 일단은 부산이라고 가정하고 const에 저장
+  // TODO: 어느 도시인지 cityNum 넘겨받기 (useParams로 할지, useNavigate의 state로 할지 나중에 결정..)
+  const cityNum = 159;  // 부산(159)
+  // TODO: areaCode, sigunguCode는 cityNum 이용하여 DB에서 구하기
   const areaCode = 6;
   const sigunguCode = null;
 
@@ -49,7 +50,7 @@ const Calendar = () => {
           const end = `${state[0].endDate.getFullYear()}-${state[0].endDate.getMonth() + 1}-${state[0].endDate.getDate()}`;
           const days = (state[0].endDate.getTime() - state[0].startDate.getTime()) / (1000*60*60*24) + 1;
           // console.log({start, end, days});
-          dispatch(setPlanInfo(start, end, days, areaCode, sigunguCode));
+          dispatch(setPlanInfo(start, end, days, cityNum, areaCode, sigunguCode));
         }}>Next</button>
       </div>
     </div>
