@@ -15,6 +15,7 @@ import cityinfoImg from '../../assets/images/IMG_1503.JPG';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const CityInfoMain = () => {
+    
 
     //////////////////////////////// MUi 메뉴 탭
     const [value, setValue] = useState("1");
@@ -70,22 +71,39 @@ const CityInfoMain = () => {
 
 
     /////////////////////////////// 날씨 지역번호 가져오기
-    const [wthNum,setWthNum]=useState([]);
+    const [wthNum,setWthNum]=useState({});
+    let wthPlaceUrl;
+    const {num}=useParams();
+    useEffect(() => {
+        wthPlaceUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
+        console.log(wthPlaceUrl);
+        weatherData();
+    }, [num]);
 
     // db에서 num 데이터 가져오기
-    const {num}=useParams();
-    console.log(num);
-    let url=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
+    
+    // const num = 1;
+   
 
-    const weatherData=()=>{
-        axios.get(url)
-        .then(res=>{
+    const weatherData= async ()=>{
+        // const data = await axios({
+        //     method: 'get',
+        //     url: wthPlaceUrl
+        // })
+        //     console.log(data);
+        //     setWthNum(data);
+        axios.get(wthPlaceUrl)
+        .then(res => {
+            console.log(res.data);
             setWthNum(res.data);
         })
+        .catch(err => {
+            alert(err);
+        })
     }
-    useEffect(()=>{
-        weatherData();
-    },[])
+    // useEffect(()=>{
+        
+    // },[])
     ///////////////////////////////////////////////////////
 
 
@@ -104,14 +122,28 @@ const CityInfoMain = () => {
     //const weather_url=`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`            // 현재 날씨
     //const weather_url=`https://pro.openweathermap.org/data/2.5/forecast/hourly?q=${location}&appid=${API_KEY}`    // 4일간 예측 (유료)
     const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}        
-                        &numOfRows=3&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDtn=20210630&edDt=20210702&stnIds=${wthNum}`       // 기상청 과거데이터 다됨
+                        &numOfRows=3&dataType=xml&dataCd=ASOS&dateCd=DAY&startDtn=20210630&edDt=20210702&stnIds=${wthNum}`       // 기상청 과거데이터 다됨
 
 
     const [location,setLocation]=useState('');
     const [result,setResult]=useState([]);
     const [img,setImg]=useState('');
     
-    
+
+    // const {name}=useParams('');
+    // console.log(name);
+    // let placeNameUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/placename?name="+name;
+
+    // const changeLocal = () =>{
+    //     axios.get(placeNameUrl, name)
+    //     .then(res=>{
+    //         if(res.name === location){
+    //             res.
+    //         }
+    //     })
+    // }
+
+
     // 엔터로
     const searchEngin = async (e)=>{
         if(e.key === 'Enter') {
@@ -152,7 +184,7 @@ const CityInfoMain = () => {
         <div id='cityinfo' style={muiStyle} >
             <div style={{display:'flex', marginBottom:'20px'}}>
                 <div className='title'>
-                    <b>서울</b>
+                    <b>{}</b>
                 </div>
                 <div className='searchCity'>
                     <input type='text' placeholder='도시를 입력하세요' value={location} 
