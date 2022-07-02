@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import React from 'react';
 import '../../styles/plan.css';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { addPlace } from '../../modules/planner';
-// import reducers from './modules';
 
 const PlaceItem = (props) => {
-  // const plan = useSelector(({ state }) => state.plan);
-  const dispatch = useDispatch();
-
   const contentTypeId = {
     A01010100: '국립공원',
     A01010200: '도립공원',

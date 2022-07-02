@@ -38,14 +38,15 @@
 
 #day-plan .title-wrap{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  width: 400px;
+  margin: 0 auto;
 }
 
 #day-plan .title{
   font-size: 30px;
   font-weight: 500;
-  margin: 0 100px;
 }
 
 #day-plan .list-container{
@@ -63,7 +64,7 @@
 }
 
 #day-plan .left .plan-place-list .place-list{
-  height: 600px;
+  height: 500px;
   overflow: auto;
   overflow-x: hidden;
 }

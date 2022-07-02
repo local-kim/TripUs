@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import '../../styles/plan.css';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { PlaceItem } from '.';
+import '../../styles/plan.css';
 
 const Plan = () => {
   // redux에서 변수 얻기
