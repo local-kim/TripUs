@@ -1,6 +1,7 @@
 package data.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,11 @@ public class PlanService implements PlanServiceInter {
 
 	@Autowired
 	private PlanMapper planMapper;
+	
+	@Override
+	public Map<String, Object> getCityCode(int cityNum) {
+		return planMapper.getCityCode(cityNum).get(0);
+	}
 	
 	@Override
 	public int insertTrip(TripDto trip) {

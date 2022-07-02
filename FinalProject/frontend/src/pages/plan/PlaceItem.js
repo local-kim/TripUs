@@ -187,14 +187,14 @@ const PlaceItem = (props) => {
   }
 
   return (
-    <div className='place-info-wrap'>
-      <img src={props.place.firstimage} alt=''/>
+    <div className='place-wrap'>
+      <img className='place-img' src={props.place.firstimage} alt=''/>
 
-      <div>
+      <div className='place-info-wrap'>
         <div>{props.place.title}</div>
         {/* <div>{props.place.cat3}</div> */}
         <div className='place-info'>{contentTypeId[props.place.cat3]}</div>
-        <div className='place-info'>{props.place.contentid}</div>
+        {/* <div className='place-info'>{props.place.contentid}</div> */}
       </div>
     </div>
   );

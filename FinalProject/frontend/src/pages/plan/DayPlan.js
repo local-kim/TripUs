@@ -27,8 +27,11 @@ const DayPlan = () => {
   const [places, setPlaces] = useState([]);
 
   // 사진이 있는 장소만 받는 url(arrange=P)
-  // let apiUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&areaCode=${areaCode}&contentTypeId=12&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-  let apiUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&areaCode=${areaCode}&numOfRows=30&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let apiUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${areaCode}&numOfRows=30&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+
+  if(sigunguCode){  // 시군구 코드가 있는 도시이면
+    apiUrl += `&sigunguCode=${sigunguCode}`;
+  }
 
   // 처음 렌더링 시 api에서 목록 받아옴
   useEffect(() => {
@@ -62,12 +65,17 @@ const DayPlan = () => {
     navigate(`/plan/${Number(day) + 1}`);
   }
 
-  // 선택한 장소를 dayPlan에 저장
+  // 선택한 장소를 dayPlan에 추가
   const addPlace = (place) => {
     setDayPlan([
       ...dayPlan,
       place
     ]);
+  }
+
+  // 선택한 장소를 dayPlan에서 삭제
+  const removePlace = (index) => {
+    setDayPlan(dayPlan.filter((plan, i) => index !== i));
   }
 
   // dayPlan을 plan에 저장
@@ -96,16 +104,19 @@ const DayPlan = () => {
 
       <div className='list-container'>
         <div className='left'>
-          <span className='label'>나의 일정</span>
           <div className='plan-place-list'>
-            {
-              // dayPlan이 있을 때만 표시
-              dayPlan && dayPlan.map((place, index) => (
-                <div className='place-list-item'>
-                  <PlaceItem place={place} key={index}/>
-                </div>
-              ))
-            }
+            <span className='label'>나의 일정</span>
+            <div className='place-list'>
+              {
+                // dayPlan이 있을 때만 표시
+                dayPlan && dayPlan.map((place, index) => (
+                  <div className='place-list-item' key={index}>
+                    <PlaceItem place={place}/>
+                    <button type='button' className='btn btn-danger btn-sm' onClick={() => removePlace(index)}>-</button>
+                  </div>
+                ))
+              }
+            </div>
           </div>
         </div>
 
@@ -115,22 +126,26 @@ const DayPlan = () => {
           <TextField id="" label="검색할 장소를 입력하세요" variant="outlined" size="small" fullWidth />
           
           {/* API에서 장소 목록 불러오기 */}
-          <span className='label'>추천 장소</span>
           <div className='api-place-list'>
-            {
-              places.map((place, index) => (
-                <div className='place-list-item'>
-                  <PlaceItem place={place} addPlace={addPlace} key={index}/>
-                  <button type='button' className='btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
-                </div>
-              ))
-            }
+            <span className='label'>추천 장소</span>
+            <div className='place-list'>
+              {
+                places.map((place, index) => (
+                  <div className='place-list-item' key={index}>
+                    <PlaceItem place={place} addPlace={addPlace}/>
+                    <button type='button' className='btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
+                  </div>
+                ))
+              }
+            </div>
           </div>
           
           {/* TODO: DB에서 저장한 장소 목록 불러오기 */}
-          <span className='label'>내가 저장한 장소</span>
           <div className='my-place-list'>
-            
+            <span className='label'>내가 저장한 장소</span>
+            <div className='place-list'>
+              
+            </div>
           </div>
         </div>
       </div>
@@ -147,12 +162,4 @@ const DayPlan = () => {
   );
 };
 
-// const mapStateToProps = (state) => {
-//   // getState와 같은 이름으로 지어도 되지만,
-//   // 관행상 mapStateToProps를 사용한다
-//   console.log(state)
-//   return { plan: state.plan }
-// }
-
-// export default connect(mapStateToProps, {addPlace})(DayPlan);
 export default DayPlan;

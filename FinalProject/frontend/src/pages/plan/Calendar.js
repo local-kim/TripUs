@@ -1,23 +1,38 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { DateRangePicker, DateRange } from 'react-date-range';
-import { addDays } from 'date-fns';
+import { useDispatch } from 'react-redux';
+import { setPlanInfo } from '../../modules/planner';
+import { DateRangePicker } from 'react-date-range';
+import { differenceInDays, format } from 'date-fns';
+import ko from 'date-fns/locale/ko';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import '../../styles/plan.css';
-import { useDispatch } from 'react-redux';
-import { setPlanInfo } from '../../modules/planner';
 
 const Calendar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // TODO: 어느 도시인지 cityNum 넘겨받기 (useParams로 할지, useNavigate의 state로 할지 나중에 결정..)
-  const cityNum = 159;  // 부산(159)
-  // TODO: areaCode, sigunguCode는 cityNum 이용하여 DB에서 구하기
-  const areaCode = 6;
-  const sigunguCode = null;
+  const cityNum = 201;  // 부산(159)
+  // areaCode, sigunguCode는 cityNum 이용하여 DB에서 구하기
+  const areaCode = useRef();
+  const sigunguCode = useRef();
 
-  const navigate = useNavigate();
+  let cityUrl = process.env.REACT_APP_SPRING_URL + `plan/city-code?cityNum=${cityNum}`;
+
+  useEffect(() => {
+    axios.get(cityUrl)
+    .then(res => {
+      areaCode.current = res.data.area_code;
+      sigunguCode.current = res.data.sigungu_code;
+      // console.log(areaCode, sigunguCode);
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  }, []);
 
   const [state, setState] = useState([
     {
@@ -30,12 +45,15 @@ const Calendar = () => {
   return (
     <div id='plan-calendar'>
       <DateRangePicker
+        locale={ko}
         onChange={item => setState([item.selection])}
         showSelectionPreview={true}
         moveRangeOnFirstSelection={false}
         months={2}
         ranges={state}
         direction="horizontal"
+        dateDisplayFormat={'yyyy-MM-dd'}
+        monthDisplayFormat={'yyyy년 M월'}
       />
 
       <div>
@@ -43,14 +61,13 @@ const Calendar = () => {
           // console.log(state[0].startDate, state[0].endDate);
           // 시작 날짜 : state[0].startDate
           // 끝 날짜 : state[0].endDate
-          // 여기서 다음 페이지로 시작 날짜, 끝 날짜 넘겨주면서 이동
-          navigate("/plan");
+          const start = format(state[0].startDate, "yyyy-MM-dd");
+          const end = format(state[0].endDate, "yyyy-MM-dd");
+          const days = differenceInDays(state[0].endDate, state[0].startDate) + 1;
+          // console.log({start, end, days, cityNum, areaCode, sigunguCode});
+          dispatch(setPlanInfo(start, end, days, cityNum, areaCode.current, sigunguCode.current));
 
-          const start = `${state[0].startDate.getFullYear()}-${state[0].startDate.getMonth() + 1}-${state[0].startDate.getDate()}`;
-          const end = `${state[0].endDate.getFullYear()}-${state[0].endDate.getMonth() + 1}-${state[0].endDate.getDate()}`;
-          const days = (state[0].endDate.getTime() - state[0].startDate.getTime()) / (1000*60*60*24) + 1;
-          // console.log({start, end, days});
-          dispatch(setPlanInfo(start, end, days, cityNum, areaCode, sigunguCode));
+          navigate("/plan");
         }}>Next</button>
       </div>
     </div>
