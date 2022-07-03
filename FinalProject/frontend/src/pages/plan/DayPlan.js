@@ -26,16 +26,18 @@ const DayPlan = () => {
   const [places, setPlaces] = useState([]);
 
   const [keyword, setKeyword] = useState('');
+  const [category, setCategory] = useState('');
+  const [categoryPlace, setCategoryPlace] = useState([]);
 
   // 추천 장소 url(arrange=P)
-  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${areaCode}&numOfRows=30&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${areaCode}&numOfRows=50&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
   if(sigunguCode){  // 시군구 코드가 있는 도시이면
     areaUrl += `&sigunguCode=${sigunguCode}`;
   }
 
   // 키워드 검색 url
-  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${areaCode}&numOfRows=30&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${areaCode}&numOfRows=30&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
   if(sigunguCode){  // 시군구 코드가 있는 도시이면
     keywordUrl += `&sigunguCode=${sigunguCode}`;
@@ -48,6 +50,7 @@ const DayPlan = () => {
       .then((res) => {
         console.dir(res.data.response.body.items.item);
         setPlaces(res.data.response.body.items.item);
+        setCategoryPlace(res.data.response.body.items.item);
       }).catch((err) => {
         console.log(err.data);
       });
@@ -60,6 +63,7 @@ const DayPlan = () => {
       .then((res) => {
         console.dir(res.data.response.body.items.item);
         setPlaces(res.data.response.body.items.item);
+        setCategoryPlace(res.data.response.body.items.item);
       }).catch((err) => {
         console.log(err.data);
       });
@@ -77,6 +81,29 @@ const DayPlan = () => {
   //     console.log(err.data);
   //   });
   // }, []);
+
+  // 카테고리 필터링
+  useEffect(() => {
+    if(category == ''){
+      setCategoryPlace(places);
+      return;
+    }
+    if(category == 12){ // 관광지, 문화시설
+      // console.log(category);
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '12' || place.contenttypeid == '14'));
+      // console.log(categoryPlace);
+    }
+    else if(category == 39){  // 음식점
+      // console.log(category);
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '39'));
+      // console.log(categoryPlace);
+    }
+    else{ // 숙박
+      // console.log(category);
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '32'));
+      // console.log(categoryPlace);
+    }
+  }, [category]);
 
   useEffect(() => {
     addPlan();
@@ -180,7 +207,6 @@ const DayPlan = () => {
 
         <div className='right'>
           {/* 장소 검색창 */}
-          {/* TODO: 카테고리 필터(관광지, 음식점, 숙소,,) */}
           <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
             if(e.key === 'Enter' && e.target.value != ''){
               setKeyword(e.target.value);
@@ -191,14 +217,46 @@ const DayPlan = () => {
           
           {/* API에서 장소 목록 불러오기 */}
           <div className='api-place-list'>
-            <span className='label'>
-              {
-                keyword === '' ? '추천 장소' : "'" + keyword + "' 검색 결과"
-              }
-            </span>
+            <div className='label-wrap'>
+              <span className='label'>
+                {
+                  keyword === '' ? '추천 장소' : "'" + keyword + "' 검색 결과"
+                }
+              </span>
+
+              {/* 카테고리 필터(관광지, 음식점, 숙소,,) */}
+              <span className='category-btn'>
+                <button type='button' className={category == 12 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category == 12){
+                    setCategory('');
+                  }
+                  else{
+                    setCategory(12);
+                  }
+                }}>관광</button>
+                <button type='button' className={category == 39 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category == 39){
+                    setCategory('');
+                  }
+                  else{
+                    setCategory(39);
+                  }
+                }}>맛집</button>
+                <button type='button' className={category == 32 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category == 32){
+                    setCategory('');
+                  }
+                  else{
+                    setCategory(32);
+                  }
+                }}>숙소</button>
+              </span>
+            </div>
+            
             <div className='place-list'>
               {
-                places && places.map((place, index) => (
+                // places && places.map((place, index) => (
+                categoryPlace && categoryPlace.map((place, index) => (
                   <div className='place-list-item' key={index}>
                     <PlaceItem place={place} addPlace={addPlace}/>
                     <button type='button' className='btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>

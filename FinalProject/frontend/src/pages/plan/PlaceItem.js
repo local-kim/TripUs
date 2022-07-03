@@ -181,7 +181,10 @@ const PlaceItem = (props) => {
 
   return (
     <div className='place-wrap'>
-      <img className='place-img' src={props.place.firstimage} alt=''/>
+      {
+        // 이미지 없으면 표시하지 않음
+        props.place.firstimage ? <img className='place-img' src={props.place.firstimage} alt=''/> : <span class="no-image material-symbols-outlined" style={{width:'50px',height:'50px',borderRadius:'100px',backgroundColor:'white',marginRight:'10px'}}>image_not_supported</span>
+      }
 
       <div className='place-info-wrap'>
         <div>{props.place.title}</div>
