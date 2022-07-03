@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux'
 import { savePlan } from '../../modules/planner';
-import { PlaceItem } from ".";
+import { PlaceItem, MyPlaceList } from ".";
 import '../../styles/plan.css';
 
 const DayPlan = () => {
@@ -270,13 +270,8 @@ const DayPlan = () => {
             </div>
           </div>
           
-          {/* TODO: DB에서 저장한 장소 목록 불러오기 */}
-          <div className='my-place-list'>
-            <span className='label'>내가 저장한 장소</span>
-            <div className='place-list'>
-              
-            </div>
-          </div>
+          {/* DB에서 저장한 장소 목록 불러오기 */}
+          <MyPlaceList addPlace={addPlace}/>
         </div>
       </div>
       

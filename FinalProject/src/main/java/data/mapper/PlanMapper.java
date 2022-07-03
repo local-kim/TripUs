@@ -13,6 +13,7 @@ import data.dto.TripDto;
 @Mapper
 public interface PlanMapper {
 	public List<Map<String, Object>> getCityCode(int cityNum);
+	public List<PlaceDto> getMyPlaceList(Map<String, Integer> map);
 	public int insertTrip(TripDto trip);
 	public void insertItinerary(ItineraryDto itinerary);
 	public int checkPlace(String contentId);

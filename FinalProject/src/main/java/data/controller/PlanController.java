@@ -34,6 +34,16 @@ public class PlanController {
 		return planService.getCityCode(cityNum);
 	}
 	
+	@GetMapping("/my-place-list")
+	public List<PlaceDto> getMyPlaceList(
+			@RequestParam int cityNum
+			){
+		// 임시 회원 번호
+		int memberNum = 3;
+		
+		return planService.getMyPlaceList(cityNum, memberNum);
+	}
+	
 	@PostMapping("/insert")
 	public int insert(
 			@RequestBody PlanInsertDto dto

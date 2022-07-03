@@ -15,7 +15,7 @@ const Calendar = () => {
   const navigate = useNavigate();
 
   // TODO: 도시 페이지로부터 cityNum 넘겨받기 (useParams로 할지, useNavigate의 state로 할지 나중에 결정..)
-  const cityNum = 108;  // 부산(159)
+  const cityNum = 159;  // 부산(159)
   
   const cityName = useRef();
   const areaCode = useRef();

@@ -1,5 +1,6 @@
 package data.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,15 @@ public class PlanService implements PlanServiceInter {
 	@Override
 	public Map<String, Object> getCityCode(int cityNum) {
 		return planMapper.getCityCode(cityNum).get(0);
+	}
+	
+	@Override
+	public List<PlaceDto> getMyPlaceList(int cityNum, int memberNum) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("city_num", cityNum);
+		map.put("member_num", memberNum);
+		
+		return planMapper.getMyPlaceList(map);
 	}
 	
 	@Override

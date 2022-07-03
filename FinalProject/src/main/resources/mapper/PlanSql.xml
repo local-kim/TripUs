@@ -4,6 +4,9 @@
 	<select id="getCityCode" parameterType="int" resultType="Map">
 		select name as city_name, area_code, sigungu_code from city where num=#{cityNum}
 	</select>
+	<select id="getMyPlaceList" parameterType="Map" resultType="place">
+		select * from `like`, place where `like`.place_id=place.contentid and place.city_num=#{city_num} and `check`=1 and member_num=#{member_num}
+	</select>
 	<insert id="insertTrip" parameterType="trip">
 		insert into trip (member_num, city_num, start_date, end_date, days) 
 		values (#{memberNum}, #{cityNum}, #{startDate}, #{endDate}, #{days}) 

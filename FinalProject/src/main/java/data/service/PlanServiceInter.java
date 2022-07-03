@@ -9,6 +9,7 @@ import data.dto.TripDto;
 
 public interface PlanServiceInter {
 	public Map<String, Object> getCityCode(int cityNum);
+	public List<PlaceDto> getMyPlaceList(int cityNum, int memberNum);
 	public int insertTrip(TripDto trip);
 	public int checkPlace(String contentId);
 	public void insertPlace(PlaceDto place);
