@@ -7,6 +7,10 @@
   display: none;
 }
 
+#plan-calendar .next-btn{
+  margin-top: 10px;
+}
+
 /*** Plan.js ***/
 #plan{
   text-align: center;
@@ -129,9 +133,36 @@
   border-color: #bebebe;
 }
 
-#day-plan .category-btn .btn:focus {
+#day-plan .btn:focus {
   outline: none;
   box-shadow: none;
+}
+
+#day-plan .btn-wrap{
+  display: flex;
+  /* justify-content: flex-end; */
+  align-items: center;
+}
+
+#day-plan .move-btn{
+  display: inline-block;
+  margin-left: 5px;
+}
+
+#day-plan .move-btn button{
+  height: 20px;
+  line-height: 10px;
+  display: block;
+}
+
+#day-plan .edit-btn{
+  height: 25px;
+  width: 25px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 12px;
 }
 
 /*** PlaceItem.js ***/

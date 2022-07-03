@@ -57,7 +57,7 @@ const Calendar = () => {
       />
 
       <div>
-        <button type='button' className='btn btn-primary' onClick={() => {
+        <button type='button' className='next-btn btn btn-primary' onClick={() => {
           // console.log(state[0].startDate, state[0].endDate);
           // 시작 날짜 : state[0].startDate
           // 끝 날짜 : state[0].endDate

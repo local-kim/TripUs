@@ -188,14 +188,18 @@ const DayPlan = () => {
                 dayPlan && dayPlan.map((place, index) => (
                   <div className='place-list-item' key={index}>
                     <PlaceItem place={place}/>
-                    <div>
-                      {
-                        index === 0 ? "" : <button type='button' className='btn btn-light btn-sm' onClick={() => upPlace(index)}>↑</button>
-                      }
-                      {
-                        index === dayPlan.length - 1 ? "" : <button type='button' className='btn btn-light btn-sm' onClick={() => downPlace(index)}>↓</button>
-                      }
-                      <button type='button' className='btn btn-danger btn-sm' onClick={() => removePlace(index)}>−</button>
+                    <div className='btn-wrap'>
+                      <button type='button' className='edit-btn btn btn-danger btn-sm' onClick={() => removePlace(index)}>−</button>
+
+                      {/* TODO: drag & drop으로 변경 */}
+                      <div className='move-btn'>
+                        {
+                          index === 0 ? "" : <button type='button' className='btn btn-sm' onClick={() => upPlace(index)}>↑</button>
+                        }
+                        {
+                          index === dayPlan.length - 1 ? "" : <button type='button' className='btn btn-sm' onClick={() => downPlace(index)}>↓</button>
+                        }
+                      </div>
                     </div>
                     
                   </div>
@@ -259,7 +263,7 @@ const DayPlan = () => {
                 categoryPlace && categoryPlace.map((place, index) => (
                   <div className='place-list-item' key={index}>
                     <PlaceItem place={place} addPlace={addPlace}/>
-                    <button type='button' className='btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
+                    <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
                   </div>
                 ))
               }
