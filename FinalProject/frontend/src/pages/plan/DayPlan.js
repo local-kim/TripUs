@@ -27,45 +27,60 @@ const DayPlan = () => {
 
   const [keyword, setKeyword] = useState('');
 
-  // 사진이 있는 장소만 받는 url(arrange=P)
-  let apiUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${areaCode}&numOfRows=30&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  // 추천 장소 url(arrange=P)
+  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${areaCode}&numOfRows=30&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
   if(sigunguCode){  // 시군구 코드가 있는 도시이면
-    apiUrl += `&sigunguCode=${sigunguCode}`;
+    areaUrl += `&sigunguCode=${sigunguCode}`;
   }
 
+  // 키워드 검색 url
+  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${areaCode}&numOfRows=30&arrange=P&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+
+  if(sigunguCode){  // 시군구 코드가 있는 도시이면
+    keywordUrl += `&sigunguCode=${sigunguCode}`;
+  }
+
+  useEffect(() => {
+    // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
+    if(keyword == ''){
+      axios.get(areaUrl)
+      .then((res) => {
+        console.dir(res.data.response.body.items.item);
+        setPlaces(res.data.response.body.items.item);
+      }).catch((err) => {
+        console.log(err.data);
+      });
+    }
+    // 키워드 검색 장소
+    else{
+      // console.log("keyword 검색 요청");
+      // console.log(keywordUrl);
+      axios.get(keywordUrl)
+      .then((res) => {
+        console.dir(res.data.response.body.items.item);
+        setPlaces(res.data.response.body.items.item);
+      }).catch((err) => {
+        console.log(err.data);
+      });
+    }
+  }, [keyword]);
+
+  // 처음 렌더링 시 api에서 목록 받아옴
   // useEffect(() => {
-  //   console.log(apiUrl);
-  //   // console.log("api 요청");
-  //   axios.get(apiUrl)
+  //   // console.log(areaUrl);
+  //   axios.get(areaUrl)
   //   .then((res) => {
   //     console.dir(res.data.response.body.items.item);
   //     setPlaces(res.data.response.body.items.item);
   //   }).catch((err) => {
   //     console.log(err.data);
   //   });
-  // }, [keyword]);
-
-  // 처음 렌더링 시 api에서 목록 받아옴
-  useEffect(() => {
-    // console.log(apiUrl);
-    axios.get(apiUrl)
-    .then((res) => {
-      console.dir(res.data.response.body.items.item);
-      setPlaces(res.data.response.body.items.item);
-    }).catch((err) => {
-      console.log(err.data);
-    });
-  }, []);
+  // }, []);
 
   useEffect(() => {
     addPlan();
   }, [dayPlan]);
-
-  // useEffect(() => {
-  //   console.log(plan[day]);
-  //   setDayPlan(plan[day]);
-  // }, [plan, day]);
 
   const prevDay = () => {
     // addPlan();
@@ -165,13 +180,12 @@ const DayPlan = () => {
 
         <div className='right'>
           {/* 장소 검색창 */}
-          {/* TODO: 키워드 검색, 카테고리 필터(관광지, 음식점, 숙소,,) */}
+          {/* TODO: 카테고리 필터(관광지, 음식점, 숙소,,) */}
           <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
-            if(e.key === 'Enter'){
-              // apiUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${e.target.value}&numOfRows=30&arrange=O&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-              // console.log(apiUrl);
+            if(e.key === 'Enter' && e.target.value != ''){
               setKeyword(e.target.value);
               e.target.value = '';
+              setPlaces([]);
             }
           }}/>
           
