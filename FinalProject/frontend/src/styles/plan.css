@@ -18,8 +18,9 @@
 
 #plan .day{
   width: 400px;
-  margin: 20px auto;
-  background-color: white;
+  margin: 15px auto;
+  /* background-color: white; */
+  background-color: rgb(238, 238, 238);
   border-radius: 20px;
   padding: 10px 20px;
 }
@@ -140,13 +141,11 @@
 
 #day-plan .btn-wrap{
   display: flex;
-  /* justify-content: flex-end; */
   align-items: center;
 }
 
 #day-plan .move-btn{
   display: inline-block;
-  margin-left: 5px;
 }
 
 #day-plan .move-btn button{

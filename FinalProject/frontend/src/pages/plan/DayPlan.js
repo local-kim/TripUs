@@ -189,8 +189,6 @@ const DayPlan = () => {
                   <div className='place-list-item' key={index}>
                     <PlaceItem place={place}/>
                     <div className='btn-wrap'>
-                      <button type='button' className='edit-btn btn btn-danger btn-sm' onClick={() => removePlace(index)}>−</button>
-
                       {/* TODO: drag & drop으로 변경 */}
                       <div className='move-btn'>
                         {
@@ -200,8 +198,9 @@ const DayPlan = () => {
                           index === dayPlan.length - 1 ? "" : <button type='button' className='btn btn-sm' onClick={() => downPlace(index)}>↓</button>
                         }
                       </div>
-                    </div>
                     
+                      <button type='button' className='edit-btn btn btn-danger btn-sm' onClick={() => removePlace(index)}>−</button>
+                    </div>
                   </div>
                 ))
               }
@@ -259,6 +258,7 @@ const DayPlan = () => {
             
             <div className='place-list'>
               {
+                // TODO: 끝까지 스크롤하면 장소 더 불러오기
                 // places && places.map((place, index) => (
                 categoryPlace && categoryPlace.map((place, index) => (
                   <div className='place-list-item' key={index}>

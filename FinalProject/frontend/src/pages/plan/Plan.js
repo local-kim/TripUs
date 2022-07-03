@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -12,6 +12,7 @@ const Plan = () => {
   const startDate = useSelector(state => state.planner.startDate);
   const endDate = useSelector(state => state.planner.endDate);
   const cityNum = useSelector(state => state.planner.cityNum);
+  const cityName = useSelector(state => state.planner.cityName);
   const areaCode = useSelector(state => state.planner.areaCode);
   const sigunguCode = useSelector(state => state.planner.sigunguCode);
   const plan = useSelector(state => state.planner.plan);
@@ -48,7 +49,7 @@ const Plan = () => {
 
   return (
     <div id='plan'>
-      <h3>나의 부산 여행</h3>
+      <h3>나의 {cityName} 여행</h3>
       {
         days == 1 ? <h5>{startDate} ({days}일)</h5> : <h5>{startDate} ~ {endDate} ({days}일)</h5>
       }
