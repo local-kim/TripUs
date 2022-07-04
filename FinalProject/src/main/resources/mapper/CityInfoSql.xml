@@ -3,10 +3,10 @@
 <mapper namespace="data.mapper.CityInfoMapper">
 	
 	<select id="getData" parameterType="int" resultType="weather">
-		select * from weather where num=#{num}
+		select * from city where num=#{num}
 	</select>
 	
 	<select id="getName" parameterType="String">
-		select * from weather where placename=#{placename};
+		select * from city where placename=#{placename};
 	</select>
 </mapper>

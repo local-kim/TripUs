@@ -21,9 +21,9 @@ const RouteMain = () => {
           <Route path="/" element={<Main/>} />
 
           {/* cityinfo */}
-          <Route path="/cityinfo/:num" element={<CityInfoMain/>} />
-          {/* <Route path="/cityinfo/weather/:num" element={<CityInfoMain/>} /> */}
-          {/* <Route path="/cityinfo/placename/:name" element={<CityInfoMain/>} /> */}
+          <Route path="/city/:num" element={<CityInfoMain/>} />
+          {/* <Route path="/city/weather/:num" element={<CityInfoMain/>} /> */}
+          {/* <Route path="/city/placename/:name" element={<CityInfoMain/>} /> */}
 
           {/* Member */}
           <Route path="/join" element={<JoinForm/>} />

@@ -8,6 +8,8 @@ import lombok.Data;
 @Data
 public class WeatherDto {
 	private int num;
-	private String placenum;
-	private String placename;
+	private String name;
+	private String country;
+	private int area_code;
+	private int sigungu_code;
 }
