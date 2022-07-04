@@ -9,4 +9,8 @@
 	<select id="getName" parameterType="String">
 		select * from weather where placename=#{placename};
 	</select>
+	
+	<select id="getCityList" resultType="city">
+		select * from city
+	</select>
 </mapper>

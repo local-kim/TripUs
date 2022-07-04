@@ -9,6 +9,7 @@ import JoinForm from "./pages/login/JoinForm";
 import { PlanDetail } from "./pages/detail";
 import LoginForm from "./pages/login/LoginForm";
 import {Mypage, Dashboard, Profile} from "./pages/mypage";
+import { CityList } from './pages/citylist';
 // import { Dashboard } from "./pages/mypage";
 
 const RouteMain = () => {
@@ -19,6 +20,9 @@ const RouteMain = () => {
       <div id="main">
         <Routes>
           <Route path="/" element={<Main/>} />
+
+          {/* City List */}
+          <Route path="/city/list" element={<CityList/>} />
 
           {/* cityinfo */}
           <Route path="/cityinfo/:num" element={<CityInfoMain/>} />
