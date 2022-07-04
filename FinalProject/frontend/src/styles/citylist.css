@@ -17,7 +17,7 @@
 }
 
 #city-list .city-item{
-  margin: 0 15px;
+  margin: 10px 15px;
   text-align: center;
 }
 
@@ -37,6 +37,6 @@
   font-weight: 700;
 }
 
-#city-list .city-item span{
+#city-list .city-item .city-name{
   font-size: 18px;
 }
