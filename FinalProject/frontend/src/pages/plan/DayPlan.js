@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux'
 import { savePlan } from '../../modules/planner';
+import { useInView } from 'react-intersection-observer';
 import { PlaceItem, MyPlaceList } from ".";
 import '../../styles/plan.css';
 
@@ -28,16 +29,55 @@ const DayPlan = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
   const [categoryPlace, setCategoryPlace] = useState([]);
+  
+  // scroll paging
+  const [ref, inView] = useInView();
+  const [page, setPage] = useState(2);
+
+  useEffect(() => {
+    // 사용자가 마지막 요소를 보고 있는 경우
+      if(inView){
+        setPage(page + 1);
+
+        // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
+        if(keyword == ''){
+          areaUrl += `&pageNo=${page}`;
+          console.log(areaUrl);
+          axios.get(areaUrl)
+          .then((res) => {
+            console.dir(res.data.response.body.items.item);
+            setPlaces([...places, ...res.data.response.body.items.item]);
+            setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
+          }).catch((err) => {
+            console.log(err.data);
+          });
+        }
+        // 키워드 검색 장소
+        else{
+          keywordUrl += `&pageNo=${page}`;
+          // console.log("keyword 검색 요청");
+          console.log(keywordUrl);
+          axios.get(keywordUrl)
+          .then((res) => {
+            console.dir(res.data.response.body.items.item);
+            setPlaces([...places, ...res.data.response.body.items.item]);
+            setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
+          }).catch((err) => {
+            console.log(err.data);
+          });
+        }
+      }
+  }, [inView]);
 
   // 추천 장소 url(arrange=P)
-  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${areaCode}&numOfRows=50&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
   if(sigunguCode){  // 시군구 코드가 있는 도시이면
     areaUrl += `&sigunguCode=${sigunguCode}`;
   }
 
   // 키워드 검색 url
-  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${areaCode}&numOfRows=30&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
   if(sigunguCode){  // 시군구 코드가 있는 도시이면
     keywordUrl += `&sigunguCode=${sigunguCode}`;
@@ -103,7 +143,7 @@ const DayPlan = () => {
       setCategoryPlace(places.filter((place, index) => place.contenttypeid == '32'));
       // console.log(categoryPlace);
     }
-  }, [category]);
+  }, [category, places]);
 
   useEffect(() => {
     addPlan();
@@ -261,10 +301,17 @@ const DayPlan = () => {
                 // TODO: 끝까지 스크롤하면 장소 더 불러오기
                 // places && places.map((place, index) => (
                 categoryPlace && categoryPlace.map((place, index) => (
-                  <div className='place-list-item' key={index}>
-                    <PlaceItem place={place} addPlace={addPlace}/>
-                    <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
-                  </div>
+                  (categoryPlace.length - 1 == index) ? (
+                    <div className='place-list-item' key={index} ref={ref}>
+                      <PlaceItem place={place} addPlace={addPlace}/>
+                      <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
+                    </div>
+                  ) : (
+                    <div className='place-list-item' key={index}>
+                      <PlaceItem place={place} addPlace={addPlace}/>
+                      <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
+                    </div>
+                  )
                 ))
               }
             </div>
