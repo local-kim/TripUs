@@ -5,13 +5,15 @@ import './App.css';
 import './AppHeemin.css';
 import { CityInfoMain, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
-import JoinForm from "./pages/login/JoinForm";
+import { JoinForm, Auth,LoginForm, KakaoLogin } from "./pages/login";
 import { PlanDetail } from "./pages/detail";
-import LoginForm from "./pages/login/LoginForm";
+
 import {Mypage, Dashboard, Profile} from "./pages/mypage";
+import { CityList } from './pages/citylist';
 // import { Dashboard } from "./pages/mypage";
 
 const RouteMain = () => {
+ 
   return (
     <div className="main-main-back">
       <Menu/>
@@ -19,6 +21,9 @@ const RouteMain = () => {
       <div id="main">
         <Routes>
           <Route path="/" element={<Main/>} />
+
+          {/* City List */}
+          <Route path="/city/list" element={<CityList/>} />
 
           {/* cityinfo */}
           <Route path="/city/:num" element={<CityInfoMain/>} />
@@ -28,8 +33,9 @@ const RouteMain = () => {
           {/* Member */}
           <Route path="/join" element={<JoinForm/>} />
           <Route path="/login" element={<LoginForm/>} />
-
-
+          <Route path="/oauth/kakao/callback"  element={<Auth/>} />
+          <Route path="/profile"  element={<KakaoLogin/>} />
+    
           {/* Planning */}
           <Route path="/plan/calendar" element={<Calendar/>} />
           <Route path="/plan" element={<Plan/>} />

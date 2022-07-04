@@ -1,6 +1,7 @@
 package data.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import data.dto.ItineraryDto;
@@ -25,8 +27,25 @@ public class PlanController {
 	@Autowired
 	private PlanService planService;
 	
+	@GetMapping("/city-code")
+	public Map<String, Object> getCityCode(
+			@RequestParam int cityNum
+			){
+		return planService.getCityCode(cityNum);
+	}
+	
+	@GetMapping("/my-place-list")
+	public List<PlaceDto> getMyPlaceList(
+			@RequestParam int cityNum
+			){
+		// 임시 회원 번호
+		int memberNum = 3;
+		
+		return planService.getMyPlaceList(cityNum, memberNum);
+	}
+	
 	@PostMapping("/insert")
-	public void insert(
+	public int insert(
 			@RequestBody PlanInsertDto dto
 			) throws Exception {
 		List<List<PlaceDto>> plan = dto.getPlan();
@@ -66,6 +85,8 @@ public class PlanController {
 				planService.insertItinerary(itinerary);
 			}
 		}
+		
+		return tripNum;
 	}
 	
 	

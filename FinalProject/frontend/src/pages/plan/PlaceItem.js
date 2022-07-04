@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import React from 'react';
 import '../../styles/plan.css';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { addPlace } from '../../modules/planner';
-// import reducers from './modules';
 
 const PlaceItem = (props) => {
-  // const plan = useSelector(({ state }) => state.plan);
-  const dispatch = useDispatch();
-
   const contentTypeId = {
     A01010100: '국립공원',
     A01010200: '도립공원',
@@ -187,14 +180,17 @@ const PlaceItem = (props) => {
   }
 
   return (
-    <div className='place-info-wrap'>
-      <img src={props.place.firstimage} alt=''/>
+    <div className='place-wrap'>
+      {
+        // 이미지 없으면 표시하지 않음
+        props.place.firstimage ? <img className='place-img' src={props.place.firstimage} alt=''/> : <span className="no-image material-symbols-outlined">image_not_supported</span>
+      }
 
-      <div>
+      <div className='place-info-wrap'>
         <div>{props.place.title}</div>
         {/* <div>{props.place.cat3}</div> */}
         <div className='place-info'>{contentTypeId[props.place.cat3]}</div>
-        <div className='place-info'>{props.place.contentid}</div>
+        {/* <div className='place-info'>{props.place.contentid}</div> */}
       </div>
     </div>
   );
