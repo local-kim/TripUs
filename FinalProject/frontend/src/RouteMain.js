@@ -22,7 +22,9 @@ const RouteMain = () => {
           <Route path="/" element={<Main/>} />
 
           {/* cityinfo */}
-          <Route path="/cityinfo" element={<CityInfoMain/>} />
+          <Route path="/cityinfo/:num" element={<CityInfoMain/>} />
+          {/* <Route path="/cityinfo/weather/:num" element={<CityInfoMain/>} /> */}
+          {/* <Route path="/cityinfo/placename/:name" element={<CityInfoMain/>} /> */}
 
           {/* Member */}
           <Route path="/join" element={<JoinForm/>} />
@@ -36,7 +38,7 @@ const RouteMain = () => {
           <Route path="/plan/:day" element={<DayPlan/>} />
           
           {/* PlaceInfo */}
-          <Route path="/place/citydetail" element={<PlaceInfo/>}/>
+          <Route path="/place/placedetail" element={<PlaceInfo/>}/>
 
           {/* Detail-Plan */}
           <Route path="/plan/detail" element={<PlanDetail />} />

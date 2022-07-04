@@ -14,8 +14,16 @@ public class CityInfoService implements CityInfoServiceInter {
 	private CityInfoMapper cimapper;
 	
 	@Override
-	public WeatherDto getDatas(int num) {
+	public WeatherDto getData(int num) {
 		// TODO Auto-generated method stub
-		return cimapper.getDatas(num);
+		return cimapper.getData(num);
 	}
+	
+	@Override
+	public void getName(String name) {
+		// TODO Auto-generated method stub
+		cimapper.getName(name);
+	}
+	
+	
 }

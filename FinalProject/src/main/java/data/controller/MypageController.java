@@ -1,4 +1,6 @@
 package data.controller;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
+import data.dto.MemberDto;
 import data.mapper.MyPageMapper;
 import data.service.MypageService;
 import data.service.MypageServiceInter;
@@ -20,15 +24,15 @@ import data.service.MypageServiceInter;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/mypage")
+@RequestMapping("/mypage") 
 public class MypageController {
 
 
 	@Autowired
 	private MypageService service;
 	
-//	@Autowired
-//	MyPageMapper mapper;
+	@Autowired
+	MyPageMapper mapper;
 	
 	// 회원 탈퇴
 	@GetMapping("/delete")
@@ -55,6 +59,24 @@ public class MypageController {
 	}
 	
 
+
+		@GetMapping("/profile")
+		public MemberDto profile()
+		{
+			//dto 얻기 
+			int num = 3;
+		
+			return service.getData(num);
+			
+		}
+		
+		@GetMapping("/getprofile")
+		public MemberDto mypage()
+		{
+			int num=3;
+			
+			return service.getData(num);
+		}
 	
 }
 

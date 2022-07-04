@@ -12,9 +12,15 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import axios from "axios";
 import '../../styles/cityinfo.css';
 import cityinfoImg from '../../assets/images/IMG_1503.JPG';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 
 const CityInfoMain = () => {
+
+    //////////////////////////////관광명소 api contentId 받아오기
+     const pcontentId=126078; //2360786
+    // const pnavi =useNavigate();
+    // const [pid,setPid]=useState();
+    // setPid(contentId);
 
     //////////////////////////////// MUi 메뉴 탭
     const [value, setValue] = useState("1");
@@ -71,32 +77,54 @@ const CityInfoMain = () => {
 
     /////////////////////////////// 날씨 지역번호 가져오기
     const [wthNum,setWthNum]=useState([]);
+    let wthPlaceUrl;
+    const {num}=useParams();
+    useEffect(() => {
+        wthPlaceUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
+        console.log(wthPlaceUrl);
+        weatherData();
+    }, [num]);
 
     // db에서 num 데이터 가져오기
-    const {num}=useParams();
-    console.log(num);
-    let url=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
+    
+    // const num = 1;
+   
 
-    const weatherData=()=>{
-        axios.get(url)
-        .then(res=>{
+    const weatherData= async ()=>{
+        // const data = await axios({
+        //     method: 'get',
+        //     url: wthPlaceUrl
+        // })
+        //     console.log(data);
+        //     setWthNum(data);
+        axios.get(wthPlaceUrl)
+        .then(res => {
+            console.log(res.data);
             setWthNum(res.data);
         })
+        .catch(err => {
+            alert(err);
+        })
     }
-    useEffect(()=>{
-        weatherData();
-    },[])
+    // console.log("Wth :"+wthNum);
+    // useEffect(()=>{
+        
+    // },[])
     ///////////////////////////////////////////////////////
 
-
-
+//dsadsa
+//dsadsa
     
 
 
     ////////////////////////////// 날씨 API
     // api key
-    //const API_KEY="eeb9140b1a18675f963cf17ab2081baf";     //openweathermap 사이트 APIKEY
-    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 기상청 APIKEY
+
+    // const API_ID="pN8sverBEceulMUULSyvZ";
+    // const API_KEY="QWZmBxA43k5EL7jQRyF5gMWtHEXBAgmpBjVXmgfh";
+
+    const API_KEY="eeb9140b1a18675f963cf17ab2081baf";     //openweathermap 사이트 APIKEY
+    //const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 기상청 APIKEY
 
     // url
     //const weather_url=`https://api.openweathermap.org/data/2.5/forecast/daily?q=${location}&cnt=3&appid=${API_KEY}`         // 최대예측 16일까지 일일데이터 (유료)
@@ -104,14 +132,28 @@ const CityInfoMain = () => {
     //const weather_url=`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`            // 현재 날씨
     //const weather_url=`https://pro.openweathermap.org/data/2.5/forecast/hourly?q=${location}&appid=${API_KEY}`    // 4일간 예측 (유료)
     const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}        
-                        &numOfRows=3&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDtn=20210630&edDt=20210702&stnIds=${wthNum}`       // 기상청 과거데이터 다됨
-
+                       &numOfRows=3&dataType=xml&dataCd=ASOS&dateCd=DAY&startDtn=20210630&edDt=20210702&stnIds=${wthNum}`       // 기상청 과거데이터 다됨
+    // const weather_url=`https://api.aerisapi.com/conditions/summary/${location}?format=json&from=&to=&client_id=${API_ID}&client_secret=${API_KEY}`
 
     const [location,setLocation]=useState('');
     const [result,setResult]=useState([]);
     const [img,setImg]=useState('');
     
-    
+
+    // const {name}=useParams('');
+    // console.log(name);
+    // let placeNameUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/placename?name="+name;
+
+    // const changeLocal = () =>{
+    //     axios.get(placeNameUrl, name)
+    //     .then(res=>{
+    //         if(res.name === location){
+    //             res.
+    //         }
+    //     })
+    // }
+
+
     // 엔터로
     const searchEngin = async (e)=>{
         if(e.key === 'Enter') {
@@ -150,9 +192,12 @@ const CityInfoMain = () => {
 
     return (
         <div id='cityinfo' style={muiStyle} >
+       <Link to={'/place/placedetail'} state={{state:{pcontentId}}}>춘식이를 눌러주세요</Link>
+
+
             <div style={{display:'flex', marginBottom:'20px'}}>
                 <div className='title'>
-                    <b>서울</b>
+                    <b>{}</b>
                 </div>
                 <div className='searchCity'>
                     <input type='text' placeholder='도시를 입력하세요' value={location} 

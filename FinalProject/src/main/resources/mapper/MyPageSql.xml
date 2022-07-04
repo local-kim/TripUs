@@ -7,9 +7,14 @@
 		delete from member where num=#{num}
 	</delete>
 	
-		<select id="getUserId" parameterType="String" resultType="int">
+	<select id="getUserId" parameterType="String" resultType="int">
 		select id from member where id=#{id}
 	</select>
 	
+	<select id="getData" resultType="member">
+		select * from member where num=#{num}
+	</select>
 	
 </mapper>
+
+	

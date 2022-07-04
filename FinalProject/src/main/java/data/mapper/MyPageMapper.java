@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+
 import data.dto.MemberDto;
 
 
@@ -21,7 +22,10 @@ public interface MyPageMapper {
 	// 회원 탈퇴
 	public void userDelete(int num);
 	
-	//userIdx얻기
+	//id얻기
 	public int getUserId(String id);
+	
+	//유저 정보 가져오기
+	public MemberDto getData(int num);
 	
 }

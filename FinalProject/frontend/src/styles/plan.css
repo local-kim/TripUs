@@ -7,6 +7,10 @@
   display: none;
 }
 
+#plan-calendar .next-btn{
+  margin-top: 10px;
+}
+
 /*** Plan.js ***/
 #plan{
   text-align: center;
@@ -14,14 +18,15 @@
 
 #plan .day{
   width: 400px;
-  margin: 20px auto;
-  background-color: white;
+  margin: 15px auto;
+  /* background-color: white; */
+  background-color: rgb(238, 238, 238);
   border-radius: 20px;
   padding: 10px 20px;
 }
 
 #plan .day span{
-  font-size: 27px;
+  font-size: 24px;
   font-weight: 500;
   cursor: pointer;
   line-height: 1.3;
@@ -38,14 +43,15 @@
 
 #day-plan .title-wrap{
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  width: 400px;
+  margin: 0 auto;
 }
 
 #day-plan .title{
   font-size: 30px;
   font-weight: 500;
-  margin: 0 100px;
 }
 
 #day-plan .list-container{
@@ -62,7 +68,7 @@
   padding: 20px;
 }
 
-#day-plan .left .plan-place-list{
+#day-plan .left .plan-place-list .place-list{
   height: 500px;
   overflow: auto;
   overflow-x: hidden;
@@ -80,7 +86,7 @@
   width: 100%;
 }
 
-#day-plan .right .api-place-list{
+#day-plan .right .api-place-list .place-list{
   height: 400px;
   overflow: auto;
   overflow-x: hidden;
@@ -94,15 +100,71 @@
   margin: 0 auto;
 }
 
-/*** PlaceItem.js ***/
-.place-list-item img{
-  width: 50px;
-  height: 50px;
-  object-fit: cover;
-  border-radius: 100px;
-  margin-right: 10px;
+#day-plan .api-place-list, #day-plan .my-place-list{
+  margin-top: 10px;
 }
 
+#day-plan .label-wrap{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#day-plan .category-btn button:not(:last-child){
+  margin-right: 5px;
+}
+
+#day-plan .category-btn button{
+  height: 28px;
+  line-height: 18px;
+  border-radius: 9px;
+}
+
+#day-plan .category-btn .btn-dark{
+  background-color: #5b5b5b;
+  border-color: #5b5b5b;
+}
+
+#day-plan .category-btn .btn-outline-dark{
+  border-color: #5b5b5b;
+}
+
+#day-plan .category-btn .btn-outline-dark:hover{
+  background-color: #bebebe;
+  border-color: #bebebe;
+}
+
+#day-plan .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#day-plan .btn-wrap{
+  display: flex;
+  align-items: center;
+}
+
+#day-plan .move-btn{
+  display: inline-block;
+}
+
+#day-plan .move-btn button{
+  height: 20px;
+  line-height: 10px;
+  display: block;
+}
+
+#day-plan .edit-btn{
+  height: 25px;
+  width: 25px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 12px;
+}
+
+/*** PlaceItem.js ***/
 .place-list-item{
   display: flex;
   justify-content: space-between;
@@ -119,13 +181,37 @@
   border-top: 1px solid lightgray;
 } */
 
-.place-info-wrap{
+.place-wrap{
   display: flex;
   align-items: center;
   text-align: left;
 }
 
-.place-info-wrap .place-info{
+.place-wrap .place-img{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 100px;
+  margin-right: 10px;
+}
+
+.place-wrap .no-image{
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  background-color: white;
+  color: gray;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.api-place-list .place-wrap .place-info-wrap{
+  margin-right: 10px;
+}
+
+.place-wrap .place-info{
   font-size: 14px;
   color: rgb(100, 100, 100);
 }
