@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import './Mypage2.css';
 import { NavLink } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams} from "react-router-dom";
 import axios from "axios";
+import Avatar from "react-avatar";
 
 const Mypage = () => {
     const navi=useNavigate();
+    const [photo,setPhoto] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
     const [dto,setDto] =useState('');
     const[memberList,setMemberList]=useState([]);
     
@@ -19,7 +21,6 @@ const Mypage = () => {
             //스프링으로부터 받아온 List를 MemberList에 넣기
             setMemberList(res.data);
             
-            
         })
     }
 
@@ -31,17 +32,25 @@ const Mypage = () => {
     },[]);
 
 
-    let mypageUrl = process.env.REACT_APP_SPRING_URL+"mypage/getprofile";
+    let mypageUrl = process.env.REACT_APP_SPRING_URL+"mypage/profile";
+    let photonameUrl =  process.env.REACT_APP_SPRING_URL + "mypage/photo";
+    
 
     const getData=()=>{
         axios.get(mypageUrl)
         .then(res=>{
-            setDto(res.data);
+            setDto(res.data.member);
+            // setPhoto(res.data.photo);
+            setImage(photoUrl + res.data.photo);
             
         })
         .catch(err => {
-            alert(err);
+            alert("getdata");
         })
+
+        // axios.get(photonameUrl).then(res=>{
+        //     setImage(photoUrl + res.data);
+        // })
 
     }
 
@@ -50,6 +59,46 @@ const Mypage = () => {
     },[]);
 
 
+    
+    const [data, setData] = useState(''); //데이터 한번에 받을때 쓰는법 
+  
+    // 현재 페이지 번호
+    const {currentPage} = useParams();  //useparams = requestparam = currentpage 이거 뽑아온다  ㅇㅋ 
+  
+    // 시작시 호출되는 함수
+    const pageList = () => {
+      axios.get(pagelistUrl)
+      .then(res => {
+        setData(res.data);
+      })
+      .catch(err => {
+        alert("pagelist");
+      });
+    }
+  
+    useEffect(() => {
+      pageList();
+    }, [currentPage]); //currentPage가 변경될때마다 다시 호출 
+  
+    // url
+    let pagelistUrl = process.env.REACT_APP_SPRING_URL + "mypage/pagelist" //?currentPage=" + currentPage;
+    let photoUrl = process.env.REACT_APP_SPRING_URL + "save/";
+    let uploadUrl=process.env.REACT_APP_SPRING_URL+"mypage/upload";
+    let insertUrl =process.env.REACT_APP_SPRING_URL+"mypage/insert";   
+    let updateUrl = "http://localhost:9001/shop/update";
+    let detailUrl="http://localhost:9001/shop/detail";
+
+
+
+
+      
+
+
+
+
+        const [Image, setImage] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
+        const fileInput = useRef(null)
+        
 
     return (
         <div>
@@ -59,9 +108,19 @@ const Mypage = () => {
             <div className="container">
                 <div className="top-background-div"></div>
                 <div className="top-container">
-                    <div className="profilePhotoContainer">
-                        <div className="profilePhoto-text" id="profilePhote">a</div>
-                    </div>
+                    
+                    <Avatar 
+                        src={Image} 
+                        style={{margin:'20px'}} 
+                        size={200} 
+                        onClick={()=>{fileInput.current.click()}}>
+
+
+                    </Avatar>
+
+
+                        {/* <div className="profilePhoto-text" id="profilePhote">a</div> */}
+               
 
                     <div className="text">{dto.id}</div>
                     <button className="btn-normal"  onClick={()=>{navi("/mypage/profile")}}>프로필 수정</button>
@@ -74,7 +133,7 @@ const Mypage = () => {
                                     <b>나의 일정</b>
                                 </h5>
                                 <div>
-                                    <h2 style={{lineHeight: "1", fontWeight: "700"}} id="myPlan">1</h2>
+                                    <h2 style={{lineHeight: "1", fontWeight: "700"}} id="myPlan">{data.totalCount}</h2>
                                 </div>
                             </div>
                             <div className="index-circle">
@@ -82,7 +141,7 @@ const Mypage = () => {
                                     <b>나의 리뷰</b>
                                 </h5>
                                 <div>
-                                    <h2 style={{lineHeight: "1", fontWeight: "700"}}  id="myReview">0</h2>
+                                    <h2 style={{lineHeight: "1", fontWeight: "700"}}  id="myReview">{data.totalCount2}</h2>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +204,7 @@ const Mypage = () => {
                                                 small-text
                                             " type="text" placeholder="여행이름" id="inputTravelName_idx_0" value="" style={{width:'150px'}}/>
 
-<a className="uk-form-icon uk-form-icon-flip uk-icon" uk-icon="icon: file-edit"  id="inputTravelNameBtn_idx_0"><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" d="M18.65,1.68 C18.41,1.45 18.109,1.33 17.81,1.33 C17.499,1.33 17.209,1.45 16.98,1.68 L8.92,9.76 L8,12.33 L10.55,11.41 L18.651,3.34 C19.12,2.87 19.12,2.15 18.65,1.68 L18.65,1.68 L18.65,1.68 Z"></path><polyline fill="none" stroke="#000" points="16.5 8.482 16.5 18.5 3.5 18.5 3.5 1.5 14.211 1.5"></polyline></svg></a>
+                                        <a className="uk-form-icon uk-form-icon-flip uk-icon" uk-icon="icon: file-edit"  id="inputTravelNameBtn_idx_0"><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="none" stroke="#000" d="M18.65,1.68 C18.41,1.45 18.109,1.33 17.81,1.33 C17.499,1.33 17.209,1.45 16.98,1.68 L8.92,9.76 L8,12.33 L10.55,11.41 L18.651,3.34 C19.12,2.87 19.12,2.15 18.65,1.68 L18.65,1.68 L18.65,1.68 Z"></path><polyline fill="none" stroke="#000" points="16.5 8.482 16.5 18.5 3.5 18.5 3.5 1.5 14.211 1.5"></polyline></svg></a>
                                     </div>                        
                                 </div>
                             </div>
@@ -318,7 +377,7 @@ const Mypage = () => {
                 </div>            
 
                 <div class="info-container p-5">
-                    <button class="btn-normal">홈으로 가기</button>
+                    <button class="btn-normal" onClick={()=>{navi("/")}}>홈으로 가기</button>
                 </div>
             </div>
         </div>
