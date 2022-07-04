@@ -14,13 +14,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link, useNavigate } from 'react-router-dom';
-import { NavLink } from 'react-router-dom';
 import MainLogo from '../assets/images/MainLogo.png';
 
-const pages = ['City List', 'Trip Rank', 'About'];
-const pageLinks = ['/city/list', '/', '/'];
-const settings = ['Mypage', 'Dashboard','Logout'];
-const link= ['mypage', 'dashboard','logout']
+const pages = ['여행지', '일정 만들기', '일정 보기', 'About'];
+const pageLinks = ['city/list', 'plan/calendar', 'plan/detail', ''];
+const settings = ['Login', 'Mypage', 'Dashboard','Logout'];
+const link= ['login', 'mypage', 'dashboard','logout']
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -95,7 +94,7 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page, index) => (
-                <Link to={`${pageLinks[index]}`}>
+                <Link to={`/${pageLinks[index]}`}>
                   <MenuItem key={page} onClick={handleCloseNavMenu}>
                     <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
@@ -124,7 +123,7 @@ const ResponsiveAppBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page, index) => (
-              <Link to={`${pageLinks[index]}`}>
+              <Link to={`/${pageLinks[index]}`}>
                 <Button
                   key={page}
                   onClick={handleCloseNavMenu}
