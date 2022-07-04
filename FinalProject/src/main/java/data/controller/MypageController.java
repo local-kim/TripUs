@@ -203,30 +203,16 @@ public class MypageController {
 		
 		
 		@PostMapping("/update")
-//		public void updateProfile(@RequestBody ProfileDto profile, @RequestBody MemberDto member)
-		public void updateProfile(@RequestBody MemberDto member)
+		public void updateProfile(@RequestBody ProfileDto dto) 
 		{
-//			String photo = (String)params.get("profile");
-//			MemberDto member = (MemberDto) params.get("member");
-			ProfileDto profile = new ProfileDto();
 			//업로드한 사진명
-			profile.setFile_name(member.getFile_name());
+			dto.setFile_name(photoName);
 			
+			dto.setMember_num(3);
 			
-			profile.setMember_num(3);
-	
-			member.setNum(3);
-			System.out.println(member);
-			
-			service.updateProfile2(member);
-			
-			if(photoName != null)
-				service.updateProfile(profile);
-			
+			service.updateProfile(dto);
 			photoName=null;
 		}
-		
-}
 		
 	
 		
@@ -272,3 +258,9 @@ public class MypageController {
 //			
 //		}
 //		
+
+
+
+	
+}
+
