@@ -31,7 +31,11 @@
 		select * from itinerary, place where trip_num=1 and place_id=contentid group by `day` order by `day`;
 	</select>
 
-	<select id="getPlanDatas" resultType="plan">
-		select * from itinerary, place where trip_num=1 and place_id=contentid order by `day`, `order`;
+	<select id="getPlanDatas" parameterType="int" resultType="plan">
+		select * from itinerary, place, service_type_code, city where trip_num=#{num} and place_id=contentid and place.cat3 = service_type_code.cat3 and place.city_num = city.num order by `day`, `order`;
+	</select>
+	
+	<select id="getDate" parameterType="int" resultType="pdate">
+		SELECT * FROM final_project.trip, city where city_num=city.num and trip.num=#{num};
 	</select>
 </mapper>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
+import data.dto.PlanDateDto;
 import data.dto.PlanDto;
 import data.dto.TripDto;
 import data.mapper.PlanMapper;
@@ -59,7 +60,11 @@ public class PlanService implements PlanServiceInter {
 		return planMapper.getNavNum();
 	}
 	
-	public List<PlanDto> getPlanDatas() {
-		return planMapper.getPlanDatas();
+	public List<PlanDto> getPlanDatas(int num) {
+		return planMapper.getPlanDatas(num);
+	}
+	
+	public List<PlanDateDto> getDate(int num) {
+		return planMapper.getDate(num);
 	}
 }

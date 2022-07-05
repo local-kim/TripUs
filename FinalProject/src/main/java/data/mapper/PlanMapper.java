@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
+import data.dto.PlanDateDto;
 import data.dto.PlanDto;
 import data.dto.TripDto;
 
@@ -18,6 +19,9 @@ public interface PlanMapper {
 	public void insertItinerary(ItineraryDto itinerary);
 	public int checkPlace(String contentId);
 	public void insertPlace(PlaceDto place);
+	
+	
 	public List<PlanDto> getNavNum();
-	public List<PlanDto> getPlanDatas();
+	public List<PlanDto> getPlanDatas(int num);
+	public List<PlanDateDto> getDate(int num);
 }

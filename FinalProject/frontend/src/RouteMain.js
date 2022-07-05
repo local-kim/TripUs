@@ -45,7 +45,7 @@ const RouteMain = () => {
           <Route path="/place/placedetail" element={<PlaceInfo/>}/>
 
           {/* Detail-Plan */}
-          <Route path="/plan/detail" element={<PlanDetail />} />
+          <Route path="/plan/detail/:num" element={<PlanDetail />} />
 
           {/* mypage */}
           <Route path="/mypage" element={<Mypage/>}/>

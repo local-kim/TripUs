@@ -14,7 +14,14 @@ public class PlanDto {
 	private int place_id; 
 	private int contentid;
 	private int city_num;
+	private String mapx;
+	private String mapy;
+	private String image;
+	private String name;
+	private String firstimage;
 	private String type;
 	private String title;
 	private String cat3;
+	private String cat3_name;
+	
 }

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, state } from 'react';
 import '../../styles/plandetail.css';
 // import ScrollButton from 'react-scroll-button';
-import { useNavigate,useLocation } from 'react-router-dom';
+import { useNavigate,useLocation, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -11,6 +11,7 @@ import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { daysToWeeks } from 'date-fns';
+import { da } from 'date-fns/locale';
 
 
 
@@ -20,6 +21,8 @@ const { kakao } = window;
 
 const PlanDetail = () => {
 
+    const {num}=useParams();
+    
 //stars rating
 
     //mui
@@ -36,6 +39,9 @@ const PlanDetail = () => {
 
     //지도api & 관광지 api 
     const [contentId, setContentId] = useState(126674); //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기
+    const [mapx,setMapx]=useState('');
+    const [mapy,setMapy]=useState('');
+    
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
     const [placeImg,setPlaceImg]= useState();
@@ -49,7 +55,7 @@ const PlanDetail = () => {
     console.log("let cat1:",cat1name,"let cat2:",cat2name,"let cat3:",cat3name);
 
     // 사진이 있는 장소만 받는 url(arrange=P)
-     let apiUrl=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&contentId=${contentId}&defaultYN=Y&mapinfoYN=Y&addrinfoYN=Y&firstImageYN=Y&catcodeYN=Y&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     let apiUrl=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey=7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D&contentId=${contentId}&defaultYN=Y&mapinfoYN=Y&addrinfoYN=Y&firstImageYN=Y&catcodeYN=Y&MobileOS=ETC&MobileApp=AppTest&_type=json`;
      let apiUrl2=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/categoryCode?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&cat1=${cat1name}&cat2=${cat2name}&cat3=${cat3name}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
     //후기 작성
@@ -60,49 +66,15 @@ const PlanDetail = () => {
     
     useEffect(() => {
         kakaomapscript();
-    });
+    }, [mapx]);
 
     //kakomap + tourapi3
-    const kakaomapscript = () => {
+    const kakaomapscript = (d) => {
         
         const container = document.getElementById('place_map');
 
-        axios.get(apiUrl)
-        .then((res) => {
-        console.dir(res.data.response.body.items.item);
-        
-        const apidata=res.data.response.body.items.item;
-        const placex=apidata.mapx;  //관광지 위치(x좌표)
-        const placey=apidata.mapy;  //관광지 위치(y좌표)
-        const placetitle=apidata.title; //관광지명
-        const placeaddr1=apidata.addr1; //관광지 주소 
-        const placeaddr2=apidata.addr2; //관광지 상세주소
-        const placeimg=apidata.firstimage; //관광지 대표 이미지
-        
-                
-        
-        const cat1 =apidata.cat1; //관광지 대분류
-        const cat2=apidata.cat2; //관광지 중분류
-        const cat3=apidata.cat3; //관광지 소분류
-
-        setCat1name(cat1);
-        setCat2name(cat2);
-        setCat3name(cat3);
-
-        
-        // console.log("placeimgurl:",placeimg);
-        //console.log("placeaddr2:",placeaddr2);
-
-        setPlaceTitle(placetitle);
-            if(placeaddr2===undefined){
-                setPlaceAddr(placeaddr1);
-            }else{
-                setPlaceAddr(placeaddr1+placeaddr2);
-            }
-        setPlaceImg(placeimg);
-
         const options = {
-            center: new kakao.maps.LatLng(placey,placex),
+            center: new kakao.maps.LatLng(mapy,mapx),
             //center: new kakao.maps.LatLng(35.1591243474,129.1603078991),
             //new kakao.maps.LatLng(y좌표,x좌표)
             level: 2
@@ -111,7 +83,7 @@ const PlanDetail = () => {
         const map = new kakao.maps.Map(container, options);
     
         //마커가 표시 될 위치
-        let markerPosition = new kakao.maps.LatLng(placey,placex);
+        let markerPosition = new kakao.maps.LatLng(mapy,mapx);
 
         // 마커를 생성
         let marker = new kakao.maps.Marker({position: markerPosition,
@@ -120,9 +92,63 @@ const PlanDetail = () => {
         // 마커를 지도 위에 표시
         marker.setMap(map);
         //setPlaces(res.data.response.body.items.item);
-        }).catch((err) => {
+
+        // axios.get(apiUrl)
+        // .then((res) => {
+        // console.dir(res.data.response.body.items.item);
+        
+        // const apidata=res.data.response.body.items.item;
+        // const placex=d.mapx;  //관광지 위치(x좌표)
+        // const placey=d.mapy;  //관광지 위치(y좌표)
+        // const placetitle=apidata.title; //관광지명
+        // const placeaddr1=apidata.addr1; //관광지 주소 
+        // const placeaddr2=apidata.addr2; //관광지 상세주소
+        // const placeimg=apidata.firstimage; //관광지 대표 이미지
+        
+                
+        
+        // const cat1 =apidata.cat1; //관광지 대분류
+        // const cat2=apidata.cat2; //관광지 중분류
+        // const cat3=apidata.cat3; //관광지 소분류
+
+        // setCat1name(cat1);
+        // setCat2name(cat2);
+        // setCat3name(cat3);
+
+        
+        // console.log("placeimgurl:",placeimg);
+        // console.log("placeaddr2:",placeaddr2);
+
+        // setPlaceTitle(placetitle);
+        //     if(placeaddr2===undefined){
+        //         setPlaceAddr(placeaddr1);
+        //     }else{
+        //         setPlaceAddr(placeaddr1+placeaddr2);
+        //     }
+        // setPlaceImg(placeimg);
+
+        // const options = {
+        //     center: new kakao.maps.LatLng(placey,placex),
+        //     //center: new kakao.maps.LatLng(35.1591243474,129.1603078991),
+        //     //new kakao.maps.LatLng(y좌표,x좌표)
+        //     level: 2
+        // };
+        
+        // const map = new kakao.maps.Map(container, options);
     
-        });
+        // //마커가 표시 될 위치
+        // let markerPosition = new kakao.maps.LatLng(placey,placex);
+
+        // // 마커를 생성
+        // let marker = new kakao.maps.Marker({position: markerPosition,
+        // });
+
+        // // 마커를 지도 위에 표시
+        // marker.setMap(map);
+        // //setPlaces(res.data.response.body.items.item);
+        // }).catch((err) => {
+    
+        // });
     };
 
     axios.get(apiUrl2).then((res) => {
@@ -141,17 +167,40 @@ const PlanDetail = () => {
     //  데이터 가져오기
     const [ddata, setDdata] = useState('');
     const [ndata, setNdata] = useState('');
+    const [pdata, setPdata] = useState('');
+
+    const [dimage, setDimage] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [duringDay, setDuringDay] = useState('');
     
     const SPRING_URL = process.env.REACT_APP_SPRING_URL;
     
-    let detailUrl = SPRING_URL + "plan/list"
+    let detailUrl = SPRING_URL + "plan/list?num="+num;
+    let dateUrl = SPRING_URL + "plan/pdate?num="+num;
     let navUrl = SPRING_URL + "plan/nav"
     
     const planGetData = () => {
         axios.get(detailUrl)
         .then(res => {
-            console.log(res.data)
+            console.log(res.data);
+            setMapx(res.data[0].mapx);
+            setMapy(res.data[0].mapy);
+            setDimage(res.data[0].image);
             setDdata(res.data);
+        }).catch(err => {
+            alert(err.data);
+        })
+    }
+
+    const planDate = () => {
+        axios.get(dateUrl)
+        .then(res => {
+            console.log(res.data);
+            setStartDate(res.data[0].start_date);
+            setEndDate(res.data[0].end_date);
+            setDuringDay(res.data[0].days);
+            setPdata(res.data);
         }).catch(err => {
             alert(err.data);
         })
@@ -169,6 +218,7 @@ const PlanDetail = () => {
     useEffect(() => {
         planGetData();
         planGetNav();
+        planDate();
     },[])
     
     
@@ -181,26 +231,6 @@ const PlanDetail = () => {
     
     // const [asd, setAsd] = useState(...Array(ndata.day))
 
-    const navClick = event => {
-        let parent = document.querySelector('#nav-list')
-        let allchild = parent.chil;
-
-        event.currentTarget.classList.remove('on');
-        
-        event.currentTarget.classList.add('on');
-    }
-
-    const setOn = el => {
-        let second = document.querySelector("#nav-list");
-        let preSibling = second.previousSibling;
-        let nexSibling = second.nextSibling;
-
-        preSibling.classList.remove('on');
-        nexSibling.classList.remove('on');
-        console.log(preSibling);
-        console.log(nexSibling);
-        el.currentTarget.classList.add('on');
-        }
     
         const imgadd1 = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey=YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D&contentId=`
         const imgadd2 = `&defaultYN=Y&mapinfoYN=Y&addrinfoYN=Y&firstImageYN=Y&catcodeYN=Y&MobileOS=ETC&MobileApp=AppTest&_type=json`
@@ -216,26 +246,36 @@ const PlanDetail = () => {
                             // day 만큼 반복문 돌리기
                             [...ndata] && [...ndata].map((nav, index) => (
                                 
-                                <div className={'scroll-item-btn'} id='nav-list'
+                                <div className={`scroll-item-btn ${index}`} id='nav-list'
                                  onClick={((e) => {
-                                    e.currentTarget.previousElementSibling.classList.remove('on')
-                                    e.currentTarget.nextElementSibling.classList.remove('on')
+                                    // {e.currentTarget.hasAttribute.className!==({index}) ? e.currentTarget.classList.add('on') : e.currentTarget.classList.remove('on')}
+                                    // e.currentTarget.classList('on') ? e.currentTarget.classList.remove('on') : e.currentTarget.classList.add('on')
+                                    var leftList1 = e.currentTarget.previousElementSibling;
+                                    var leftList2 = e.currentTarget.nextElementSibling;
+
+                                    while(leftList1){
+                                        leftList1.classList.remove('on')
+                                        leftList1 = leftList1.previousSibling
+                                    }
+                                    while(leftList2){
+                                        leftList2.classList.remove('on');
+                                        leftList2 = leftList2.nextSibling
+                                    }
+                                    // e.currentTarget.previousElementSibling.classList.remove('on')
+                                    // e.currentTarget.nextElementSibling.classList.remove('on')
                                     e.currentTarget.classList.add('on')
                                  })}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div>
                             ))
                 }
-                    {/* <div className='scroll-item-btn on'><a href='#page-1'>D1 Place</a></div>
-                    <div className='scroll-item-btn'><a href='#page-2'>D2 Place</a></div>
-                    <div className='scroll-item-btn'><a href='#page-3'>D3 Place</a></div>
-                    <div className='scroll-item-btn'><a href='#page-4'>D4 Place</a></div>
-                    <div className='scroll-item-btn last'><a href='#page-5'>D5 Place</a></div> */}
+                {/* <div className='scoroll-item-btn last' /> */}
+
                 </div>
                 <div className='scroll-item-next'></div>
             </div>
 
             {/* 대표 이미지 */}
             <div className='main-image'
-                style={{backgroundImage:'url(../DetailImage/main-sample.jpg)'}}>
+                style={{backgroundImage:'url(../../city_detail_image/'+dimage+')'}}>
                 <div className='top-box'>
                     <div className='like-btn'>
                         <div className='ico'></div>
@@ -246,12 +286,12 @@ const PlanDetail = () => {
                 <div className='cover-bottom'>
                     <div className='bottom-box'>
                         <div className='bottom-head'>
-                            <img alt='' src='../DetailImage/box-user.png' />
+                            <img alt='' src='../../DetailImage/box-user.png' />
                             <span><b style={{color:'white'}}>UserName</b></span>
                         </div>
                         <div className='bottom-body'>
                             <h4>Place</h4>
-                            <h6>StartDay ~ EndDay (x일) <b>with</b></h6>
+                            <h6>{startDate} ~ {endDate} ({duringDay}일)</h6>
                             <div className='bottom-bottom-box'>
                                 <div className='bottom-count'>
                                     place, view, scrap count
@@ -317,7 +357,7 @@ const PlanDetail = () => {
                                                 Start date
                                             </div>
                                             <div className='day-title'>
-                                                {placeAddr}
+                                                {day.name}
                                             </div>
                                             <div className='clear' />
                                         </div>
@@ -335,7 +375,7 @@ const PlanDetail = () => {
                                             <div className='list-num'>{day.order}</div>
                                         </div>
                                         <div className='list-content'>
-                                            <img alt='spot' src={placeImg} className='spot-img'/>
+                                            <img alt='spot' src={day.firstimage} className='spot-img'/>
                                             <div className='spot-content-box'>
                                                 <div className='spot-name'>
                                                     {day.title}
@@ -392,7 +432,10 @@ const PlanDetail = () => {
                                     <div className="spot-number">{index+1}</div>
                                     <div className="spot-title"
                                     onClick={() => {
-                                        setContentId(day.id)
+                                        setContentId(day.place_id);
+                                        setMapx(day.mapx);
+                                        setMapy(day.mapy);
+                                        // kakaomapscript(day);
                                     }}>{day.title}</div><span>···</span>
                                 </div>
                             ))

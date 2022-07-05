@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
+import data.dto.PlanDateDto;
 import data.dto.PlanDto;
 import data.dto.PlanInsertDto;
 import data.dto.TripDto;
@@ -97,7 +98,12 @@ public class PlanController {
 	}
 	
 	@GetMapping("/list")
-	public List<PlanDto> getPlanDatas(){
-		return planService.getPlanDatas();
+	public List<PlanDto> getPlanDatas(@RequestParam int num){
+		return planService.getPlanDatas(num);
+	}
+	
+	@GetMapping("/pdate")
+	public List<PlanDateDto> getDate(@RequestParam int num) {
+		return planService.getDate(num);
 	}
 }
