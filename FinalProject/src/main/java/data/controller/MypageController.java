@@ -38,8 +38,8 @@ import util.FileUtil;
 @CrossOrigin
 @RequestMapping("/mypage") 
 public class MypageController {
-
-
+	
+	
 	@Autowired
 	private MypageService service;
 	
