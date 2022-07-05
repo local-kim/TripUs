@@ -27,7 +27,6 @@ const Plan = () => {
     // console.log(plan);
     // console.log({cityNum, startDate, endDate, days});
     
-    // axios: post로 DB에 insert
     axios.post(insertUrl, {
       plan: plan,
       trip: {
@@ -38,9 +37,9 @@ const Plan = () => {
       }
     })
     .then(res => {
-      console.log(res.data);  // trip_num
-      // TODO: 해당 일정 상세 페이지로 이동(trip_num 이용)
-      navigate("/plan/detail");
+      // console.log(res.data);  // trip_num
+      // 해당 일정 상세 페이지로 이동(trip_num 이용)
+      navigate(`/plan/detail/${res.data}`);
     })
     .catch(err => {
       console.log(err);

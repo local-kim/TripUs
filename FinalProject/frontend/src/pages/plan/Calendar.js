@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setPlanInfo } from '../../modules/planner';
 import { DateRangePicker } from 'react-date-range';
@@ -15,7 +15,9 @@ const Calendar = () => {
   const navigate = useNavigate();
 
   // TODO: 도시 페이지로부터 cityNum 넘겨받기 (useParams로 할지, useNavigate의 state로 할지 나중에 결정..)
-  const cityNum = 159;  // 부산(159)
+  // const cityNum = 159;  // 부산(159)
+  const {cityNum} = useParams();
+  console.log(cityNum);
   
   const cityName = useRef();
   const areaCode = useRef();
@@ -24,6 +26,7 @@ const Calendar = () => {
   let cityUrl = process.env.REACT_APP_SPRING_URL + `plan/city-code?cityNum=${cityNum}`;
 
   useEffect(() => {
+    console.log(cityUrl);
     axios.get(cityUrl)
     .then(res => {
       areaCode.current = res.data.area_code;
