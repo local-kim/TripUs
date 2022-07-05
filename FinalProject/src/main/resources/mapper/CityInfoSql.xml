@@ -18,7 +18,7 @@
 	</select>
 	
 	
-	<!-- <select id="getCityList" resultType="city">
+	<select id="getCityList" resultType="city">
 		select * from city
-	</select> -->
+	</select>
 </mapper>
