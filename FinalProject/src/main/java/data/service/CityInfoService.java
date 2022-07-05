@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import data.dto.CityDto;
+import data.dto.TripDto;
 import data.dto.WeatherDto;
 import data.mapper.CityInfoMapper;
 
@@ -28,7 +29,13 @@ public class CityInfoService implements CityInfoServiceInter {
 	}
 	
 	@Override
-	public List<CityDto> getCityList() {
-		return cimapper.getCityList();
+	public TripDto getTripData(String id) {
+		// TODO Auto-generated method stub
+		return cimapper.getTripData(id);
 	}
+	
+//	@Override
+//	public List<CityDto> getCityList() {
+//		return cimapper.getCityList();
+//	}
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -12,9 +12,11 @@ import { Button, CardActionArea, CardActions } from '@mui/material';
 import axios from "axios";
 import '../../styles/cityinfo.css';
 import cityinfoImg from '../../assets/images/IMG_1503.JPG';
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import CityInfoImage from './CityInfoImage';
 
 const CityInfoMain = () => {
+
 
     //////////////////////////////관광명소 api contentId 받아오기
      const pcontentId=126078; //2360786
@@ -22,12 +24,13 @@ const CityInfoMain = () => {
     // const [pid,setPid]=useState();
     // setPid(contentId);
 
+
     //////////////////////////////// MUi 메뉴 탭
     const [value, setValue] = useState("1");
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    ///////////////////////////////////////////
+    
 
     /////////////////////////////// Mui 스타일 변수
     const muiStyle={
@@ -35,28 +38,11 @@ const CityInfoMain = () => {
         width:"1092px",
         typography:"body1"
     }
-    ///////////////////////////////////////////
+   
 
-
+    ////////////////////////////// 수동 데이타
 
     const naVi=useNavigate();
-    const [data0,setData0]=useState([
-        {
-            name: "명소",
-            content: "내용1",
-            clip: 111
-
-        },
-        {
-            name: "음식점",
-            content: "내용2",
-            clip: 222
-        },
-        {
-            name: "쇼핑",
-            content: "내용3",
-            clip: 333
-        }])
     const [data,setData]=useState(['1','2','3','4','5','6']);
     const [data2,setData2]=useState([
         {
@@ -77,67 +63,87 @@ const CityInfoMain = () => {
 
     /////////////////////////////// 날씨 지역번호 가져오기
     const [wthNum,setWthNum]=useState([]);
-    let wthPlaceUrl;
-    const {num}=useParams();
+    let PlaceUrl;
+    const {num}=useParams();    // url에서 num 데이터 가져오기
+    const [weatherImg,setWeatherImg]=useState('../../../public/WeatherImage/맑음.png');
+
     useEffect(() => {
-        wthPlaceUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
-        console.log(wthPlaceUrl);
+        PlaceUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
+        // console.log(wthPlaceUrl);
         weatherData();
     }, [num]);
-
-    // db에서 num 데이터 가져오기
-    
-    // const num = 1;
-   
-
-    const weatherData= async ()=>{
+    const weatherData=()=>{
         // const data = await axios({
         //     method: 'get',
         //     url: wthPlaceUrl
         // })
         //     console.log(data);
         //     setWthNum(data);
-        axios.get(wthPlaceUrl)
+        axios.get(PlaceUrl)
         .then(res => {
             console.log(res.data);
-            setWthNum(res.data);
+            setWthNum(res.data);            
         })
         .catch(err => {
             alert(err);
         })
     }
-    // console.log("Wth :"+wthNum);
-    // useEffect(()=>{
-        
-    // },[])
-    ///////////////////////////////////////////////////////
 
-//dsadsa
-//dsadsa
+    
+    ////////////////////////////////////////일정 계획 데이타
+    // const [trip_id,setTrip_id]=useState('');
+    // let trip_url;
+    // useEffect(() => {
+    //     trip_url=process.env.REACT_APP_SPRING_URL+"cityinfo/trip?id="+id;
+    //     // console.log(wthPlaceUrl);
+    //     trip_data();
+    // }, [num]);
+
+    // // db에서 num 데이터 가져오기
+    
+    // // const num = 1;
+   
+
+    // const trip_data=()=>{
+    //     axios.get(trip_url)
+    //     .then(res => {
+    //         console.log(res.data);
+    //         setTrip_id(res.data);            
+    //     })
+    //     .catch(err => {
+    //         alert(err);
+    //     })
+    // }
     
 
-
-    ////////////////////////////// 날씨 API
+    /////////////////////////////////////////// 날씨 API
+    // const [stnId,setStnId]=useState('');
+    // const [stnNm,setStnNm]=useState('');
+    // const [maxTa,setMaxTa]=useState('');
+    // const [minTa,setMinTa]=useState('');
+    // const [iscs,setIscs]=useState('');
     // api key
 
     // const API_ID="pN8sverBEceulMUULSyvZ";
     // const API_KEY="QWZmBxA43k5EL7jQRyF5gMWtHEXBAgmpBjVXmgfh";
 
-    const API_KEY="eeb9140b1a18675f963cf17ab2081baf";     //openweathermap 사이트 APIKEY
-    //const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 기상청 APIKEY
+    //const API_KEY="eeb9140b1a18675f963cf17ab2081baf";     //openweathermap 사이트 APIKEY
+    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 기상청 APIKEY
 
     // url
     //const weather_url=`https://api.openweathermap.org/data/2.5/forecast/daily?q=${location}&cnt=3&appid=${API_KEY}`         // 최대예측 16일까지 일일데이터 (유료)
     //const weather_url=`https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}`             // 5일간 3시간 간격
     //const weather_url=`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`            // 현재 날씨
     //const weather_url=`https://pro.openweathermap.org/data/2.5/forecast/hourly?q=${location}&appid=${API_KEY}`    // 4일간 예측 (유료)
-    const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}        
-                       &numOfRows=3&dataType=xml&dataCd=ASOS&dateCd=DAY&startDtn=20210630&edDt=20210702&stnIds=${wthNum}`       // 기상청 과거데이터 다됨
-    // const weather_url=`https://api.aerisapi.com/conditions/summary/${location}?format=json&from=&to=&client_id=${API_ID}&client_secret=${API_KEY}`
-
+    const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=2&dataType=xml&dataCd=ASOS&dateCd=DAY&startDt=20210703&endDt=20210704&stnIds=${wthNum.num}`       // 기상청 과거데이터 다됨
+    //const weather_url=`https://api.aerisapi.com/conditions/summary/${location}?format=json&from=&to=&client_id=${API_ID}&client_secret=${API_KEY}`
+    
     const [location,setLocation]=useState('');
     const [result,setResult]=useState([]);
-    const [img,setImg]=useState('');
+    // const [img,setImg]=useState('');
+    // const [startDt,setStartDt]=useState('20210703');
+    // const [endDt,setEndDt]=useState('20210705');
+    // const [days,setDays]=useState(3);
     
 
     // const {name}=useParams('');
@@ -153,43 +159,31 @@ const CityInfoMain = () => {
     //     })
     // }
 
+    console.log(weather_url);
 
-    // 엔터로
+
+    // 날씨 데이타 가져오기
     const searchEngin = async (e)=>{
-        if(e.key === 'Enter') {
-            const data = await axios({
-                method: 'get',
-                url: weather_url
-            })
+        const data = await axios.get(weather_url)
+        try {
             console.log(data);
             setResult(data);
         }
+        catch(error) {
+            alert(error);
+        }
     }
-        
-    ////////////////////////////////////////
-            // if (result.data.weather[0].main === "Clouds"){
-            //     setImg('../public/WeatherImage/비.png');
-            // console.log(img);
+    useEffect(() => {
+        searchEngin();
+    },[])
+    //////////이미지로 변환하는 방법
+    // if (result.data.weather[0].main === "Clouds"){
+    //     setImg('../public/WeatherImage/비.png');
+    // console.log(img);
 
-
-    // url
-    // let url
-
+    ////////////////////////////////////지역 데이타 가져오기
     
-    // const [list,setList]=useState('');
-
-    // const infoList=()=>{
-    //     axios.get(url)
-    //     .then(res=>{
-    //         setList(res.data);
-    //     })
-    // }
-
-    // useEffect(()=>{
-    //     infoList();
-    // },[])
-
-
+    
     return (
         <div id='cityinfo' style={muiStyle} >
        <Link to={'/place/placedetail'} state={{state:{pcontentId}}}>춘식이를 눌러주세요</Link>
@@ -197,36 +191,32 @@ const CityInfoMain = () => {
 
             <div style={{display:'flex', marginBottom:'20px'}}>
                 <div className='title'>
-                    <b>{}</b>
+                    <b>{data.name}</b>
                 </div>
                 <div className='searchCity'>
                     <input type='text' placeholder='도시를 입력하세요' value={location} 
                         onChange={(e)=>{
                             setLocation(e.target.value);
-                        }}
-                        onKeyDown={searchEngin}/>
-                    {/* <button type='button' className='btn' 
-                        onClick={(searchEngin)=>{
-
-                        }}>검색</button> */}
+                        }}/>
                 </div>
-            </div>
+            </div>        
             <div style={{display:'flex'}}>
                 <div>
-                    <img alt='' src={cityinfoImg} className='regionImg'></img>
+                   <CityInfoImage/>
                 </div>
                 {
                     Object.keys(result).length !== 0 && (
                         <div className='weatherCss'>
-                            <div className='city'>{result.data.name}</div>
-                            <div className='temperature'>{Math.round(result.data.main.temp-273.15)}도</div>
-                            <div className='sky'>{result.data.weather[0].main}</div>
+                            <div className='city'>{result.data.stnNm}</div>
+                            <div className='temperature'>{result.data.maxTa}도</div>
+                            <div className='temperature'>{result.data.minTa}도</div>
+                            <div className='sky'>{result.data.iscs.equals[1]}</div>
                         </div>
                     )
                 }
             </div>
             
-            <div style={{display:'flex'}}>
+            <div style={{display:'flex', marginTop:'50px'}}>
                 <div>
                     <Box>
                         <TabContext value={value} >
@@ -234,46 +224,108 @@ const CityInfoMain = () => {
                                 <TabList onChange={handleChange} aria-label="lab API tabs example">
                                     <Tab label="관광명소" value="1" />
                                     <Tab label="음식점" value="2" />
-                                    <Tab label="식 당" value="3" />
+                                    <Tab label="쇼 핑" value="3" />
                                 </TabList>
                             </Box>
-                            {
-                                data0 && data0.map((item, idx) => (
-                                    <TabPanel value={item}>
-                                        <div style={{display:'flex'}} className='row'>
-                                            {
-                                                data && data.map((item, idx) => (
-                                                    <div className='col-sm-4'>
-                                                        <Card value={item} sx={{ width: 220, height: 220, marginRight: 2 }}>
-                                                            <CardActionArea>
-                                                                <CardMedia
-                                                                component="img"
-                                                                height="150"
-                                                                image={cityinfoImg}
-                                                                alt=""
-                                                                />
-                                                                <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
-                                                                    {item.name}
-                                                                </Typography>
-                                                                <Typography variant="h7" color="red">
-                                                                    {item.content} 
-                                                                </Typography>
-                                                                </CardContent>
-                                                            </CardActionArea>
-                                                            <CardActions>
-                                                                <Button className='clipBtn' size="small" color="primary">
-                                                                    {item.Clip}
-                                                                </Button>
-                                                            </CardActions>
-                                                        </Card>
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                    </TabPanel>
-                                ))
-                            }
+                                <TabPanel value="1">
+                                    <div style={{display:'flex'}} className='row'>
+                                        {
+                                            data && data.map((item, idx) => (
+                                                <div className='col-sm-4'>
+                                                    <Card value={item} sx={{ width: 220, height: 300, marginRight: 2 }}>
+                                                        <CardActionArea>
+                                                            <CardMedia
+                                                            component="img"
+                                                            height="150"
+                                                            image={cityinfoImg}
+                                                            alt=""
+                                                            />
+                                                            <CardContent>
+                                                            <Typography gutterBottom variant="h7" component="div">
+                                                                명소
+                                                            </Typography>
+                                                            <Typography variant="h7" color="red">
+                                                                내용
+                                                            </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            <Button className='clipBtn' size="small" color="primary">
+                                                                111
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </TabPanel>
+                                <TabPanel value="2">
+                                    <div style={{display:'flex'}} className='row'>
+                                        {
+                                            data && data.map((item, idx) => (
+                                                <div className='col-sm-4'>
+                                                    <Card value={item} sx={{ width: 220, height: 300, marginRight: 2 }}>
+                                                        <CardActionArea>
+                                                            <CardMedia
+                                                            component="img"
+                                                            height="150"
+                                                            image={cityinfoImg}
+                                                            alt=""
+                                                            />
+                                                            <CardContent>
+                                                            <Typography gutterBottom variant="h7" component="div">
+                                                                음식점
+                                                            </Typography>
+                                                            <Typography variant="h7" color="red">
+                                                                내용
+                                                            </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            <Button className='clipBtn' size="small" color="primary">
+                                                                222
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </TabPanel>
+                                <TabPanel value="3">
+                                    <div style={{display:'flex'}} className='row'>
+                                        {
+                                            data && data.map((item, idx) => (
+                                                <div className='col-sm-4'>
+                                                    <Card value={item} sx={{ width: 220, height: 300, marginRight: 2 }}>
+                                                        <CardActionArea>
+                                                            <CardMedia
+                                                            component="img"
+                                                            height="150"
+                                                            image={cityinfoImg}
+                                                            alt=""
+                                                            />
+                                                            <CardContent>
+                                                            <Typography gutterBottom variant="h7" component="div">
+                                                                쇼핑
+                                                            </Typography>
+                                                            <Typography variant="h7" color="red">
+                                                                내용
+                                                            </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            <Button className='clipBtn' size="small" color="primary">
+                                                                333
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                </TabPanel>
                         </TabContext>
                     </Box>
                 </div>
