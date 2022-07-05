@@ -85,3 +85,18 @@
     border: 1px solid black;
     margin-left: 50px;
 }
+
+
+#cityinfo .container {
+    width: 500px;   
+    display: block;
+    background: #fff;
+    width: 500px;
+    padding: 0px
+    /* padding: 40px 0; */
+    /* box-shadow: 0 0 8px rgb(0 0 0 / 10%); */
+}
+
+#cityinfo .slick-dots{
+    margin-bottom: 20px;
+}

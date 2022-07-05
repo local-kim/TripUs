@@ -1,4 +1,4 @@
-import React, { useState,useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
@@ -25,16 +25,18 @@ const JoinForm = (props) => {
 
         
     });
+    const [birth,setBirth]=useState({
+        year:'',
+        month:'',
+        day:''
+      });
 
-    const [address1, setAddress1] = useState(''); // 주소
-    const [address2, setAddress2] = useState(''); // 상세주소
-    const [zonecode,setZonecode]=useState('');
-    const [isOpenPost, setIsOpenPost] = useState(false);
+    // const [address1, setAddress1] = useState(''); // 주소
+    // const [address2, setAddress2] = useState(''); // 상세주소
+    // const [zonecode,setZonecode]=useState('');
     const [passOk,setPassOk]=useState(false);
     const [btnOk,setBtnOk]=useState(false);
-    const [email,setEmail]=useState(false);
     const [open, setOpen] = React.useState(false);
-    const [color,setColor]=useState('red');
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     
@@ -70,10 +72,13 @@ const JoinForm = (props) => {
 
         const url = process.env.REACT_APP_SPRING_URL + "member/insert";
             axios.post(url, ({
-                ...data,email:`${email}`
+                ...data,
+                birthday:birth.year+birth.month+birth.day
+
             }))
             .then(res => {
             //   alert("insert 성공");
+            console.log(data);
               navi("/login")
             });
 
@@ -89,6 +94,13 @@ const JoinForm = (props) => {
             [name]:value
         });
     }
+    const onBirthChange=(e)=>{
+      const {name,value}=e.target;
+      setBirth({
+          ...birth,
+          [name]:value
+      });
+  }
 
      //두번째 pass 입력시 호출
      const onPassChange=(e)=>{
@@ -134,37 +146,40 @@ const JoinForm = (props) => {
     }
 
         // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
-        const handlePostCode = (data) => {
-            let fullAddress = data.address;
+        const handlePostCode = (kakaoData) => {
+            let fullAddress = kakaoData.address;
             let extraAddress = ''; 
             
-            if (data.addressType === 'R') {
-              if (data.bname !== '') {
-                extraAddress += data.bname;
+            if (kakaoData.addressType === 'R') {
+              if (kakaoData.bname !== '') {
+                extraAddress += kakaoData.bname;
               }
-              if (data.buildingName !== '') {
-                extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+              if (kakaoData.buildingName !== '') {
+                extraAddress += (extraAddress !== '' ? `, ${kakaoData.buildingName}` : kakaoData.buildingName);
               }
               fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
             }
-            console.log(data)
+            console.log(kakaoData)
             console.log(fullAddress)
-            console.log(data.zonecode)
-            setAddress1(fullAddress);
-            setAddress2(extraAddress);
-            setZonecode(data.zonecode);
-            console.log(address1)
+            console.log(kakaoData.zonecode)
+            // setAddress1(fullAddress);
+            setData({...data, address1: fullAddress, address2: extraAddress, zonecode: kakaoData.zonecode});
+            // setData({...data, address2: extraAddress});
+            // setData({...data, zonecode: data.zonecode});
+            // setAddress2(extraAddress);
+            // setZonecode(data.zonecode);
+            // console.log(address1)
             handleClose()
         }
      
-        const postCodeStyle = {
-            display: "block",
-            position: "relative",
-            top: "10%",
-            width: "600px",
-            height: "600px",
-            padding: "7px",
-          };
+        // const postCodeStyle = {
+        //     display: "block",
+        //     position: "relative",
+        //     top: "10%",
+        //     width: "600px",
+        //     height: "600px",
+        //     padding: "7px",
+        //   };
         
      
 
@@ -225,9 +240,9 @@ const JoinForm = (props) => {
                         <tr>
                             <th>연락처<span class="ico">*</span></th>
                             <td>
-                            <input type="text" value={data.tel} pattern="[0-9]*" name="mobileInp" className="form-control" placeholder="숫자만 입력해주세요"
+                            <input type="text" value={data.tel} pattern="[0-9]*" name="tel" className="form-control" placeholder="숫자만 입력해주세요"
                             onChange={onDataChange}
-                            required/>
+                            />
                             <button id="" className='btn' type="button">인증번호 받기</button>
                             </td>
                         </tr>
@@ -235,19 +250,19 @@ const JoinForm = (props) => {
                             <th>주소<span class="ico">*</span></th>
                             <td>
                             <input type='text' className="form-control"
-                             name="address" value={address1}
+                             name="address" value={data.address1}
                             required/>
                             <input type='text' className="form-control"
-                             name="address" value={address2}
+                             name="address" value={data.address2}
                             required/>
                             <input type='text' className="form-control"
-                             name="address" value={zonecode}
+                             name="address" value={data.zonecode}
                             required/>
                            
                            <div className="App">
                          
-                            <Button onClick={handleOpen}>
-                                <button type='button' className='btn'>주소찾기</button>
+                            <Button onClick={handleOpen} style={{paddingLeft:'30px'}}>
+                                <button type='button' className='btn' style={{width:'250px'}}>주소찾기</button>
                             </Button>
                             <Modal
                                 open={open}
@@ -262,7 +277,7 @@ const JoinForm = (props) => {
                                 <button type='button' onClick={handleClose} className='btn'>닫기</button>
                                 </Typography>
                                 <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                                    Test
+                                    TRIP:US
                                 </Typography>
                                 </Box>
                             </Modal>
@@ -277,13 +292,13 @@ const JoinForm = (props) => {
                         <tr>
                             <th>생년월일</th>
                             <div className='birth_day'>
-                            <td>
-                                <div value={data.birthday}>
-                                <input type="text" name="birth_year" id="birth_year" pattern="[0-9]*" label="생년월일" size="4" maxLength="4" placeholder="YYYY"/>
+                            <td style={{textAlign:'center', margin:'0,auto'}}>
+                                <div style={{textAlign:'center'}}>
+                                <input type="text" value={birth.year} onChange={onBirthChange} name="year" id="birth_year" pattern="[0-9]*" label="생년월일" size="4" maxLength="4" placeholder="YYYY"/>
                                 <span class="bar"></span>
-                                <input type="text" name="birth[]" id="birth_month" pattern="[0-9]*" label="생년월일" size="2" maxLength="2" placeholder="MM"/>
+                                <input type="text" value={birth.month} onChange={onBirthChange} name="month" id="birth_month" pattern="[0-9]*" label="생년월일" size="2" maxLength="2" placeholder="MM"/>
                                 <span class="bar"></span>
-                                <input type="text" name="birth[]" id="birth_day" pattern="[0-9]*" label="생년월일" size="2" maxLength="2" placeholder="DD"/>
+                                <input type="text" value={birth.day} onChange={onBirthChange} name="day" id="birth_day" pattern="[0-9]*" label="생년월일" size="2" maxLength="2" placeholder="DD"/>
                                 </div>
                             </td>
                             </div>
@@ -291,7 +306,9 @@ const JoinForm = (props) => {
                         </tr>
                         <tr>
                             <td colSpan={2} style={{textAlign:'center'}}>
-                            <button type="submit" className="btn btn_active">가입하기</button>
+                            <button type="submit" className="btn_type1 btn_member">
+                            <span className="txt_type">가입하기</span>
+                            </button>
                       
                             </td>
                         </tr>

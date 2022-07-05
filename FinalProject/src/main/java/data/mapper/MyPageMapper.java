@@ -10,6 +10,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 
 import data.dto.MemberDto;
+import data.dto.ProfileDto;
+
+import data.dto.TripDto;
 
 
 
@@ -27,5 +30,29 @@ public interface MyPageMapper {
 	
 	//유저 정보 가져오기
 	public MemberDto getData(int num);
+	
+	//유저 일정 갯수 가져오기
+	public int userTrip(int member_num);
+	
+	//유저 일정 페이징 처리
+	public List<TripDto> getPagingList(Map<String, Integer>map);
+	
+	//유저 일정 정보
+	public List<TripDto> getAllDates();
+	
+	//유저 리뷰 갯수 가져오
+	public int userReview(int member_num);
+	
+	//마이페이지 프로필 등록
+	public void insertProfile(ProfileDto dto);
+	
+	//로딩시 사진 가져오기
+	public String findPhoto(int member_num); //(파라미터임) public뒤에있는게 리졀트임 ㅇㅇ 
+	
+	//마이페이지  사진 업데이트
+	public void updateProfile(ProfileDto dto);
+	
+	//마이페이지 정보 업데이트
+	public void updateProfile2(MemberDto dto);
 	
 }

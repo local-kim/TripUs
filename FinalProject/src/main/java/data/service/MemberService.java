@@ -1,6 +1,7 @@
 package data.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,14 @@ public class MemberService implements MemberServiceInter {
 		return memberMapper.getName(id);
 	}
 
-	@Override
-	public int loginCheck(String id, String password) {
-		// TODO Auto-generated method stub
-		Map<String, String> map=new HashMap<>();
-		map.put("id", id);
-		map.put("password", password);
-		return memberMapper.logincheck(map);
-	}
+//	@Override
+//	public int loginCheck(String id, String password) {
+//		// TODO Auto-generated method stub
+//		Map<String, String> map=new HashMap<>();
+//		map.put("id", id);
+//		map.put("password", password);
+//		return memberMapper.logincheck(map);
+//	}
 
 	@Override
 	public void deleteMember(int num) {
@@ -53,6 +54,28 @@ public class MemberService implements MemberServiceInter {
 	public int emailcheck(String email) {
 		// TODO Auto-generated method stub
 		return memberMapper.emailcheck(email);
+	}
+
+	@Override
+	public boolean login(String id, String password) {
+		// TODO Auto-generated method stub
+		Map<String, String> map = new HashMap<>();
+		map.put("id", id);
+		map.put("password", password);
+		
+		return memberMapper.login(map) == 1 ? true : false;
+	}
+
+	@Override
+	public List<Map<String, Object>> getLoginInfo(String id) {
+		// TODO Auto-generated method stub
+		return memberMapper.getLoginInfo(id);
+	}
+
+	@Override
+	public int checkKakaoMember(String id) {
+		// TODO Auto-generated method stub
+		return memberMapper.checkKakaoMember(id);
 	}
 
 }

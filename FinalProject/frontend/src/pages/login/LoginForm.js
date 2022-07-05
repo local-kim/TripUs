@@ -1,47 +1,90 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/join.css';
 
 const LoginForm = () => {
-    const [id,setId]=useState('');
-    const [password,setPassword]=useState('');
+    const [inputId, setInputId] = useState('')
+    const [inputPw, setInputPw] = useState('')
+ 
+    const handleInputId = (e) => {
+        setInputId(e.target.value)
+    }
+ 
+    const handleInputPw = (e) => {
+        setInputPw(e.target.value)
+    }
     const navi=useNavigate();
     const REST_API_KEY = "c78ded458e4b18060e7a0d0868e70cd1";
     const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
     const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
     
-    const onSubmit=(e)=>{
-        e.preventDefault();
-        const url=process.env.REACT_APP_SPRING_URL+"/login";
-        axios.post(url,{id,password})
-        .then(res=>{
-            if(res.data===0){
-                alert("아아디 또는 비밀번호가 틀렸습니다")
-            }else{
-                localStorage.loginOk="yes";
-                localStorage.myid=id;
-                navi(-1);//새로고침
+    // const onSubmit=(e)=>{
+    //     e.preventDefault();
+    //     const url=process.env.REACT_APP_SPRING_URL+"login";
+    //     axios.post(url,{id,password})
+    //     .then(res=>{
+    //         if(res.data===0){
+    //             alert("아아디 또는 비밀번호가 틀렸습니다")
+    //         }else{
+    //             localStorage.loginOk="yes";
+    //             localStorage.myid=id;
+    //             navi(-1);//새로고침
                 
+    //         }
+    //     })
+        
+    // }
+    const onClickLogin = (e) => {
+        e.preventDefault();
+
+        console.log('click login')
+        console.log('ID : ', inputId)
+        console.log('PW : ', inputPw)
+        axios.post(process.env.REACT_APP_SPRING_URL+'member/process', null, {
+            params: {
+            'id': inputId,
+            'password': inputPw
             }
+        })
+        .then(res => {
+            console.log(res)
+            if(res.data){
+                alert("로그인 성공");
+            }
+            else{
+                alert("로그인 실패");
+            }
+            // console.log('res.data.id :: ', res.data.id)
+         
+            // if(res.data.id === undefined){
+            //     alert('입력하신 id 가 일치하지 않습니다.')
+            // } else if(res.data.id === null){
+            //     alert('입력하신 비밀번호 가 일치하지 않습니다.')
+            // } else if(res.data.id === inputId) {
+            //     // id, pw 모두 일치 userId = userId1
+            //     console.log('======================','로그인 성공')
+            //     sessionStorage.setItem('id', inputId)
+            // }
+       
+            navi("/");
+        })
+        .catch(err => {
+            alert(err);
         })
     }
     
     return (
         
         <div className="section_login">
-            <form onSubmit={onSubmit}>
+            <form onSubmit={onClickLogin}>
             <h3 className="tit_login">로그인</h3>
             <div className="write_form">
 
             <input type="text" name="" size="20" placeholder="아이디를 입력해주세요"
-                onChange={(e)=>{
-                    setId(e.target.value)
-                }}/>
+                value={inputId} onChange={handleInputId}/>
             <input type="password" name="" size="20" placeholder="비밀번호를 입력해주세요"
-                onChange={(e)=>{
-                    setPassword(e.target.value)
-                }}/>
+                 value={inputPw} onChange={handleInputPw}/>
 
 
 

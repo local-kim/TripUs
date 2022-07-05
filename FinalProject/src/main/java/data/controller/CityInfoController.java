@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import data.dto.CityDto;
+import data.dto.TripDto;
 import data.dto.WeatherDto;
 import data.service.CityInfoService;
 
@@ -31,9 +32,15 @@ public class CityInfoController {
 		ciservice.getName(name);
 	}
 	
-	// 도시 목록 페이지
-	@GetMapping("/list")
-	public List<CityDto> getCityList(){
-		return ciservice.getCityList();
+	@GetMapping("/trip")
+	public TripDto getTripData(@RequestParam String id) {
+		return ciservice.getTripData(id);
 	}
+	
+	
+//	// 도시 목록 페이지
+//	@GetMapping("/list")
+//	public List<CityDto> getCityList(){
+//		return ciservice.getCityList();
+//	}
 }
