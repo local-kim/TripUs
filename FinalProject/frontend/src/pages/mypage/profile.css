@@ -98,3 +98,7 @@ div{
     color: #2962ff;
     background-color: white;   
 }
+
+.sb-avatar__image{
+    border-radius: 100%;
+}
