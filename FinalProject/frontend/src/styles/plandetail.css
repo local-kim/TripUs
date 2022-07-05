@@ -11,7 +11,13 @@
 }
 #plan-detail {
     margin-top: 15px;
+    z-index: 999;
 }
+
+#plan-detail header.MuiPaper-root {
+    position: inherit;
+}
+
 /* scroll-item > left fixed */
 #plan-detail .scroll-item {
     position: fixed;
@@ -376,7 +382,7 @@
     width: 730px;
     height: 40px;
     border: 0px solid black;
-    background: #f8f8fa;
+    background: white;
     z-index: 100;
     margin-top: -27px;
 }
@@ -517,6 +523,7 @@
     width: 341px;
     height: 100%;
 
+    border: 1px solid #dedede;
     border-top: 1px solid goldenrod;
 }
 #plan-detail .row {

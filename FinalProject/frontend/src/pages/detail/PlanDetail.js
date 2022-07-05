@@ -10,9 +10,9 @@ import TabPanel from '@mui/lab/TabPanel';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
-import { daysToWeeks } from 'date-fns';
+import { daysToWeeks, format } from 'date-fns';
 import { da } from 'date-fns/locale';
-
+import { addDays } from 'date-fns';
 
 
 // 카카오맵
@@ -221,7 +221,11 @@ const PlanDetail = () => {
         planDate();
     },[])
     
-    
+    const trip_date = new Date(startDate);
+    const tday = (trip_date.getDate());
+    const tmonth = (trip_date.getMonth()+1);
+    const tyear = (trip_date.getFullYear());
+    console.log(addDays(trip_date, 1));
     
     //별점 이미지 = https://www.earthtory.com/res//img/common/web/hotel_star_?.?.png
 
@@ -354,7 +358,7 @@ const PlanDetail = () => {
                                     <div className='day-date'>
                                         <div className='day-date-left'>
                                             <div className='date'>
-                                                Start date
+                                            {format(addDays(trip_date, day.day-1), "yyyy-MM-dd")}
                                             </div>
                                             <div className='day-title'>
                                                 {day.name}
@@ -397,11 +401,11 @@ const PlanDetail = () => {
                                         <div className='clear' />
                                         <div className='list-add-content'>
                                             <div className='list-use-price'>
-                                                <div className='use-price'>
+                                                {/* <div className='use-price'>
                                                     use-price
-                                                </div>
+                                                </div> */}
                                                 <div className='use-memo'>
-                                                    {day.cat3}
+                                                    {day.cat3_name}
                                                 </div>
                                             </div>
                                             <div className='clear' />
