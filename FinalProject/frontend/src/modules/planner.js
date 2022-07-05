@@ -21,13 +21,14 @@ export const addPlan = (plan) => (
 	}
 )
 
-export const setPlanInfo = (start, end, days, cityNum, areaCode, sigunguCode) => (
+export const setPlanInfo = (start, end, days, cityNum, cityName, areaCode, sigunguCode) => (
 	{
 		type: SET_PLAN_INFO,
 		start: start,
 		end: end,
 		days: days,
 		cityNum: cityNum,
+		cityName: cityName,
 		areaCode: areaCode,
 		sigunguCode: sigunguCode
 	}
@@ -45,6 +46,9 @@ const initialState = {
 	startDate: "",
 	endDate: "",
 	days: null,
+	cityNum: null,
+	areaCode: null,
+	sigunguCode: null,
 	plan: [],
 }
 
@@ -52,31 +56,32 @@ const initialState = {
 export default function reducer(state = initialState, action){
 	switch(action.type){
 		case ADD_PLACE:
-			console.log(state);
+			// console.log(state);
 			return {
 				...state,
 				plan: [...state.plan, action.place]
 			};
 		case ADD_PLAN:
-			console.log(action.plan);
+			// console.log(action.plan);
 			return {
 				...state,
 				plan: [...state.plan, action.plan]	// 배열에 배열 추가
 			}
 		case SAVE_PLAN:
-			console.log(action.plan);
+			// console.log(action.plan);
 			return {
 				...state,
 				plan: action.plan
 			}
 		case SET_PLAN_INFO:
-			// console.log(state);
+			// console.log(action.areaCode, action.sigunguCode);
 			return {
 				...state,
 				startDate: action.start,
 				endDate: action.end,
 				days: action.days,
 				cityNum: action.cityNum,
+				cityName: action.cityName,
 				areaCode: action.areaCode,
 				sigunguCode: action.sigunguCode,
 				plan: Array.from(Array(action.days), () => new Array()),

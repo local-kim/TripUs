@@ -10,7 +10,7 @@ import { composeWithDevTools } from 'redux-devtools-extension'; // 리덕스 개
 
 // 생성한 store안에 모든 전역 state를 넣어 관리
 const store = createStore(rootReducer);
-console.log(store);
+// console.log(store);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

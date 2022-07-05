@@ -14,7 +14,7 @@
 	</select>-->
 	
 	<select id="getAllDatas" resultType="review" parameterType="String">
-		SELECT review.num,place_id,review.member_num,member.name,stars,content,created_at FROM review, `member` where place_id=#{place_id} and review.member_num = member.num 
+		SELECT review.num,place_id,review.member_num,member.name,stars,content,created_at FROM review, `member` where place_id=#{place_id} and review.member_num = member.num order by review.created_at desc
 	</select>
 	<select id="getAvgStars" parameterType="String" resultType="double">
 		SELECT truncate(avg(stars),2) from review where place_id=#{place_id}

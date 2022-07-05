@@ -1,6 +1,8 @@
 package data.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,18 +20,38 @@ public class PlanService implements PlanServiceInter {
 	private PlanMapper planMapper;
 	
 	@Override
-	public int insertTrip(TripDto trip) {
-		return planMapper.insertTrip(trip);
+	public Map<String, Object> getCityCode(int cityNum) {
+		return planMapper.getCityCode(cityNum).get(0);
 	}
 	
 	@Override
-	public void insertPlan(PlaceDto place) {
-		planMapper.insertPlan(place);
+	public List<PlaceDto> getMyPlaceList(int cityNum, int memberNum) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("city_num", cityNum);
+		map.put("member_num", memberNum);
+		
+		return planMapper.getMyPlaceList(map);
+	}
+	
+	@Override
+	public int insertTrip(TripDto trip) {
+		planMapper.insertTrip(trip);
+		return trip.getNum();
 	}
 	
 	@Override
 	public void insertItinerary(ItineraryDto itinerary) {
 		planMapper.insertItinerary(itinerary);
+	}
+	
+	@Override
+	public int checkPlace(String contentId) {
+		return planMapper.checkPlace(contentId);
+	}
+	
+	@Override
+	public void insertPlace(PlaceDto place) {
+		planMapper.insertPlace(place);
 	}
 	
 	//////////////////////////////////////////
