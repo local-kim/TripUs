@@ -12,7 +12,7 @@ public class PlanDto {
 	private int day;
 	private int order;
 	private int place_id; 
-	private int id;
+	private int contentid;
 	private int city_num;
 	private String type;
 	private String title;
