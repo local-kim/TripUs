@@ -24,12 +24,13 @@ const CityInfoMain = () => {
     // const [pid,setPid]=useState();
     // setPid(contentId);
 
+
     //////////////////////////////// MUi 메뉴 탭
     const [value, setValue] = useState("1");
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    ///////////////////////////////////////////
+    
 
     /////////////////////////////// Mui 스타일 변수
     const muiStyle={
@@ -37,29 +38,11 @@ const CityInfoMain = () => {
         width:"1092px",
         typography:"body1"
     }
-    ///////////////////////////////////////////
+   
 
-
+    ////////////////////////////// 수동 데이타
 
     const naVi=useNavigate();
-    // const [data0,setData0]=useState([
-    //     {
-    //         name: "명소",
-    //         content: "내용1",
-    //         clip: 111
-
-    //     },
-    //     {
-    //         name: "음식점",
-    //         content: "내용2",
-    //         clip: 222
-    //     },
-    //     {
-    //         name: "쇼핑",
-    //         content: "내용3",
-    //         clip: 333
-    //     }])
-
     const [data,setData]=useState(['1','2','3','4','5','6']);
     const [data2,setData2]=useState([
         {
@@ -77,50 +60,68 @@ const CityInfoMain = () => {
         }
     ])
 
-    
 
     /////////////////////////////// 날씨 지역번호 가져오기
-    const [wthNum,setWthNum]=useState('');
-    let wthPlaceUrl;
-    const {num}=useParams();
+    const [wthNum,setWthNum]=useState([]);
+    let PlaceUrl;
+    const {num}=useParams();    // url에서 num 데이터 가져오기
+    const [weatherImg,setWeatherImg]=useState('../../../public/WeatherImage/맑음.png');
+
     useEffect(() => {
-        wthPlaceUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
-        console.log(wthPlaceUrl);
+        PlaceUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
+        // console.log(wthPlaceUrl);
         weatherData();
     }, [num]);
-
-    // db에서 num 데이터 가져오기
-    
-    // const num = 1;
-   
-
-    const weatherData= async ()=>{
+    const weatherData=()=>{
         // const data = await axios({
         //     method: 'get',
         //     url: wthPlaceUrl
         // })
         //     console.log(data);
         //     setWthNum(data);
-        axios.get(wthPlaceUrl)
+        axios.get(PlaceUrl)
         .then(res => {
             console.log(res.data);
-            setWthNum(res.data);
-            console.log("wthNum: "+wthNum);
+            setWthNum(res.data);            
         })
         .catch(err => {
             alert(err);
         })
     }
-    // console.log("Wth :"+wthNum);
-    // useEffect(()=>{
-        
-    // },[])
-    ///////////////////////////////////////////////////////
 
     
+    ////////////////////////////////////////일정 계획 데이타
+    // const [trip_id,setTrip_id]=useState('');
+    // let trip_url;
+    // useEffect(() => {
+    //     trip_url=process.env.REACT_APP_SPRING_URL+"cityinfo/trip?id="+id;
+    //     // console.log(wthPlaceUrl);
+    //     trip_data();
+    // }, [num]);
 
+    // // db에서 num 데이터 가져오기
+    
+    // // const num = 1;
+   
 
-    ////////////////////////////// 날씨 API
+    // const trip_data=()=>{
+    //     axios.get(trip_url)
+    //     .then(res => {
+    //         console.log(res.data);
+    //         setTrip_id(res.data);            
+    //     })
+    //     .catch(err => {
+    //         alert(err);
+    //     })
+    // }
+    
+
+    /////////////////////////////////////////// 날씨 API
+    // const [stnId,setStnId]=useState('');
+    // const [stnNm,setStnNm]=useState('');
+    // const [maxTa,setMaxTa]=useState('');
+    // const [minTa,setMinTa]=useState('');
+    // const [iscs,setIscs]=useState('');
     // api key
 
     // const API_ID="pN8sverBEceulMUULSyvZ";
@@ -134,16 +135,15 @@ const CityInfoMain = () => {
     //const weather_url=`https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}`             // 5일간 3시간 간격
     //const weather_url=`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`            // 현재 날씨
     //const weather_url=`https://pro.openweathermap.org/data/2.5/forecast/hourly?q=${location}&appid=${API_KEY}`    // 4일간 예측 (유료)
-    const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}        
-                      &numOfRows=1&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=20210703&endDt=20210703&stnIds=${wthNum}`       // 기상청 과거데이터 다됨
+    const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=2&dataType=xml&dataCd=ASOS&dateCd=DAY&startDt=20210703&endDt=20210704&stnIds=${wthNum.num}`       // 기상청 과거데이터 다됨
     //const weather_url=`https://api.aerisapi.com/conditions/summary/${location}?format=json&from=&to=&client_id=${API_ID}&client_secret=${API_KEY}`
     
     const [location,setLocation]=useState('');
     const [result,setResult]=useState([]);
-    const [img,setImg]=useState('');
-    const [startDt,setStartDt]=useState('20210703');
-    const [endDt,setEndDt]=useState('20210705');
-    const [days,setDays]=useState(3);
+    // const [img,setImg]=useState('');
+    // const [startDt,setStartDt]=useState('20210703');
+    // const [endDt,setEndDt]=useState('20210705');
+    // const [days,setDays]=useState(3);
     
 
     // const {name}=useParams('');
@@ -159,44 +159,31 @@ const CityInfoMain = () => {
     //     })
     // }
 
+    console.log(weather_url);
 
-    // 엔터로
+
+    // 날씨 데이타 가져오기
     const searchEngin = async (e)=>{
-        if(e.key === 'Enter') {
-            const data = await axios({
-                method: 'get',
-                url: weather_url
-            })
+        const data = await axios.get(weather_url)
+        try {
             console.log(data);
             setResult(data);
         }
+        catch(error) {
+            alert(error);
+        }
     }
-        
-    ////////////////////////////////////////
-            // if (result.data.weather[0].main === "Clouds"){
-            //     setImg('../public/WeatherImage/비.png');
-            // console.log(img);
+    useEffect(() => {
+        searchEngin();
+    },[])
+    //////////이미지로 변환하는 방법
+    // if (result.data.weather[0].main === "Clouds"){
+    //     setImg('../public/WeatherImage/비.png');
+    // console.log(img);
 
-
-    // url
-    // let url
-
+    ////////////////////////////////////지역 데이타 가져오기
     
-    // const [list,setList]=useState('');
-
-    // const infoList=()=>{
-    //     axios.get(url)
-    //     .then(res=>{
-    //         setList(res.data);
-    //     })
-    // }
-
-    // useEffect(()=>{
-    //     infoList();
-    // },[])
-
- 
-
+    
     return (
         <div id='cityinfo' style={muiStyle} >
        <Link to={'/place/placedetail'} state={{state:{pcontentId}}}>춘식이를 눌러주세요</Link>
@@ -210,12 +197,7 @@ const CityInfoMain = () => {
                     <input type='text' placeholder='도시를 입력하세요' value={location} 
                         onChange={(e)=>{
                             setLocation(e.target.value);
-                        }}
-                        onKeyDown={searchEngin}/>
-                    {/* <button type='button' className='btn' 
-                        onClick={(searchEngin)=>{
-
-                        }}>검색</button> */}
+                        }}/>
                 </div>
             </div>        
             <div style={{display:'flex'}}>
@@ -225,9 +207,10 @@ const CityInfoMain = () => {
                 {
                     Object.keys(result).length !== 0 && (
                         <div className='weatherCss'>
-                            <div className='city'>{result.data.name}</div>
-                            <div className='temperature'>{Math.round(result.data.main.temp-273.15)}도</div>
-                            <div className='sky'>{result.data.weather[0].main}</div>
+                            <div className='city'>{result.data.stnNm}</div>
+                            <div className='temperature'>{result.data.maxTa}도</div>
+                            <div className='temperature'>{result.data.minTa}도</div>
+                            <div className='sky'>{result.data.iscs.equals[1]}</div>
                         </div>
                     )
                 }

@@ -7,7 +7,6 @@ import cityinfoImg from '../../assets/images/IMG_1503.JPG';
 
 const Wrap = styled.div`
     position: relative;
-    padding-bottom: 70px;
     overflow: hidden;
    
     // 1. Global style 추가했던 것을 슬라이드 상단에 Wrap을 만들어 여기서 선언했습니다.
@@ -40,13 +39,13 @@ const Wrap = styled.div`
 `;
 
 const SlickItems = styled.div`
-    width: 100%;    
-    height: 400px;
+    width: 550px;    
+    height: 350px;
     text-align: center;
 
     img {
-        max-width: 100%;
-        height: 100%;
+        width: 500px;
+        height: 400px;
         vertical-align: top;
     }
 `;
@@ -56,7 +55,7 @@ const defaultButtonStyle = css`
     top: calc(50% - 50px);
     padding: 0;
     width: 30px;
-    height: 30px;
+    height: 110px;
     line-height: 1;
     border: none;
     border-radius: 50%;
@@ -173,21 +172,18 @@ const RecommendCorp = () => {
                     return (
                         
                         <SlickItems key={`${v.title}_${i}`}>
-                            <img src={v.src} />
+                            <img alt='' src={v.src} />
                         </SlickItems>
                     )
                 })}
             </Slick>
-
             <>
                 <PrevButton onClick={previous}>
-                    <span className="hidden">이전</span>
-                    
+                    <span className="hidden" class="material-symbols-outlined">arrow_back_ios</span>
                 </PrevButton>
 
                 <NextButton onClick={next}>
-                    <span className="hidden">다음</span>
-                    
+                    <span className="hidden" class="material-symbols-outlined">arrow_forward_ios</span>            
                 </NextButton>
             </>
         </Wrap>
