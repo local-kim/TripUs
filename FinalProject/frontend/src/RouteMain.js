@@ -37,7 +37,7 @@ const RouteMain = () => {
           <Route path="/profile"  element={<KakaoLogin/>} />
     
           {/* Planning */}
-          <Route path="/plan/calendar" element={<Calendar/>} />
+          <Route path="/plan/calendar/:cityNum" element={<Calendar/>} />
           <Route path="/plan" element={<Plan/>} />
           <Route path="/plan/:day" element={<DayPlan/>} />
           

@@ -17,7 +17,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import MainLogo from '../assets/images/MainLogo.png';
 
 const pages = ['여행지', '일정 만들기', '일정 보기', 'About'];
-const pageLinks = ['city/list', 'plan/calendar', 'plan/detail', ''];
+const pageLinks = ['city/list', 'plan/calendar/159', 'plan/detail/1', ''];
 const settings = ['Login', 'Mypage', 'Dashboard','Logout'];
 const link= ['login', 'mypage', 'dashboard','logout']
 
