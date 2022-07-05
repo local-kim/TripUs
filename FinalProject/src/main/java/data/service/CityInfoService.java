@@ -34,8 +34,8 @@ public class CityInfoService implements CityInfoServiceInter {
 		return cimapper.getTripData(id);
 	}
 	
-//	@Override
-//	public List<CityDto> getCityList() {
-//		return cimapper.getCityList();
-//	}
+	@Override
+	public List<CityDto> getCityList() {
+		return cimapper.getCityList();
+	}
 }

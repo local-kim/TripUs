@@ -21,6 +21,6 @@ public interface CityInfoMapper {
 	public TripDto getTripData(String id);
 	
 	
-//	// 도시 목록 가져오기
-//	public List<CityDto> getCityList();
+	// 도시 목록 가져오기
+	public List<CityDto> getCityList();
 }

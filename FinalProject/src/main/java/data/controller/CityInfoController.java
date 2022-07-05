@@ -38,9 +38,9 @@ public class CityInfoController {
 	}
 	
 	
-//	// 도시 목록 페이지
-//	@GetMapping("/list")
-//	public List<CityDto> getCityList(){
-//		return ciservice.getCityList();
-//	}
+	// 도시 목록 페이지
+	@GetMapping("/list")
+	public List<CityDto> getCityList(){
+		return ciservice.getCityList();
+	}
 }
