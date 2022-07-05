@@ -1,9 +1,10 @@
-import React, { useState,useRef, useEffect } from 'react';
+import React, { useState,useRef, useEffect, useCallback } from 'react';
 import { useNavigate ,useParams} from "react-router-dom";
 import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
 import './profile.css';
 import Avatar from 'react-avatar';
+import { set } from 'date-fns';
 
 
 
@@ -13,19 +14,30 @@ const Profile = () => {
  
 
     const {num,Currentpage}=useParams();
-
+    const [dto,setDto] =useState('');
     //url
     let deleteUrl = process.env.REACT_APP_SPRING_URL + "mypage/delete";
     let profileUrl = process.env.REACT_APP_SPRING_URL + "mypage/profile";
     let photonameUrl =  process.env.REACT_APP_SPRING_URL + "mypage/photo";
+    const navi=useNavigate();
+    const [data, setData] = useState({}); //데이터 한번에 받을때 쓰는법 
+    const [photo,setPhoto] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+    const [Image, setImage] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
+    const fileInput = useRef(null)
 
-    const getData=()=>{
+    
+    
+    let pagelistUrl = process.env.REACT_APP_SPRING_URL + "mypage/pagelist" //?currentPage=" + currentPage;
+    let photoUrl = process.env.REACT_APP_SPRING_URL + "save/";
+    let uploadUrl=process.env.REACT_APP_SPRING_URL+"mypage/upload";
+
+    const getData=useCallback(()=>{
         axios.get(profileUrl)
         .then(res=>{
             setDto(res.data.member);
             setImage(photoUrl + res.data.photo);
-            
-            console.log(res.data);
+            setPhoto(res.data.photo);
+            console.log(res.data.member);
         })
         .catch(err => {
             alert(err);
@@ -34,20 +46,12 @@ const Profile = () => {
         // axios.get(photonameUrl).then(res=>{
         //     setImage(photoUrl + res.data);
         // })
-
-       
-
-        
-    }
+ 
+    }, [profileUrl, photoUrl])
 
         useEffect(()=>{
             getData();
-        },[]);
-
-
-
-    const [dto,setDto] =useState('');
-    const navi=useNavigate();
+        },[getData]);
 
 
 
@@ -78,16 +82,8 @@ const Profile = () => {
             })
         }
 
-        const [data, setData] = useState({}); //데이터 한번에 받을때 쓰는법 
-        const [photo,setPhoto] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
-        const [Image, setImage] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png")
-        const fileInput = useRef(null)
-
         
-        
-        let pagelistUrl = process.env.REACT_APP_SPRING_URL + "mypage/pagelist" //?currentPage=" + currentPage;
-        let photoUrl = process.env.REACT_APP_SPRING_URL + "save/";
-        let uploadUrl=process.env.REACT_APP_SPRING_URL+"mypage/upload";
+       
         
     
         //file change 시 호출 이벤트
@@ -147,16 +143,20 @@ const Profile = () => {
 
     
      let updateUrl = process.env.REACT_APP_SPRING_URL + "mypage/update";
-    
+     let updateUrl2 = process.env.REACT_APP_SPRING_URL + "mypage/update2";
      const save=()=>{
-        console.log(dto);
+        console.log(photo);
         // setDto({
         //     ...dto,
         //     file_name: photo
         // });
-        axios.post(updateUrl,{'member': dto}).then(res=>{window.location.reload();})
+        axios.post(updateUrl,{photo}).then(res=>{});
 
-
+        // axios.post(updateUrl2,{tel:dto.tel, email:dto.email, address1:dto.address1, address2:dto.address2}).then(res=>{window.location.reload();});
+        axios.post(updateUrl2,{
+            ...dto,
+            registered_at: null
+        }).then(res=>{window.location.reload();});
         
     }
 
@@ -216,23 +216,43 @@ const Profile = () => {
 
                             <div className="data">
                                 <label>전화번호</label>
-                                <input type="text" id="userEmailArea" defaultValue={dto.tel}/>
+                                <input type="text" id="userEmailArea" value={dto.tel} onChange={(e) => {
+                                    setDto({
+                                        ...dto,
+                                        tel: e.target.value
+                                    })
+                                }}/>
                                      <b id="userEmailArea"></b>
                             </div>
 
                             <div className="data">
                                 <label>이메일</label>
-                                <input type="text" id="userEmailArea" defaultValue={dto.email}/>
+                                <input type="text" id="userEmailArea" value={dto.email} onChange={(e) => {
+                                    setDto({
+                                        ...dto,
+                                        email: e.target.value
+                                    })
+                                }}/>
                             </div>
                             <div className="data">
                                 <label>주소</label>
-                                <input type="text" id="userEmailArea"  defaultValue={dto.address1}/>
+                                <input type="text" id="userEmailArea"  value={dto.address1} onChange={(e) => {
+                                    setDto({
+                                        ...dto,
+                                        address1: e.target.value
+                                    })
+                                }}/>
                                      <b id="userEmailArea"></b>
                             </div>
 
                             <div className="data">
-                                <label>주소</label>
-                                <input type="text" id="userEmailArea"  defaultValue={dto.address2}/>
+                                <label>상세주소</label>
+                                <input type="text" id="userEmailArea"  value={dto.address2} onChange={(e) => {
+                                    setDto({
+                                        ...dto,
+                                        address2: e.target.value
+                                    })
+                                }}/>
                                      <b id="userEmailArea"></b>
                             </div>
 

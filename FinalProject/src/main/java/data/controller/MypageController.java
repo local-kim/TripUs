@@ -205,15 +205,32 @@ public class MypageController {
 		@PostMapping("/update")
 		public void updateProfile(@RequestBody ProfileDto dto) 
 		{
+			System.out.println(dto);
 			//업로드한 사진명
 			dto.setFile_name(photoName);
 			
 			dto.setMember_num(3);
 			
 			service.updateProfile(dto);
+			
 			photoName=null;
 		}
 		
+		@PostMapping("/update2")
+		public void updateProfile2(@RequestBody MemberDto dto)
+		{
+			System.out.println(dto);
+			
+			dto.setNum(3);
+			
+			int userNum=dto.getNum();
+			MemberDto userData=service.getData(userNum);
+			
+			dto.setRegistered_at(userData.getRegistered_at());
+			
+			service.updateProfile2(dto);
+			
+		}
 	
 		
 		
