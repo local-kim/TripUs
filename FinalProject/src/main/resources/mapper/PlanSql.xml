@@ -28,7 +28,7 @@
 <!--                                                -->
 
 	<select id="getNavNum" resultType="plan">
-		select * from itinerary, place where trip_num=1 and place_id=contentid group by `day` order by `day`;
+		select * from itinerary, place where trip_num=#{num} and place_id=contentid group by `day` order by `day`;
 	</select>
 
 	<select id="getPlanDatas" parameterType="int" resultType="plan">

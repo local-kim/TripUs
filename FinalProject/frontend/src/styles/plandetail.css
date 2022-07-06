@@ -12,6 +12,7 @@
 #plan-detail {
     margin-top: 15px;
     z-index: 999;
+    background-color: #fafafa;
 }
 
 #plan-detail header.MuiPaper-root {
@@ -382,7 +383,7 @@
     width: 730px;
     height: 40px;
     border: 0px solid black;
-    background: white;
+    background: #fafafa;
     z-index: 100;
     margin-top: -27px;
 }

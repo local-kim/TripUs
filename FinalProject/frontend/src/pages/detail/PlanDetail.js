@@ -178,7 +178,7 @@ const PlanDetail = () => {
     
     let detailUrl = SPRING_URL + "plan/list?num="+num;
     let dateUrl = SPRING_URL + "plan/pdate?num="+num;
-    let navUrl = SPRING_URL + "plan/nav"
+    let navUrl = SPRING_URL + "plan/nav?num="+num;
     
     const planGetData = () => {
         axios.get(detailUrl)
@@ -250,7 +250,7 @@ const PlanDetail = () => {
                             // day 만큼 반복문 돌리기
                             [...ndata] && [...ndata].map((nav, index) => (
                                 
-                                <div className={`scroll-item-btn ${index}`} id='nav-list'
+                                <div className={`scroll-item-btn`} id='nav-list'
                                  onClick={((e) => {
                                     // {e.currentTarget.hasAttribute.className!==({index}) ? e.currentTarget.classList.add('on') : e.currentTarget.classList.remove('on')}
                                     // e.currentTarget.classList('on') ? e.currentTarget.classList.remove('on') : e.currentTarget.classList.add('on')
@@ -321,7 +321,7 @@ const PlanDetail = () => {
             <div className='main-list'>
                 {/* 상단 메뉴바 */}
                 <div className='list-header'>
-                    <div className='header-menu on'>개요</div>
+                    <div className='header-menu'>개요</div>
                     <div className='header-menu-line'></div>
                     <div className='header-menu'>일정표</div>
                     <div className='header-menu-line'></div>
