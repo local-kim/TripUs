@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/join.css';
+import { GoogleLogin } from 'react-google-login';
 
 const LoginForm = () => {
     const [inputId, setInputId] = useState('')
@@ -73,7 +74,18 @@ const LoginForm = () => {
             alert(err);
         })
     }
+        //로그인 성공했을 떄 처리 함수 
     
+        const successGoogle = (response) => {
+            console.log(response);
+        }
+        
+        //로그인 실패했을 때 처리 함수 
+        const failGoogle = (response) => {
+            console.log(response);
+        }
+  
+  
     return (
         
         <div className="section_login">
@@ -114,6 +126,13 @@ const LoginForm = () => {
                         <a href={KAKAO_AUTH_URL}>Kakao Login</a>
                         </h1>
                         <div className="grid-naver" id='naverIdLogin'></div>
+            <GoogleLogin
+                clientId="362168925347-7h80oeftm2cub12235gac45dvhjo9fce.apps.googleusercontent.com"
+                buttonText="Login"
+                onSuccess={successGoogle}
+                onFailure={failGoogle}
+                cookiePolicy={'single_host_origin'}
+            />
                    
             </form>
             </div>
