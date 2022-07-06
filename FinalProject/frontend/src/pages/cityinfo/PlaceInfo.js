@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect,useState } from 'react';
+import React, { useEffect,useRef,useState } from 'react';
 import { useNavigate,useLocation, useParams} from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
@@ -35,8 +35,8 @@ const style = {
 const PlaceInfo=()=>{
 
        //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
-       const location = useLocation();
-      console.log("location",location.state.place); //contentId 받아온거
+      // const location = useLocation();
+      //console.log("location",location.state.place); //contentId 받아온거
        //const CityInfoMainContendId = location.state.state.pcontentId;
     
     //mui
@@ -71,8 +71,8 @@ const PlaceInfo=()=>{
 
     //지도api & 관광지 api 
     const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078]
-    const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
-    //const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; 현지언니 인증키
+    //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
+    const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; 일웅님 인증키
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
@@ -90,10 +90,14 @@ const PlaceInfo=()=>{
      let apiUrl2=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/categoryCode?ServiceKey=${placeApikey}&cat1=${cat1name}&cat2=${cat2name}&cat3=${cat3name}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
     //review
+    const reviewtxtRef = useRef('');
+    const reviewstarsRef = useRef('');
+
      const [refreshReview,setRefreshReview]=useState();
      const [avgStars,setAvgStars]=useState();
      const [place_id,setPlace_Id]=useState('');
      const [detailData,setDetailData]=useState('');
+     const [editDetailData,setEditDetailData]=useState('');
      //setPlace_Id(contentId);
      const [member_num,setMember_Num]=useState('');
      const [stars,setStars]=useState();
@@ -164,22 +168,40 @@ const PlaceInfo=()=>{
 
            //modal mui
            const [open, setOpen] = React.useState(false);
+           const [updateModalOpen,setUpdateModalOpen] = React.useState(false);
 
           // const handleOpen = () =>
-           const handleClose = () => setOpen(false);
-
+           const handleClose = () =>{ setOpen(false);  }
+           const edithandleClose = () =>{setUpdateModalOpen(false);}
          //상세보기 호출할 함수
          const onDetail=(num)=>{
           axios.get(detailUrl+num).then(res=>{
               setDetailData(res.data);
               console.log("detail->",res.data);
               setOpen(true);
+             
           })
          }
 
+         //수정상세보기 호출함수
+         const onEditReviewDetail=(num)=>{
+      
+          axios.get(detailUrl+num).then(res=>{
+            setEditDetailData(res.data);
+            console.log("editdetail:",res.data);
+            //이름 , num
+            setUpdateModalOpen(true);
+           
+        })
+      }
+
          //수정하는 함수 이벤트
-         const onUpdate=()=>{
-          axios.post(updateUrl,{stars,content})
+         const onUpdate=(num)=>{
+          onDetail(num);
+          
+          // axios.post(updateUrl+num,{stars,content}).then(res=>{
+          //   onDetail();
+          // })
          }
 
     useEffect(() => {
@@ -287,7 +309,7 @@ const PlaceInfo=()=>{
                   <div>
                     {
                       reviewData&&reviewData.map((row,idx)=>(
-                        <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}} onClick={()=>{onDetail(row.num);}}>
+                        <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}} >
                         <div style={{flexDirection:'column',justifyContent:'center'}}>
                           <div>
                          <img src={Ayong} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
@@ -297,7 +319,7 @@ const PlaceInfo=()=>{
                           </div>
                           </div>  
                           <div style={{display:'flex',flexDirection:'column',marginLeft:'15px'}}>
-                          <div style={{backgroundColor:'white',height:'50px',width:'600px',padding:'5px 0px 0px 5px'}}>
+                          <div style={{backgroundColor:'white',height:'50px',width:'600px',padding:'5px 0px 0px 5px'}} onClick={()=>{onDetail(row.num);}}>
                        {row.content}
                        </div>
                        <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
@@ -306,12 +328,14 @@ const PlaceInfo=()=>{
                        <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
                        </div>
                        <div style={{flexGrow:'0',marginRight:'10px'}}>
-                       <span>수정</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span className='myreviewDelete' style={{cursor:'pointer'}} onClick={()=>{
+                       <span style={{cursor:'pointer'}} onClick={()=>{onEditReviewDetail(row.num);}}>수정</span>
+                       &nbsp;&nbsp;|&nbsp;&nbsp;
+                       <span className='myreviewDelete' style={{cursor:'pointer'}} onClick={()=>{
                         onDelete(row.num);
                        }}>삭제</span>
                     </div>
                        </div></div>
-
+                      
                       </div>
                       ))
 
@@ -380,12 +404,14 @@ const PlaceInfo=()=>{
   </svg>
 </label>
 </div>
+
+{/* <button type='button' onClick={()=>{onEditReviewDetail(18);}}>수우우ㅜ우ㅜ우우우우정</button> */}
 </div>
 
                     <p style={{fontSize:'14px',margin:'0 auto'}}>{cattypename}</p>
                     <i className="fa-solid fa-map-location-dot" style={{color:'#1976d2'}}></i>&nbsp;&nbsp;{placeAddr}<br/>
                     {/*별점 좋아요수 */}
-                    <Rating name="half-rating-read" defaultValue={avgStars} precision={0.1} readOnly/>{avgStars}
+                    {/* <Rating name="half-rating-read" defaultValue={avgStars} precision={0.1} readOnly/>{avgStars} */}
                     <i className="fa-solid fa-star" style={{color:'#faaf00'}}></i>&nbsp;&nbsp;{avgStars}<br/>
                     <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{liked}
                 </div>
@@ -420,7 +446,7 @@ const PlaceInfo=()=>{
 
                                     {/* 상세보기 */}
 
-                                    <div>
+            <div>
                 
                   <Modal
                     open={open}
@@ -444,7 +470,7 @@ const PlaceInfo=()=>{
                         <label>{placeTitle}</label>&nbsp;/&nbsp;
                         <label>{detailData.created_at}</label>&nbsp;/&nbsp;
                         </div>
-                       <Rating name="read-only" value={detailData.stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/>
+                       <Rating name="read-only" ref={reviewstarsRef} value={detailData.stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/>
                         </div>
                       </div>
                       </Typography>
@@ -454,14 +480,61 @@ const PlaceInfo=()=>{
                          <img src={Ayong} alt="프로필사진" style={{width:'300px'}}/>
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                         <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}}>{detailData.content}</pre>
+                         <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData.content}</pre>
                       </div>
 
                       <div style={{justifyContent:'center',display:'inline-flex'}}>
-                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>수정</button>&nbsp;&nbsp;
+                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{onEditReviewDetail(detailData.num);}}>수정</button>&nbsp;&nbsp;
                          <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
                         onDelete(detailData.num);
                        }}>삭제</button>
+                      </div>
+                      </Typography>
+                    </Box>
+                  </Modal>
+                </div>
+              
+
+
+                <div>
+                
+                  <Modal
+                    open={updateModalOpen}
+                    onClose={edithandleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography id="modal-modal-title" variant="h6" component="h2">
+                      <div style={{display:'inline-flex',width:'450px',justifyContent:'left'}}>
+                        <div>
+                          <img src={Ayong} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                      </div>
+
+                        <div style={{marginLeft:'10px',fontSize:'16px'}}>
+                          <div>
+                          <label>{editDetailData.name}</label>
+                          </div>
+
+                          <div style={{display:'inline-flex'}}>
+                        <label>{placeTitle}</label>&nbsp;/&nbsp;
+                        <label>{editDetailData.created_at}</label>&nbsp;/&nbsp;
+                        </div>
+                       <Rating name="read-only" value={editDetailData.stars}  size="small" precision={0.5} style={{marginTop:'5px'}}/>
+                        </div>
+                      </div>
+                      </Typography>
+
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      <div style={{justifyContent:'center',display:'flex'}}>
+                         <img src={Ayong} alt="프로필사진" style={{width:'300px'}}/>
+                      </div>
+                      <div style={{justifyContent:'center',display:'flex'}}>
+                         <textarea style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} defaultValue={editDetailData.content} ></textarea>
+                      </div>
+
+                      <div style={{justifyContent:'center',display:'inline-flex'}}>
+                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>수정완료</button>
                       </div>
                       </Typography>
                     </Box>
