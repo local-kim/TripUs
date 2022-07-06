@@ -8,6 +8,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import '../../styles/placeinfo.css';
 import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Ayong from '../../assets/images/IMG_1503.JPG';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal } from '@mui/material';
@@ -34,8 +35,8 @@ const style = {
 const PlaceInfo=()=>{
 
        //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
-       //const location = useLocation();
-      // console.log("location",location.state.state.pcontentId); //contentId 받아온거
+       const location = useLocation();
+      console.log("location",location.state.place); //contentId 받아온거
        //const CityInfoMainContendId = location.state.state.pcontentId;
     
     //mui
@@ -90,7 +91,7 @@ const PlaceInfo=()=>{
 
     //review
      const [refreshReview,setRefreshReview]=useState();
-     const [avgStars,setAvgStars]=useState(0);
+     const [avgStars,setAvgStars]=useState();
      const [place_id,setPlace_Id]=useState('');
      const [detailData,setDetailData]=useState('');
      //setPlace_Id(contentId);
@@ -107,6 +108,7 @@ const PlaceInfo=()=>{
     let insertUrl=process.env.REACT_APP_SPRING_URL+"review/insert";
     let deleteUrl=process.env.REACT_APP_SPRING_URL+"review/delete?num=";
     let detailUrl=process.env.REACT_APP_SPRING_URL+"review/detail?num=";
+    let updateUrl=process.env.REACT_APP_SPRING_URL+"review/update?num=";
     // let uploadUrl=process.env.REACT_APP_SPRING_URL+"board/upload";
     
     // let photoUrl=process.env.REACT_APP_SPRING_URL+"save/";
@@ -173,6 +175,11 @@ const PlaceInfo=()=>{
               console.log("detail->",res.data);
               setOpen(true);
           })
+         }
+
+         //수정하는 함수 이벤트
+         const onUpdate=()=>{
+          axios.post(updateUrl,{stars,content})
          }
 
     useEffect(() => {
@@ -378,6 +385,7 @@ const PlaceInfo=()=>{
                     <p style={{fontSize:'14px',margin:'0 auto'}}>{cattypename}</p>
                     <i className="fa-solid fa-map-location-dot" style={{color:'#1976d2'}}></i>&nbsp;&nbsp;{placeAddr}<br/>
                     {/*별점 좋아요수 */}
+                    <Rating name="half-rating-read" defaultValue={avgStars} precision={0.1} readOnly/>{avgStars}
                     <i className="fa-solid fa-star" style={{color:'#faaf00'}}></i>&nbsp;&nbsp;{avgStars}<br/>
                     <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{liked}
                 </div>
@@ -400,6 +408,7 @@ const PlaceInfo=()=>{
       setStarsValue(newValue);
       setStars(newValue);
     }}/> 
+  <input type='file' name='upload' multiple className='fa-solid fa-images' value=''/>
  </Box> 
              </div> 
             <div className='place_review_write'>
@@ -458,42 +467,6 @@ const PlaceInfo=()=>{
                     </Box>
                   </Modal>
                 </div>
-          {/* <div style={{width:'500px',height:'800px',backgroundColor:'white',display:'flex',flexDirection:'column'}} className="detail_modal">
-              <div style={{display:'flex',justifyContent:'right'}}>
-                <button type='button' style={{webkitAppearance: 'none',mozAppearance: 'none',appearance: 'none',backgroundColor: 'transparent',border:0,width:'30px',height:'30px'}}
-                onClick={(e)=>{
-                 window.close(e.target.value);
-                }}>x</button></div>
-              <div style={{display:'inline-flex',width:'450px',justifyContent:'center'}}>
-                <div>
-              <img src={Ayong} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
-              </div>
-
-                <div style={{marginLeft:'10px'}}>
-                  <div>
-                  <label>단춘식</label>
-               
-                  </div>
-                  <div>
-                <label>{placeTitle}</label>&nbsp;/&nbsp;
-                <label>2022-06-30</label>&nbsp;/&nbsp;
-                <label>🌟🌟🌟</label>
-                </div>
-                </div>
-              </div>
-              <br/>
-              <div style={{justifyContent:'center',display:'flex'}}>
-              <img src={Ayong} alt="프로필사진"/>
-              </div>
-              <div style={{justifyContent:'center',display:'flex'}}>
-                  <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}}></pre>
-              </div>
-              <div style={{justifyContent:'center',display:'inline-flex'}}>
-                <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>수정</button>&nbsp;&nbsp;
-                <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>삭제</button>
-              </div>
-          </div> */}
-        
         </div>
         </div>
     );

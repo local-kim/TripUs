@@ -167,6 +167,7 @@ const PlanDetail = () => {
     const [ddata, setDdata] = useState('');
     const [ndata, setNdata] = useState('');
     const [pdata, setPdata] = useState('');
+    const [pcontentId,setPcontentId] =useState();
 
     // 상단 이미지 내부내용 반복문 없이 0번데이터만 데이터가져올때 입력
     const [placeName, setPlaceName] = useState('');
@@ -397,7 +398,8 @@ const PlanDetail = () => {
                                             <div className='spot-content-box'>
                                                 <div className='spot-name'
                                                     onClick={() => {
-                                                        navi('../../../place/placedetail', state={state:day.contentid})
+                                                        //setPcontentId(day.contentid);
+                                                        navi('../../../place/placedetail', {state:{place:day.contentid}})
                                                     }}>
                                                     {day.title}
                                                 </div>
