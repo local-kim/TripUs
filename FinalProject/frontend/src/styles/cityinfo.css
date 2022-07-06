@@ -100,3 +100,36 @@
 #cityinfo .slick-dots{
     margin-bottom: 20px;
 }
+
+#cityinfo .moreBtn {
+    background-color: #f3eeee;
+    margin-left: 285px;
+    margin-top: 20px;
+}
+
+#cityinfomore .css-1h9z7r5-MuiButtonBase-root-MuiTab-root{
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+#cityinfomore .qqq{
+    margin-left: 40px;
+}
+
+#cityinfomore .more-input {
+    margin-right: 5px;
+}
+
+#cityinfomore .more-input-b {
+    margin-right: 93px;
+}
+
+#cityinfomore .more-select {
+    margin-left: 900px;
+}
+
+#cityinfomore .more-image {
+    border: 1px solid black;
+    width: 200px;
+    height: 150px;
+}

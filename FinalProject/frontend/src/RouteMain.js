@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { FinalHead, Footer, Header, Main, Menu } from "./components";
 import './App.css';
 import './AppHeemin.css';
-import { CityInfoMain, PlaceInfo } from "./pages/cityinfo";
+import { CityInfoMain, CityinfoMore, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
 import { JoinForm, Auth,LoginForm, KakaoLogin } from "./pages/login";
 import { PlanDetail } from "./pages/detail";
@@ -27,6 +27,7 @@ const RouteMain = () => {
 
           {/* cityinfo */}
           <Route path="/city/:num" element={<CityInfoMain/>} />
+          <Route path="/city/infomore" element={<CityinfoMore/>}/>
           {/* <Route path="/city/weather/:num" element={<CityInfoMain/>} /> */}
           {/* <Route path="/city/placename/:name" element={<CityInfoMain/>} /> */}
 

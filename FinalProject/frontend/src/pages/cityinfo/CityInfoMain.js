@@ -14,9 +14,11 @@ import '../../styles/cityinfo.css';
 import cityinfoImg from '../../assets/images/IMG_1503.JPG';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CityInfoImage from './CityInfoImage';
+import CityInfoMore from './CityInfoMore';
+
 
 const CityInfoMain = () => {
-
+    const navi=useNavigate();
 
     //////////////////////////////관광명소 api contentId 받아오기
      const pcontentId=126078; //2360786
@@ -70,18 +72,18 @@ const CityInfoMain = () => {
     useEffect(() => {
         PlaceUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
         // console.log(wthPlaceUrl);
-        weatherData();
+        place_Data();
     }, [num]);
-    const weatherData=()=>{
+    const place_Data=()=>{
         // const data = await axios({
         //     method: 'get',
-        //     url: wthPlaceUrl
+        //     url: PlaceUrl
         // })
         //     console.log(data);
         //     setWthNum(data);
         axios.get(PlaceUrl)
         .then(res => {
-            console.log(res.data);
+            //console.log(res.data);
             setWthNum(res.data);            
         })
         .catch(err => {
@@ -97,7 +99,7 @@ const CityInfoMain = () => {
     //     trip_url=process.env.REACT_APP_SPRING_URL+"cityinfo/trip?id="+id;
     //     // console.log(wthPlaceUrl);
     //     trip_data();
-    // }, [num]);
+    // }, [id]);
 
     // // db에서 num 데이터 가져오기
     
@@ -116,30 +118,34 @@ const CityInfoMain = () => {
     // }
     
 
-    /////////////////////////////////////////// 날씨 API
-    // const [stnId,setStnId]=useState('');
-    // const [stnNm,setStnNm]=useState('');
-    // const [maxTa,setMaxTa]=useState('');
-    // const [minTa,setMinTa]=useState('');
-    // const [iscs,setIscs]=useState('');
+    ///////////////////////////////////////////////////////////// 날씨 API
+    const [stnId,setStnId]=useState('');
+    const [stnNm,setStnNm]=useState('');
+    const [maxTa,setMaxTa]=useState('');
+    const [minTa,setMinTa]=useState('');
+    const [iscs,setIscs]=useState('');
     // api key
 
     // const API_ID="pN8sverBEceulMUULSyvZ";
     // const API_KEY="QWZmBxA43k5EL7jQRyF5gMWtHEXBAgmpBjVXmgfh";
 
     //const API_KEY="eeb9140b1a18675f963cf17ab2081baf";     //openweathermap 사이트 APIKEY
-    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 기상청 APIKEY
+    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
+    //const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; // 누군가꺼
+
 
     // url
+    const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=2&dataType=xml&dataCd=ASOS&dateCd=DAY&startDt=20210703&endDt=20210704&stnIds=${wthNum.num}`       // 기상청 과거데이터 다됨
     //const weather_url=`https://api.openweathermap.org/data/2.5/forecast/daily?q=${location}&cnt=3&appid=${API_KEY}`         // 최대예측 16일까지 일일데이터 (유료)
     //const weather_url=`https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}`             // 5일간 3시간 간격
     //const weather_url=`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`            // 현재 날씨
     //const weather_url=`https://pro.openweathermap.org/data/2.5/forecast/hourly?q=${location}&appid=${API_KEY}`    // 4일간 예측 (유료)
-    const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=2&dataType=xml&dataCd=ASOS&dateCd=DAY&startDt=20210703&endDt=20210704&stnIds=${wthNum.num}`       // 기상청 과거데이터 다됨
     //const weather_url=`https://api.aerisapi.com/conditions/summary/${location}?format=json&from=&to=&client_id=${API_ID}&client_secret=${API_KEY}`
     
-    const [location,setLocation]=useState('');
-    const [result,setResult]=useState([]);
+    
+    const [location,setLocation]=useState('');  // 검색 input 지역 담는 변수
+    const [result,setResult]=useState([]);  // 날씨 데이터 담는 배열 변수
+
     // const [img,setImg]=useState('');
     // const [startDt,setStartDt]=useState('20210703');
     // const [endDt,setEndDt]=useState('20210705');
@@ -162,27 +168,91 @@ const CityInfoMain = () => {
     console.log(weather_url);
 
 
-    // 날씨 데이타 가져오기
-    const searchEngin = async (e)=>{
-        const data = await axios.get(weather_url)
-        try {
-            console.log(data);
-            setResult(data);
-        }
-        catch(error) {
-            alert(error);
-        }
-    }
-    useEffect(() => {
-        searchEngin();
-    },[])
+    // // 날씨 데이타 가져오기
+    // const Weather_Data = async (e)=>{
+    //     const w_data = await axios.get(weather_url)
+    //     try {
+    //         //console.log([w_data.response.body.items.item]);
+    //         setResult(w_data.response.body.items.item);
+    //     }
+    //     catch(err) {
+    //         //console.log(err.w_data);
+    //     }
+    // }
+    // useEffect(() => {
+    //     Weather_Data();
+    // },[])
+    //console.dir(result);
     //////////이미지로 변환하는 방법
     // if (result.data.weather[0].main === "Clouds"){
     //     setImg('../public/WeatherImage/비.png');
     // console.log(img);
 
-    ////////////////////////////////////지역 데이타 가져오기
+    //////////////////////////////////////////////////////// 지역 데이타 가져오기
+    // const [areaCode,setAreaCode]=useState('');
+    // const [sigunguCode,setSigunguCode]=useState('');
+    // const [category,setCategory]=useState('');
+    // const [categoryPlace1,setCategoryPlace1]=useState([]);
+    // const [categoryPlace2,setCategoryPlace2]=useState([]);
+    // const [categoryPlace3,setCategoryPlace3]=useState([]);
+    // const [places, setPlaces] = useState([]);
     
+
+    // 추천 장소 url(arrange=P)
+    // let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    // if(sigunguCode){  // 시군구 코드가 있는 도시이면
+    //     areaUrl += `&sigunguCode=${sigunguCode}`;
+    // }
+
+    // useEffect(() => {
+    //     // 추천 장소 : 처음 렌더링 시
+    //       axios.get(areaUrl)
+    //       .then((res) => {
+    //         console.dir(res.data.response.body.items.item);
+    //         setPlaces(res.data.response.body.items.item);
+    //         // setCategoryPlace(res.data.response.body.items.item);
+    //       }).catch((err) => {
+    //         console.log(err.data);
+    //       });
+    // }, []);
+
+
+
+    // // 섞여서 나오니까 각각 맞는 카테고리에 해당되는거 넣는거
+    // // 카테고리 필터링
+    // useEffect(() => {
+    //     // if(category == ''){
+    //     // setCategoryPlace(places);
+    //     // return;
+    //     // }
+    //     if(category == 12){ // 관광지, 문화시설
+    //     console.log(category);
+    //     setCategoryPlace1(places.filter((place, index) => place.contenttypeid == '12' || place.contenttypeid == '14'));
+    //     console.log(categoryPlace1);
+    //     }
+    //     else if(category == 39){  // 음식점
+    //     // console.log(category);
+    //     setCategoryPlace2(places.filter((place, index) => place.contenttypeid == '39'));
+    //     // console.log(categoryPlace2);
+    //     }
+    //     else{ // 쇼핑
+    //     // console.log(category);
+    //     setCategoryPlace3(places.filter((place, index) => place.contenttypeid == '38'));
+    //     // console.log(categoryPlace3);
+    //     }
+    // }, [category, places]); // 값이 바뀔 때마다 랜더링
+
+
+
+
+    /////////////////////////////////// 스크롤 내리기
+    // // 선택한 장소를 dayPlan에 추가
+    // const addPlace = (place) => {
+    //     // setDayPlan([
+    //     // ...dayPlan,
+    //     // place
+    //     // ]);
+    // }
     
     return (
         <div id='cityinfo' style={muiStyle} >
@@ -191,7 +261,7 @@ const CityInfoMain = () => {
 
             <div style={{display:'flex', marginBottom:'20px'}}>
                 <div className='title'>
-                    <b>{data.name}</b>
+                    <b>{wthNum.name}</b>
                 </div>
                 <div className='searchCity'>
                     <input type='text' placeholder='도시를 입력하세요' value={location} 
@@ -206,10 +276,10 @@ const CityInfoMain = () => {
                 </div>
                 {
                     Object.keys(result).length !== 0 && (
-                        <div className='weatherCss'>
+                        <div className='weather-css'>
                             <div className='city'>{result.data.stnNm}</div>
-                            <div className='temperature'>{result.data.maxTa}도</div>
-                            <div className='temperature'>{result.data.minTa}도</div>
+                            <div className='temperature-max'>{result.data.maxTa}도</div>
+                            <div className='temperature-min'>{result.data.minTa}도</div>
                             <div className='sky'>{result.data.iscs.equals[1]}</div>
                         </div>
                     )
@@ -222,9 +292,10 @@ const CityInfoMain = () => {
                         <TabContext value={value} >
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <TabList onChange={handleChange} aria-label="lab API tabs example">
-                                    <Tab label="관광명소" value="1" />
-                                    <Tab label="음식점" value="2" />
-                                    <Tab label="쇼 핑" value="3" />
+                                    <Tab label="관광명소12" value="1" />
+                                    <Tab label="음식점39" value="2" />
+                                    <Tab label="쇼 핑38" value="3" />
+                                    <Tab label="더보기" value="4" />
                                 </TabList>
                             </Box>
                                 <TabPanel value="1">
@@ -259,6 +330,10 @@ const CityInfoMain = () => {
                                             ))
                                         }
                                     </div>
+                                    <button type='button' className='btn btn-muted moreBtn' 
+                                        onClick={()=>{
+                                            naVi("../city/infomore")
+                                        }}>????개 더보기</button>
                                 </TabPanel>
                                 <TabPanel value="2">
                                     <div style={{display:'flex'}} className='row'>
@@ -292,6 +367,10 @@ const CityInfoMain = () => {
                                             ))
                                         }
                                     </div>
+                                    <button type='button' className='btn btn-muted moreBtn' 
+                                        onClick={()=>{
+                                            naVi("../city/infomore")
+                                        }}>????개 더보기</button>
                                 </TabPanel>
                                 <TabPanel value="3">
                                     <div style={{display:'flex'}} className='row'>
@@ -325,9 +404,39 @@ const CityInfoMain = () => {
                                             ))
                                         }
                                     </div>
+                                    <button type='button' className='btn btn-muted moreBtn' 
+                                        onClick={()=>{
+                                            naVi("../city/infomore")
+                                        }}>????개 더보기</button>
                                 </TabPanel>
+                                {/* <div className='place-list'>
+                                    {
+                                        [1,2,3].map((item)=>(
+                                            <div>
+                                                {
+                                                    // TODO: 끝까지 스크롤하면 장소 더 불러오기
+                                                    // places && places.map((place, index) => (
+                                                    categoryPlace{item} && categoryPlace{item}.map((place, index) => (
+                                                        (categoryPlace{item}.length - 1 == index) ? (
+                                                            <div className='place-list-item' key={index} ref={ref}>
+                                                            <PlaceItem place={place} addPlace={addPlace}/>
+                                                            <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
+                                                            </div>
+                                                        ) : (
+                                                            <div className='place-list-item' key={index}>
+                                                            <PlaceItem place={place} addPlace={addPlace}/>
+                                                            <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
+                                                            </div>
+                                                        )
+                                                    ))
+                                                }
+                                            </div>                                                
+                                        ))
+                                    }
+                                </div> */}
                         </TabContext>
                     </Box>
+                    
                 </div>
                 <div className='scheduleContainer'>
                     <div className='scheduleBtnBox'>
@@ -349,6 +458,7 @@ const CityInfoMain = () => {
                     }
                 </div>
             </div>
+            
         </div>
 
     );
