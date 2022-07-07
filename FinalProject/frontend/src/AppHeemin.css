@@ -47,7 +47,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   
   .search_area {
     width: 640px;
-    height: 138px;
+    height: 150px;
     border-radius: 3px;
     margin: 0 auto;
     margin-top: 60px;
@@ -456,3 +456,20 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     line-height: 538px;
     
   }
+
+  #searchAuto{
+  
+      background: url(https://www.earthtory.com/res/img/common/mobile/ic_catea6.png) no-repeat;
+      background-size: 20px;
+      background-origin: content-box;
+      background-position: 0px;
+      font-size: large;
+      color: white;
+      cursor: pointer;
+      
+  }
+  
+  a :hover{
+    background-color: red;
+  }
+

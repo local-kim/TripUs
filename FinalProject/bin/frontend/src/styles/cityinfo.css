@@ -1,0 +1,102 @@
+#cityinfo .regionImg {
+    width: 500px;
+    height: 300px;
+}
+
+#cityinfo .title {
+    font-weight: bold;
+    color: skyblue;
+    font-size: 3em;
+}
+
+#cityinfo .css-13xfq8m-MuiTabPanel-root {
+    padding: 0px 16px 16px 16px;
+}
+
+#cityinfo .row>* {
+    margin-top: 15px;
+}
+
+#cityinfo .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+    font-size: 1.6em;
+}
+
+#cityinfo .css-1t6e9jv-MuiCardActions-root {
+    margin-left: 50px;
+}
+
+#cityinfo .css-46bh2p-MuiCardContent-root {
+    padding: 0px 0px 0px 16px;
+}
+
+#cityinfo .scheduleContainer {
+    margin-left: 20px;
+}
+
+#cityinfo .scheduleBtn {
+    width: 120px;
+    height: 40px;
+    font-size: 13px;
+    margin-right: 5px;
+    color: gray;
+    background-color: beige;
+}
+
+#cityinfo .scheduleBtnBox {
+    display: flex;
+    margin-left: 100px;
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+
+#cityinfo .aa {
+    border: 4px solid skyblue;
+    border-radius: 8px;
+    height: 90px;
+    margin: 15px 0px 15px 0px;
+    vertical-align: middle;
+    font-size: 20px;
+    color: gray;
+    padding: 13px 10px 10px 20px;
+}
+
+#cityinfo .bb {
+    font-size: 2em;
+    color: skyblue;
+}
+
+#cityinfo .aa h5 {
+    font-weight: bold;
+}
+
+#cityinfo .searchCity {
+    margin-left: 300px;    
+}
+#cityinfo .searchCity input{
+    width: 300px;    
+    height: 40px;
+    border-radius: 8px;
+    border-color: skyblue;
+    color: gray;
+}
+
+#cityinfo .weatherCss {
+    width: 300px;
+    border: 1px solid black;
+    margin-left: 50px;
+}
+
+
+#cityinfo .container {
+    width: 500px;   
+    display: block;
+    background: #fff;
+    width: 500px;
+    padding: 0px
+    /* padding: 40px 0; */
+    /* box-shadow: 0 0 8px rgb(0 0 0 / 10%); */
+}
+
+#cityinfo .slick-dots{
+    margin-bottom: 20px;
+}
