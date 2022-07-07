@@ -4,9 +4,13 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import Avatar from '@mui/material/Avatar';
+import Stack from '@mui/material/Stack';
+import { deepOrange, deepPurple } from '@mui/material/colors';
 
 
 const CityinfoMore = () => {
+
 
     //////////////////////////////// MUi 메뉴 탭
     const [value, setValue] = useState("1");
@@ -38,7 +42,7 @@ const CityinfoMore = () => {
                     </Box>
                     <TabPanel value="1">
                         <div style={{display:'flex'}} className='row'>
-                            <div className='qqq'>
+                            <div className='col-sm-11 qqq'>
                                 <input type="checkbox" className='more-input'></input><b className='more-input-b'>1111</b>
                                 <input type="checkbox" className='more-input'></input><b className='more-input-b'>2222</b>
                                 <input type="checkbox" className='more-input'></input><b className='more-input-b'>3333</b>
@@ -51,7 +55,7 @@ const CityinfoMore = () => {
 
                             <div style={{display:'flex'}}>
                                 <div>총 ???개</div>
-                                <div className='more-select'>
+                                <div className='more-select' >
                                     <select>
                                         <option>인기순</option>
                                         <option>이름순</option>
@@ -60,25 +64,29 @@ const CityinfoMore = () => {
                                     </select>
                                 </div>
                             </div>
-                            <div style={{display:'flex',border:'1px solid black', width:'1000px'}}>
-                                <div className='more-image'>image</div>
-                                <div>
+                            <div style={{display:'flex', width:'1000px',border:'1px solid black'}}>
+                                <div className='more-image'>
+                                    <img alt='' src='../../../city_image/busan.jpg'></img>
+                                </div>
+                                <div style={{marginTop:'10px',marginLeft:'5px'}}>
                                     <div style={{display:'flex'}}>
-                                        <div style={{border:'1px solid black'}}>
-                                            <div>장소 이름</div>
-                                            <div><span></span>주소</div>
-                                            <div>장소 설명</div>
+                                        <div style={{width:'500px'}}>
+                                            <div className='more-location'>광안 대교</div>
+                                            <div className='more-addr'><span class="material-symbols-outlined">pin_drop</span>부산시 어딘가</div>
+                                            <div className='more-content'>야경이 쩝니다ㅏㅏㅏㅏㅏㅏㅏㅏ</div>
                                         </div>
-                                        <div style={{display:'flex', border:'1px solid black',marginLeft:'600px'}}>
-                                            <div>클립,</div>
-                                            <div>일정추가</div>
+                                        <div style={{display:'flex', marginLeft:'150px'}}>
+                                            <Stack direction="row" spacing={2}>
+                                                <Avatar sx={{ bgcolor: deepOrange[500] }}><span class="material-symbols-outlined">attach_file</span></Avatar>
+                                                <Avatar sx={{ bgcolor: deepPurple[500] }}><span class="material-symbols-outlined">event_available</span></Avatar>
+                                            </Stack>
+                                            {/* <div className='more-clipbtn'>클립,</div>
+                                            <div>일정추가</div> */}
                                         </div>
                                     </div>
-                                    <div style={{display:'flex',border:'1px solid black'}}>
-                                        <div><span class="material-symbols-outlined">attach_file</span>클립</div>&emsp;
-                                        <div><span class="material-symbols-outlined">star</span>평균평점</div>&emsp;
-                                        <div>
-                                            <img alt='' src='../../public/city_detail_image/tag.png'></img>서브카테고리</div>
+                                    <div style={{display:'flex', marginTop:'20px'}}>
+                                        <div><span class="material-symbols-outlined">attach_file</span>423</div>&emsp;
+                                        <div><span class="material-symbols-outlined">star</span>7.0/10.0</div>&emsp;
                                     </div>
                                 </div>
                             </div>
