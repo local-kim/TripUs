@@ -38,4 +38,8 @@
 	<select id="getDate" parameterType="int" resultType="pdate">
 		SELECT * FROM final_project.trip, city where city_num=city.num and trip.num=#{num};
 	</select>
+	
+	<select id="getPlanMember" parameterType="int" resultType="pdate">
+		SELECT * FROM final_project.trip, member where member.num=member_num and trip.num=#{num};
+	</select>
 </mapper>

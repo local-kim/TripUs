@@ -67,4 +67,8 @@ public class PlanService implements PlanServiceInter {
 	public List<PlanDateDto> getDate(int num) {
 		return planMapper.getDate(num);
 	}
+	
+	public List<PlanDateDto> getPlanMember(int num) {
+		return planMapper.getPlanMember(num);
+	}
 }

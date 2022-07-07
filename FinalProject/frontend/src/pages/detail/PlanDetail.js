@@ -12,8 +12,10 @@ import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { daysToWeeks, format } from 'date-fns';
 import { da } from 'date-fns/locale';
+import { differenceInDays } from 'date-fns';
 import { addDays } from 'date-fns';
-
+import { useDispatch } from 'react-redux';
+import { setPlanInfo } from '../../modules/planner';
 
 // 카카오맵
 
@@ -167,7 +169,6 @@ const PlanDetail = () => {
     const [ddata, setDdata] = useState('');
     const [ndata, setNdata] = useState('');
     const [pdata, setPdata] = useState('');
-    const [pcontentId,setPcontentId] =useState();
 
     // 상단 이미지 내부내용 반복문 없이 0번데이터만 데이터가져올때 입력
     const [placeName, setPlaceName] = useState('');
@@ -175,12 +176,14 @@ const PlanDetail = () => {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [duringDay, setDuringDay] = useState('');
+    const [userName, setUserName] = useState('');
     
     const SPRING_URL = process.env.REACT_APP_SPRING_URL;
     
     let detailUrl = SPRING_URL + "plan/list?num="+num;
     let dateUrl = SPRING_URL + "plan/pdate?num="+num;
     let navUrl = SPRING_URL + "plan/nav?num="+num;
+    let nameUrl = SPRING_URL + "plan/name?num="+num;
     
     // 일정관련 전체 데이터 
     const planGetData = () => {
@@ -196,7 +199,7 @@ const PlanDetail = () => {
             alert(err.data);
         })
     }
-    // 계획 기간 
+    // 여행 날짜 및 기간 
     const planDate = () => {
         axios.get(dateUrl)
         .then(res => {
@@ -220,16 +223,23 @@ const PlanDetail = () => {
         })
     }
 
+    const planMember = () => {
+        axios.get(nameUrl)
+        .then(res => {
+            setUserName(res.data[0].name);
+        }).catch(err => {
+            alert(err.data);
+        })
+    }
+
     useEffect(() => {
         planGetData();
         planGetNav();
         planDate();
+        planMember();
     },[])
     
     const trip_date = new Date(startDate);
-    const tday = (trip_date.getDate());
-    const tmonth = (trip_date.getMonth()+1);
-    const tyear = (trip_date.getFullYear());
     console.log(addDays(trip_date, 1));
 
     // 클립보드에 현재 url 복사하기
@@ -238,10 +248,36 @@ const PlanDetail = () => {
 
         alert("클립보드에 복사되었습니다")
     }
-
-    const navi = useNavigate();
-
     
+    
+    const navi = useNavigate();
+    const dispatch = useDispatch();
+    
+    
+    // navi('../../../place/placedetail', {state:{place:day.contentid}})
+    const modifyPlan = () => {
+        const start = format(startDate, "yyyy-MM-dd");
+        const end = format(endDate, "yyyy-MM-dd");
+        const days = differenceInDays(endDate, startDate) + 1;
+        const cityName = placeName;
+        // console.log({start, end, days, cityNum, areaCode, sigunguCode});
+        dispatch(setPlanInfo(start, end, days, cityName));
+
+        navi('../../../plan');
+        
+        // navi('../../../plan', {
+        //     state:{
+        //         planner:{
+        //             cityName : placeName,
+        //             startDate : startDate,
+        //             endDate : endDate,
+        //             days : duringDay
+
+        //         }
+        //     }
+        // })
+    }
+
     
     
     //별점 이미지 = https://www.earthtory.com/res//img/common/web/hotel_star_?.?.png
@@ -265,11 +301,11 @@ const PlanDetail = () => {
                                 
                                 <div className={`scroll-item-btn`} id={'nav-list'+index}
                                  onClick={((e) => {
-                                    // {e.currentTarget.hasAttribute.className!==({index}) ? e.currentTarget.classList.add('on') : e.currentTarget.classList.remove('on')}
-                                    // e.currentTarget.classList('on') ? e.currentTarget.classList.remove('on') : e.currentTarget.classList.add('on')
+                                    // 앞, 뒤 객체 찾기
                                     var leftList1 = e.currentTarget.previousElementSibling;
                                     var leftList2 = e.currentTarget.nextElementSibling;
 
+                                    // 앞, 뒤 객체 있을 때 까지 지우기 반복
                                     while(leftList1){
                                         leftList1.classList.remove('on')
                                         leftList1 = leftList1.previousSibling
@@ -278,8 +314,8 @@ const PlanDetail = () => {
                                         leftList2.classList.remove('on');
                                         leftList2 = leftList2.nextSibling
                                     }
-                                    // e.currentTarget.previousElementSibling.classList.remove('on')
-                                    // e.currentTarget.nextElementSibling.classList.remove('on')
+
+                                    // 현재 객체만 추가
                                     e.currentTarget.classList.add('on')
                                  })}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div>
                             ))
@@ -304,7 +340,7 @@ const PlanDetail = () => {
                     <div className='bottom-box'>
                         <div className='bottom-head'>
                             <img alt='' src='../../DetailImage/box-user.png' />
-                            <span><b style={{color:'white'}}>UserName</b></span>
+                            <span><b style={{color:'white'}}>{userName}</b></span>
                         </div>
                         <div className='bottom-body'>
                             <h4>{placeName} 여행</h4>
@@ -330,6 +366,7 @@ const PlanDetail = () => {
                     </div>
                 </div>
             </div>
+
             {/* 메뉴창 */}
             <div className='main-list'>
                 {/* 상단 메뉴바 */}
@@ -343,7 +380,8 @@ const PlanDetail = () => {
                     <div className='header-menu'>댓글</div>
                     <div className='header-menu-line'></div>
 
-                    <div className='header-menu-right1'>다운로드</div>
+                    <div className='header-menu-right1'
+                        onClick={modifyPlan}>수정하기</div>
                     <div className='header-menu-right2'
                         onClick={copyUrl}>공유하기</div>
                     <div className='clear' />
@@ -360,6 +398,7 @@ const PlanDetail = () => {
                                 {/* 상단바 첫스케쥴 기준 반복 */}
                                     {day.order == 1 ? 
                                     <div className='day-box-title'>
+                                        {/* Day별 간격 - distance 덮기 */}
                                         <div className='undistance' />
                                     <div className='last-box' id={'page-'+day.day}
                                         style={{
@@ -394,11 +433,11 @@ const PlanDetail = () => {
                                             <div className='list-num'>{day.order}</div>
                                         </div>
                                         <div className='list-content'>
-                                            <img alt='spot' src={day.firstimage} className='spot-img'/>
+                                            <img alt='spot' src={day.firstimage !== null ? day.firstimage : '../../empty_image.jpg'} className='spot-img'/>
                                             <div className='spot-content-box'>
                                                 <div className='spot-name'
+                                                    // 장소 클릭시 state값 가지고 상세페이지로 이동
                                                     onClick={() => {
-                                                        //setPcontentId(day.contentid);
                                                         navi('../../../place/placedetail', {state:{place:day.contentid}})
                                                     }}>
                                                     {day.title}
@@ -431,7 +470,7 @@ const PlanDetail = () => {
                                             <div className='clear' />
                                         </div>
                                     </div>
-                                    {/* 같은날짜 spot 간격 */}
+                                    {/* 일정간 간격 */}
                                         <div className='day-box-distance' />
 
                                     
@@ -449,28 +488,25 @@ const PlanDetail = () => {
                         
                             <div className="row">
                             {
-                            // day 만큼 반복문 돌리기
+                            // 일정 수 만큼 반복문 돌리기
                             [...ddata] && [...ddata].map((day, index) => (
 
                                 <div className="col-sm-4 rlist">
                                     <div className="spot-number">{index+1}</div>
                                     <div className="spot-title"
                                     onClick={() => {
-                                        setContentId(day.place_id);
+                                        // setContentId(day.place_id);
+                                        // kakaomapscript(day);         api에 사용될 지역코드 변경 
+
+                                        // 카카오맵에 사용될 X, Y 좌표 직접 변경 
                                         setMapx(day.mapx);
                                         setMapy(day.mapy);
-                                        // kakaomapscript(day);
                                     }}>{day.title}</div><span>···</span>
                                 </div>
                             ))
                             }
-                                {/* <div className="col-sm-4 rlist">
-                                    <div className="spot-number">10</div>
-                                    <div className="spot-title">zz</div><span>···</span>
-                                </div> */}
-
                             </div>
-                            
+                            <div className='row-more'>스크롤해서 더보기...</div>
                         </div>
                     </div>
                 </div>
