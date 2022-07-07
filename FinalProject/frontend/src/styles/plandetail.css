@@ -188,6 +188,9 @@
     background-color: white;
     margin-right: 15px;
 }
+#plan-detail .bottom-head b {
+    font-size: 1.7rem;
+}
 
 #plan-detail .bottom-box .bottom-body {
     padding-top: 10px;
@@ -341,6 +344,7 @@
     background: white;
     border-top: 1px solid #e5e5e5;
     border-right: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
     height: 60px;
 }
 
@@ -436,7 +440,7 @@
     float: left;
     width: 70px;
     height: 70px;
-    border: 1px solid #555555;
+    border: 1px solid #b3b3b3;
 }
 #plan-detail .spot-content-box {
     width: 425px;
@@ -539,6 +543,7 @@
 
     border: 1px solid #dedede;
     border-top: 1px solid goldenrod;
+    z-index: 10;
 }
 #plan-detail .row {
     width: 339px;
@@ -553,6 +558,17 @@
     margin-bottom: 20px;
 
     border: 0px solid black;
+}
+#plan-detail .row-more {
+    position: absolute;
+    left: -0.5px;
+    width: 341px;
+    border: 1px solid #dedede;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #555555;
+    background-color: white;
+    z-index: 20;    
 }
 #plan-detail .spot-number {
     float: left;
