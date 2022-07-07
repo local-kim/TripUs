@@ -16,10 +16,17 @@ public class ReviewService implements ReviewServiceInter {
 	@Autowired
 	private ReviewMapper reviewMapper;
 	@Override
-	public void insertReview(ReviewDto dto) {
+	public int insertReview(ReviewDto dto) {
 		// TODO Auto-generated method stub
 		reviewMapper.insertReview(dto);
+		return dto.getNum();
 
+	}
+	
+	@Override
+	public void insertPhoto(ReviewDto dto) {
+		// TODO Auto-generated method stub
+		reviewMapper.insertPhoto(dto);
 	}
 
 	@Override

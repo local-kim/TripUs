@@ -9,6 +9,7 @@ import data.dto.ReviewDto;
 @Mapper
 public interface ReviewMapper {
 	public void insertReview(ReviewDto dto);
+	public void insertPhoto(ReviewDto dto);
 	public void deleteReview(int num);
 	public int getTotalCount();
 	public List<ReviewDto> getPagingList(Map<String,Integer> map);
