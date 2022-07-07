@@ -2,16 +2,29 @@ import { Margin } from '@mui/icons-material';
 import { height, textAlign } from '@mui/system';
 import React ,{useState} from 'react';
 import { ReactDOM } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 
 import Fullpage,{FullPageSections,FullpageSection,FullpageNavigation} from '@ap.cx/react-fullpage';
 import Myslide from './Myslide';
 import Menu from './Menu';
 import '../AppHeemin.css';
+import axios from 'axios';
+import jQuery from 'jquery';
+import { NavLink } from 'react-router-dom';
+import { setDate } from 'date-fns';
+
+
+
 
 
 
 
 const Main=()=>{
+    const [city, setCity] = useState([]) 
+    const navi=useNavigate();
+
     const sectionStyle = {
         height:'100vh',
         width: '100%',
@@ -42,6 +55,38 @@ const Main=()=>{
         
 
     }
+
+    const Search=(e)=>{
+
+
+        if(e.target.value!=""){
+
+        let searchUrl = process.env.REACT_APP_SPRING_URL+"searchauto?searchWord="+e.target.value;
+    
+    
+    
+    
+        axios.get(searchUrl)
+        .then(res=>{
+            // console.log(res.data)
+        
+          setCity(res.data);
+            
+    
+        })
+    
+    }else{
+        setCity('');
+    }
+       
+    
+    }
+
+    const handleKeyPress = e => {
+        if(e.key === 'Enter') {
+            setCity();
+        }
+      }
     return(
  
         <Fullpage>
@@ -54,9 +99,15 @@ const Main=()=>{
                         <div className="wrap"style={{marginTop:'60px'}}>
                             <div className='main_top_title'>나만의 여행 플래너 Trip Us!</div>
                             <div className='main_top_desc'>쉽고 빠르게 여행을 계획하세요.</div>
-                            <div className='search_area'>
-                                <div className='city_autocomplete'></div>
-                                <input className='search_input' placeholder='국가명,도시명으로 검색'></input>
+                            <div className='search_area' >
+                                <div className='city_autocomplete' style={{display:'block'}}></div>
+                                <input className='search_input' placeholder='국가명,도시명으로 검색' autocomplete="off" onKeyUp={Search} ></input>
+                                <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(
+
+                                    <li onClick={()=>{navi("/city/:num")}} >{data} <span class="h_search_cicu">대한민국</span></li>
+                                )
+                                    
+                                )}</ul>
                                     <div className='latest_search'>'추천도시':</div>
                             </div>
                         </div>
@@ -183,39 +234,3 @@ const Main=()=>{
 }
 
 export default Main;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

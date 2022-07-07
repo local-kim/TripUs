@@ -106,4 +106,9 @@ public class PlanController {
 	public List<PlanDateDto> getDate(@RequestParam int num) {
 		return planService.getDate(num);
 	}
+	
+	@GetMapping("/name")
+	public List<PlanDateDto> getPlanMember(@RequestParam int num) {
+		return planService.getPlanMember(num);
+	}
 }

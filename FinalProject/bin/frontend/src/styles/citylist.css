@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap');
+
+#city-list{
+  text-align: center;
+}
+
+#city-list .title{
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+#city-list .city-item-wrap{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+#city-list .city-item{
+  margin: 10px 15px;
+  text-align: center;
+}
+
+#city-list .city-item .city-image{
+  width: 200px;
+  height: 200px;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 26px;
+  font-weight: 600;
+  border-radius: 100px;
+  margin-bottom: 10px;
+  font-family: 'Montserrat';
+  font-weight: 700;
+}
+
+#city-list .city-item .city-name{
+  font-size: 18px;
+}

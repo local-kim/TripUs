@@ -1,0 +1,217 @@
+/*** Calendar.js ***/
+#plan-calendar{
+  text-align: center;
+}
+
+#plan-calendar .rdrDefinedRangesWrapper{
+  display: none;
+}
+
+#plan-calendar .next-btn{
+  margin-top: 10px;
+}
+
+/*** Plan.js ***/
+#plan{
+  text-align: center;
+}
+
+#plan .day{
+  width: 400px;
+  margin: 15px auto;
+  /* background-color: white; */
+  background-color: rgb(238, 238, 238);
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+
+#plan .day span{
+  font-size: 24px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1.3;
+}
+
+#plan .day button{
+  margin: 5px;
+}
+
+/*** DayPlan.js ***/
+/* #day-plan{
+  text-align: center;
+} */
+
+#day-plan .title-wrap{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 400px;
+  margin: 0 auto;
+}
+
+#day-plan .title{
+  font-size: 30px;
+  font-weight: 500;
+}
+
+#day-plan .list-container{
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#day-plan .left{
+  width: 400px;
+  background-color: rgb(238, 238, 238);
+  border-radius: 20px;
+  margin-right: 10px;
+  padding: 20px;
+}
+
+#day-plan .left .plan-place-list .place-list{
+  height: 500px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+#day-plan .right{
+  width: 400px;
+  background-color: rgb(238, 238, 238);
+  border-radius: 20px;
+  margin-left: 10px;
+  padding: 20px;
+}
+
+#day-plan .right input{
+  width: 100%;
+}
+
+#day-plan .right .api-place-list .place-list{
+  height: 400px;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+#day-plan .label{
+  font-size: 20px;
+}
+
+#day-plan>button{
+  margin: 0 auto;
+}
+
+#day-plan .api-place-list, #day-plan .my-place-list{
+  margin-top: 10px;
+}
+
+#day-plan .label-wrap{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#day-plan .category-btn button:not(:last-child){
+  margin-right: 5px;
+}
+
+#day-plan .category-btn button{
+  height: 28px;
+  line-height: 18px;
+  border-radius: 9px;
+}
+
+#day-plan .category-btn .btn-dark{
+  background-color: #5b5b5b;
+  border-color: #5b5b5b;
+}
+
+#day-plan .category-btn .btn-outline-dark{
+  border-color: #5b5b5b;
+}
+
+#day-plan .category-btn .btn-outline-dark:hover{
+  background-color: #bebebe;
+  border-color: #bebebe;
+}
+
+#day-plan .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#day-plan .btn-wrap{
+  display: flex;
+  align-items: center;
+}
+
+#day-plan .move-btn{
+  display: inline-block;
+}
+
+#day-plan .move-btn button{
+  height: 20px;
+  line-height: 10px;
+  display: block;
+}
+
+#day-plan .edit-btn{
+  height: 25px;
+  width: 25px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 12px;
+}
+
+/*** PlaceItem.js ***/
+.place-list-item{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+/* 장소 목록 사이에 보더 넣기 */
+.place-list-item:not(:last-child){
+  border-bottom: 1px solid lightgray;
+}
+
+/* #day-plan .api-place-list .container + #day-plan .api-place-list .container{
+  border-top: 1px solid lightgray;
+} */
+
+.place-wrap{
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+.place-wrap .place-img{
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 100px;
+  margin-right: 10px;
+}
+
+.place-wrap .no-image{
+  width: 50px;
+  height: 50px;
+  border-radius: 100px;
+  background-color: white;
+  color: gray;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.api-place-list .place-wrap .place-info-wrap{
+  margin-right: 10px;
+}
+
+.place-wrap .place-info{
+  font-size: 14px;
+  color: rgb(100, 100, 100);
+}

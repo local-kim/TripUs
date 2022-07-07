@@ -13,6 +13,7 @@ import lombok.Data;
 public class PlanDateDto {
 	private int num;
 	private int days;
+	private String name;
 	@JsonFormat(pattern = "yyyy-MM-dd" ,timezone="Asia/Seoul")
 	private Timestamp start_date;
 	@JsonFormat(pattern = "yyyy-MM-dd" ,timezone="Asia/Seoul")

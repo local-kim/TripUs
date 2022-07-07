@@ -24,4 +24,5 @@ public interface PlanMapper {
 	public List<PlanDto> getNavNum(int num);
 	public List<PlanDto> getPlanDatas(int num);
 	public List<PlanDateDto> getDate(int num);
+	public List<PlanDateDto> getPlanMember(int num);
 }

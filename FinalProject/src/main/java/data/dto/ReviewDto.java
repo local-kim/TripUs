@@ -17,6 +17,7 @@ public class ReviewDto {
 	private String name;
 	private double stars;
 	private String content;
+	private String file_name;
 	@JsonFormat(pattern = "yyyy-MM-dd" ,timezone="Asia/Seoul")
 	private Timestamp created_at;
 }
