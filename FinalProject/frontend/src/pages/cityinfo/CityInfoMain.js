@@ -529,7 +529,7 @@ const CityInfoMain = () => {
                     <div className='scheduleBtnBox'>
                         <button type='button' className='btn scheduleBtn' 
                             onClick={()=>{
-                                naVi(`../plan/calendar/${wthData.num}`);
+                                naVi(`../plan/calendar/108`);
                             }}>내 일정 만들기</button>
                         <button type='button' className='btn scheduleBtn'>내 일정 더보기</button>
                     </div>
