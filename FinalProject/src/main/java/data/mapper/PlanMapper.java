@@ -21,7 +21,8 @@ public interface PlanMapper {
 	public void insertPlace(PlaceDto place);
 	
 	
-	public List<PlanDto> getNavNum();
+	public List<PlanDto> getNavNum(int num);
 	public List<PlanDto> getPlanDatas(int num);
 	public List<PlanDateDto> getDate(int num);
+	public List<PlanDateDto> getPlanMember(int num);
 }

@@ -12,6 +12,7 @@
 #plan-detail {
     margin-top: 15px;
     z-index: 999;
+    background-color: #fafafa;
 }
 
 #plan-detail header.MuiPaper-root {
@@ -141,6 +142,10 @@
 
         /* top-box */
 
+#plan-detail .bottom-body h4 {
+    font-weight: bold;
+}        
+
 /* .top-box .like {
     border: 1px solid gray;
     border-radius: 100px;
@@ -182,6 +187,9 @@
     border-radius: 100px;
     background-color: white;
     margin-right: 15px;
+}
+#plan-detail .bottom-head b {
+    font-size: 1.7rem;
 }
 
 #plan-detail .bottom-box .bottom-body {
@@ -280,6 +288,7 @@
     float: right;
     margin-top: 14px;
     margin-right: 15px;
+    cursor: pointer;
 }
 
 
@@ -335,6 +344,7 @@
     background: white;
     border-top: 1px solid #e5e5e5;
     border-right: 1px solid #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;
     height: 60px;
 }
 
@@ -382,7 +392,7 @@
     width: 730px;
     height: 40px;
     border: 0px solid black;
-    background: white;
+    background: #fafafa;
     z-index: 100;
     margin-top: -27px;
 }
@@ -430,7 +440,7 @@
     float: left;
     width: 70px;
     height: 70px;
-    border: 1px solid #555555;
+    border: 1px solid #b3b3b3;
 }
 #plan-detail .spot-content-box {
     width: 425px;
@@ -447,9 +457,11 @@
     height: 41px;
     padding-top: 10px;
 }
-#plan-detail .spot-info img.star {
+#plan-detail .sinfo-cat2 {
     float: left;
     margin-top: 1px;
+    font-size: 0.8rem;
+    color: #555555;
 }
 #plan-detail .sinfo-line {
     background: #808080;
@@ -519,12 +531,19 @@
     width: 341px;
     height: 303px;
 }
+.spot-list-box::-webkit-scrollbar {
+    display: none;
+}
+
 #plan-detail .spot-list-box {
     width: 341px;
-    height: 100%;
+    height: 135px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 
     border: 1px solid #dedede;
     border-top: 1px solid goldenrod;
+    z-index: 10;
 }
 #plan-detail .row {
     width: 339px;
@@ -539,6 +558,17 @@
     margin-bottom: 20px;
 
     border: 0px solid black;
+}
+#plan-detail .row-more {
+    position: absolute;
+    left: -0.5px;
+    width: 341px;
+    border: 1px solid #dedede;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #555555;
+    background-color: white;
+    z-index: 20;    
 }
 #plan-detail .spot-number {
     float: left;

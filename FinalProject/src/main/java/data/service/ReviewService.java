@@ -14,7 +14,6 @@ import data.mapper.ReviewMapper;
 public class ReviewService implements ReviewServiceInter {
 	
 	@Autowired
-	
 	private ReviewMapper reviewMapper;
 	@Override
 	public void insertReview(ReviewDto dto) {
@@ -53,6 +52,16 @@ public class ReviewService implements ReviewServiceInter {
 	@Override
 	public double getAvgStars(String place_id) {
 		return reviewMapper.getAvgStars(place_id);
+	}
+	
+	@Override
+	public void deleteReview(int num) {
+		reviewMapper.deleteReview(num);
+	}
+	
+	@Override
+	public void updateReview(ReviewDto dto) {
+		reviewMapper.updateReview(dto);
 	}
 
 }

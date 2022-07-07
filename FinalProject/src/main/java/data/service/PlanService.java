@@ -56,8 +56,8 @@ public class PlanService implements PlanServiceInter {
 	}
 	
 	//////////////////////////////////////////
-	public List<PlanDto> getNavNum() {
-		return planMapper.getNavNum();
+	public List<PlanDto> getNavNum(int num) {
+		return planMapper.getNavNum(num);
 	}
 	
 	public List<PlanDto> getPlanDatas(int num) {
@@ -66,5 +66,9 @@ public class PlanService implements PlanServiceInter {
 	
 	public List<PlanDateDto> getDate(int num) {
 		return planMapper.getDate(num);
+	}
+	
+	public List<PlanDateDto> getPlanMember(int num) {
+		return planMapper.getPlanMember(num);
 	}
 }

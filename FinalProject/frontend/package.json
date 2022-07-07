@@ -19,9 +19,14 @@
     "jquery": "^3.6.0",
     "react": "^18.2.0",
     "react-avatar": "^5.0.1",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-date-range": "^1.4.0",
     "react-daum-postcode": "^3.1.1",
     "react-dom": "^18.2.0",
+<<<<<<< HEAD
+=======
+    "react-google-login": "^5.2.2",
+>>>>>>> branch 'master' of https://github.com/local-kim/FinalProject.git
     "react-intersection-observer": "^9.3.5",
     "react-kakao-login": "^2.1.0",
     "react-modal": "^3.15.1",

@@ -93,8 +93,8 @@ public class PlanController {
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	@GetMapping("/nav")
-	public List<PlanDto> getNavNum(){
-		return planService.getNavNum();
+	public List<PlanDto> getNavNum(@RequestParam int num){
+		return planService.getNavNum(num);
 	}
 	
 	@GetMapping("/list")
@@ -105,5 +105,10 @@ public class PlanController {
 	@GetMapping("/pdate")
 	public List<PlanDateDto> getDate(@RequestParam int num) {
 		return planService.getDate(num);
+	}
+	
+	@GetMapping("/name")
+	public List<PlanDateDto> getPlanMember(@RequestParam int num) {
+		return planService.getPlanMember(num);
 	}
 }

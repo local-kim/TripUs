@@ -1,6 +1,6 @@
 import axios from 'axios';
-import React, { useEffect,useState } from 'react';
-import { useNavigate,useLocation} from 'react-router-dom';
+import React, { useEffect,useRef,useState } from 'react';
+import { useNavigate,useLocation, useParams} from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -8,24 +8,40 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import '../../styles/placeinfo.css';
 import Rating from '@mui/material/Rating';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Ayong from '../../assets/images/IMG_1503.JPG';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal } from '@mui/material';
 
 
 
 //kakao map
 const { kakao } = window;
 
+//modal style
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 800,
+  height:730,
+  bgcolor: 'background.paper',
+  //border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 const PlaceInfo=()=>{
 
        //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
-       const location = useLocation();
-       console.log("location",location.state.state.pcontentId);
-
+      // const location = useLocation();
+      //console.log("location",location.state.place); //contentId 받아온거
+       //const CityInfoMainContendId = location.state.state.pcontentId;
+    
     //mui
     const [value, setValue] = React.useState('1');
     const [starsvalue, setStarsValue] = React.useState('0');
-   
     const [isChecked, setIsChecked] = useState(false);
     const [liked,setLiked]=useState(0);
 
@@ -54,9 +70,10 @@ const PlaceInfo=()=>{
     };
 
     //지도api & 관광지 api 
-    const contentId=location.state.state.pcontentId; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078]
-    //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; 내인증키
-    const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";
+    const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078]
+    //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
+    const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
+    //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; 일웅님 인증키
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
     const [placeImg,setPlaceImg]= useState();
@@ -72,22 +89,32 @@ const PlaceInfo=()=>{
      let apiUrl=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey=${placeApikey}&contentId=${contentId}&defaultYN=Y&mapinfoYN=Y&addrinfoYN=Y&firstImageYN=Y&catcodeYN=Y&MobileOS=ETC&MobileApp=AppTest&_type=json`;
      let apiUrl2=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/categoryCode?ServiceKey=${placeApikey}&cat1=${cat1name}&cat2=${cat2name}&cat3=${cat3name}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
-
-
     //review
-     const [review,setReview]=useState();
-     const [avgStars,setAvgStars]=useState(0);
-     const reviewdata0="후기글을 작성해주세요";
+    const reviewtxtRef = useRef('');
+    const reviewstarsRef = useRef('');
+
+     const [refreshReview,setRefreshReview]=useState();
+     const [avgStars,setAvgStars]=useState();
+     const [place_id,setPlace_Id]=useState('');
+     const [detailData,setDetailData]=useState('');
+     const [editDetailData,setEditDetailData]=useState('');
+     //setPlace_Id(contentId);
+     const [member_num,setMember_Num]=useState('');
+     const [stars,setStars]=useState();
+     const [content,setContent]=useState();
+
     // const [sta,setContent]=useState('');
     const [reviewData,setReviewData]=useState([]); //data 받아오기
     
-
-
     //Spring url선언
     let pagelistUrl=process.env.REACT_APP_SPRING_URL+"review/allreview?place_id="+contentId;
     let placeStarsAvgUrl=process.env.REACT_APP_SPRING_URL+"review/avgstars?place_id="+contentId;
+    let insertUrl=process.env.REACT_APP_SPRING_URL+"review/insert";
+    let deleteUrl=process.env.REACT_APP_SPRING_URL+"review/delete?num=";
+    let detailUrl=process.env.REACT_APP_SPRING_URL+"review/detail?num=";
+    let updateUrl=process.env.REACT_APP_SPRING_URL+"review/update?num=";
     // let uploadUrl=process.env.REACT_APP_SPRING_URL+"board/upload";
-    // let insertUrl=process.env.REACT_APP_SPRING_URL+"board/insert";
+    
     // let photoUrl=process.env.REACT_APP_SPRING_URL+"save/";
 
     //ReviewList 호출
@@ -100,6 +127,7 @@ const PlaceInfo=()=>{
         })
     }
 
+
     //ReviewAvgStars 호출
     const AvgStars=()=>{
       axios.get(placeStarsAvgUrl).then(res=>{
@@ -109,15 +137,83 @@ const PlaceInfo=()=>{
     })
     }
 
+    //Review insert
+    const writeReview=(e)=>{
+      e.preventDefault();
+      axios.post(insertUrl,{place_id:contentId,member_num,stars,content}).then(res=>{ 
+          alert("성공");
+          pageList();
+          setStarsValue("");
+          setRefreshReview("");
+        }).catch(err => {
+          alert(err);
+        })
+      }
+
+        //삭제시 호출할 함수
+        const onDelete=(num)=>{
+          if(window.confirm("정말 삭제하시겠습니까?")){
+          
+          axios.delete(deleteUrl+num).then(res=>{
+            alert("삭제되었습니다.");
+            if(open===true){
+              handleClose();
+              pageList();
+            }else{
+              pageList();
+            }
+          })
+        }
+           }
+
+           //modal mui
+           const [open, setOpen] = React.useState(false);
+           const [updateModalOpen,setUpdateModalOpen] = React.useState(false);
+
+          // const handleOpen = () =>
+           const handleClose = () =>{ setOpen(false);  }
+           const edithandleClose = () =>{setUpdateModalOpen(false);}
+         //상세보기 호출할 함수
+         const onDetail=(num)=>{
+          axios.get(detailUrl+num).then(res=>{
+              setDetailData(res.data);
+              console.log("detail->",res.data);
+              setOpen(true);
+             
+          })
+         }
+
+         //수정상세보기 호출함수
+         const onEditReviewDetail=(num)=>{
+      
+          axios.get(detailUrl+num).then(res=>{
+            setEditDetailData(res.data);
+            console.log("editdetail:",res.data);
+            //이름 , num
+            setUpdateModalOpen(true);
+           
+        })
+      }
+
+         //수정하는 함수 이벤트
+         const onUpdate=(num)=>{
+          onDetail(num);
+          
+          // axios.post(updateUrl+num,{stars,content}).then(res=>{
+          //   onDetail();
+          // })
+         }
+
     useEffect(() => {
        kakaomapscript();
-       
     });
 
     useEffect(()=>{
-      pageList();
+     pageList();
      AvgStars();
     },[]);
+
+    //modal
 
     //kakomap + tourapi3
     const kakaomapscript = () => {
@@ -155,7 +251,7 @@ const PlaceInfo=()=>{
         setPlaceImg(placeimg);
 
         const options = {
-            center: new kakao.maps.LatLng(placey,placex),
+            center: new kakao.maps.LatLng(placey, placex),
             //center: new kakao.maps.LatLng(35.1591243474,129.1603078991),
             //new kakao.maps.LatLng(y좌표,x좌표)
             level: 2
@@ -164,7 +260,7 @@ const PlaceInfo=()=>{
         const map = new kakao.maps.Map(container, options);
     
         //마커가 표시 될 위치
-        let markerPosition = new kakao.maps.LatLng(placey,placex);
+        let markerPosition = new kakao.maps.LatLng(placey, placex);
 
         // 마커를 생성
         let marker = new kakao.maps.Marker({position: markerPosition,
@@ -213,7 +309,7 @@ const PlaceInfo=()=>{
                   <div>
                     {
                       reviewData&&reviewData.map((row,idx)=>(
-                        <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}}>
+                        <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}} >
                         <div style={{flexDirection:'column',justifyContent:'center'}}>
                           <div>
                          <img src={Ayong} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
@@ -223,7 +319,7 @@ const PlaceInfo=()=>{
                           </div>
                           </div>  
                           <div style={{display:'flex',flexDirection:'column',marginLeft:'15px'}}>
-                          <div style={{backgroundColor:'white',height:'50px',width:'600px',padding:'5px 0px 0px 5px'}}>
+                          <div style={{backgroundColor:'white',height:'50px',width:'600px',padding:'5px 0px 0px 5px'}} onClick={()=>{onDetail(row.num);}}>
                        {row.content}
                        </div>
                        <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
@@ -232,9 +328,14 @@ const PlaceInfo=()=>{
                        <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
                        </div>
                        <div style={{flexGrow:'0',marginRight:'10px'}}>
-                       <span>수정</span>&nbsp;&nbsp;|&nbsp;&nbsp;<span>삭제</span>
-                       </div>
+                       <span style={{cursor:'pointer'}} onClick={()=>{onEditReviewDetail(row.num);}}>수정</span>
+                       &nbsp;&nbsp;|&nbsp;&nbsp;
+                       <span className='myreviewDelete' style={{cursor:'pointer'}} onClick={()=>{
+                        onDelete(row.num);
+                       }}>삭제</span>
+                    </div>
                        </div></div>
+                      
                       </div>
                       ))
 
@@ -303,11 +404,14 @@ const PlaceInfo=()=>{
   </svg>
 </label>
 </div>
+
+{/* <button type='button' onClick={()=>{onEditReviewDetail(18);}}>수우우ㅜ우ㅜ우우우우정</button> */}
 </div>
 
                     <p style={{fontSize:'14px',margin:'0 auto'}}>{cattypename}</p>
                     <i className="fa-solid fa-map-location-dot" style={{color:'#1976d2'}}></i>&nbsp;&nbsp;{placeAddr}<br/>
                     {/*별점 좋아요수 */}
+                    {/* <Rating name="half-rating-read" defaultValue={avgStars} precision={0.1} readOnly/>{avgStars} */}
                     <i className="fa-solid fa-star" style={{color:'#faaf00'}}></i>&nbsp;&nbsp;{avgStars}<br/>
                     <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{liked}
                 </div>
@@ -320,54 +424,122 @@ const PlaceInfo=()=>{
     '& > legend': { mt: 2 },
   }}
 >
-   <Typography component="legend">Stars</Typography> 
+
+  <Typography component="legend">{member_num}</Typography> 
+   
    <Rating
-    name="half-rating"
+    name="half-rating" className='mystar'
     value={starsvalue} precision={0.5}
     onChange={(event, newValue) => {
       setStarsValue(newValue);
-      alert(newValue); 
+      setStars(newValue);
     }}/> 
+  <input type='file' name='upload' multiple className='fa-solid fa-images' value=''/>
  </Box> 
              </div> 
             <div className='place_review_write'>
             
-                <textarea placeholder='50글자내로 작성해주세요🥕' className='review'onChange={(e)=>{setReview(e.target.value)}}/>
-                <button type='submit' className='btn_review_write'>글쓰기</button>
+                <textarea placeholder='50글자내로 작성해주세요🥕' className='review' value={refreshReview} onChange={(e)=>{setContent(e.target.value);}}></textarea>
+                <button type='button' className='btn_review_write' onClick={writeReview}>글쓰기</button>
             </div>
 
-                   {/* 상세보기 */}
-          <div style={{width:'500px',height:'800px',backgroundColor:'white'}}>
-              <div style={{display:'inline-flex'}}>
+
+                                    {/* 상세보기 */}
+
+            <div>
+                
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography id="modal-modal-title" variant="h6" component="h2">
+                      <div style={{display:'inline-flex',width:'450px',justifyContent:'left'}}>
+                        <div>
+                          <img src={Ayong} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                      </div>
+
+                        <div style={{marginLeft:'10px',fontSize:'16px'}}>
+                          <div>
+                          <label>{detailData.name}</label>
+                          </div>
+
+                          <div style={{display:'inline-flex'}}>
+                        <label>{placeTitle}</label>&nbsp;/&nbsp;
+                        <label>{detailData.created_at}</label>&nbsp;/&nbsp;
+                        </div>
+                       <Rating name="read-only" ref={reviewstarsRef} value={detailData.stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/>
+                        </div>
+                      </div>
+                      </Typography>
+
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      <div style={{justifyContent:'center',display:'flex'}}>
+                         <img src={Ayong} alt="프로필사진" style={{width:'300px'}}/>
+                      </div>
+                      <div style={{justifyContent:'center',display:'flex'}}>
+                         <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData.content}</pre>
+                      </div>
+
+                      <div style={{justifyContent:'center',display:'inline-flex'}}>
+                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{onEditReviewDetail(detailData.num);}}>수정</button>&nbsp;&nbsp;
+                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
+                        onDelete(detailData.num);
+                       }}>삭제</button>
+                      </div>
+                      </Typography>
+                    </Box>
+                  </Modal>
+                </div>
+              
+
 
                 <div>
-              <img src={Ayong} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
-              </div>
+                
+                  <Modal
+                    open={updateModalOpen}
+                    onClose={edithandleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography id="modal-modal-title" variant="h6" component="h2">
+                      <div style={{display:'inline-flex',width:'450px',justifyContent:'left'}}>
+                        <div>
+                          <img src={Ayong} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                      </div>
 
-                <div style={{marginLeft:'10px'}}>
-                  <div>
-                <label>단춘식</label>
-                  </div>
-                  <div>
-                <label>2022-06-30</label>
-                <label>🌟🌟🌟</label>
+                        <div style={{marginLeft:'10px',fontSize:'16px'}}>
+                          <div>
+                          <label>{editDetailData.name}</label>
+                          </div>
+
+                          <div style={{display:'inline-flex'}}>
+                        <label>{placeTitle}</label>&nbsp;/&nbsp;
+                        <label>{editDetailData.created_at}</label>&nbsp;/&nbsp;
+                        </div>
+                       <Rating name="read-only" value={editDetailData.stars}  size="small" precision={0.5} style={{marginTop:'5px'}}/>
+                        </div>
+                      </div>
+                      </Typography>
+
+                      <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                      <div style={{justifyContent:'center',display:'flex'}}>
+                         <img src={Ayong} alt="프로필사진" style={{width:'300px'}}/>
+                      </div>
+                      <div style={{justifyContent:'center',display:'flex'}}>
+                         <textarea style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} defaultValue={editDetailData.content} ></textarea>
+                      </div>
+
+                      <div style={{justifyContent:'center',display:'inline-flex'}}>
+                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>수정완료</button>
+                      </div>
+                      </Typography>
+                    </Box>
+                  </Modal>
                 </div>
-                </div>
-
-              </div>
-
-              <div>
-              <img src={Ayong} alt="프로필사진"/>
-              </div>
-              <div>
-                  <input tye='text' value= {review} style={{width:'400px',height:'180px'}}/>
-              </div>
-              <div style={{justifyContent:'center',display:'inline-flex'}}>
-                <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>수정</button>
-                <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>삭제</button>
-              </div>
-          </div>
-        
         </div>
         </div>
     );
