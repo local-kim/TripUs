@@ -11,6 +11,7 @@ public interface ReviewMapper {
 	public void insertReview(ReviewDto dto);
 	public void insertPhoto(ReviewDto dto);
 	public void deleteReview(int num);
+	public void deletePhoto(int num);
 	public int getTotalCount();
 	public List<ReviewDto> getPagingList(Map<String,Integer> map);
 	public List<ReviewDto> getAllDatas(String place_id);
