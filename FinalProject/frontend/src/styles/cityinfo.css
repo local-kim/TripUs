@@ -21,12 +21,25 @@
     font-size: 1.6em;
 }
 
+#cityinfo .css-anmq6p-MuiTypography-root {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0px;
+}
 #cityinfo .css-1t6e9jv-MuiCardActions-root {
-    margin-left: 50px;
+    margin-left: 0px;
+}
+#cityinfo .css-1t6e9jv-MuiCardActions-root {
+    padding: 0px;
 }
 
 #cityinfo .css-46bh2p-MuiCardContent-root {
     padding: 0px 0px 0px 16px;
+}
+
+#cityinfo .css-o69gx8-MuiCardMedia-root {
+    width: 220px;
+    height: 180px;
 }
 
 #cityinfo .scheduleContainer {
@@ -99,4 +112,57 @@
 
 #cityinfo .slick-dots{
     margin-bottom: 20px;
+}
+
+#cityinfo .moreBtn {
+    background-color: #f3eeee;
+    margin-left: 285px;
+    margin-top: 20px;
+}
+
+#cityinfomore .css-1h9z7r5-MuiButtonBase-root-MuiTab-root{
+    font-size: 20px;
+    margin-right: 20px;
+}
+
+#cityinfomore .qqq{
+    margin-left: 90px;
+}
+
+#cityinfomore .more-input {
+    margin-right: 5px;
+}
+
+#cityinfomore .more-input-b {
+    margin-right: 103px;
+}
+
+#cityinfomore .more-select {
+    margin-left: 800px;
+}
+
+#cityinfomore .more-image {
+    width: 200px;
+    height: 150px;
+}
+#cityinfomore .more-image img{
+    width: 200px;
+    height: 150px;
+}
+
+#cityinfomore .more-location {
+    font-size: 20px;
+    font-weight: bold;
+}
+#cityinfomore .more-addr {
+    font-size: 12px;
+    color: #c4c4c4;
+}
+#cityinfomore .more-content {
+    font-size: 12px;
+
+}
+
+#cityinfomore .css-1d3jhju-MuiAvatar-root, #cityinfomore .css-wk5mvb-MuiAvatar-root {
+    cursor: pointer;
 }

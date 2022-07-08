@@ -111,19 +111,19 @@ const Paging = styled.span`
 // 4. 샘플이미지
 const images = [
     {
-        src: cityinfoImg,
+        src: '../../../city_image/busan.jpg',
         title: "1"
     },
     {
-        src: cityinfoImg,
+        src: '../../../city_image/seoul.jpg',
         title: "2"
     },
     {
-        src: cityinfoImg,
+        src: '../../../city_image/jeju.jpg',
         title: "3"
     },
     {
-        src: cityinfoImg,
+        src: '../../../city_image/incheon.jpg',
         title: "4"
     },
     
