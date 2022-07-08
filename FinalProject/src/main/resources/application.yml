@@ -18,9 +18,9 @@ mybatis:
   - /mapper/**/*.xml
   
 # spring security
-#logging:
-#  level:
-#    data: DEBUG
+logging:
+  level:
+    data: DEBUG
     
 jwt:
   header: Authorization

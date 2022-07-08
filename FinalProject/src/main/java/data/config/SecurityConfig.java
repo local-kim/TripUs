@@ -19,7 +19,7 @@ import data.jwt.JwtAuthenticationEntryPoint;
 import data.jwt.JwtSecurityConfig;
 import data.jwt.TokenProvider;
 
-@Configuration
+//@Configuration
 // 프로젝트의 모든 보안 구성을 포함하는 클래스
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)	// @PreAuthorize 어노테이션을 메서드 단위로 추가하기 위함
@@ -85,6 +85,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/hello").permitAll()
                 .antMatchers("/api/authenticate").permitAll()
                 .antMatchers("/api/signup").permitAll()
+                .antMatchers("/city/list").permitAll()
+//                .antMatchers("/city/")
 
                 .anyRequest().authenticated()
 
