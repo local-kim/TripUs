@@ -1,5 +1,6 @@
 package data.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,15 +14,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import data.dto.LoginDto;
+import data.dto.MemberSecurityDto;
 import data.dto.TokenDto;
 import data.jwt.JwtFilter;
 import data.jwt.TokenProvider;
+import data.service.CustomMemberDetailsService;
 
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/auth")
 public class AuthController {
+	
+	@Autowired
+	private CustomMemberDetailsService service;
+	
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -32,7 +39,7 @@ public class AuthController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
-
+    	System.out.println(loginDto);
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getId(), loginDto.getPassword());
 
@@ -45,5 +52,11 @@ public class AuthController {
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+    }
+    
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@Valid @RequestBody MemberSecurityDto member){
+    	service.joinUser(member, "ROLE_MEMBER");
+    	return ResponseEntity.ok("Sign up success");
     }
 }

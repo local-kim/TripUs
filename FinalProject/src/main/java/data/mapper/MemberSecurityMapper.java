@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import data.dto.AuthorityDto;
 import data.dto.MemberSecurityDto;
 
 @Mapper
@@ -14,6 +15,9 @@ public interface MemberSecurityMapper {
 	
 	// 로그인
     MemberSecurityDto getMemberAccount(String id);
+    
+    // 권한 정보 얻기
+    String getMemberAuthority(String id);
 
     // 회원가입
     void saveMember(MemberSecurityDto member);

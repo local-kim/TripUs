@@ -1,12 +1,15 @@
 package data.service;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import data.dto.AuthorityDto;
 import data.dto.MemberSecurityDto;
 import data.mapper.MemberSecurityMapper;
 
@@ -36,16 +40,30 @@ public class CustomMemberDetailsService implements UserDetailsService {
         member.setAccountNonLocked(true);
         member.setCredentialsNonExpired(true);
         member.setEnabled(true);
+        
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(role));
+
+        member.setAuthorities(grantedAuthorities);
         mapper.saveMember(member);
+        
         Map<String, String> map = new HashMap<>();
         map.put("id", member.getId());
         map.put("authority_name", role);
+        mapper.saveAuthority(map);
     }
 	
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 		MemberSecurityDto member = mapper.getMemberAccount(id);
-		member.setAuthorities(member.getAuthorities());
+		
+		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+		grantedAuthorities.add(new SimpleGrantedAuthority(mapper.getMemberAuthority(id)));
+		member.setAuthorities(grantedAuthorities);
+		
+//		AuthorityDto authority = mapper.getMemberAuthority(id);
+		
+//		member.setAuthorities(authority);
 		
 //        if (member == null){
 //            throw new UsernameNotFoundException("User not authorized.");
