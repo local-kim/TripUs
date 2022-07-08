@@ -289,4 +289,27 @@ label.css-dqr9h-MuiRating-label{
       transform: scale(1);
     }
   }
+
+  /*input type file css*/
+
+  .btn-upload {
+    width: 30px;
+    height: 30px;
+    background: #fff;
+    border: 1px solid #4d4d4d;
+    border-radius: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-upload:hover {
+    background: #4d4d4d;
+    color: #fff;
+  }
+  
+  #file {
+    display: none;
+  }
   
