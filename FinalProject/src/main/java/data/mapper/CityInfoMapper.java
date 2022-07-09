@@ -18,7 +18,7 @@ public interface CityInfoMapper {
 	public void getName(String name);
 	
 	// Trip데이타 가져오기
-	public TripDto getTripData(String id);
+	public TripDto getTripData(int member_num, int city_num);
 	
 	
 	// 도시 목록 가져오기

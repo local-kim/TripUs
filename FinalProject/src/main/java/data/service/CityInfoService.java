@@ -29,9 +29,9 @@ public class CityInfoService implements CityInfoServiceInter {
 	}
 	
 	@Override
-	public TripDto getTripData(String id) {
+	public TripDto getTripData(int member_num, int city_num) {
 		// TODO Auto-generated method stub
-		return cimapper.getTripData(id);
+		return cimapper.getTripData(member_num, city_num);
 	}
 	
 	@Override

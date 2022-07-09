@@ -13,8 +13,8 @@
 	</select>
 	
 	<!-- 여행 계획 데이타 가져오기 -->
-	<select id="getTripData" parameterType="String" resultType="trip">
-		select * from trip where id=#{id}
+	<select id="getTripData" parameterType="int" resultType="trip">
+		select * from trip where member_num=#{member_num} and city_num=#{city_num};
 	</select>
 	
 	

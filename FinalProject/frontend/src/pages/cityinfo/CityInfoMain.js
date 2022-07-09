@@ -17,9 +17,14 @@ import CityInfoMore from './CityInfoMore';
 
 
 const CityInfoMain = () => {
+    
+    //관광명소 api contentId 받아오기
+     const pcontentId=126078; //2360786
+    // const pnavi =useNavigate();
+    // const [pid,setPid]=useState();
+    // setPid(contentId);
 
-
-    ////////////////////////////// 수동 데이타
+    // 수동 데이타
     const naVi=useNavigate();
     const [data2,setData2]=useState([
         {
@@ -37,62 +42,86 @@ const CityInfoMain = () => {
         }
     ])
 
-    //////////////////////////////관광명소 api contentId 받아오기
-     const pcontentId=126078; //2360786
-    // const pnavi =useNavigate();
-    // const [pid,setPid]=useState();
-    // setPid(contentId);
-
-
-    //////////////////////////////// MUi 메뉴 탭
+    // MUi 메뉴 탭
     const [value, setValue] = useState('12');
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
-    
 
-    /////////////////////////////// Mui 스타일 변수
+    // Mui 스타일 변수
     const muiStyle={
         margin:"0 auto",
         width:"1092px",
         typography:"body1"
     }
-   
 
     
-
-
-    /////////////////////////////// 날씨 데이타 가져오기
-    const [wthData,setWthData]=useState([
-        // {
-        //     area_code: '',
-        //     country: "",
-        //     name: "",
-        //     num: '',
-        //     sigungu_code: ''
-        // }
-    ]);
+    // 날씨 데이타 db받는 변수
+    const [wthData,setWthData]=useState([]);
     let PlaceUrl;
     const {num}=useParams();    // url에서 num 데이터 가져오기
     // const [weatherImg,setWeatherImg]=useState('../../../public/WeatherImage/맑음.png');
     
-    //////////////////////////////////////////////////////// 지역 데이타 가져오기
+
+    // 지역 데이타 변수 
     const [areaCode,setAreaCode]=useState('12');
     const [sigunguCode,setSigunguCode]=useState('');
-    const [category,setCategory]=useState('');
-    const [categoryPlace1,setCategoryPlace1]=useState([]);
-    const [categoryPlace2,setCategoryPlace2]=useState([]);
-    const [categoryPlace3,setCategoryPlace3]=useState([]);
-    const [categoryPlace4,setCategoryPlace4]=useState([]);
-    const [categoryPlace5,setCategoryPlace5]=useState([]);
-    const [categoryPlace6,setCategoryPlace6]=useState([]);
-    const [categoryPlace7,setCategoryPlace7]=useState([]);
-    
-    // const [contentTypeId,setContentTypeId]=useState('');
+    const [categoryPlace1,setCategoryPlace1]=useState([]);  // 12 명소
+    const [categoryPlace2,setCategoryPlace2]=useState([]);  // 39 음식점
+    const [categoryPlace3,setCategoryPlace3]=useState([]);  // 38 쇼핑
+    const [categoryPlace4,setCategoryPlace4]=useState([]);  // 15 행사/공연/축제
+    const [categoryPlace5,setCategoryPlace5]=useState([]);  // 25 여행코스
+    const [categoryPlace6,setCategoryPlace6]=useState([]);  // 28 레포츠
+    const [categoryPlace7,setCategoryPlace7]=useState([]);  // 32 숙박  
     const [places, setPlaces] = useState([]);
+    
+    
+    // API
+    // 날씨 
+    // const API_ID="pN8sverBEceulMUULSyvZ";
+    // const API_KEY="QWZmBxA43k5EL7jQRyF5gMWtHEXBAgmpBjVXmgfh";
+    //const API_KEY="eeb9140b1a18675f963cf17ab2081baf";     //openweathermap 사이트 APIKEY
+    //const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; // 누군가꺼
+    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
 
+
+    // URL
+    // db city테이블 가져오는 거
+    PlaceUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
+    
+    // 날씨 api 받아오는 거
+    const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=6&dataType=xml&dataCd=ASOS&dateCd=DAY&startDt=20210703&endDt=20210704&stnIds=${wthData.num}`       // 기상청 과거데이터 다됨
+    //const weather_url=`https://api.openweathermap.org/data/2.5/forecast/daily?q=${location}&cnt=3&appid=${API_KEY}`         // 최대예측 16일까지 일일데이터 (유료)
+    //const weather_url=`https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}`             // 5일간 3시간 간격
+    //const weather_url=`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`            // 현재 날씨
+    //const weather_url=`https://pro.openweathermap.org/data/2.5/forecast/hourly?q=${location}&appid=${API_KEY}`    // 4일간 예측 (유료)
+    //const weather_url=`https://api.aerisapi.com/conditions/summary/${location}?format=json&from=&to=&client_id=${API_ID}&client_secret=${API_KEY}`
+    
+    // 관광도시 api 받아오는 거(arrange=P)
+     let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=10&arrange=R&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     if(sigunguCode){  // 시군구 코드가 있는 도시이면
+         areaUrl += `&sigunguCode=${sigunguCode}`;
+     }
+    // 날씨 데이타 변수
+    // const [stnId,setStnId]=useState('');
+    // const [stnNm,setStnNm]=useState('');
+    // const [maxTa,setMaxTa]=useState('');
+    // const [minTa,setMinTa]=useState('');
+    // const [iscs,setIscs]=useState('');
+    
+    
+
+    const [location,setLocation]=useState('');  // 검색 input 지역 담는 변수
+    const [result,setResult]=useState([]);  // 날씨 데이터 담는 배열 변수
+    
+    // 일정 url에 필요한 변수들   
+    // const [img,setImg]=useState('');
+    // const [startDt,setStartDt]=useState('20210703');
+    // const [endDt,setEndDt]=useState('20210705');
+    // const [days,setDays]=useState(3);
+ 
+ 
     useEffect(() => {
-        PlaceUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/weather?num="+num;
         // console.log(wthPlaceUrl);
         place_Data();
     }, [num]);
@@ -114,69 +143,40 @@ const CityInfoMain = () => {
         }
     }
     // console.log('wthData',wthData);
+ 
+ 
+ 
     
 
     
-    ////////////////////////////////////////일정 계획 데이타
-    // const [trip_id,setTrip_id]=useState('');
-    // let trip_url;
-    // useEffect(() => {
-    //     trip_url=process.env.REACT_APP_SPRING_URL+"cityinfo/trip?id="+id;
-    //     // console.log(wthPlaceUrl);
-    //     trip_data();
-    // }, [id]);
+    // 일정 계획 데이타
+    const [member,setMember]=useState([]);
+    const {member_num}=useParams();
+    const {city_num}=useParams();
 
-    // // db에서 num 데이터 가져오기
-    
-    // // const num = 1;
-   
+    let trip_url=process.env.REACT_APP_SPRING_URL+"cityinfo/tripdata?member_num="+member_num+"&city_num="+city_num;
+    console.log(trip_url)
+    useEffect(() => {
+        // console.log(wthPlaceUrl);
+        trip_data();
+    }, [city_num]);
 
-    // const trip_data=()=>{
-    //     axios.get(trip_url)
-    //     .then(res => {
-    //         console.log(res.data);
-    //         setTrip_id(res.data);            
-    //     })
-    //     .catch(err => {
-    //         alert(err);
-    //     })
-    // }
+    const trip_data= async()=>{
+        try {
+            const response = await axios.get(trip_url)
+            console.log(response);
+            setMember(response);
+        }
+        catch(err) {
+            alert(err);
+        }
+    }
     
 
-    ///////////////////////////////////////////////////////////// 날씨 API
-    // const [stnId,setStnId]=useState('');
-    // const [stnNm,setStnNm]=useState('');
-    // const [maxTa,setMaxTa]=useState('');
-    // const [minTa,setMinTa]=useState('');
-    // const [iscs,setIscs]=useState('');
-    // api key
-
-    // const API_ID="pN8sverBEceulMUULSyvZ";
-    // const API_KEY="QWZmBxA43k5EL7jQRyF5gMWtHEXBAgmpBjVXmgfh";
-
-    //const API_KEY="eeb9140b1a18675f963cf17ab2081baf";     //openweathermap 사이트 APIKEY
-    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
-    //const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; // 누군가꺼
 
 
-    // url
-    const weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=6&dataType=xml&dataCd=ASOS&dateCd=DAY&startDt=20210703&endDt=20210704&stnIds=${wthData.num}`       // 기상청 과거데이터 다됨
-    //const weather_url=`https://api.openweathermap.org/data/2.5/forecast/daily?q=${location}&cnt=3&appid=${API_KEY}`         // 최대예측 16일까지 일일데이터 (유료)
-    //const weather_url=`https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}`             // 5일간 3시간 간격
-    //const weather_url=`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${API_KEY}`            // 현재 날씨
-    //const weather_url=`https://pro.openweathermap.org/data/2.5/forecast/hourly?q=${location}&appid=${API_KEY}`    // 4일간 예측 (유료)
-    //const weather_url=`https://api.aerisapi.com/conditions/summary/${location}?format=json&from=&to=&client_id=${API_ID}&client_secret=${API_KEY}`
     
-    
-    const [location,setLocation]=useState('');  // 검색 input 지역 담는 변수
-    const [result,setResult]=useState([]);  // 날씨 데이터 담는 배열 변수
-
-    // const [img,setImg]=useState('');
-    // const [startDt,setStartDt]=useState('20210703');
-    // const [endDt,setEndDt]=useState('20210705');
-    // const [days,setDays]=useState(3);
-    
-
+    // 일정 데이타 가져오기
     // const {name}=useParams('');
     // console.log(name);
     // let placeNameUrl=process.env.REACT_APP_SPRING_URL+"cityinfo/placename?name="+name;
@@ -212,24 +212,7 @@ const CityInfoMain = () => {
     // if (result.data.weather[0].main === "Clouds"){
     //     setImg('../public/WeatherImage/비.png');
     // console.log(img);
-
-    // 위로옮김
-    // //////////////////////////////////////////////////////// 지역 데이타 가져오기
-    // const [areaCode,setAreaCode]=useState('');
-    // const [sigunguCode,setSigunguCode]=useState('');
-    // // const [category,setCategory]=useState('');
-    // // const [categoryPlace1,setCategoryPlace1]=useState([]);
-    // // const [categoryPlace2,setCategoryPlace2]=useState([]);
-    // // const [categoryPlace3,setCategoryPlace3]=useState([]);
-    // const [contentTypeId,setContentTypeId]=useState('');
-    
-    
-
-    // 추천 장소 url(arrange=P)
-     let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=10&arrange=R&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-         areaUrl += `&sigunguCode=${sigunguCode}`;
-     }
+    //}
     
     
 
@@ -254,45 +237,14 @@ const CityInfoMain = () => {
     }, [areaCode]);
     console.log('places', places);
     //console.log('categoryplace', categoryPlace);
-
-    
-    console.log("1",categoryPlace1);
-    console.log("2",categoryPlace2);
-    console.log("3",categoryPlace3);
-    console.log("4",categoryPlace4);
-    console.log("5",categoryPlace5);
-    console.log("6",categoryPlace6);
-    console.log("7",categoryPlace7);
-    
-
-    // // 섞여서 나오니까 각각 맞는 카테고리에 해당되는거 넣는거
-    // // 카테고리 필터링
-    // useEffect(() => {
-    //     // if(category == ''){           // 필터링이 필요없고 전체 데이타 불러올 때
-    //     // setCategoryPlace(places);
-    //     // return;
-    //     // }
-    //     if(category == 12){ // 관광지, 문화시설
-    //     // console.log("12",category);
-    //     setCategoryPlace(places.filter((place, index) => place.contenttypeid == '12' || place.contenttypeid == '14'));
-    //     // setCategoryPlace(places.filter((place, index) => place.contenttypeid == '15'));
-    //     // console.log("12",categoryPlace);
-    //     }
-    //     else if(category == 39){  // 음식점
-    //     // console.log("39",category);
-    //     setCategoryPlace(places.filter((place, index) => place.contenttypeid == '39'));
-    //     // console.log("39",categoryPlace);
-    //     }
-    //     else{ // 쇼핑
-    //     // console.log("38",category);
-    //     setCategoryPlace(places.filter((place, index) => place.contenttypeid == '38'));
-    //     // console.log("38",categoryPlace);
-    //     }
-        
-    // }, [category, places]); // 값이 바뀔 때마다 랜더링
-    // //console.dir("filter",categoryPlace.contenttypeid);
-
-
+    // console.log("1",categoryPlace1);
+    // console.log("2",categoryPlace2);
+    // console.log("3",categoryPlace3);
+    // console.log("4",categoryPlace4);
+    // console.log("5",categoryPlace5);
+    // console.log("6",categoryPlace6);
+    // console.log("7",categoryPlace7);
+ 
 
 //    // scroll paging
 //   const [ref, inView] = useInView();
@@ -454,10 +406,7 @@ const CityInfoMain = () => {
                                             ))
                                         }
                                     </div>
-                                    {/* <button type='button' className='btn btn-muted moreBtn' 
-                                        onClick={()=>{
-                                            naVi("../city/infomore")
-                                        }}>????개 더보기</button> */}
+
                                 </TabPanel>
                                 <TabPanel value="38">
                                     <div style={{display:'flex'}} className='row'>
@@ -491,10 +440,7 @@ const CityInfoMain = () => {
                                             ))
                                         }
                                     </div>
-                                    {/* <button type='button' className='btn btn-muted moreBtn' 
-                                        onClick={()=>{
-                                            naVi("../city/infomore")
-                                        }}>????개 더보기</button> */}
+
                                 </TabPanel>
                                 {/* <div className='place-list'>
                                     {

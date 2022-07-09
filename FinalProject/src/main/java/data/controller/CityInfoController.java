@@ -32,9 +32,12 @@ public class CityInfoController {
 		ciservice.getName(name);
 	}
 	
-	@GetMapping("/trip")
-	public TripDto getTripData(@RequestParam String id) {
-		return ciservice.getTripData(id);
+	@GetMapping("/tripdata")
+	public TripDto getTripData(
+			@RequestParam int member_num,
+			@RequestParam int city_num
+			) {
+		return ciservice.getTripData(member_num, city_num);
 	}
 	
 	
