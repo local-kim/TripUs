@@ -67,6 +67,12 @@ public class ReviewService implements ReviewServiceInter {
 	}
 	
 	@Override
+	public void deletePhoto(int num) {
+		// TODO Auto-generated method stub
+		reviewMapper.deletePhoto(num);
+		
+	}
+	@Override
 	public void updateReview(ReviewDto dto) {
 		reviewMapper.updateReview(dto);
 	}

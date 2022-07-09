@@ -8,6 +8,7 @@ public interface ReviewServiceInter {
 	
 	public int insertReview(ReviewDto dto);
 	public void deleteReview(int num);
+	public void deletePhoto(int num);
 	public int getTotalCount();
 	public List<ReviewDto> getPagingList(int start,int perpage);
 	public List<ReviewDto> getAllDatas(String place_id);

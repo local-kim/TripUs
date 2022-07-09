@@ -91,6 +91,14 @@ public class ReviewController {
 	
 	@DeleteMapping("/delete")
 	public void delete(@RequestParam int num,HttpServletRequest request) {
+		
+		String path=request.getServletContext().getRealPath("/review_photo");
+		String photo=reviewService.getData(num).getFile_name();
+		File file = new File(path+"/"+photo);
+		if(file.exists()) {
+			file.delete();
+			reviewService.deletePhoto(num);
+		}
 		//db delete
 		reviewService.deleteReview(num);
 		
@@ -103,8 +111,11 @@ public class ReviewController {
 	
 	@GetMapping("/detail")
 	public ReviewDto detail(@RequestParam int num) {
-		System.out.println("detail");
-		return reviewService.getData(num);
+		System.out.println("ok");
+		System.out.println(num);
+		ReviewDto dto = reviewService.getData(num);
+		System.out.println(dto);
+		return dto;
 	}
 	@GetMapping("/avgstars")
 	public double getAvgStars(@RequestParam String place_id) {

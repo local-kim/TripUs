@@ -71,8 +71,8 @@ const PlaceInfo=()=>{
 
     //지도api & 관광지 api 
     const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502]
-    //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
-    const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
+    const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
+    //const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; 일웅님 인증키
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
@@ -97,6 +97,7 @@ const PlaceInfo=()=>{
      const [avgStars,setAvgStars]=useState();
      const [place_id,setPlace_Id]=useState('');
      const [detailData,setDetailData]=useState('');
+     const [detailData2,setDetailData2]=useState('');
      const [editDetailData,setEditDetailData]=useState('');
      //setPlace_Id(contentId);
      const [member_num,setMember_Num]=useState('');
@@ -205,8 +206,14 @@ const PlaceInfo=()=>{
          //상세보기 호출할 함수
          const onDetail=(num)=>{
           axios.get(detailUrl+num).then(res=>{
+                if(res.file_name ===null){
+                setDetailData(res.data);
+                console.log("notfile_name:",res.data);  
+              }
+              else{
               setDetailData(res.data);
               console.log("detail->",res.data);
+            }
               setOpen(true);
              
           })
@@ -232,12 +239,15 @@ const PlaceInfo=()=>{
          const onUpdate=(num)=>{
           axios.post(updateUrl,{num, stars, content}).then(res=>{
             alert("수정완료");
+            setUpdateModalOpen(true);
             onDetail(num);
+            pageList();
           })
          }
 
     useEffect(() => {
        kakaomapscript();
+      // requiredimgscript();
     });
 
     useEffect(()=>{
@@ -246,6 +256,13 @@ const PlaceInfo=()=>{
     },[]);
 
     //modal
+    
+
+    // const requiredimgscript = () =>{
+
+    //   var i3 = document.getElementById("uploadimgalt").style.visibility="visible"; 
+    // }
+
 
     //kakomap + tourapi3
     const kakaomapscript = () => {
@@ -344,6 +361,7 @@ const PlaceInfo=()=>{
                     {
                       reviewData&&reviewData.map((row,idx)=>(
                         <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}} >
+
                         <div style={{flexDirection:'column',justifyContent:'center'}}>
                           <div>
                          <img src={Ayong} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
@@ -463,10 +481,15 @@ const PlaceInfo=()=>{
                   setStarsValue(newValue);
                   setStars(newValue);
                 }}/> 
-            <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> 
-            <p>{filename}</p>
-            <img src={photoUrl+filename} style={{width:'120px',marginLeft:'130px'}} alt="안뜸"/>
-            {/* className='fa-solid fa-images' */}
+                
+                {/*imgfile */}
+                <label for="file">
+                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
+                  </label>
+                  <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} id="file" />
+                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
+                  <p>{filename}</p>
+                     <img src={photoUrl+filename} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
           </Box> 
              </div> 
             <div className='place_review_write'>
@@ -476,10 +499,9 @@ const PlaceInfo=()=>{
             </div>
 
 
-                                    {/* 상세보기 */}
+             {/* 상세보기 */}
 
             <div>
-                
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -509,8 +531,7 @@ const PlaceInfo=()=>{
 
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                      {/* <img src={file_name===''?{Ayong}:photoUrl+file_name} alt="프로필사진" style={{width:'300px'}} /> */}
-                      <img src={photoUrl+detailData.file_name} alt={detailData.file_name} style={{width:'300px'}} />
+                      <img src={detailData.file_name?photoUrl+detailData.file_name:{Ayong}} alt={detailData.file_name} style={{width:'300px'}} />
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
                          <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData.content}</pre>
@@ -564,7 +585,7 @@ const PlaceInfo=()=>{
 
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                         <img src={Ayong} alt="프로필사진" style={{width:'300px'}}/>
+                      <img src={detailData.file_name===''?{Ayong}:photoUrl+detailData.file_name} alt={detailData.file_name} style={{width:'300px'}} />
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
                          <textarea style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} defaultValue={editDetailData.content} onChange={(e)=>{
@@ -576,6 +597,13 @@ const PlaceInfo=()=>{
                          <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
                           onUpdate(editDetailData.num);
                          }}>수정완료</button>
+
+                         {/*imgfile */}
+                <label for="file">
+                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
+                  </label>
+                  <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} id="file" />
+                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
                       </div>
                       </Typography>
                     </Box>
