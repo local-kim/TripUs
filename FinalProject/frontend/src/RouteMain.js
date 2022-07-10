@@ -11,6 +11,7 @@ import { PlanDetail } from "./pages/detail";
 import {Mypage, Dashboard, Profile} from "./pages/mypage";
 import { CityList } from './pages/citylist';
 import SecurityLogin from "./pages/login/SecurityLogin";
+import SecurityJoin from "./pages/login/SecurityJoin";
 // import { Dashboard } from "./pages/mypage";
 
 const RouteMain = () => {
@@ -32,7 +33,8 @@ const RouteMain = () => {
           {/* <Route path="/city/placename/:name" element={<CityInfoMain/>} /> */}
 
           {/* Member */}
-          <Route path="/join" element={<JoinForm/>} />
+          {/* <Route path="/join" element={<JoinForm/>} /> */}
+          <Route path="/join" element={<SecurityJoin/>} />
           {/* <Route path="/login" element={<LoginForm/>} /> */}
           <Route path="/login" element={<SecurityLogin/>} />
           <Route path="/oauth/kakao/callback"  element={<Auth/>} />
