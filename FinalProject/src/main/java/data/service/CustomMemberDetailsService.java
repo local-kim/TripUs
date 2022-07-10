@@ -2,10 +2,8 @@ package data.service;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,19 +11,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import data.dto.AuthorityDto;
 import data.dto.MemberSecurityDto;
 import data.mapper.MemberSecurityMapper;
 
 @Service
-//@Component("userDetailsService")
 public class CustomMemberDetailsService implements UserDetailsService {
+	
 	@Autowired
 	private MemberSecurityMapper mapper;
 	
@@ -33,8 +28,7 @@ public class CustomMemberDetailsService implements UserDetailsService {
 	PasswordEncoder passwordEncoder;
 	
 	@Transactional
-    public void joinUser(MemberSecurityDto member, String role){
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    public void join(MemberSecurityDto member, String role){
         member.setPassword(passwordEncoder.encode(member.getPassword()));
         member.setAccountNonExpired(true);
         member.setAccountNonLocked(true);
@@ -55,47 +49,15 @@ public class CustomMemberDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-		MemberSecurityDto member = mapper.getMemberAccount(id);
+		MemberSecurityDto member = mapper.getMemberById(id);
+		
+		if(member == null)
+			throw new UsernameNotFoundException(id);
 		
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
-		grantedAuthorities.add(new SimpleGrantedAuthority(mapper.getMemberAuthority(id)));
+		grantedAuthorities.add(new SimpleGrantedAuthority(mapper.getMemberAuthorityById(id)));
 		member.setAuthorities(grantedAuthorities);
-		
-//		AuthorityDto authority = mapper.getMemberAuthority(id);
-		
-//		member.setAuthorities(authority);
-		
-//        if (member == null){
-//            throw new UsernameNotFoundException("User not authorized.");
-//        }
         
         return member;
 	}
-//   private final MemberSecurityMapper mapper;
-//
-//   public CustomUserDetailsService(MemberSecurityMapper mapper) {
-//      this.mapper = mapper;
-//   }
-//
-//   @Override
-//   @Transactional
-//   public UserDetails loadUserByUsername(final String id) {
-//      return mapper.findOneWithAuthoritiesById(id)
-//         .map(user -> createUser(id, user))
-//         .orElseThrow(() -> new UsernameNotFoundException(id + " -> 데이터베이스에서 찾을 수 없습니다."));
-//   }
-//
-//   private org.springframework.security.core.userdetails.User createUser(String username, MemberSecurityDto user) {
-//      if (!user.isActivated()) {
-//         throw new RuntimeException(username + " -> 활성화되어 있지 않습니다.");
-//      }
-//      List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-//              .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
-//              .collect(Collectors.toList());
-//      return new org.springframework.security.core.userdetails.User(user.getUsername(),
-//              user.getPassword(),
-//              grantedAuthorities);
-//   }
-	
-	
 }

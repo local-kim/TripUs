@@ -44,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-//    	return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     @Override
@@ -82,10 +81,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/hello").permitAll()
-                .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/signup").permitAll()
-                .antMatchers("/city/list").permitAll()
+                .antMatchers("/auth/hello").permitAll()
+                .antMatchers("/auth/login").permitAll()
+                .antMatchers("/auth/signup").permitAll()
+                .antMatchers("/cityinfo/*").permitAll()
+                	.antMatchers("/plan/*").permitAll()
+                	.antMatchers("/mypage/*").permitAll()
+                	.antMatchers("/review/*").permitAll()
+                	.antMatchers("/save/*").permitAll()
 //                .antMatchers("/city/")
 
                 .anyRequest().authenticated()

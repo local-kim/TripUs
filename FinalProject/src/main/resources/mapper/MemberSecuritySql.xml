@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="data.mapper.MemberSecurityMapper">
 	<!-- 로그인 -->
-	<select id="getMemberAccount" parameterType="String" resultType="member_security">
-		select * from member where id= #{id}
+	<select id="getMemberById" parameterType="String" resultType="member_security">
+		select num, name, id, password, type, isAccountNonexpired, isAccountNonLocked, isCredentialsNonExpired, isEnabled from member where id=#{id}
 	</select>
 	
-	<select id="getMemberAuthority" parameterType="String" resultType="String">
+	<select id="getMemberAuthorityById" parameterType="String" resultType="String">
 		select authority_name from authority where id=#{id}
 	</select>
 	

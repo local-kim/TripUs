@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../AppHeemin.css';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -15,16 +15,26 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link, useNavigate } from 'react-router-dom';
 import MainLogo from '../assets/images/MainLogo.png';
-
-const pages = ['여행지', '일정 만들기', '일정 보기', 'About'];
-const pageLinks = ['city/list', 'plan/calendar/159', 'plan/detail/1', ''];
-const settings = ['Login', 'Mypage', 'Dashboard','Logout'];
-const link= ['login', 'mypage', 'dashboard','logout']
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../modules/auth';
 
 const ResponsiveAppBar = () => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const navi=useNavigate();
+  // redux에서 변수 얻기
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+
+  const pages = ['여행지', '일정 만들기', '일정 보기', 'About'];
+  const pageLinks = ['city/list', 'plan/calendar/159', 'plan/detail/1', ''];
+
+  const loginSettings = ['Mypage', 'Dashboard','Logout'];
+  const loginLinks = ['mypage', 'dashboard','logout'];
+
+  const logoutSettings = ['Login', 'Join'];
+  const logoutLinks = ['login', 'join'];
+
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const navi = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -157,12 +167,32 @@ const ResponsiveAppBar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting,index) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={()=>{navi(link[index])}}>{setting}</Typography>
-                  {/* <Typography textAlign="center" onClick={()=>{navi(setting)}}>{setting}</Typography> */}
-                </MenuItem>
-              ))}
+              {
+                // 로그인 상태의 메뉴
+                isLoggedIn && loginSettings.map((setting,index) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center" onClick={()=>{
+                      if(index === loginSettings.length - 1){ // 마지막 메뉴(로그아웃)를 클릭했을 때
+                        localStorage.removeItem('jwtToken');
+                        dispatch(logout());
+                      }
+                      else{
+                        navi(loginLinks[index]);
+                      }
+                    }}>{setting}</Typography>
+                  </MenuItem>
+                ))
+              }
+              {
+                // 로그아웃 상태의 메뉴
+                !isLoggedIn && logoutSettings.map((setting,index) => (
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center" onClick={()=>{
+                      navi(logoutLinks[index]);
+                    }}>{setting}</Typography>
+                  </MenuItem>
+                ))
+              }
             </Menu>
           </Box>
         </Toolbar>
@@ -172,5 +202,3 @@ const ResponsiveAppBar = () => {
 };
 
 export default ResponsiveAppBar;
-
-

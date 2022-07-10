@@ -37,9 +37,9 @@ public class AuthController {
         this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
 
-    @PostMapping("/authenticate")
-    public ResponseEntity<TokenDto> authorize(@Valid @RequestBody LoginDto loginDto) {
-    	System.out.println(loginDto);
+    // 로그인시 권한 검증
+    @PostMapping("/login")
+    public ResponseEntity<MemberSecurityDto> login(@RequestBody LoginDto loginDto) {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getId(), loginDto.getPassword());
 
@@ -50,13 +50,22 @@ public class AuthController {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+        
+        MemberSecurityDto member = (MemberSecurityDto)service.loadUserByUsername(loginDto.getId());
+        member.setToken(jwt);
 
-        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+//        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(member, httpHeaders, HttpStatus.OK);
     }
     
-    @PostMapping("/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody MemberSecurityDto member){
-    	service.joinUser(member, "ROLE_MEMBER");
+    @PostMapping("/join")
+    public ResponseEntity<String> join(@RequestBody MemberSecurityDto member){
+    	service.join(member, "ROLE_USER");	// 일반회원 가입시 ROLE_USER로 권한 설정
     	return ResponseEntity.ok("Sign up success");
     }
+    
+//    @PostMapping("/login")
+//    public void login(@RequestBody MemberSecurityDto member) {
+//    	
+//    }
 }
