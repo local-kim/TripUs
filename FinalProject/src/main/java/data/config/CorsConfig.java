@@ -26,6 +26,7 @@ public class CorsConfig {
       source.registerCorsConfiguration("/member/**", config);
       source.registerCorsConfiguration("/mypage/**", config);
       source.registerCorsConfiguration("/searchauto", config);
+      source.registerCorsConfiguration("/review_photo/**", config);
       
       return new CorsFilter(source);
    }

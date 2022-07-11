@@ -101,11 +101,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/hello").permitAll()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/auth/signup").permitAll()
-                .antMatchers("/cityinfo/list").permitAll()
+                .antMatchers("/cityinfo/*").permitAll()
                 	.antMatchers("/plan/*").permitAll()
                 	.antMatchers("/mypage/*").permitAll()
                 	.antMatchers("/review/*").permitAll()
                 	.antMatchers("/save/*").permitAll()
+                	.antMatchers("/review_photo/*").permitAll()
 //                .antMatchers("/city/")
 
                 .anyRequest().authenticated()
