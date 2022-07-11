@@ -18,7 +18,15 @@ public class CorsConfig {
       config.addAllowedHeader("*");
       config.addAllowedMethod("*");
 
+      config.addExposedHeader("Authorization");
       source.registerCorsConfiguration("/auth/**", config);
+      source.registerCorsConfiguration("/cityinfo/**", config);
+      source.registerCorsConfiguration("/review/**", config);
+      source.registerCorsConfiguration("/plan/**", config);
+      source.registerCorsConfiguration("/member/**", config);
+      source.registerCorsConfiguration("/mypage/**", config);
+      source.registerCorsConfiguration("/searchauto", config);
+      
       return new CorsFilter(source);
    }
 

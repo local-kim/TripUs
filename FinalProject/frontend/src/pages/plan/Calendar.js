@@ -27,6 +27,21 @@ const Calendar = () => {
 
   useEffect(() => {
     console.log(cityUrl);
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+    // axios.defaults.headers.common = {'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`}
+    // axios.interceptors.request.use(
+    //   config => {
+    //       const jwtToken = localStorage.getItem('jwtToken');
+    //       if (jwtToken) {
+    //           config.headers['Authorization'] = 'Bearer ' + jwtToken;
+    //       }
+    //       // config.headers['Content-Type'] = 'application/json';
+    //       return config;
+    //   },
+    //   error => {
+    //       Promise.reject(error)
+    //   });
+
     axios.get(cityUrl)
     .then(res => {
       areaCode.current = res.data.area_code;
