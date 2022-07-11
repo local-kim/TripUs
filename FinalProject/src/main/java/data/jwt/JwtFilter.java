@@ -13,6 +13,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.time.LocalTime;
 
 public class JwtFilter extends GenericFilterBean {
 
@@ -48,7 +49,7 @@ public class JwtFilter extends GenericFilterBean {
    // Request Header에서 토큰 정보를 꺼내옴
    private String resolveToken(HttpServletRequest request) {
       String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-      System.out.println(bearerToken);
+      System.out.println("Token at " + LocalTime.now() + " : " + bearerToken);
       if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
          return bearerToken.substring(7);
       }

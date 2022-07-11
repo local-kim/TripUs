@@ -7,6 +7,7 @@ import { savePlan } from '../../modules/planner';
 import { useInView } from 'react-intersection-observer';
 import { PlaceItem, MyPlaceList } from ".";
 import '../../styles/plan.css';
+import setAuthorizationToken from '../../utils/setAuthorizationToken';
 
 const DayPlan = () => {
   // redux에서 변수 얻기
@@ -43,6 +44,7 @@ const DayPlan = () => {
         if(keyword == ''){
           areaUrl += `&pageNo=${page}`;
           console.log(areaUrl);
+          delete axios.defaults.headers.common['Authorization'];
           axios.get(areaUrl)
           .then((res) => {
             console.dir(res.data.response.body.items.item);
@@ -57,6 +59,7 @@ const DayPlan = () => {
           keywordUrl += `&pageNo=${page}`;
           // console.log("keyword 검색 요청");
           console.log(keywordUrl);
+          delete axios.defaults.headers.common['Authorization'];
           axios.get(keywordUrl)
           .then((res) => {
             console.dir(res.data.response.body.items.item);
@@ -86,6 +89,9 @@ const DayPlan = () => {
   useEffect(() => {
     // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
     if(keyword == ''){
+      // setAuthorizationToken(null);
+      // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+      delete axios.defaults.headers.common['Authorization'];
       axios.get(areaUrl)
       .then((res) => {
         console.dir(res.data.response.body.items.item);
@@ -99,6 +105,7 @@ const DayPlan = () => {
     else{
       // console.log("keyword 검색 요청");
       // console.log(keywordUrl);
+      delete axios.defaults.headers.common['Authorization'];
       axios.get(keywordUrl)
       .then((res) => {
         console.dir(res.data.response.body.items.item);

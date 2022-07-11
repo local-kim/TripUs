@@ -13,20 +13,21 @@ public class CorsConfig {
    public CorsFilter corsFilter() {
       UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
       CorsConfiguration config = new CorsConfiguration();
-      config.setAllowCredentials(true);
-      config.addAllowedOriginPattern("*");
-      config.addAllowedHeader("*");
-      config.addAllowedMethod("*");
-
+      config.setAllowCredentials(true);	// 내 서버가 응답할 때 json 자바스크립트 허용
+      config.addAllowedOriginPattern("*");	// 포트번호 응답 다름 허용
+      config.addAllowedHeader("*");	// 헤더 값 응답 허용
+      config.addAllowedMethod("*");	// 메서드 응답 허용(get/post 등)
       config.addExposedHeader("Authorization");
-      source.registerCorsConfiguration("/auth/**", config);
-      source.registerCorsConfiguration("/cityinfo/**", config);
-      source.registerCorsConfiguration("/review/**", config);
-      source.registerCorsConfiguration("/plan/**", config);
-      source.registerCorsConfiguration("/member/**", config);
-      source.registerCorsConfiguration("/mypage/**", config);
-      source.registerCorsConfiguration("/searchauto", config);
-      source.registerCorsConfiguration("/review_photo/**", config);
+      
+//      source.registerCorsConfiguration("/auth/**", config);
+//      source.registerCorsConfiguration("/cityinfo/**", config);
+//      source.registerCorsConfiguration("/review/**", config);
+//      source.registerCorsConfiguration("/plan/**", config);
+//      source.registerCorsConfiguration("/member/**", config);
+//      source.registerCorsConfiguration("/mypage/**", config);
+//      source.registerCorsConfiguration("/searchauto", config);
+//      source.registerCorsConfiguration("/review_photo/**", config);
+      source.registerCorsConfiguration("/**", config);	// 모든 url에 대하여 위의 설정 적용
       
       return new CorsFilter(source);
    }

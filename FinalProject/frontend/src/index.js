@@ -15,7 +15,7 @@ import setAuthorizationToken from './utils/setAuthorizationToken';
 const store = createStore(rootReducer, composeWithDevTools());
 const persistor = persistStore(store);
 
-setAuthorizationToken(localStorage.getItem('jwtToken'));
+// setAuthorizationToken(localStorage.getItem('jwtToken'));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

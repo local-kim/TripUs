@@ -76,8 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
-                .csrf().disable()
+                .csrf().disable()	// token을 사용하는 방식이기 때문에 csrf를 disable합니다.
 
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
@@ -103,14 +102,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/signup").permitAll()
                 .antMatchers("/cityinfo/*").permitAll()
                 	.antMatchers("/plan/*").permitAll()
+//                	.antMatchers("/plan/**").hasRole("USER")
                 	.antMatchers("/mypage/*").permitAll()
                 	.antMatchers("/review/*").permitAll()
                 	.antMatchers("/save/*").permitAll()
                 	.antMatchers("/review_photo/*").permitAll()
-//                .antMatchers("/city/")
 
-                .anyRequest().authenticated()
-//                	.anyRequest().permitAll()
+//                .anyRequest().authenticated()
+                	.anyRequest().permitAll()
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
