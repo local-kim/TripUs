@@ -22,6 +22,8 @@ const ResponsiveAppBar = () => {
   // redux에서 변수 얻기
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const loginNum = useSelector(state => state.auth.user.num);
+  const loginName = useSelector(state => state.auth.user.name);
 
   const pages = ['여행지', '일정 만들기', '일정 보기', 'About'];
   const pageLinks = ['city/list', 'plan/calendar/159', 'plan/detail/1', ''];
@@ -148,7 +150,7 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={loginName} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu

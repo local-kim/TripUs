@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/h2-console/**"
                         ,"/favicon.ico"
                         ,"/error"
+//                        	,"/cityinfo/list"
                 );
     }
 
@@ -84,7 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/hello").permitAll()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/auth/signup").permitAll()
-                .antMatchers("/cityinfo/*").permitAll()
+                .antMatchers("/cityinfo/**").permitAll()
                 	.antMatchers("/plan/*").permitAll()
                 	.antMatchers("/mypage/*").permitAll()
                 	.antMatchers("/review/*").permitAll()
