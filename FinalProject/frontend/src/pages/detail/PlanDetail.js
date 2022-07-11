@@ -2,13 +2,6 @@ import React, { useState, useRef, useEffect, state } from 'react';
 import '../../styles/plandetail.css';
 // import ScrollButton from 'react-scroll-button';
 import { useNavigate,useLocation, useParams } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import Rating from '@mui/material/Rating';
-import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { daysToWeeks, format } from 'date-fns';
 import { da } from 'date-fns/locale';
@@ -16,6 +9,7 @@ import { differenceInDays } from 'date-fns';
 import { addDays } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import { setPlanInfo } from '../../modules/planner';
+import Rating from '@mui/material/Rating';
 
 // 카카오맵
 
@@ -279,6 +273,8 @@ const PlanDetail = () => {
     }
 
     
+
+    
     
     //별점 이미지 = https://www.earthtory.com/res//img/common/web/hotel_star_?.?.png
 
@@ -400,32 +396,34 @@ const PlanDetail = () => {
                                     <div className='day-box-title'>
                                         {/* Day별 간격 - distance 덮기 */}
                                         <div className='undistance' />
-                                    <div className='last-box' id={'page-'+day.day}
-                                        style={{
-                                            position:'relative',
-                                            top:'-86px'
-                                        }}></div>
-                                    <div className='day-num' id={'day-nav'+day.day}>
-                                        Day{day.day}
 
-                                    </div>
-                                    <div className='day-date'>
-                                        <div className='day-date-left'>
-                                            <div className='date'>
-                                            {format(addDays(trip_date, day.day-1), "yyyy-MM-dd")}
-                                            </div>
-                                            <div className='day-title'>
-                                                {day.name}
-                                            </div>
-                                            <div className='clear' />
+                                        {/* 왼쪽 list 이동시 top위치 잡아줄 투명 div */}
+                                        <div className='last-box' id={'page-'+day.day}
+                                            style={{
+                                                position:'relative',
+                                                top:'-86px'
+                                            }} />
+                                        <div className='day-num' id={'day-nav'+day.day}>
+                                            Day{day.day}
+
                                         </div>
-                                        <div className='day-date-right'>
-                                            Used price?
-                                            <div className='clear' />
+                                        <div className='day-date'>
+                                            <div className='day-date-left'>
+                                                <div className='date'>
+                                                {format(addDays(trip_date, day.day-1), "yyyy-MM-dd")}
+                                                </div>
+                                                <div className='day-title'>
+                                                    {day.name}
+                                                </div>
+                                                <div className='clear' />
+                                            </div>
+                                            <div className='day-date-right'>
+                                                총 금액(사용안할듯)
+                                                <div className='clear' />
+                                            </div>
                                         </div>
+                                        <div className='clear'></div>
                                     </div>
-                                    <div className='clear'></div>
-                                </div>
                                      : ''}
                                     {/* 리스트-하단바 */}
                                     <div className='day-box-list'>
@@ -446,13 +444,24 @@ const PlanDetail = () => {
                                                     {/* <img alt src='https://www.earthtory.com/res//img/common/web/hotel_star_1.5.png' className='star' /> */}
                                                     <div className='sinfo-cat2'>{day.cat2_name}</div>
                                                     <div className='sinfo-line' />
-                                                    <div className='sinfo-txt'>commit text</div>
+                                                    <div className='sinfo-txt'>
+                                                    review&nbsp;<Rating name="read-only" value={day.avg_star} readOnly size="small" precision={0.1} />({day.avg_star == null ? `리뷰없음` : day.avg_star})
+                                                    </div>
                                                     <div className='clear' />
                                                 </div>
                                             </div>
                                             <div className='spot-btn-box'>
-                                                <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/map_ico.png' className='spot-btn map_view' />
-                                                <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/info_ico.png' className='spot-btn spot-info-btn' />
+                                                <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/map_ico.png' className='spot-btn map_view' 
+                                                onClick={() => {
+                                                    // 카카오맵에 사용될 X, Y 좌표 직접 변경 
+                                                    setMapx(day.mapx);
+                                                    setMapy(day.mapy);
+                                                }}/>
+                                                
+                                                <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/info_ico.png' className='spot-btn spot-info-btn' 
+                                                onClick={() => {
+                                                    navi('../../../place/placedetail', {state:{place:day.contentid}})
+                                                }}/>
                                                 <div className='clear' />
                                             </div>
                                             <div className='clear' />
