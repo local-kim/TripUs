@@ -1,7 +1,12 @@
-.main-main-back {
-  /* background: #f8f8fa; */
+/* #main{
+  padding-top: 89px;
+} */
+
+/* 스크롤바 숨기기 */
+body{
+  scrollbar-width:none
 }
 
-#main{
-  padding-top: 89px;
+body::-webkit-scrollbar{
+  display:none;
 }
