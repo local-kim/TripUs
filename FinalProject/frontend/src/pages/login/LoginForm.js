@@ -76,10 +76,6 @@ const LoginForm = () => {
     const successGoogle = (response) => {
         console.log(response);
     }
-    
-        const successGoogle = (response) => {
-            console.log(response);
-        }
         
         //로그인 실패했을 때 처리 함수 
         const failGoogle = (response) => {

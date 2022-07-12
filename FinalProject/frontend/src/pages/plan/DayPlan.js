@@ -225,7 +225,7 @@ const DayPlan = () => {
 
     const options = {
       center: new kakao.maps.LatLng(35.1795543, 129.0756416), // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
-      level: 9
+      level: 8
     };
     
     const map = new kakao.maps.Map(container, options);
@@ -268,7 +268,7 @@ const DayPlan = () => {
                 // dayPlan이 있을 때만 표시
                 dayPlan && dayPlan.map((place, index) => (
                   <div className='place-list-item' key={index}>
-                    <PlaceItem place={place} onHover={kakaoMapScript}/>
+                    <PlaceItem place={place} setMapX={setMapX} setMapY={setMapY}/>
                     <div className='btn-wrap'>
                       {/* TODO: drag & drop으로 변경 */}
                       <div className='move-btn'>
