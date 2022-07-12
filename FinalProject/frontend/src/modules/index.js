@@ -4,6 +4,7 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import planner from './planner';
 import auth from './auth';
+import base from './base';
 
 const persistConfig = {
   key: "root",
@@ -14,7 +15,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   planner,
-  auth
+  auth,
+  base
 });
 
 // export default rootReducer;

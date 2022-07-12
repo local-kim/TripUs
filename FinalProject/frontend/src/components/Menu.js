@@ -53,6 +53,9 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
+  // 헤더 숨기기
+  if ((window.location.pathname.startsWith('/plan/calendar') || window.location.pathname === '/plan' || window.location.pathname.startsWith('/plan/')) && !window.location.pathname.startsWith('/plan/detail')) return null;
+
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">

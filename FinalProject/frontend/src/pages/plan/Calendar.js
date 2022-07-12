@@ -67,6 +67,7 @@ const Calendar = () => {
 
   return (
     <div id='plan-calendar'>
+      <div className='title'>날짜를 선택하세요</div>
       <DateRangePicker
         locale={ko}
         onChange={item => setState([item.selection])}
@@ -77,6 +78,8 @@ const Calendar = () => {
         direction="horizontal"
         dateDisplayFormat={'yyyy-MM-dd'}
         monthDisplayFormat={'yyyy년 M월'}
+        rangeColors={['#98dde3', '#ffffff']}
+        color={'#98dde3'}
       />
 
       <div>
@@ -91,7 +94,7 @@ const Calendar = () => {
           dispatch(setPlanInfo(start, end, days, cityNum, cityName.current, areaCode.current, sigunguCode.current));
 
           navigate("/plan");
-        }}>Next</button>
+        }}>선택 완료</button>
       </div>
     </div>
   );

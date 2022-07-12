@@ -9,6 +9,8 @@ import { PlaceItem, MyPlaceList } from ".";
 import '../../styles/plan.css';
 import setAuthorizationToken from '../../utils/setAuthorizationToken';
 
+const { kakao } = window;
+
 const DayPlan = () => {
   // redux에서 변수 얻기
   const dispatch = useDispatch();
@@ -30,6 +32,10 @@ const DayPlan = () => {
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
   const [categoryPlace, setCategoryPlace] = useState([]);
+
+  // 호버된 장소 좌표
+  const [mapX, setMapX] = useState('');
+  const [mapY, setMapY] = useState('');
   
   // scroll paging
   const [ref, inView] = useInView();
@@ -97,6 +103,7 @@ const DayPlan = () => {
         console.dir(res.data.response.body.items.item);
         setPlaces(res.data.response.body.items.item);
         setCategoryPlace(res.data.response.body.items.item);
+        kakaoMapScript(res.data.response.body.items.item[0].mapx, res.data.response.body.items.item[0].mapy);
       }).catch((err) => {
         console.log(err.data);
       });
@@ -211,22 +218,49 @@ const DayPlan = () => {
     ]);
   }
 
+  // kakao map
+  const kakaoMapScript = (mapX, mapY) => {
+        
+    const container = document.getElementById('map');
+
+    const options = {
+      center: new kakao.maps.LatLng(35.1795543, 129.0756416), // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
+      level: 9
+    };
+    
+    const map = new kakao.maps.Map(container, options);
+
+    //마커가 표시 될 위치
+    let markerPosition = new kakao.maps.LatLng(mapY, mapX);
+
+    // 마커를 생성
+    let marker = new kakao.maps.Marker({position: markerPosition,});
+
+    // 마커를 지도 위에 표시
+    marker.setMap(map);
+  };
+
+  useEffect(() => {
+    kakaoMapScript(mapX, mapY);
+  }, [mapX, mapY]);
+
   return (
     <div id='day-plan'>
-      <div className='title-wrap'>
-        {
-          // day1이면 이전 날짜 버튼 안보임
-          day == 1 ? <button style={{opacity:'0',cursor:'default'}}>ᐸ</button> : <button type='button' className='btn btn-secondary btn-sm' onClick={prevDay}>ᐸ</button>
-        }
-        <span className='title'>DAY {day}</span>
-        {
-          // 마지막 날이면 다음 날짜 버튼 안보임
-          day == days ? <button style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-secondary btn-sm' onClick={nextDay}>ᐳ</button>
-        }
-      </div>
+      <div id='map'></div>
 
       <div className='list-container'>
         <div className='left'>
+          <div className='title-wrap'>
+            {
+              // day1이면 이전 날짜 버튼 안보임
+              day == 1 ? <button style={{opacity:'0',cursor:'default'}}>ᐸ</button> : <button type='button' className='btn btn-sm' onClick={prevDay}>ᐸ</button>
+            }
+            <span className='title'>DAY {day}</span>
+            {
+              // 마지막 날이면 다음 날짜 버튼 안보임
+              day == days ? <button style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm' onClick={nextDay}>ᐳ</button>
+            }
+          </div>
           <div className='plan-place-list'>
             <span className='label'>나의 일정</span>
             <div className='place-list'>
@@ -234,7 +268,7 @@ const DayPlan = () => {
                 // dayPlan이 있을 때만 표시
                 dayPlan && dayPlan.map((place, index) => (
                   <div className='place-list-item' key={index}>
-                    <PlaceItem place={place}/>
+                    <PlaceItem place={place} onHover={kakaoMapScript}/>
                     <div className='btn-wrap'>
                       {/* TODO: drag & drop으로 변경 */}
                       <div className='move-btn'>
@@ -252,6 +286,15 @@ const DayPlan = () => {
                 ))
               }
             </div>
+          </div>
+
+          <div style={{textAlign:'center', marginTop:'10px'}}>
+            <button type='button' className='btn btn-secondary' onClick={() => {
+              // addPlan();
+              // plan을 redux 전역 변수에 저장
+              dispatch(savePlan(plan));
+              navigate("/plan");
+            }}>완료</button>
           </div>
         </div>
 
@@ -310,12 +353,12 @@ const DayPlan = () => {
                 categoryPlace && categoryPlace.map((place, index) => (
                   (categoryPlace.length - 1 == index) ? (
                     <div className='place-list-item' key={index} ref={ref}>
-                      <PlaceItem place={place} addPlace={addPlace}/>
+                      <PlaceItem place={place} addPlace={addPlace} setMapX={setMapX} setMapY={setMapY}/>
                       <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
                     </div>
                   ) : (
                     <div className='place-list-item' key={index}>
-                      <PlaceItem place={place} addPlace={addPlace}/>
+                      <PlaceItem place={place} addPlace={addPlace} setMapX={setMapX} setMapY={setMapY}/>
                       <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
                     </div>
                   )
@@ -325,17 +368,8 @@ const DayPlan = () => {
           </div>
           
           {/* DB에서 저장한 장소 목록 불러오기 */}
-          <MyPlaceList addPlace={addPlace}/>
+          <MyPlaceList addPlace={addPlace} setMapX={setMapX} setMapY={setMapY}/>
         </div>
-      </div>
-      
-      <div style={{textAlign:'center', marginTop:'10px'}}>
-        <button type='button' className='btn btn-secondary' onClick={() => {
-          // addPlan();
-          // plan을 redux 전역 변수에 저장
-          dispatch(savePlan(plan));
-          navigate("/plan");
-        }}>완료</button>
       </div>
     </div>
   );
