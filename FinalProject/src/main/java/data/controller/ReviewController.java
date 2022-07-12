@@ -64,8 +64,6 @@ public class ReviewController {
 				return photoName;
 			}
 	
-	
-	//리뷰사진없이 리뷰작성할때
 	@PostMapping("/insert")
 	public void insert(@RequestBody ReviewDto dto) {
 		int member_num=2;
@@ -85,7 +83,12 @@ public class ReviewController {
 	public void update(@RequestBody ReviewDto dto) {
 		System.out.println("update"+dto);
 		//사진이 있을경우 이미지명 넣기
-		//dto.setPhoto(photoName);
+		//dto.setFile_name(photoName);
+		int num=dto.getNum();
+		reviewService.deletePhoto(num);
+		dto.setNum(num);
+		dto.setFile_name(photoName);
+		reviewService.insertPhoto(dto);
 		reviewService.updateReview(dto);
 	}
 	
@@ -121,5 +124,17 @@ public class ReviewController {
 	public double getAvgStars(@RequestParam String place_id) {
 		System.out.println("stars");
 		return reviewService.getAvgStars(place_id);
+	}
+	
+	@GetMapping("/sumlikes")
+	public int getSumLikes(@RequestParam String place_id) {
+		System.out.println("likes");
+		return reviewService.getSumLikes(place_id);
+	}
+	
+	@GetMapping("/like")
+	public int getLike(@RequestParam String place_id) {
+		System.out.println("mylike");
+		return reviewService.getLike(place_id);
 	}
 }

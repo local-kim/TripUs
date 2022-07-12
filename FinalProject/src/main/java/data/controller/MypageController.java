@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+
+import data.dto.CityTripDto;
 import data.dto.MemberDto;
 import data.dto.ProfileDto;
 
@@ -52,8 +54,7 @@ public class MypageController {
 //			@RequestParam(required=false) int num,
 //			@RequestParam(required=false) String Id,
 			HttpSession session,
-			HttpServletRequest request
-			) {
+			HttpServletRequest request) {
 		int num = 4;
 	
 		
@@ -90,79 +91,31 @@ public class MypageController {
 			
 			
 		}
-		
-//		@GetMapping("/photo")
-//		public String photo()
-//		
-//		{
-//			int member_num =3;
-//			
-//			return service.findPhoto(member_num);
-//		}
+	
 		
 
 		
 		
-		@GetMapping("/pagelist") //@RequestParam(defaultValue = "1") int currentPage
+		@GetMapping("/pagelist") 
 		public Map<String, Object> getPageList(){
 				
 			int num=3;
 			
 			int totalCount;	// 총 개수
 			int totalCount2;
-//			int perPage = 3;		// 페이지 당 글 수
-//			int perBlock = 5;	// 블럭 당 페이지 수
-//			int totalPage;	// 총 페이지 수
-//			int startNum;	// 한 페이지에서 보여질 시작글 번호
-//			int startPage;	// 한 블럭에서 보여질 시작 페이지 번호
-//			int endPage;		// 한 블럭에서 보여질 끝 페이지 번호
-//			int no;	// 각 페이지 당 보여질 시작 번호
-//			
+			
 			// 총 글의 개수를 구한다
 			totalCount = service.userTrip(num);
 		
 			totalCount2 = service.userReview(num);
-//			// 총 페이지 수를 구한다
-//			totalPage = totalCount / perPage + (totalCount % perPage == 0 ? 0 : 1);	// 딱 떨어지지 않으면 한 페이지를 더함
-//			// totalPage = (int)Math.ceil((double)totalCount / perPage);	// 무조건 올림
-//			
-//			// 각 블럭의 시작 페이지 (한 블럭 당 5개일 경우 예시)
-//			// 1, 6, 11,,, (currentPage가 1~5 일때는 1, 6~10일때는 6)
-//			startPage =  (currentPage - 1) / perBlock * perBlock + 1;
-//			// 5, 10, 15,,,
-//			endPage = startPage + perBlock - 1;
-//			
-//			// 문제점 (마지막 블럭은 마지막 페이지까지만 나와야함)
-//			if(endPage > totalPage) {
-//				endPage = totalPage;
-//			}
-//			
-//			// 각 페이지에서 보여질 글의 시작 번호(mysql은 0부터)
-//			// 한 페이지 당 3개일 경우 1페이지: 0, 2페이지: 3, 3페이지: 6 ,,,
-//			startNum = (currentPage - 1) * perPage;	// oracle은 +1 해줌
-//			
-//			// 각 페이지 당 보여질 시작번호
-//			no = totalCount - (currentPage - 1) * perPage;
-//			
-//			// 데이터 가져오기
-//			List<TripDto> list = service.getPagingList(startNum, perPage);
-//			
-//			// 출력할 페이지 번호
-//			Vector<Integer> parr = new Vector<>();
-//			for(int pp = startPage; pp <= endPage; pp++) {
-//				parr.add(pp);
-//			}
-//			
+
+			
 			// 리턴할 Map에 필요한 변수들 넣기
 			Map<String, Object> map = new HashMap<>();
-//			map.put("list", list);
-//			map.put("parr", parr);
+
 			map.put("totalCount", totalCount);
 			map.put("totalCount2", totalCount2);
-//			map.put("totalPage", totalPage);
-//			map.put("startPage", startPage);
-//			map.put("endPage", endPage);
-//			map.put("no", no);
+
 			
 			return map;
 		}
@@ -232,7 +185,163 @@ public class MypageController {
 			System.out.println(dto);
 			service.updateProfile2(dto);
 		}
+		
+		@GetMapping("/citytrip")
+		public Map<String, Object> citytriplist(@RequestParam(defaultValue = "1") int currentPage)
+		{
+			
+			int totalCount;	// 총 개수
+			int perPage = 3;		// 페이지 당 글 수
+			int perBlock = 5;	// 블럭 당 페이지 수
+			int totalPage;	// 총 페이지 수
+			int startNum;	// 한 페이지에서 보여질 시작글 번호
+			int startPage;	// 한 블럭에서 보여질 시작 페이지 번호
+			int endPage;		// 한 블럭에서 보여질 끝 페이지 번호
+			int no;	// 각 페이지 당 보여질 시작 번호
+			
+			int num = 3;
+			
+			
+			// 총 글의 개수를 구한다
+			totalCount = service.userTrip(num);
+			
+			// 총 페이지 수를 구한다
+			totalPage = totalCount / perPage + (totalCount % perPage == 0 ? 0 : 1);	// 딱 떨어지지 않으면 한 페이지를 더함
+			// totalPage = (int)Math.ceil((double)totalCount / perPage);	// 무조건 올림
+			
+			// 각 블럭의 시작 페이지 (한 블럭 당 5개일 경우 예시)
+			// 1, 6, 11,,, (currentPage가 1~5 일때는 1, 6~10일때는 6)
+			startPage =  (currentPage - 1) / perBlock * perBlock + 1;
+			// 5, 10, 15,,,
+			endPage = startPage + perBlock - 1;
+			
+			// 문제점 (마지막 블럭은 마지막 페이지까지만 나와야함)
+			if(endPage > totalPage) {
+				endPage = totalPage;
+			}
+			
+			// 각 페이지에서 보여질 글의 시작 번호(mysql은 0부터)
+			// 한 페이지 당 3개일 경우 1페이지: 0, 2페이지: 3, 3페이지: 6 ,,,
+			startNum = (currentPage - 1) * perPage;	// oracle은 +1 해줌
+			
+			// 각 페이지 당 보여질 시작번호
+			no = totalCount - (currentPage - 1) * perPage;
+			
+			// 데이터 가져오기
+			List<CityTripDto> list = service.getPagingList(num, startNum, perPage);
+			System.out.println(list);
+			
+			// 출력할 페이지 번호
+			Vector<Integer> parr = new Vector<>();
+			for(int pp = startPage; pp <= endPage; pp++) {
+				parr.add(pp);
+			}
+			
+			// 리턴할 Map에 필요한 변수들 넣기
+			Map<String, Object> map = new HashMap<>();
+			map.put("list", list);
+			map.put("parr", parr);
+			map.put("totalCount", totalCount);
+			map.put("totalPage", totalPage);
+			map.put("startPage", startPage);
+			map.put("endPage", endPage);
+			map.put("no", no);
+			
+			
+			return map;
+		}
+		
 	
+			
+		
+		
+		// 일정 지우기
+		@GetMapping("/tripdelete")
+		public List<CityTripDto> tripdelete(@RequestParam int num) {
+//			int num = 4;
+			System.out.println();
+		
+			service.tripDelete(num);
+			
+			
+			return service.getAllDates2(3);
+		}
+		
+		@PostMapping("/tripnameupdate")
+		public void tripnameupdate(@RequestBody TripDto dto)
+		{
+			
+			
+//			int num = 32;
+//			dto.setNum(num);
+			
+			service.updateTripName(dto);
+			
+			
+		}
+		
+//		@GetMapping("/pagination")
+//		public Map<String, Object> getPageList( //
+//				@RequestParam(defaultValue = "1") int currentPage
+//				){
+//			System.out.println("currentPage=" + currentPage);
+//			
+//			int totalCount;	// 총 개수
+//			int perPage = 6;		// 페이지 당 글 수
+//			int perBlock = 5;	// 블럭 당 페이지 수
+//			int totalPage;	// 총 페이지 수
+//			int startNum;	// 한 페이지에서 보여질 시작글 번호
+//			int startPage;	// 한 블럭에서 보여질 시작 페이지 번호
+//			int endPage;		// 한 블럭에서 보여질 끝 페이지 번호
+//			int no;	// 각 페이지 당 보여질 시작 번호
+//			
+//			// 총 글의 개수를 구한다
+//			totalCount = boardService.getTotalCount();
+//			
+//			// 총 페이지 수를 구한다
+//			totalPage = totalCount / perPage + (totalCount % perPage == 0 ? 0 : 1);	// 딱 떨어지지 않으면 한 페이지를 더함
+//			// totalPage = (int)Math.ceil((double)totalCount / perPage);	// 무조건 올림
+//			
+//			// 각 블럭의 시작 페이지 (한 블럭 당 5개일 경우 예시)
+//			// 1, 6, 11,,, (currentPage가 1~5 일때는 1, 6~10일때는 6)
+//			startPage =  (currentPage - 1) / perBlock * perBlock + 1;
+//			// 5, 10, 15,,,
+//			endPage = startPage + perBlock - 1;
+//			
+//			// 문제점 (마지막 블럭은 마지막 페이지까지만 나와야함)
+//			if(endPage > totalPage) {
+//				endPage = totalPage;
+//			}
+//			
+//			// 각 페이지에서 보여질 글의 시작 번호(mysql은 0부터)
+//			// 한 페이지 당 3개일 경우 1페이지: 0, 2페이지: 3, 3페이지: 6 ,,,
+//			startNum = (currentPage - 1) * perPage;	// oracle은 +1 해줌
+//			
+//			// 각 페이지 당 보여질 시작번호
+//			no = totalCount - (currentPage - 1) * perPage;
+//			
+//			// 데이터 가져오기
+//			List<BoardDto> list = boardService.getPagingList(startNum, perPage);
+//			
+//			// 출력할 페이지 번호
+//			Vector<Integer> parr = new Vector<>();
+//			for(int pp = startPage; pp <= endPage; pp++) {
+//				parr.add(pp);
+//			}
+//			
+//			// 리턴할 Map에 필요한 변수들 넣기
+//			Map<String, Object> map = new HashMap<>();
+//			map.put("list", list);
+//			map.put("parr", parr);
+//			map.put("totalCount", totalCount);
+//			map.put("totalPage", totalPage);
+//			map.put("startPage", startPage);
+//			map.put("endPage", endPage);
+//			map.put("no", no);
+//			
+//			return map;
+//		}
+}
 		
 		
 //		@GetMapping("/list")
@@ -280,5 +389,5 @@ public class MypageController {
 
 
 	
-}
+
 

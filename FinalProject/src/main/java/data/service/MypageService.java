@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import data.dto.CityTripDto;
 import data.dto.MemberDto;
 import data.dto.ProfileDto;
 import data.dto.TripDto;
@@ -41,9 +41,10 @@ public class MypageService implements MypageServiceInter {
 	}
 	
 	@Override
-	public List<TripDto> getPagingList(int start, int perpage) {
+	public List<CityTripDto> getPagingList(int memberNum, int start, int perpage) {
 		// TODO Auto-generated method stub
 		Map<String, Integer> map=new HashMap<>();
+		map.put("member_num", memberNum);
 		map.put("start", start);
 		map.put("perpage",perpage);
 		
@@ -80,6 +81,28 @@ public class MypageService implements MypageServiceInter {
 		mapper.updateProfile2(dto);
 		
 	}
+	
+	@Override
+	public List<CityTripDto> getAllDates2(int member_num) {
+		// TODO Auto-generated method stub
+		return mapper.getAllDates2(member_num);
 
+}
+	
+	@Override
+	public void tripDelete(int num) {
+		// TODO Auto-generated method stub
+		mapper.tripDelete(num);
+	}
+	
+	@Override
+	public void updateTripName(TripDto dto) {
+		// TODO Auto-generated method stub
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("num", Integer.toString(dto.getNum()));
+		map.put("name", dto.getName());
+		mapper.updateTripName(map);
+	}
+	
 }
 	

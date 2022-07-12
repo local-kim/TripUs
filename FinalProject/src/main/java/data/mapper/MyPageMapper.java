@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
+import data.dto.CityTripDto;
 import data.dto.MemberDto;
 import data.dto.ProfileDto;
 
@@ -35,7 +35,7 @@ public interface MyPageMapper {
 	public int userTrip(int member_num);
 	
 	//유저 일정 페이징 처리
-	public List<TripDto> getPagingList(Map<String, Integer>map);
+	public List<CityTripDto> getPagingList(Map<String, Integer>map);
 	
 	//유저 일정 정보
 	public List<TripDto> getAllDates();
@@ -55,4 +55,12 @@ public interface MyPageMapper {
 	//마이페이지 정보 업데이트
 	public void updateProfile2(MemberDto dto);
 	
+	//일정 리스트 정보 가져오기
+	public List<CityTripDto> getAllDates2(int member_num);
+	
+	// 일정 지우기
+	public void tripDelete(int num);
+	
+	//일정 이름 업데이트
+	public void updateTripName(Map<String, String> map);
 }
