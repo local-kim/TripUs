@@ -253,16 +253,16 @@ const DayPlan = () => {
           <div className='title-wrap'>
             {
               // day1이면 이전 날짜 버튼 안보임
-              day == 1 ? <button style={{opacity:'0',cursor:'default'}}>ᐸ</button> : <button type='button' className='btn btn-sm' onClick={prevDay}>ᐸ</button>
+              day == 1 ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐸ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={prevDay}>ᐸ</button>
             }
             <span className='title'>DAY {day}</span>
             {
               // 마지막 날이면 다음 날짜 버튼 안보임
-              day == days ? <button style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm' onClick={nextDay}>ᐳ</button>
+              day == days ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
             }
           </div>
           <div className='plan-place-list'>
-            <span className='label'>나의 일정</span>
+            {/* <span className='label'>나의 일정</span> */}
             <div className='place-list'>
               {
                 // dayPlan이 있을 때만 표시
@@ -289,7 +289,7 @@ const DayPlan = () => {
           </div>
 
           <div style={{textAlign:'center', marginTop:'10px'}}>
-            <button type='button' className='btn btn-secondary' onClick={() => {
+            <button type='button' className='btn btn-secondary btn-ok' onClick={() => {
               // addPlan();
               // plan을 redux 전역 변수에 저장
               dispatch(savePlan(plan));

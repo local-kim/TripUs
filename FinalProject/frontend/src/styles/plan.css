@@ -1,16 +1,40 @@
 /*** Calendar.js ***/
 #plan-calendar{
   text-align: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#plan-calendar .trip-title{
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
 }
 
 #plan-calendar .title{
   font-size: 25px;
   font-weight: 500;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 #plan-calendar .rdrDefinedRangesWrapper{
   display: none;
+}
+
+#plan-calendar .rdrDateDisplayWrapper{
+  background-color: transparent;
+}
+
+#plan-calendar .rdrDateDisplayItem{
+  /* border: 1px solid gray; */
+  box-shadow: none;
+}
+
+#plan-calendar .rdrDateDisplayItem input{
+  font-size: 18px;
+  font-weight: 500;
 }
 
 /* 캘린더에서 선택된 날짜 */
@@ -21,8 +45,11 @@
   font-weight: 600;
 }
 
-#plan-calendar .next-btn{
-  margin-top: 10px;
+#plan-calendar .btn-ok{
+  background-color: rgb(152, 221, 227);
+  border-color: rgb(152, 221, 227);
+  width: 200px;
+  margin-top: 15px;
 }
 
 /*** Plan.js ***/
@@ -32,6 +59,7 @@
 
 #plan .title{
   font-size: 20px;
+  font-weight: 500;
 }
 
 #plan .period{
@@ -79,28 +107,54 @@
 }
 
 #plan .day{
-  /* width: 400px; */
   margin: 15px auto;
-  /* background-color: white; */
-  /* background-color: rgb(238, 238, 238); */
-  /* border-radius: 20px; */
-  /* padding: 10px 20px; */
-  /* border: 1px solid gray; */
 }
 
 #plan .day span.title{
+  font-family: 'Montserrat';
   font-size: 20px;
   font-weight: 500;
-  cursor: pointer;
   line-height: 1.3;
+  cursor: pointer;
 }
 
-#plan .day button{
+#plan .btn-plan{
+  margin: 5px;
+  background-color: rgb(152, 221, 227);
+  border-color: rgb(152, 221, 227);
+  width: 100%;
+  /* color: white; */
+}
+
+#plan .day .btn-place{
+  margin: 5px;
+  border-color: rgb(85, 181, 190);
+  color: rgb(85, 181, 190);
+}
+
+#plan .day .btn-place:hover{
+  margin: 5px;
+  background-color: rgb(152, 221, 227);
+  border-color: rgb(152, 221, 227);
+  color: white;
+}
+
+#plan .day .btn-memo{
   margin: 5px;
 }
 
-#plan .place-list{
-  padding: 10px;
+#plan .btn-memo:hover{
+  background-color: #bebebe;
+  border-color: #bebebe;
+}
+
+#plan .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#plan .box-wrap{
+  padding: 20px;
   background-color: white;
   width: 350px;
   height: 100vh;
@@ -109,7 +163,7 @@
   scrollbar-width:none
 }
 
-#plan .place-list::-webkit-scrollbar{
+#plan .box-wrap::-webkit-scrollbar{
   display:none;
 }
 
@@ -138,9 +192,14 @@
   margin: 0 auto;
 }
 
+#day-plan .btn-arrow{
+  font-weight: bold;
+}
+
 #day-plan .title{
   font-size: 23px;
   font-weight: 400;
+  font-family: 'Montserrat';
 }
 
 #day-plan .list-container{
@@ -153,7 +212,7 @@
   width: 300px;
   background-color: white;
   /* border-radius: 20px; */
-  margin-right: 10px;
+  /* margin-right: 10px; */
   padding: 20px;
   height: 100vh;
 }
@@ -163,18 +222,29 @@
 }
 
 #day-plan .left .plan-place-list .place-list{
-  height: 500px;
+  height: 100%;
   overflow: auto;
   overflow-x: hidden;
+}
+
+#day-plan .left .btn-ok{
+  background-color: rgb(152, 221, 227);
+  border-color: rgb(152, 221, 227);
+  width: 100%;
 }
 
 #day-plan .right{
   width: 300px;
   background-color: white;
   /* border-radius: 20px; */
-  margin-left: 10px;
+  /* margin-left: 10px; */
   padding: 20px;
   height: 100vh;
+  /* overflow-x: clip; */
+
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-between; */
 }
 
 #day-plan .right input{
@@ -194,8 +264,13 @@
   display:none;
 }
 
+#day-plan .right .api-place-list{
+  max-height: 68%;
+}
+
 #day-plan .right .api-place-list .place-list{
-  height: 400px;
+  height: 500px;
+  /* max-height: 95%; */
 }
 
 #day-plan .label{
@@ -216,6 +291,7 @@
   align-items: center;
 }
 
+/* 버튼 설정 */
 #day-plan .category-btn button:not(:last-child){
   margin-right: 5px;
 }
@@ -227,17 +303,19 @@
 }
 
 #day-plan .category-btn .btn-dark{
-  background-color: #5b5b5b;
-  border-color: #5b5b5b;
+  background-color: rgb(152, 221, 227);
+  border-color: rgb(152, 221, 227);
 }
 
 #day-plan .category-btn .btn-outline-dark{
-  border-color: #5b5b5b;
+  border-color: #bbbbbb;
+  color: #888888;
 }
 
 #day-plan .category-btn .btn-outline-dark:hover{
-  background-color: #bebebe;
-  border-color: #bebebe;
+  background-color: white;
+  /* border-color: #bebebe; */
+  color: #888888;
 }
 
 #day-plan .btn:focus {
@@ -275,7 +353,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 10px 0;
 }
 
 /* 장소 목록 사이에 보더 넣기 */

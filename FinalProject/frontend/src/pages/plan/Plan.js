@@ -51,14 +51,12 @@ const Plan = () => {
   const [focus, setFocus] = useState(0);
 
   // kakao map
-  const kakaoMapScript = (mapX, mapY) => {
+  const kakaoMapScript = () => {
     let markerList = [];
 
     for(let i in plan[focus]){
       markerList.push({latlng: new kakao.maps.LatLng(plan[focus][i].mapy, plan[focus][i].mapx), title: plan[focus][i].title});
     }
-
-    // console.log(markerList);
         
     const container = document.getElementById('map');
 
@@ -70,75 +68,43 @@ const Plan = () => {
     
     const map = new kakao.maps.Map(container, options);
 
-    // 마커 이미지의 이미지 주소입니다
-    // let imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
-
-    // 마커 이미지의 이미지 크기입니다
-    let imageSize = new kakao.maps.Size(24, 35);
-    
-    // 마커 이미지를 생성합니다
-    // let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
-
+    // 커스텀 오버레이
     for (let i in markerList) {
-      // 마커를 생성합니다
-      // let marker = new kakao.maps.Marker({
-      //   map: map, // 마커를 표시할 지도
-      //   position: markerList[i].latlng, // 마커를 표시할 위치
-      //   title : markerList[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-      //   // image : markerImage // 마커 이미지
-      // });
-
-      // 커스텀 오버레이에 표시할 내용입니다     
-      // HTML 문자열 또는 Dom Element 입니다
+      // 커스텀 오버레이에 표시할 내용
+      // HTML 문자열 또는 Dom Element
       let content = `<div class ="label">${Number(i) + 1}</div>`;
 
-      // 커스텀 오버레이가 표시될 위치입니다
+      // 커스텀 오버레이가 표시될 위치
       let position = markerList[i].latlng;
 
-      // 커스텀 오버레이를 생성합니다
+      // 커스텀 오버레이를 생성
       let customOverlay = new kakao.maps.CustomOverlay({
           position: markerList[i].latlng,
           content: content
       });
 
-      // 커스텀 오버레이를 지도에 표시합니다
+      // 커스텀 오버레이를 지도에 표시
       customOverlay.setMap(map);
     }
 
-    // 선을 구성하는 좌표 배열입니다. 이 좌표들을 이어서 선을 표시합니다
+    // 선을 구성하는 좌표 배열
     let linePath = [];
 
     for(let j in markerList){
       linePath.push(markerList[j].latlng);
     }
 
-    // 지도에 표시할 선을 생성합니다
+    // 지도에 표시할 선을 생성
     let polyline = new kakao.maps.Polyline({
-      path: linePath, // 선을 구성하는 좌표배열입니다
-      strokeWeight: 3, // 선의 두께입니다
-      strokeColor: '#333333', // 선의 색깔입니다
-      strokeOpacity: 0.6, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-      strokeStyle: 'shortdash' // 선의 스타일입니다
+      path: linePath, // 선을 구성하는 좌표 배열
+      strokeWeight: 3, // 선의 두께
+      strokeColor: '#333333', // 선의 색깔
+      strokeOpacity: 0.6, // 선의 불투명도: 1에서 0 사이의 값, 0에 가까울수록 투명
+      strokeStyle: 'shortdash' // 선의 스타일
     });
 
-    // 지도에 선을 표시합니다 
+    // 지도에 선을 표시
     polyline.setMap(map);
-
-    // // 커스텀 오버레이에 표시할 내용입니다     
-    // // HTML 문자열 또는 Dom Element 입니다 
-    // let content = `<div class ="label"><span class="left"></span><span class="center">카카오!</span><span class="right"></span></div>`;
-
-    // // 커스텀 오버레이가 표시될 위치입니다
-    // var position = new kakao.maps.LatLng(33.450701, 126.570667);
-
-    // // 커스텀 오버레이를 생성합니다
-    // var customOverlay = new kakao.maps.CustomOverlay({
-    //     position: position,
-    //     content: content
-    // });
-
-    // // 커스텀 오버레이를 지도에 표시합니다
-    // customOverlay.setMap(map);
   };
 
   useEffect(() => {
@@ -150,13 +116,13 @@ const Plan = () => {
 
       <div id='map'></div>
       
-      <div className='place-list'>
+      <div className='box-wrap'>
         <div className='title'>{cityName} 여행</div>
         {
           days == 1 ? <div className='period'>{startDate} ({days}일)</div> : <div className='period'>{startDate} ~ {endDate} ({days}일)</div>
         }
 
-        <button type='button' className='btn btn-primary btn-sm' onClick={insertPlan}>일정 생성하기</button>
+        <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={insertPlan}>일정 생성하기</button>
         {
           // days 만큼 반복문 돌리기
           [...Array(days)].map((day, index) => (
@@ -173,10 +139,10 @@ const Plan = () => {
                   ))
                 }
               </div>
-              <button type='button' className='btn btn-outline-primary btn-sm' onClick={() => {
+              <button type='button' className='btn btn-outline-primary btn-sm btn-place' onClick={() => {
                 navigate(`/plan/${index + 1}`);
               }}>장소 추가</button>
-              <button type='button' className='btn btn-outline-secondary btn-sm'>메모 추가</button>
+              <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
             </div>
           ))
         }
