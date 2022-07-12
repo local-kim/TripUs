@@ -17,6 +17,7 @@ import data.dto.PlaceDto;
 import data.dto.PlanDateDto;
 import data.dto.PlanDto;
 import data.dto.PlanInsertDto;
+import data.dto.PlanMapDto;
 import data.dto.TripDto;
 import data.service.PlanService;
 
@@ -111,4 +112,5 @@ public class PlanController {
 	public List<PlanDateDto> getPlanMember(@RequestParam int num) {
 		return planService.getPlanMember(num);
 	}
+	
 }
