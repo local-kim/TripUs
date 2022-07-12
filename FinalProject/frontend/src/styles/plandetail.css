@@ -297,6 +297,7 @@
 #plan-detail .main-list .wrap-list {
     display: flex;
     padding-top: 25px;
+    border: 0px solid black;
 }
 
 
@@ -310,6 +311,7 @@
 
     border: 0px solid hotpink;
 }
+
 
 #plan-detail .list-left .day-box {
     width: 100%;

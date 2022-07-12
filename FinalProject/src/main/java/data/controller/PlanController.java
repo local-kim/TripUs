@@ -113,4 +113,8 @@ public class PlanController {
 		return planService.getPlanMember(num);
 	}
 	
+	@GetMapping("/map")
+	public List<PlanMapDto> mapKakao (@RequestParam int num) {
+		return planService.mapKakao(num);
+	}
 }
