@@ -1,6 +1,10 @@
 package data.dto;
 
+import java.sql.Date;
+
 import org.apache.ibatis.type.Alias;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 
@@ -11,4 +15,5 @@ public class ItineraryDto {
 	private int day;
 	private int order;
 	private String place_id;
+
 }

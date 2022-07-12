@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import data.dto.CityDto;
 import data.mapper.SearchMapper;
 
 @Service
@@ -14,7 +15,7 @@ public class SearchService implements SearchServiceInter {
 	SearchMapper mapper;
 
 	@Override
-	public List<String> searchAuto(String searchWord) {
+	public List<CityDto> searchAuto(String searchWord) {
 		// TODO Auto-generated method stub
 		return mapper.searchAuto(searchWord);
 	}

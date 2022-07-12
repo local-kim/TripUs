@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="data.mapper.SearchMapper">
 
-	<select id="searchAuto" parameterType="String" resultType="String">
-		SELECT name FROM city WHERE INSTR(name,#{searchWord}) or INSTR(eng_name,#{searchWord})
+	<select id="searchAuto" parameterType="String" resultType="city">
+		SELECT * FROM city WHERE INSTR(name,#{searchWord}) or INSTR(eng_name,#{searchWord})
 	</select>
 		
 <!-- <select id="searchAuto" parameterType="String" resultType="map">

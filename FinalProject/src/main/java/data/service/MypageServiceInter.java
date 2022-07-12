@@ -2,7 +2,7 @@ package data.service;
 
 import java.util.List;
 
-
+import data.dto.CityTripDto;
 import data.dto.MemberDto;
 import data.dto.ProfileDto;
 import data.dto.TripDto;
@@ -15,7 +15,7 @@ public interface MypageServiceInter {
 	
 	public int userTrip(int member_num);
 	
-	public List<TripDto> getPagingList(int start, int perpage);
+	public List<CityTripDto> getPagingList(int memberNum, int start, int perpage);
 	
 	public List<TripDto> getAllDates();
 	
@@ -29,6 +29,15 @@ public interface MypageServiceInter {
 	
 	//마이페이지 정보 업데이트
 	public void updateProfile2(MemberDto dto);
+	
+	//마이페이지 일정 가져오기
+	public List<CityTripDto>getAllDates2(int member_num);
+	
+	//일정 지우기
+	public void tripDelete(int num);
+	
+	//일정 이름 업데이트
+	public void updateTripName(TripDto dto);
 	
 	
 	
