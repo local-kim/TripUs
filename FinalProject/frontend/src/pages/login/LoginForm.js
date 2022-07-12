@@ -1,10 +1,18 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { Modal } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/join.css';
 import { GoogleLogin } from 'react-google-login';
+import { SearchId, SearchPass } from './index.js';
 
 const LoginForm = () => {
+   const [id,setId] = useState('')
+   const [password,setPassword] = useState('')
+   const [SearchId_modal,setSearchId_modal] = useState(false);
+   const [SeachPass_modal,setSearchPass_modal] = useState(false);
+
+   
     const [inputId, setInputId] = useState('')
     const [inputPw, setInputPw] = useState('')
  
@@ -84,7 +92,7 @@ const LoginForm = () => {
         const failGoogle = (response) => {
             console.log(response);
         }
-  
+      
   
     return (
         
@@ -99,9 +107,9 @@ const LoginForm = () => {
                  value={inputPw} onChange={handleInputPw}/>
 
 
-
+             
                 <div className="login_search">
-                <a className="link"  onclick="" href=''>
+                <a className="link"  href=''>
                 아이디 찾기
                 </a>
                 <span className="bar"></span>
@@ -109,6 +117,7 @@ const LoginForm = () => {
                 비밀번호 찾기
                 </a>
                 </div>
+             
 
             </div>
             <button className="btn_type1" type="submit">

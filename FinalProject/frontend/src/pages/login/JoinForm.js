@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
+import { useForm } from "react-hook-form";
+
 
 
 
@@ -39,6 +41,13 @@ const JoinForm = (props) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const {
+        register,
+        watch,
+        handleSubmit,
+        formState: { errors },
+      } = useForm();
+    
     
     const modalStyle = {
         position: 'absolute',
@@ -206,16 +215,35 @@ const JoinForm = (props) => {
                         <tr>
                             <th>비밀번호<span class="ico">*</span></th>
                             <td>
-                            <input type="password" name="password"  className="form-control" autoComplete="off" required
-                            onChange={onDataChange} label="비밀번호" maxLength="16" placeholder="비밀번호를 입력해주세요"/>
+                            <input type="password" name="password"  className="form-control"
+                             placeholder="비밀번호를 입력해주세요"
+                            {...register("password", {
+                                required: "비밀번호를 입력해주세요",
+                                minLength: {
+                                  value: 6,
+                                  message: "6자 이상의 비밀번호만 사용 가능합니다.",
+                                },
+                                maxLength: {
+                                  value: 16,
+                                  message: "16자 이하의 비밀번호만 사용 가능합니다.",
+                                },
+                                pattern: {
+                                  value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
+                                  message: "영문, 숫자를 혼용하여 입력해주세요..",
+                                },
+                              })}/>
                             </td>
                         </tr>
                         <tr>
                             <th>비밀번호확인<span class="ico">*</span></th>
                             <td>
-                            <input type="password" className="form-control" name="password" required
+                            <input type="password" className="form-control" name="password_confirm" required
                             onChange={onPassChange} autoComplete="off"
-                            label="비밀번호확인" maxLength="16" placeholder="비밀번호를 한번 더 입력해주세요"/>
+                            label="비밀번호확인" maxLength="16" placeholder="비밀번호를 한번 더 입력해주세요"
+                            {...register("password_confirm", {
+                                required: "비밀번호를 입력해주세요",
+                                // validate: (value) => value === password.current,
+                              })}/>
                             <span style={{marginLeft:'5px',color:passOk?'':'green'}}>{passOk?'사용가능':'동일한 비밀번호를 입력해주세요'}</span>
                            
   
@@ -225,14 +253,38 @@ const JoinForm = (props) => {
                             <th>이름<span class="ico">*</span></th>
                             <td>
                             <input type="text" name="name" className="form-control" value={data.name}
-                            label="이름" onChange={onDataChange} placeholder="이름을 입력해주세요" required />
+                            label="이름" onChange={onDataChange} placeholder="이름을 입력해주세요" required
+                            {...register("name", {
+                                required: "이름을 입력해주세요",
+                                minLength: {
+                                  value: 2,
+                                  message: "2자 이상의 이름만 사용 가능합니다.",
+                                },
+                                maxLength: {
+                                  value: 12,
+                                  message: "12자 이하의 이름만 사용 가능합니다.",
+                                },
+                                pattern: {
+                                  value: /^([가-힣])|([a-zA-Z])$/,
+                                  message: "이름은 한글 또는 영문으로만 입력해주세요",
+                                },
+                              })} />
                             </td>
                         </tr>
                         <tr>
                             <th>이메일<span class="ico">*</span></th>
                             <td>
-                            <input type="text" name="email" value={data.email} size="30" onChange={onDataChange}
-                            label="이메일" placeholder="예: bitrip@bitrip.com" className="form-control" required/>
+                            <input type="text" name="email" value={data.email} onChange={onDataChange}
+                             placeholder="예: bitrip@bitrip.com" className="form-control"
+                            
+                            {...register("user_email", {
+                              required: "이메일을 입력해주세요",
+                              pattern: {
+                                value: /^\S+@\S+$/,
+                                message: "이메일 형식에 맞게 입력해주세요",
+                              },
+                              // validate: (value) => value === user_email_check,
+                            })}/>
                             <button type='button' className='btn'
                              onClick={onEmailCheck}>중복확인</button>
                             </td>
