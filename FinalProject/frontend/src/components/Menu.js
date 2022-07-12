@@ -29,7 +29,7 @@ const ResponsiveAppBar = () => {
   const pageLinks = ['city/list', 'plan/calendar/159', 'plan/detail/1', ''];
 
   const loginSettings = ['Mypage', 'Dashboard','Logout'];
-  const loginLinks = ['mypage', 'dashboard','logout'];
+  const loginLinks = ['mypage/1', 'dashboard','logout'];
 
   const logoutSettings = ['Login', 'Join'];
   const logoutLinks = ['login', 'join'];

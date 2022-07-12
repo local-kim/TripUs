@@ -55,9 +55,11 @@ const RouteMain = () => {
           <Route path="/plan/detail/:num" element={<PlanDetail />} />
 
           {/* mypage */}
-          <Route path="/mypage" element={<Mypage/>}/>
+          <Route path="/mypage/:currentPage" element={<Mypage/>}/>
           <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/mypage/profile" element={<Profile/>}/>
+          {/* <Route path='mypage//:num/:currentPage' element={</>}/> */}
+          {/* <Route path="/mypage/list/:currentPage" element={<Mypage/>}/> */}
 
         </Routes>
       </div>
