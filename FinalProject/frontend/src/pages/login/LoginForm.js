@@ -4,15 +4,11 @@ import { Modal } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import '../../styles/join.css';
 import { GoogleLogin } from 'react-google-login';
-<<<<<<< HEAD
 import { SearchId, SearchPass } from './index.js';
-=======
 import { useDispatch } from 'react-redux';
 import { login } from '../../modules/auth';
->>>>>>> branch 'master' of https://github.com/local-kim/FinalProject.git
 
 const LoginForm = () => {
-<<<<<<< HEAD
    const [id,setId] = useState('')
    const [password,setPassword] = useState('')
    const [SearchId_modal,setSearchId_modal] = useState(false);
@@ -81,7 +77,6 @@ const LoginForm = () => {
         console.log(response);
     }
     
-<<<<<<< HEAD
         const successGoogle = (response) => {
             console.log(response);
         }
@@ -90,13 +85,6 @@ const LoginForm = () => {
         const failGoogle = (response) => {
             console.log(response);
         }
-      
-=======
-    //로그인 실패했을 때 처리 함수 
-    const failGoogle = (response) => {
-        console.log(response);
-    }
->>>>>>> branch 'master' of https://github.com/local-kim/FinalProject.git
   
     return (
         <div className="section_login">
@@ -104,23 +92,6 @@ const LoginForm = () => {
                 <h3 className="tit_login">로그인</h3>
                 <div className="write_form">
 
-<<<<<<< HEAD
-            <input type="text" name="" size="20" placeholder="아이디를 입력해주세요"
-                value={inputId} onChange={handleInputId}/>
-            <input type="password" name="" size="20" placeholder="비밀번호를 입력해주세요"
-                 value={inputPw} onChange={handleInputPw}/>
-
-
-             
-                <div className="login_search">
-                <a className="link"  href=''>
-                아이디 찾기
-                </a>
-                <span className="bar"></span>
-                <a className="link">
-                비밀번호 찾기
-                </a>
-=======
                 <input type="text" name="" size="20" placeholder="아이디를 입력해주세요"
                     value={inputId} onChange={handleInputId}/>
                 <input type="password" name="" size="20" placeholder="비밀번호를 입력해주세요"
@@ -134,7 +105,6 @@ const LoginForm = () => {
                         비밀번호 찾기
                         </a>
                     </div>
->>>>>>> branch 'master' of https://github.com/local-kim/FinalProject.git
                 </div>
              
 
