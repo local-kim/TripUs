@@ -17,7 +17,7 @@ const Calendar = () => {
   // TODO: 도시 페이지로부터 cityNum 넘겨받기 (useParams로 할지, useNavigate의 state로 할지 나중에 결정..)
   // const cityNum = 159;  // 부산(159)
   const {cityNum} = useParams();
-  console.log(cityNum);
+  // console.log(cityNum);
   
   const cityName = useRef();
   const areaCode = useRef();
@@ -26,7 +26,23 @@ const Calendar = () => {
   let cityUrl = process.env.REACT_APP_SPRING_URL + `plan/city-code?cityNum=${cityNum}`;
 
   useEffect(() => {
-    console.log(cityUrl);
+    // console.log(cityUrl);
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+    // axios.defaults.headers.common = {'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`}
+    // axios.interceptors.request.use(
+    //   config => {
+    //       const jwtToken = localStorage.getItem('jwtToken');
+    //       if (jwtToken) {
+    //           config.headers['Authorization'] = 'Bearer ' + jwtToken;
+    //       }
+    //       // config.headers['Content-Type'] = 'application/json';
+    //       return config;
+    //   },
+    //   error => {
+    //       Promise.reject(error)
+    //   });
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
     axios.get(cityUrl)
     .then(res => {
       areaCode.current = res.data.area_code;
@@ -36,6 +52,8 @@ const Calendar = () => {
     })
     .catch(err => {
       console.log(err);
+      alert("로그인 후 이용해주세요.");
+      navigate("/login");
     })
   }, []);
 

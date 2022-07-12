@@ -1,15 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="data.mapper.ReviewMapper">
-	
 	<insert id="insertReview" parameterType="review">
 		insert into review (place_id,member_num,stars,content,created_at) values (#{place_id},#{member_num},#{stars},#{content},now())
+	<selectKey resultType="int" keyProperty="num" order="AFTER">
+    	select max(num) from review
+    </selectKey>
 	</insert> 
-	<delete id="deleteReview">
+	<insert id="insertPhoto" parameterType="review">
+		insert into review_photo (review_num,file_name) values (#{num},#{file_name})
+	</insert>
+	<delete id="deleteReview">	
 		delete from review where num=#{num}
 	</delete>
+	<delete id="deletePhoto">
+		delete from review_photo where review_num=#{num}
+	</delete>
 	<update id="updateReview" parameterType="review">
-		update review set stars=#{stars},content=#{content} where num=#{num}
+		update review set stars=#{stars},content=#{content},created_at=now() where num=#{num}
+	</update>
+	<update id="updatePhoto" parameterType="review">
+		update reivew_photo set file_name=#{file_name} where num=#{num}
 	</update>
 	<!--  <select id="getTotalCount" resultType="int">
 		select count(*) from reactboard
@@ -24,9 +35,15 @@
 	<select id="getAvgStars" parameterType="String" resultType="double">
 		SELECT truncate(avg(stars),2) from review where place_id=#{place_id}
 	</select>
-	
+	<select id="getSumLikes" parameterType="String" resultType="int">
+		select sum(`check`) from `like` where place_id = #{place_id}
+	</select>
+	<select id="getLike" parameterType="String" resultType="int">
+		select `check` from `like` where `like`.member_num = 2 and place_id = #{place_id} 
+	</select>
 	 <select id="getData" resultType="review" parameterType="int">	
-		select review.num,place_id,review.member_num,member.name,stars,content,created_at from review, `member` where review.num=#{num} and review.member_num = member.num
+		  <!-- select review.num,place_id,review.member_num,member.name,stars,content,created_at,review_photo.file_name from review, `member`,review_photo where review.num=#{num} and review.member_num = member.num and review_photo.review_num=review.num -->
+			select review.num,place_id,review.member_num,member.name,stars,content,created_at, (select review_photo.file_name from review_photo where review_photo.review_num=#{num}) as file_name from review, `member` where review.num=#{num} and review.member_num = member.num
 	</select> 
 	<!-- 상세보기-->
 </mapper>

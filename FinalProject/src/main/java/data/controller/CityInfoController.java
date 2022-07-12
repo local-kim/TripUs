@@ -15,7 +15,10 @@ import data.dto.WeatherDto;
 import data.service.CityInfoService;
 
 @RestController
-@CrossOrigin
+//@CrossOrigin
+@CrossOrigin (origins = "*" , exposedHeaders = "**")
+//@CrossOrigin("http://localhost:3000")
+//@CrossOrigin(origins = "*",allowCredentials = ,allowedHeaders = , exposedHeaders = , methods = , value = )
 @RequestMapping("/cityinfo")
 public class CityInfoController {
 

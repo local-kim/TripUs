@@ -3,13 +3,15 @@ import { Route, Routes } from "react-router-dom";
 import { FinalHead, Footer, Header, Main, Menu } from "./components";
 import './App.css';
 import './AppHeemin.css';
-import { CityInfoMain, PlaceInfo } from "./pages/cityinfo";
+import { CityInfoMain, CityinfoMore, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
 import { JoinForm, Auth,LoginForm, KakaoLogin, GoogleLogin } from "./pages/login";
 import { PlanDetail } from "./pages/detail";
 
 import {Mypage, Dashboard, Profile} from "./pages/mypage";
 import { CityList } from './pages/citylist';
+import SecurityLogin from "./pages/login/SecurityLogin";
+import SecurityJoin from "./pages/login/SecurityJoin";
 // import { Dashboard } from "./pages/mypage";
 
 const RouteMain = () => {
@@ -27,12 +29,15 @@ const RouteMain = () => {
 
           {/* cityinfo */}
           <Route path="/city/:num" element={<CityInfoMain/>} />
+          <Route path="/city/infomore" element={<CityinfoMore/>}/>
           {/* <Route path="/city/weather/:num" element={<CityInfoMain/>} /> */}
           {/* <Route path="/city/placename/:name" element={<CityInfoMain/>} /> */}
 
           {/* Member */}
-          <Route path="/join" element={<JoinForm/>} />
-          <Route path="/login" element={<LoginForm/>} />
+          {/* <Route path="/join" element={<JoinForm/>} /> */}
+          <Route path="/join" element={<SecurityJoin/>} />
+          {/* <Route path="/login" element={<LoginForm/>} /> */}
+          <Route path="/login" element={<SecurityLogin/>} />
           <Route path="/oauth/kakao/callback"  element={<Auth/>} />
           <Route path="/kakao"  element={<KakaoLogin/>}/>
           <Route path="/google" element={<GoogleLogin/>}/>

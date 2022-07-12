@@ -12,6 +12,7 @@ const MyPlaceList = ({addPlace}) => {
   const [places, setPlaces] = useState([]);
 
   useEffect(() => {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
     axios.get(myPlaceUrl)
     .then(res => {
       setPlaces(res.data);

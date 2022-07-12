@@ -476,10 +476,11 @@
     float: left;
     font-size: 12px;
     color: #555555;
-    line-height: 23px;
+    margin-top: -5px;
+    /* line-height: 23px; */
     /* 좋아요 이미지 url */
-    background: url(https://www.earthtory.com/res/img/city/spot_rate_icon.png) no-repeat;
-    padding-left: 20px;
+    /* background: url(https://www.earthtory.com/res/img/city/spot_rate_icon.png) no-repeat; */
+    /* padding-left: 20px; */
 }
 #plan-detail .spot-btn-box {
     width: 109px;

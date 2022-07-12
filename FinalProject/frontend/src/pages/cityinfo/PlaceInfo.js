@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Ayong from '../../assets/images/IMG_1503.JPG';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 
 
@@ -33,7 +34,9 @@ const style = {
 };
 
 const PlaceInfo=()=>{
-
+      
+  const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
+ 
        //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
       // const location = useLocation();
       //console.log("location",location.state.place); //contentId 받아온거
@@ -70,7 +73,7 @@ const PlaceInfo=()=>{
     };
 
     //지도api & 관광지 api 
-    const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078]
+    const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502]
     //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
     const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; 일웅님 인증키
@@ -95,37 +98,102 @@ const PlaceInfo=()=>{
 
      const [refreshReview,setRefreshReview]=useState();
      const [avgStars,setAvgStars]=useState();
+     const [sumLikes,setSumLikes]=useState();
      const [place_id,setPlace_Id]=useState('');
      const [detailData,setDetailData]=useState('');
+     const [detailData2,setDetailData2]=useState('');
      const [editDetailData,setEditDetailData]=useState('');
      //setPlace_Id(contentId);
      const [member_num,setMember_Num]=useState('');
      const [stars,setStars]=useState();
+     const [like,setLike]=useState();
      const [content,setContent]=useState();
-
+     const [filename,setFileName]=useState();
+     const [modalfilename,setModalFileName]=useState();
     // const [sta,setContent]=useState('');
     const [reviewData,setReviewData]=useState([]); //data 받아오기
     
     //Spring url선언
     let pagelistUrl=process.env.REACT_APP_SPRING_URL+"review/allreview?place_id="+contentId;
     let placeStarsAvgUrl=process.env.REACT_APP_SPRING_URL+"review/avgstars?place_id="+contentId;
+    let placeLikesSumUrl=process.env.REACT_APP_SPRING_URL+"review/sumlikes?place_id="+contentId;
     let insertUrl=process.env.REACT_APP_SPRING_URL+"review/insert";
     let deleteUrl=process.env.REACT_APP_SPRING_URL+"review/delete?num=";
     let detailUrl=process.env.REACT_APP_SPRING_URL+"review/detail?num=";
-    let updateUrl=process.env.REACT_APP_SPRING_URL+"review/update?num=";
-    // let uploadUrl=process.env.REACT_APP_SPRING_URL+"board/upload";
-    
-    // let photoUrl=process.env.REACT_APP_SPRING_URL+"save/";
+    let updateUrl=process.env.REACT_APP_SPRING_URL+"review/update";
+    let likeUrl=process.env.REACT_APP_SPRING_URL+"review/like?place_id="+contentId;
+
+    let uploadUrl=process.env.REACT_APP_SPRING_URL+"review/upload";
+    let photoUrl=process.env.REACT_APP_SPRING_URL+"review_photo/";
+
+     //file change 시 호출 이벤트
+     const uploadImage=(e)=>{
+      const uploadFile=e.target.files[0];
+      const imageFile = new FormData();
+      imageFile.append("uploadFile",uploadFile);// spring의 @RequestParam으로 들어감
+      //axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+      axios({
+          method: 'post',
+          url: uploadUrl,
+          data: imageFile,
+          headers: {'Content-Type': 'multipart/form-data'}
+        }).then(res => {  // json 형식의 response를 받음
+          setFileName(res.data); // 백엔드에서 보낸 변경된 이미지명을 photo 변수에 넣는다
+        }).catch(err => {
+          alert("photourl:",err);
+        });
+      }
+
+
+      //updatefile change 시 호출 이벤트
+      const modaluploadImage=(e)=>{
+        const uploadFile=e.target.files[0];
+        const imageFile = new FormData();
+        imageFile.append("uploadFile",uploadFile);// spring의 @RequestParam으로 들어감
+        //axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+        axios({
+            method: 'post',
+            url: uploadUrl,
+            data: imageFile,
+            headers: {'Content-Type': 'multipart/form-data'}
+          }).then(res => {  // json 형식의 response를 받음
+            setModalFileName(res.data); // 백엔드에서 보낸 변경된 이미지명을 photo 변수에 넣는다
+          }).catch(err => {
+            alert("photourl:",err);
+          });
+        }
 
     //ReviewList 호출
     const pageList=()=>{
+
         axios.get(pagelistUrl).then(res=>{
+        // if(res.data.length===0){
+            // setReviewData("후기가 없습니다 작성해주시길바랍니다.");
+            // alert("x");
+        // }else{
             setReviewData(res.data);
+
+          // }
+        // console.log(res.data);
         })
         .catch(err => {
             alert(err);
-        })
+        }) 
     }
+
+        //Review insert
+        const writeReview=(e)=>{
+          //e.preventDefault();
+          //axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+          axios.post(insertUrl,{place_id:contentId,member_num,stars,content}).then(res=>{ 
+              alert("성공");
+              pageList();
+              setStarsValue("");
+              setRefreshReview("");
+            }).catch(err => {
+              alert(err);
+            })
+          }
 
 
     //ReviewAvgStars 호출
@@ -137,14 +205,22 @@ const PlaceInfo=()=>{
     })
     }
 
-    //Review insert
-    const writeReview=(e)=>{
-      e.preventDefault();
-      axios.post(insertUrl,{place_id:contentId,member_num,stars,content}).then(res=>{ 
-          alert("성공");
-          pageList();
-          setStarsValue("");
-          setRefreshReview("");
+    //getSumLikes 호출
+    const GetSumLikes=()=>{
+      axios.get(placeLikesSumUrl).then(res=>{
+        setSumLikes(res.data);
+        //console.log("likes:",res.data);
+      }).catch(err => {
+        alert(err);
+      })
+
+    }
+
+      //mylike select 호출
+      const myLike=()=>{
+        axios.get(likeUrl).then(res=>{
+          setLike(res.data);
+          console.log("mylike:",res.data);
         }).catch(err => {
           alert(err);
         })
@@ -169,26 +245,38 @@ const PlaceInfo=()=>{
            //modal mui
            const [open, setOpen] = React.useState(false);
            const [updateModalOpen,setUpdateModalOpen] = React.useState(false);
+          
 
           // const handleOpen = () =>
            const handleClose = () =>{ setOpen(false);  }
            const edithandleClose = () =>{setUpdateModalOpen(false);}
+
          //상세보기 호출할 함수
          const onDetail=(num)=>{
           axios.get(detailUrl+num).then(res=>{
+                if(res.file_name ===null){
+                setDetailData(res.data);
+                console.log("notfile_name:",res.data);  
+              }
+              else{
               setDetailData(res.data);
               console.log("detail->",res.data);
+            }
               setOpen(true);
              
           })
          }
+
+         const [updateStarsValue, setUpdateStarsValue] = React.useState('0');
 
          //수정상세보기 호출함수
          const onEditReviewDetail=(num)=>{
       
           axios.get(detailUrl+num).then(res=>{
             setEditDetailData(res.data);
-            console.log("editdetail:",res.data);
+            setUpdateStarsValue(res.data.stars);
+            console.log("editdetail:",res.data); //호출
+            console.log("editdetailnum형태:",res.data.num);
             //이름 , num
             setUpdateModalOpen(true);
            
@@ -197,23 +285,37 @@ const PlaceInfo=()=>{
 
          //수정하는 함수 이벤트
          const onUpdate=(num)=>{
-          onDetail(num);
           
-          // axios.post(updateUrl+num,{stars,content}).then(res=>{
-          //   onDetail();
-          // })
+          axios.post(updateUrl,{num, stars, content}).then(res=>{
+            console.log("update:",res.data);
+            setDetailData2(res.data);
+            alert("수정완료");
+            edithandleClose();
+            //setUpdateModalOpen(true);
+            onDetail(num);
+            pageList();
+          })
          }
 
     useEffect(() => {
        kakaomapscript();
+      myLike();
     });
 
     useEffect(()=>{
      pageList();
      AvgStars();
+     GetSumLikes();
     },[]);
 
     //modal
+    
+
+    // const requiredimgscript = () =>{
+
+    //   var i3 = document.getElementById("uploadimgalt").style.visibility="visible"; 
+    // }
+
 
     //kakomap + tourapi3
     const kakaomapscript = () => {
@@ -307,9 +409,12 @@ const PlaceInfo=()=>{
             <TabPanel value="2">
                  <div style={{width:'700px',height:'500px',display:'flex'}}>
                   <div>
+                    {/* <p>{reviewData}</p> */}
+                    {reviewData.length == 0 ? "x" : ""}
                     {
                       reviewData&&reviewData.map((row,idx)=>(
                         <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}} >
+
                         <div style={{flexDirection:'column',justifyContent:'center'}}>
                           <div>
                          <img src={Ayong} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
@@ -359,83 +464,86 @@ const PlaceInfo=()=>{
                     <div id="main-content">
                     <input type="checkbox" id="checkbox"  checked={isChecked} onChange={handleChecked} value={liked}/>
                     <label for="checkbox" id="heartlabel">
-  <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
+                    <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
 
-    <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
-      <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
-      <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
+                      <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+                        <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2"/>
+                        <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5"/>
 
-        {/* 하트 클릭시 나오는 폭죽 */}
-      <g id="grp7" opacity="0" transform="translate(7 6)">
-        <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
-        <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
-      </g>
+                          {/* 하트 클릭시 나오는 폭죽 */}
+                        <g id="grp7" opacity="0" transform="translate(7 6)">
+                          <circle id="oval1" fill="#9CD8C3" cx="2" cy="6" r="2"/>
+                          <circle id="oval2" fill="#8CE8C3" cx="5" cy="2" r="2"/>
+                        </g>
 
-      <g id="grp6" opacity="0" transform="translate(0 28)">
-        <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
-        <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
-      </g>
+                        <g id="grp6" opacity="0" transform="translate(0 28)">
+                          <circle id="oval1" fill="#CC8EF5" cx="2" cy="7" r="2"/>
+                          <circle id="oval2" fill="#91D2FA" cx="3" cy="2" r="2"/>
+                        </g>
 
-      <g id="grp3" opacity="0" transform="translate(52 28)">
-        <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
-        <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
-      </g>
+                        <g id="grp3" opacity="0" transform="translate(52 28)">
+                          <circle id="oval2" fill="#9CD8C3" cx="2" cy="7" r="2"/>
+                          <circle id="oval1" fill="#8CE8C3" cx="4" cy="2" r="2"/>
+                        </g>
 
-      <g id="grp2" opacity="0" transform="translate(44 6)">
-        <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
-        <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
-      </g>
+                        <g id="grp2" opacity="0" transform="translate(44 6)">
+                          <circle id="oval2" fill="#CC8EF5" cx="5" cy="6" r="2"/>
+                          <circle id="oval1" fill="#CC8EF5" cx="2" cy="2" r="2"/>
+                        </g>
 
-      <g id="grp5" opacity="0" transform="translate(14 50)">
-        <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
-        <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
-      </g>
+                        <g id="grp5" opacity="0" transform="translate(14 50)">
+                          <circle id="oval1" fill="#91D2FA" cx="6" cy="5" r="2"/>
+                          <circle id="oval2" fill="#91D2FA" cx="2" cy="2" r="2"/>
+                        </g>
 
-      <g id="grp4" opacity="0" transform="translate(35 50)">
-        <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
-        <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
-      </g>
+                        <g id="grp4" opacity="0" transform="translate(35 50)">
+                          <circle id="oval1" fill="#F48EA7" cx="6" cy="5" r="2"/>
+                          <circle id="oval2" fill="#F48EA7" cx="2" cy="2" r="2"/>
+                        </g>
 
-      <g id="grp1" opacity="0" transform="translate(24)">
-        <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
-        <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
-      </g>
-    </g>
-  </svg>
-</label>
-</div>
+                        <g id="grp1" opacity="0" transform="translate(24)">
+                          <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
+                          <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
+                        </g>
+                      </g>
+                    </svg>
+                  </label>
+                  </div>
 
-{/* <button type='button' onClick={()=>{onEditReviewDetail(18);}}>수우우ㅜ우ㅜ우우우우정</button> */}
-</div>
+                  </div>
 
                     <p style={{fontSize:'14px',margin:'0 auto'}}>{cattypename}</p>
                     <i className="fa-solid fa-map-location-dot" style={{color:'#1976d2'}}></i>&nbsp;&nbsp;{placeAddr}<br/>
                     {/*별점 좋아요수 */}
                     {/* <Rating name="half-rating-read" defaultValue={avgStars} precision={0.1} readOnly/>{avgStars} */}
                     <i className="fa-solid fa-star" style={{color:'#faaf00'}}></i>&nbsp;&nbsp;{avgStars}<br/>
-                    <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{liked}
+                    <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{sumLikes}
                 </div>
             </div>
             <br/>
 
             <div className='stars'>
-            <Box
-            sx={{
-    '& > legend': { mt: 2 },
-  }}
->
+            <Box sx={{'& > legend': { mt: 2 },}}>
 
-  <Typography component="legend">{member_num}</Typography> 
-   
-   <Rating
-    name="half-rating" className='mystar'
-    value={starsvalue} precision={0.5}
-    onChange={(event, newValue) => {
-      setStarsValue(newValue);
-      setStars(newValue);
-    }}/> 
-  <input type='file' name='upload' multiple className='fa-solid fa-images' value=''/>
- </Box> 
+              <Typography component="legend">{member_num}</Typography> 
+              
+              <Rating
+                name="half-rating" className='mystar'
+                value={starsvalue} precision={0.5}
+                onChange={(event, newValue) => {
+                  setStarsValue(newValue);
+                  setStars(newValue);
+                }}/> 
+                
+                {/*imgfile */}
+                <label for="file">
+                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
+                  </label>
+                  <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} id="file" />
+                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
+                  <p>{filename}</p>
+                     <img src={photoUrl+filename} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
+          </Box> 
              </div> 
             <div className='place_review_write'>
             
@@ -444,10 +552,9 @@ const PlaceInfo=()=>{
             </div>
 
 
-                                    {/* 상세보기 */}
+             {/* 상세보기 */}
 
             <div>
-                
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -477,7 +584,7 @@ const PlaceInfo=()=>{
 
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                         <img src={Ayong} alt="프로필사진" style={{width:'300px'}}/>
+                      <img src={detailData.file_name?photoUrl+detailData.file_name:{Ayong}} alt={detailData.file_name} style={{width:'300px'}} />
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
                          <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData.content}</pre>
@@ -495,7 +602,7 @@ const PlaceInfo=()=>{
                 </div>
               
 
-
+                {/*수정모달 */}
                 <div>
                 
                   <Modal
@@ -520,21 +627,36 @@ const PlaceInfo=()=>{
                         <label>{placeTitle}</label>&nbsp;/&nbsp;
                         <label>{editDetailData.created_at}</label>&nbsp;/&nbsp;
                         </div>
-                       <Rating name="read-only" value={editDetailData.stars}  size="small" precision={0.5} style={{marginTop:'5px'}}/>
+                       {/* <Rating name="read-only" defaultValue={editDetailData.stars}  size="small" precision={0.5} style={{marginTop:'5px'}}/> */}
+                       <Rating name="half-rating" className='updatestar' defaultValue={updateStarsValue} precision={0.5}
+                          onChange={(event, newValue) => {
+                            setStars(newValue);
+                          }}/> 
                         </div>
                       </div>
                       </Typography>
 
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                         <img src={Ayong} alt="프로필사진" style={{width:'300px'}}/>
+                      <img src={photoUrl+detailData.file_name!==photoUrl+filename?photoUrl+detailData.file_name:photoUrl+modalfilename} alt={detailData2.file_name} style={{width:'300px'}} />
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                         <textarea style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} defaultValue={editDetailData.content} ></textarea>
+                         <textarea style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} defaultValue={editDetailData.content} onChange={(e)=>{
+                          setContent(e.target.value);
+                         }}></textarea>
                       </div>
 
                       <div style={{justifyContent:'center',display:'inline-flex'}}>
-                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}}>수정완료</button>
+                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
+                          onUpdate(editDetailData.num);
+                         }}>수정완료</button>
+
+                         {/*imgfile */}
+                <label for="file">
+                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
+                  </label>
+                  <input type='file' name='upload' accept='image/*' multiple onChange={modaluploadImage} id="file" />
+                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
                       </div>
                       </Typography>
                     </Box>

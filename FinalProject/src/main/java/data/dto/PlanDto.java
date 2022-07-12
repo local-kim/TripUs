@@ -14,6 +14,7 @@ public class PlanDto {
 	private int place_id; 
 	private int contentid;
 	private int city_num;
+	private double avg_star;
 	private String cat2_name;
 	private String mapx;
 	private String mapy;
