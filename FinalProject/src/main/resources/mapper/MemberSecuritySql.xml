@@ -12,8 +12,8 @@
 	
 	<!-- 회원가입 -->
 	<insert id="saveMember" parameterType="member_security">
-		insert into member (id, password, isAccountNonExpired, isAccountNonLocked, isCredentialsNonExpired, isEnabled)
-		values (#{id},#{password},#{isAccountNonExpired},#{isAccountNonLocked},#{isCredentialsNonExpired},#{isEnabled})
+		insert into member (id, password, name, type, email, tel, birthday, zonecode, address1, address2, registered_at, isAccountNonExpired, isAccountNonLocked, isCredentialsNonExpired, isEnabled)
+		values (#{id},#{password},#{name},#{type},#{email},#{tel},#{birthday},#{zonecode},#{address1},#{address2},now(),#{isAccountNonExpired},#{isAccountNonLocked},#{isCredentialsNonExpired},#{isEnabled})
 	</insert>
 	
 	<!-- 권한 부여 -->

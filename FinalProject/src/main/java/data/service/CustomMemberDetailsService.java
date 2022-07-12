@@ -39,6 +39,7 @@ public class CustomMemberDetailsService implements UserDetailsService {
         grantedAuthorities.add(new SimpleGrantedAuthority(role));
 
         member.setAuthorities(grantedAuthorities);
+        member.setType(1);	// 1 : 일반회원
         mapper.saveMember(member);
         
         Map<String, String> map = new HashMap<>();

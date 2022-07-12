@@ -34,10 +34,10 @@ const RouteMain = () => {
           {/* <Route path="/city/placename/:name" element={<CityInfoMain/>} /> */}
 
           {/* Member */}
-          {/* <Route path="/join" element={<JoinForm/>} /> */}
-          <Route path="/join" element={<SecurityJoin/>} />
-          {/* <Route path="/login" element={<LoginForm/>} /> */}
-          <Route path="/login" element={<SecurityLogin/>} />
+          <Route path="/join" element={<JoinForm/>} />
+          {/* <Route path="/join" element={<SecurityJoin/>} /> */}
+          <Route path="/login" element={<LoginForm/>} />
+          {/* <Route path="/login" element={<SecurityLogin/>} /> */}
           <Route path="/oauth/kakao/callback"  element={<Auth/>} />
           <Route path="/kakao"  element={<KakaoLogin/>}/>
           <Route path="/google" element={<GoogleLogin/>}/>
