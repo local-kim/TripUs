@@ -10,9 +10,9 @@ import Modal from '@mui/material/Modal';
 import { useForm } from "react-hook-form";
 
 
-
-
 const JoinForm = (props) => {
+    let joinUrl = `${process.env.REACT_APP_SPRING_URL}auth/join`;
+
     const navi=useNavigate();
     const [data,setData]=useState({
         id:'',
@@ -24,8 +24,6 @@ const JoinForm = (props) => {
         tel:'',
         birthday:'',
         zonecode:''
-
-        
     });
     const [birth,setBirth]=useState({
         year:'',
@@ -61,15 +59,10 @@ const JoinForm = (props) => {
         p: 4,
       };
 
-  
- 
-
-
     //submit 호출될 함수
     const onSave=(e)=>{
         e.preventDefault(); //기본이벤트(submit이 action으로 넘어가는것)를 무효화
 
-    
         if(!btnOk){
             alert("아이디 중복체크를 해주세요");
             return;
@@ -79,18 +72,24 @@ const JoinForm = (props) => {
             return;
         }
 
-        const url = process.env.REACT_APP_SPRING_URL + "member/insert";
-            axios.post(url, ({
-                ...data,
-                birthday:birth.year+birth.month+birth.day
+        console.log({
+            ...data,
+            birthday:birth.year+birth.month+birth.day
+        });
 
-            }))
-            .then(res => {
-            //   alert("insert 성공");
-            console.log(data);
-              navi("/login")
-            });
-
+        // const url = process.env.REACT_APP_SPRING_URL + "member/insert";
+        axios.post(joinUrl, ({
+            ...data,
+            birthday:birth.year+birth.month+birth.day
+        }))
+        .then(res => {
+        //   alert("insert 성공");
+            console.log(res.data);
+            navi("/login");
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
     //data 관련 데이터 입력시 호출
     const onDataChange=(e)=>{
@@ -109,10 +108,10 @@ const JoinForm = (props) => {
           ...birth,
           [name]:value
       });
-  }
+    }
 
-     //두번째 pass 입력시 호출
-     const onPassChange=(e)=>{
+    //두번째 pass 입력시 호출
+    const onPassChange=(e)=>{
         const {value}=e.target;
         if(value===data.password)
             setPassOk(true)
@@ -154,44 +153,41 @@ const JoinForm = (props) => {
         });
     }
 
-        // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
-        const handlePostCode = (kakaoData) => {
-            let fullAddress = kakaoData.address;
-            let extraAddress = ''; 
-            
-            if (kakaoData.addressType === 'R') {
-              if (kakaoData.bname !== '') {
-                extraAddress += kakaoData.bname;
-              }
-              if (kakaoData.buildingName !== '') {
-                extraAddress += (extraAddress !== '' ? `, ${kakaoData.buildingName}` : kakaoData.buildingName);
-              }
-              fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
-            }
-            console.log(kakaoData)
-            console.log(fullAddress)
-            console.log(kakaoData.zonecode)
-            // setAddress1(fullAddress);
-            setData({...data, address1: fullAddress, address2: extraAddress, zonecode: kakaoData.zonecode});
-            // setData({...data, address2: extraAddress});
-            // setData({...data, zonecode: data.zonecode});
-            // setAddress2(extraAddress);
-            // setZonecode(data.zonecode);
-            // console.log(address1)
-            handleClose()
-        }
-     
-        // const postCodeStyle = {
-        //     display: "block",
-        //     position: "relative",
-        //     top: "10%",
-        //     width: "600px",
-        //     height: "600px",
-        //     padding: "7px",
-        //   };
+    // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
+    const handlePostCode = (kakaoData) => {
+        let fullAddress = kakaoData.address;
+        let extraAddress = ''; 
         
-     
-
+        if (kakaoData.addressType === 'R') {
+            if (kakaoData.bname !== '') {
+            extraAddress += kakaoData.bname;
+            }
+            if (kakaoData.buildingName !== '') {
+            extraAddress += (extraAddress !== '' ? `, ${kakaoData.buildingName}` : kakaoData.buildingName);
+            }
+            fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+        }
+        console.log(kakaoData)
+        console.log(fullAddress)
+        console.log(kakaoData.zonecode)
+        // setAddress1(fullAddress);
+        setData({...data, address1: fullAddress, address2: extraAddress, zonecode: kakaoData.zonecode});
+        // setData({...data, address2: extraAddress});
+        // setData({...data, zonecode: data.zonecode});
+        // setAddress2(extraAddress);
+        // setZonecode(data.zonecode);
+        // console.log(address1)
+        handleClose()
+    }
+    
+    // const postCodeStyle = {
+    //     display: "block",
+    //     position: "relative",
+    //     top: "10%",
+    //     width: "600px",
+    //     height: "600px",
+    //     padding: "7px",
+    //   };
 
     return (
         <div className='member_join'>
@@ -245,8 +241,6 @@ const JoinForm = (props) => {
                                 // validate: (value) => value === password.current,
                               })}/>
                             <span style={{marginLeft:'5px',color:passOk?'':'green'}}>{passOk?'사용가능':'동일한 비밀번호를 입력해주세요'}</span>
-                           
-  
                             </td>
                         </tr>
                         <tr>
@@ -334,11 +328,6 @@ const JoinForm = (props) => {
                                 </Box>
                             </Modal>
                             </div>
-                        
-                           
-                            
-
-
                             </td>
                         </tr>
                         <tr>
@@ -354,23 +343,18 @@ const JoinForm = (props) => {
                                 </div>
                             </td>
                             </div>
-
                         </tr>
                         <tr>
                             <td colSpan={2} style={{textAlign:'center'}}>
                             <button type="submit" className="btn_type1 btn_member">
                             <span className="txt_type">가입하기</span>
                             </button>
-                      
                             </td>
                         </tr>
-                        
                     </tbody>
                 </table>
-
             </form>
             </div>
-            
         </div>
     );
 };

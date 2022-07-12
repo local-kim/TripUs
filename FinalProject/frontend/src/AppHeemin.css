@@ -47,7 +47,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   
   .search_area {
     width: 640px;
-    height: 150px;
+    height: 170px;
     border-radius: 3px;
     margin: 0 auto;
     margin-top: 60px;
@@ -466,10 +466,17 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
       font-size: large;
       color: white;
       cursor: pointer;
-      
+      display: block;
   }
   
-  a :hover{
-    background-color: red;
-  }
-
+  .h_search_cicu {
+   
+    display: block;
+    width: 100%;
+    color: white;
+    font-size: 12px;
+    font-family: 'nanum';
+    
+    height: 12px;
+    line-height: 12px;
+}

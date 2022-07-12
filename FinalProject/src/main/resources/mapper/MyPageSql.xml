@@ -19,9 +19,11 @@
       select count(*) from trip where member_num=#{member_num}
    </select>
    
-     <select id="getPagingList" parameterType="Map" resultType="trip">
-      select * from trip order by num desc limit #{start}, #{perpage}
-   </select>
+     <select id="getPagingList" parameterType="Map" resultType="citytrip">
+     
+      SELECT trip.num as tripNum, trip.name as tripName, member_num as memberNum, start_date as startDate, end_date as endDate, days, city.num as cityNum, city.name as cityName, eng_name, country, image FROM trip, city where city_num=city.num and member_num=#{member_num} order by startDate asc limit #{start}, #{perpage}
+   	
+   	</select>
    
    <select id="getAllDatas" resultType="trip">
       select * from trip order by num desc
@@ -46,7 +48,18 @@
 		where num=#{num}
 	</update>
 	
-
+	
+	<select id="getAllDates2" resultType="citytrip">
+		SELECT trip.num as tripNum, trip.name as tripName, member_num as memberNum, start_date as startDate, end_date as endDate, days, city.num as cityNum, city.name as cityName, eng_name, country, image FROM trip, city where city_num=city.num and member_num=#{member_num} order by startDate asc;
+	</select>
+	
+	<delete id="tripDelete" parameterType="int">
+		delete from trip where num=#{num}
+	</delete>
+	
+	<update id="updateTripName" parameterType="map">
+		UPDATE trip set name=#{name} where num=#{num}
+	</update>
 	
    
 </mapper>

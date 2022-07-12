@@ -9,6 +9,7 @@ import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
 import data.dto.PlanDateDto;
 import data.dto.PlanDto;
+import data.dto.PlanMapDto;
 import data.dto.TripDto;
 
 @Mapper
@@ -23,6 +24,7 @@ public interface PlanMapper {
 	
 	public List<PlanDto> getNavNum(int num);
 	public List<PlanDto> getPlanDatas(int num);
+	public List<PlanMapDto> mapKakao(int num);
 	public List<PlanDateDto> getDate(int num);
 	public List<PlanDateDto> getPlanMember(int num);
 }

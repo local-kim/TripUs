@@ -16,6 +16,7 @@ public class ReviewDto {
 	private int member_num;
 	private String name;
 	private double stars;
+	private int like;
 	private String content;
 	private String file_name;
 	@JsonFormat(pattern = "yyyy-MM-dd" ,timezone="Asia/Seoul")

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import data.dto.CityDto;
 import data.service.SearchService;
 
 @RestController
@@ -22,8 +23,8 @@ public class SearchController {
 
 	@GetMapping("/searchauto")
 
-	public List<String> searchAuto(@RequestParam String searchWord) {
-	List<String> list=new Vector<>();
+	public List<CityDto> searchAuto(@RequestParam String searchWord) {
+	List<CityDto> list=new Vector<>();
 	list=service.searchAuto(searchWord);
 	return list;
 	}

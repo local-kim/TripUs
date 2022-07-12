@@ -62,13 +62,38 @@ public class ReviewService implements ReviewServiceInter {
 	}
 	
 	@Override
+	public int getSumLikes(String place_id) {
+		// TODO Auto-generated method stub
+		return reviewMapper.getSumLikes(place_id);
+	}
+	
+	@Override
+	public int getLike(String place_id) {
+		// TODO Auto-generated method stub
+		return reviewMapper.getLike(place_id);
+	}
+	
+	@Override
 	public void deleteReview(int num) {
 		reviewMapper.deleteReview(num);
 	}
 	
 	@Override
+	public void deletePhoto(int num) {
+		// TODO Auto-generated method stub
+		reviewMapper.deletePhoto(num);
+		
+	}
+	@Override
 	public void updateReview(ReviewDto dto) {
 		reviewMapper.updateReview(dto);
+	}
+	
+	@Override
+	public void updatePhoto(ReviewDto dto) {
+		// TODO Auto-generated method stub
+		
+		reviewMapper.updatePhoto(dto);
 	}
 
 }

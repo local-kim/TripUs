@@ -9,7 +9,26 @@ const CityList = () => {
   let cityListUrl = `${process.env.REACT_APP_SPRING_URL}cityinfo/list`;
 
   useEffect(() => {
-    axios.get(cityListUrl)
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+    // axios.interceptors.request.use(
+    //   config => {
+    //       const jwtToken = localStorage.getItem('jwtToken');
+    //       if (jwtToken) {
+    //           config.headers['Authorization'] = 'Bearer ' + jwtToken;
+    //       }
+    //       // config.headers['Content-Type'] = 'application/json';
+    //       return config;
+    //   },
+    //   error => {
+    //       Promise.reject(error)
+    //   }
+    // );
+
+    axios.get(cityListUrl
+      // ,{headers: {
+      //   Authorization: `Bearer ${localStorage.getItem('jwtToken')}`
+      // }}
+    )
     .then(res => {
       setList(res.data);
       console.log(res.data);

@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Ayong from '../../assets/images/IMG_1503.JPG';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 
 
@@ -33,7 +34,9 @@ const style = {
 };
 
 const PlaceInfo=()=>{
-
+      
+  const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
+ 
        //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
       // const location = useLocation();
       //console.log("location",location.state.place); //contentId 받아온거
@@ -95,24 +98,30 @@ const PlaceInfo=()=>{
 
      const [refreshReview,setRefreshReview]=useState();
      const [avgStars,setAvgStars]=useState();
+     const [sumLikes,setSumLikes]=useState();
      const [place_id,setPlace_Id]=useState('');
      const [detailData,setDetailData]=useState('');
+     const [detailData2,setDetailData2]=useState('');
      const [editDetailData,setEditDetailData]=useState('');
      //setPlace_Id(contentId);
      const [member_num,setMember_Num]=useState('');
      const [stars,setStars]=useState();
+     const [like,setLike]=useState();
      const [content,setContent]=useState();
      const [filename,setFileName]=useState();
+     const [modalfilename,setModalFileName]=useState();
     // const [sta,setContent]=useState('');
     const [reviewData,setReviewData]=useState([]); //data 받아오기
     
     //Spring url선언
     let pagelistUrl=process.env.REACT_APP_SPRING_URL+"review/allreview?place_id="+contentId;
     let placeStarsAvgUrl=process.env.REACT_APP_SPRING_URL+"review/avgstars?place_id="+contentId;
+    let placeLikesSumUrl=process.env.REACT_APP_SPRING_URL+"review/sumlikes?place_id="+contentId;
     let insertUrl=process.env.REACT_APP_SPRING_URL+"review/insert";
     let deleteUrl=process.env.REACT_APP_SPRING_URL+"review/delete?num=";
     let detailUrl=process.env.REACT_APP_SPRING_URL+"review/detail?num=";
     let updateUrl=process.env.REACT_APP_SPRING_URL+"review/update";
+    let likeUrl=process.env.REACT_APP_SPRING_URL+"review/like?place_id="+contentId;
 
     let uploadUrl=process.env.REACT_APP_SPRING_URL+"review/upload";
     let photoUrl=process.env.REACT_APP_SPRING_URL+"review_photo/";
@@ -122,8 +131,7 @@ const PlaceInfo=()=>{
       const uploadFile=e.target.files[0];
       const imageFile = new FormData();
       imageFile.append("uploadFile",uploadFile);// spring의 @RequestParam으로 들어감
-
-
+      //axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
       axios({
           method: 'post',
           url: uploadUrl,
@@ -132,9 +140,28 @@ const PlaceInfo=()=>{
         }).then(res => {  // json 형식의 response를 받음
           setFileName(res.data); // 백엔드에서 보낸 변경된 이미지명을 photo 변수에 넣는다
         }).catch(err => {
-          alert(err);
+          alert("photourl:",err);
         });
       }
+
+
+      //updatefile change 시 호출 이벤트
+      const modaluploadImage=(e)=>{
+        const uploadFile=e.target.files[0];
+        const imageFile = new FormData();
+        imageFile.append("uploadFile",uploadFile);// spring의 @RequestParam으로 들어감
+        //axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+        axios({
+            method: 'post',
+            url: uploadUrl,
+            data: imageFile,
+            headers: {'Content-Type': 'multipart/form-data'}
+          }).then(res => {  // json 형식의 response를 받음
+            setModalFileName(res.data); // 백엔드에서 보낸 변경된 이미지명을 photo 변수에 넣는다
+          }).catch(err => {
+            alert("photourl:",err);
+          });
+        }
 
     //ReviewList 호출
     const pageList=()=>{
@@ -157,6 +184,7 @@ const PlaceInfo=()=>{
         //Review insert
         const writeReview=(e)=>{
           //e.preventDefault();
+          //axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
           axios.post(insertUrl,{place_id:contentId,member_num,stars,content}).then(res=>{ 
               alert("성공");
               pageList();
@@ -176,6 +204,27 @@ const PlaceInfo=()=>{
         alert("별0",err);
     })
     }
+
+    //getSumLikes 호출
+    const GetSumLikes=()=>{
+      axios.get(placeLikesSumUrl).then(res=>{
+        setSumLikes(res.data);
+        //console.log("likes:",res.data);
+      }).catch(err => {
+        alert(err);
+      })
+
+    }
+
+      //mylike select 호출
+      const myLike=()=>{
+        axios.get(likeUrl).then(res=>{
+          setLike(res.data);
+          console.log("mylike:",res.data);
+        }).catch(err => {
+          alert(err);
+        })
+      }
 
         //삭제시 호출할 함수
         const onDelete=(num)=>{
@@ -205,8 +254,14 @@ const PlaceInfo=()=>{
          //상세보기 호출할 함수
          const onDetail=(num)=>{
           axios.get(detailUrl+num).then(res=>{
+                if(res.file_name ===null){
+                setDetailData(res.data);
+                console.log("notfile_name:",res.data);  
+              }
+              else{
               setDetailData(res.data);
               console.log("detail->",res.data);
+            }
               setOpen(true);
              
           })
@@ -230,22 +285,37 @@ const PlaceInfo=()=>{
 
          //수정하는 함수 이벤트
          const onUpdate=(num)=>{
+          
           axios.post(updateUrl,{num, stars, content}).then(res=>{
+            console.log("update:",res.data);
+            setDetailData2(res.data);
             alert("수정완료");
+            edithandleClose();
+            //setUpdateModalOpen(true);
             onDetail(num);
+            pageList();
           })
          }
 
     useEffect(() => {
        kakaomapscript();
+      myLike();
     });
 
     useEffect(()=>{
      pageList();
      AvgStars();
+     GetSumLikes();
     },[]);
 
     //modal
+    
+
+    // const requiredimgscript = () =>{
+
+    //   var i3 = document.getElementById("uploadimgalt").style.visibility="visible"; 
+    // }
+
 
     //kakomap + tourapi3
     const kakaomapscript = () => {
@@ -344,6 +414,7 @@ const PlaceInfo=()=>{
                     {
                       reviewData&&reviewData.map((row,idx)=>(
                         <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}} >
+
                         <div style={{flexDirection:'column',justifyContent:'center'}}>
                           <div>
                          <img src={Ayong} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
@@ -446,7 +517,7 @@ const PlaceInfo=()=>{
                     {/*별점 좋아요수 */}
                     {/* <Rating name="half-rating-read" defaultValue={avgStars} precision={0.1} readOnly/>{avgStars} */}
                     <i className="fa-solid fa-star" style={{color:'#faaf00'}}></i>&nbsp;&nbsp;{avgStars}<br/>
-                    <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{liked}
+                    <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{sumLikes}
                 </div>
             </div>
             <br/>
@@ -463,10 +534,15 @@ const PlaceInfo=()=>{
                   setStarsValue(newValue);
                   setStars(newValue);
                 }}/> 
-            <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> 
-            <p>{filename}</p>
-            <img src={photoUrl+filename} style={{width:'120px',marginLeft:'130px'}} alt="안뜸"/>
-            {/* className='fa-solid fa-images' */}
+                
+                {/*imgfile */}
+                <label for="file">
+                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
+                  </label>
+                  <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} id="file" />
+                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
+                  <p>{filename}</p>
+                     <img src={photoUrl+filename} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
           </Box> 
              </div> 
             <div className='place_review_write'>
@@ -476,10 +552,9 @@ const PlaceInfo=()=>{
             </div>
 
 
-                                    {/* 상세보기 */}
+             {/* 상세보기 */}
 
             <div>
-                
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -509,8 +584,7 @@ const PlaceInfo=()=>{
 
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                      {/* <img src={file_name===''?{Ayong}:photoUrl+file_name} alt="프로필사진" style={{width:'300px'}} /> */}
-                      <img src={photoUrl+detailData.file_name} alt={detailData.file_name} style={{width:'300px'}} />
+                      <img src={detailData.file_name?photoUrl+detailData.file_name:{Ayong}} alt={detailData.file_name} style={{width:'300px'}} />
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
                          <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData.content}</pre>
@@ -528,7 +602,7 @@ const PlaceInfo=()=>{
                 </div>
               
 
-
+                {/*수정모달 */}
                 <div>
                 
                   <Modal
@@ -564,7 +638,7 @@ const PlaceInfo=()=>{
 
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                         <img src={Ayong} alt="프로필사진" style={{width:'300px'}}/>
+                      <img src={photoUrl+detailData.file_name!==photoUrl+filename?photoUrl+detailData.file_name:photoUrl+modalfilename} alt={detailData2.file_name} style={{width:'300px'}} />
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
                          <textarea style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} defaultValue={editDetailData.content} onChange={(e)=>{
@@ -576,6 +650,13 @@ const PlaceInfo=()=>{
                          <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
                           onUpdate(editDetailData.num);
                          }}>수정완료</button>
+
+                         {/*imgfile */}
+                <label for="file">
+                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
+                  </label>
+                  <input type='file' name='upload' accept='image/*' multiple onChange={modaluploadImage} id="file" />
+                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
                       </div>
                       </Typography>
                     </Box>

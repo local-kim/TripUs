@@ -64,8 +64,6 @@ public class ReviewController {
 				return photoName;
 			}
 	
-	
-	//리뷰사진없이 리뷰작성할때
 	@PostMapping("/insert")
 	public void insert(@RequestBody ReviewDto dto) {
 		int member_num=2;
@@ -85,12 +83,25 @@ public class ReviewController {
 	public void update(@RequestBody ReviewDto dto) {
 		System.out.println("update"+dto);
 		//사진이 있을경우 이미지명 넣기
-		//dto.setPhoto(photoName);
+		//dto.setFile_name(photoName);
+		int num=dto.getNum();
+		reviewService.deletePhoto(num);
+		dto.setNum(num);
+		dto.setFile_name(photoName);
+		reviewService.insertPhoto(dto);
 		reviewService.updateReview(dto);
 	}
 	
 	@DeleteMapping("/delete")
 	public void delete(@RequestParam int num,HttpServletRequest request) {
+		
+		String path=request.getServletContext().getRealPath("/review_photo");
+		String photo=reviewService.getData(num).getFile_name();
+		File file = new File(path+"/"+photo);
+		if(file.exists()) {
+			file.delete();
+			reviewService.deletePhoto(num);
+		}
 		//db delete
 		reviewService.deleteReview(num);
 		
@@ -103,12 +114,27 @@ public class ReviewController {
 	
 	@GetMapping("/detail")
 	public ReviewDto detail(@RequestParam int num) {
-		System.out.println("detail");
-		return reviewService.getData(num);
+		System.out.println("ok");
+		System.out.println(num);
+		ReviewDto dto = reviewService.getData(num);
+		System.out.println(dto);
+		return dto;
 	}
 	@GetMapping("/avgstars")
 	public double getAvgStars(@RequestParam String place_id) {
 		System.out.println("stars");
 		return reviewService.getAvgStars(place_id);
+	}
+	
+	@GetMapping("/sumlikes")
+	public int getSumLikes(@RequestParam String place_id) {
+		System.out.println("likes");
+		return reviewService.getSumLikes(place_id);
+	}
+	
+	@GetMapping("/like")
+	public int getLike(@RequestParam String place_id) {
+		System.out.println("mylike");
+		return reviewService.getLike(place_id);
 	}
 }
