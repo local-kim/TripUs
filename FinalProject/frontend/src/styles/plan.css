@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;600&display=swap');
+
 /*** Calendar.js ***/
 #plan-calendar{
   text-align: center;
@@ -111,9 +116,9 @@
 }
 
 #plan .day span.title{
-  font-family: 'Montserrat';
-  font-size: 20px;
-  font-weight: 500;
+  font-family: 'Lexend Deca';
+  font-size: 22px;
+  /* font-weight: 600; */
   line-height: 1.3;
   cursor: pointer;
 }
@@ -141,11 +146,14 @@
 
 #plan .day .btn-memo{
   margin: 5px;
+  border-color: #888888;
+  color: #888888;
 }
 
 #plan .btn-memo:hover{
   background-color: #bebebe;
   border-color: #bebebe;
+  color: white;
 }
 
 #plan .btn:focus {
@@ -198,8 +206,8 @@
 
 #day-plan .title{
   font-size: 23px;
-  font-weight: 400;
-  font-family: 'Montserrat';
+  /* font-weight: 600; */
+  font-family: 'Lexend Deca';
 }
 
 #day-plan .list-container{

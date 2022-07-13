@@ -54,9 +54,7 @@ const Calendar = () => {
     })
     .catch(err => {
       console.log(err);
-      alert("로그인 후 이용해주세요.");
-      navigate("/login");
-    })
+    });
   }, []);
 
   const [state, setState] = useState([
@@ -90,8 +88,10 @@ const Calendar = () => {
             // console.log(state[0].startDate, state[0].endDate);
             // 시작 날짜 : state[0].startDate
             // 끝 날짜 : state[0].endDate
-            const start = format(state[0].startDate, "yyyy-MM-dd");
-            const end = format(state[0].endDate, "yyyy-MM-dd");
+            // const start = format(state[0].startDate, "yyyy-MM-dd");
+            // const end = format(state[0].endDate, "yyyy-MM-dd");
+            const start = state[0].startDate;
+            const end = state[0].endDate;
             const days = differenceInDays(state[0].endDate, state[0].startDate) + 1;
             // console.log({start, end, days, cityNum, areaCode, sigunguCode});
             dispatch(setPlanInfo(start, end, days, cityNum, cityName.current, areaCode.current, sigunguCode.current));

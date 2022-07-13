@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { NumPlaceItem, PlaceItem } from '.';
 import '../../styles/plan.css';
+import { format } from 'date-fns';
 
 const { kakao } = window;
 
@@ -119,7 +120,7 @@ const Plan = () => {
       <div className='box-wrap'>
         <div className='title'>{cityName} 여행</div>
         {
-          days == 1 ? <div className='period'>{startDate} ({days}일)</div> : <div className='period'>{startDate} ~ {endDate} ({days}일)</div>
+          days == 1 ? <div className='period'>{format(startDate, "yyyy-MM-dd")} ({days}일)</div> : <div className='period'>{format(startDate, "yyyy-MM-dd")} ~ {format(endDate, "yyyy-MM-dd")} ({days}일)</div>
         }
 
         <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={insertPlan}>일정 생성하기</button>

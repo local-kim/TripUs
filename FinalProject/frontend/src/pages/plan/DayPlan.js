@@ -9,6 +9,9 @@ import { PlaceItem, MyPlaceList } from ".";
 import '../../styles/plan.css';
 import setAuthorizationToken from '../../utils/setAuthorizationToken';
 
+import { addDays, format, add } from 'date-fns'
+import ko from 'date-fns/locale/ko';
+
 const { kakao } = window;
 
 const DayPlan = () => {
@@ -18,9 +21,11 @@ const DayPlan = () => {
   const days = useSelector(state => state.planner.days);
   const areaCode = useSelector(state => state.planner.areaCode);
   const sigunguCode = useSelector(state => state.planner.sigunguCode);
-
   const statePlan = useSelector(state => state.planner.plan);
   const [plan, setPlan] = useState(statePlan);
+
+  // test
+  const startDate = useSelector(state => state.planner.startDate);
   
   const navigate = useNavigate();
   const {day} = useParams();
@@ -250,6 +255,7 @@ const DayPlan = () => {
 
       <div className='list-container'>
         <div className='left'>
+          <div style={{textAlign:'center',color:'gray',fontSize:'14px'}}>{format(add(startDate, {days: day - 1}), "MM/dd (eee)", {locale: ko})}</div>
           <div className='title-wrap'>
             {
               // day1이면 이전 날짜 버튼 안보임
