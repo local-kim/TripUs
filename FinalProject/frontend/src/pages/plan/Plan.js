@@ -53,21 +53,22 @@ const Plan = () => {
 
   // kakao map
   const kakaoMapScript = () => {
+    const container = document.getElementById('map'); // 지도를 표시할 div  
+
+    const options = {
+      // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
+      center: new kakao.maps.LatLng(35.1795543, 129.0756416), // 지도의 중심좌표
+      level: 9  // 지도의 확대 레벨
+    };
+    
+    const map = new kakao.maps.Map(container, options); // 지도를 생성합니다
+
+    // 일정에 있는 장소 마커들
     let markerList = [];
 
     for(let i in plan[focus]){
       markerList.push({latlng: new kakao.maps.LatLng(plan[focus][i].mapy, plan[focus][i].mapx), title: plan[focus][i].title});
     }
-        
-    const container = document.getElementById('map');
-
-    const options = {
-      center: new kakao.maps.LatLng(35.1795543, 129.0756416), // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
-      // center: new kakao.maps.LatLng(126.9784147, 37.5666805),
-      level: 9
-    };
-    
-    const map = new kakao.maps.Map(container, options);
 
     // 커스텀 오버레이
     for (let i in markerList) {
@@ -88,6 +89,7 @@ const Plan = () => {
       customOverlay.setMap(map);
     }
 
+    // 마커와 마커 사이에 선 그리기
     // 선을 구성하는 좌표 배열
     let linePath = [];
 
@@ -98,7 +100,7 @@ const Plan = () => {
     // 지도에 표시할 선을 생성
     let polyline = new kakao.maps.Polyline({
       path: linePath, // 선을 구성하는 좌표 배열
-      strokeWeight: 3, // 선의 두께
+      strokeWeight: 2.5, // 선의 두께
       strokeColor: '#333333', // 선의 색깔
       strokeOpacity: 0.6, // 선의 불투명도: 1에서 0 사이의 값, 0에 가까울수록 투명
       strokeStyle: 'shortdash' // 선의 스타일

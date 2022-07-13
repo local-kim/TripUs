@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux'
 import { savePlan } from '../../modules/planner';
 import { useInView } from 'react-intersection-observer';
-import { PlaceItem, MyPlaceList } from ".";
+import { PlaceItem, MyPlaceList, NumPlaceItem } from ".";
 import '../../styles/plan.css';
 import setAuthorizationToken from '../../utils/setAuthorizationToken';
 
@@ -39,8 +39,8 @@ const DayPlan = () => {
   const [categoryPlace, setCategoryPlace] = useState([]);
 
   // 호버된 장소 좌표
-  const [mapX, setMapX] = useState('');
-  const [mapY, setMapY] = useState('');
+  const [mapX, setMapX] = useState();
+  const [mapY, setMapY] = useState();
   
   // scroll paging
   const [ref, inView] = useInView();
@@ -224,30 +224,96 @@ const DayPlan = () => {
   }
 
   // kakao map
-  const kakaoMapScript = (mapX, mapY) => {
-        
-    const container = document.getElementById('map');
+  const kakaoMapScript = (mapX, mapY) => {    
+    const container = document.getElementById('map'); // 지도를 표시할 div
 
     const options = {
-      center: new kakao.maps.LatLng(35.1795543, 129.0756416), // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
-      level: 8
+      // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
+      center: new kakao.maps.LatLng(35.1795543, 129.0756416), // 지도의 중심좌표
+      level: 8  // 지도의 확대 레벨
     };
     
-    const map = new kakao.maps.Map(container, options);
+    const map = new kakao.maps.Map(container, options); // 지도를 생성합니다
+
+    // 일정에 추가한 장소 마커들
+    let markerList = [];
+
+    for(let i in dayPlan){
+      markerList.push({
+        latlng: new kakao.maps.LatLng(dayPlan[i].mapy, dayPlan[i].mapx),
+        title: dayPlan[i].title
+      });
+    }
+
+    // 커스텀 오버레이
+    for (let i in markerList) {
+      // 커스텀 오버레이에 표시할 내용
+      // HTML 문자열 또는 Dom Element
+      let content = `<div class ="label">${Number(i) + 1}</div>`;
+
+      // 커스텀 오버레이가 표시될 위치
+      let position = markerList[i].latlng;
+
+      // 커스텀 오버레이를 생성
+      let customOverlay = new kakao.maps.CustomOverlay({
+          position: position,
+          content: content
+      });
+
+      // 커스텀 오버레이를 지도에 표시
+      customOverlay.setMap(map);
+    }
+
+    // 마커와 마커 사이에 선 그리기
+    // 선을 구성하는 좌표 배열
+    let linePath = [];
+
+    for(let j in markerList){
+      linePath.push(markerList[j].latlng);
+    }
+
+    // 지도에 표시할 선을 생성
+    let polyline = new kakao.maps.Polyline({
+      path: linePath, // 선을 구성하는 좌표 배열
+      strokeWeight: 2.5, // 선의 두께
+      strokeColor: '#333333', // 선의 색깔
+      strokeOpacity: 0.6, // 선의 불투명도: 1에서 0 사이의 값, 0에 가까울수록 투명
+      strokeStyle: 'shortdash' // 선의 스타일
+    });
+
+    // 지도에 선을 표시
+    polyline.setMap(map);
+  
+    // 목록에서 호버한 장소 마커
+    // 마커 이미지의 이미지 주소
+    let imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
+
+    // 마커 이미지의 이미지 크기
+    let imageSize = new kakao.maps.Size(24, 35);
+    
+    // 마커 이미지를 생성
+    let markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
 
     //마커가 표시 될 위치
     let markerPosition = new kakao.maps.LatLng(mapY, mapX);
 
     // 마커를 생성
-    let marker = new kakao.maps.Marker({position: markerPosition,});
+    let marker = new kakao.maps.Marker({
+      position: markerPosition,
+      image : markerImage
+    });
 
     // 마커를 지도 위에 표시
     marker.setMap(map);
   };
 
+  const mouseEvent = (mapX, mapY) => {
+
+  }
+
   useEffect(() => {
     kakaoMapScript(mapX, mapY);
-  }, [mapX, mapY]);
+  }, [mapX, mapY, dayPlan]);
 
   return (
     <div id='day-plan'>
@@ -274,7 +340,7 @@ const DayPlan = () => {
                 // dayPlan이 있을 때만 표시
                 dayPlan && dayPlan.map((place, index) => (
                   <div className='place-list-item' key={index}>
-                    <PlaceItem place={place} setMapX={setMapX} setMapY={setMapY}/>
+                    <NumPlaceItem place={place} num={index + 1} focus={false}/>
                     <div className='btn-wrap'>
                       {/* TODO: drag & drop으로 변경 */}
                       <div className='move-btn'>
@@ -358,13 +424,25 @@ const DayPlan = () => {
                 // places && places.map((place, index) => (
                 categoryPlace && categoryPlace.map((place, index) => (
                   (categoryPlace.length - 1 == index) ? (
-                    <div className='place-list-item' key={index} ref={ref}>
-                      <PlaceItem place={place} addPlace={addPlace} setMapX={setMapX} setMapY={setMapY}/>
+                    <div className='place-list-item' key={index} ref={ref} onMouseOver={()=>{
+                      setMapX(place.mapx);
+                      setMapY(place.mapy);
+                    }} onMouseOut={()=>{
+                      setMapX();
+                      setMapY();
+                    }}>
+                      <PlaceItem place={place} addPlace={addPlace}/>
                       <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
                     </div>
                   ) : (
-                    <div className='place-list-item' key={index}>
-                      <PlaceItem place={place} addPlace={addPlace} setMapX={setMapX} setMapY={setMapY}/>
+                    <div className='place-list-item' key={index} onMouseOver={()=>{
+                      setMapX(place.mapx);
+                      setMapY(place.mapy);
+                    }} onMouseOut={()=>{
+                      setMapX();
+                      setMapY();
+                    }}>
+                      <PlaceItem place={place} addPlace={addPlace}/>
                       <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
                     </div>
                   )

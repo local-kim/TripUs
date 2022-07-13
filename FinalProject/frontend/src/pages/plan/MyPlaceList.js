@@ -28,8 +28,14 @@ const MyPlaceList = ({addPlace, setMapX, setMapY}) => {
       <div className='place-list'>
         {
           places && places.map((place, index) => (
-            <div className='place-list-item' key={index}>
-              <PlaceItem place={place} addPlace={addPlace} setMapX={setMapX} setMapY={setMapY}/>
+            <div className='place-list-item' key={index} onMouseOver={()=>{
+              setMapX(place.mapx);
+              setMapY(place.mapy);
+            }} onMouseOut={()=>{
+              setMapX();
+              setMapY();
+            }}>
+              <PlaceItem place={place} addPlace={addPlace}/>
               <button type='button' className='edit-btn btn btn-light btn-sm' onClick={() => addPlace(place)}>+</button>
             </div>
           ))

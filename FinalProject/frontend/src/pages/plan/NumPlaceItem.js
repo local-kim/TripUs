@@ -182,7 +182,7 @@ const PlaceItem = ({place, num, focus}) => {
   return (
     <div className='place-wrap'>
       {
-        focus ? <span className='num' style={{backgroundColor:'orange'}}>{num}</span> : <span className='num'>{num}</span>
+        focus ? <span className='num' style={{backgroundColor:'rgb(152, 221, 227)'}}>{num}</span> : <span className='num'>{num}</span>
       }
 
       <div className='place-info-wrap'>
