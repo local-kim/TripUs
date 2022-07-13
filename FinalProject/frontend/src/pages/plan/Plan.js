@@ -93,8 +93,8 @@ const Plan = () => {
     // 선을 구성하는 좌표 배열
     let linePath = [];
 
-    for(let j in markerList){
-      linePath.push(markerList[j].latlng);
+    for(let j in plan[focus]){
+      linePath.push(new kakao.maps.LatLng(plan[focus][j].mapy, plan[focus][j].mapx));
     }
 
     // 지도에 표시할 선을 생성
@@ -108,6 +108,20 @@ const Plan = () => {
 
     // 지도에 선을 표시
     polyline.setMap(map);
+
+    if(linePath.length !== 0){  // 좌표 없이 범위 재설정 시 지도가 안 뜸
+      // 지도 범위 재설정
+      // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성
+      var bounds = new kakao.maps.LatLngBounds();
+
+      for (let k in linePath) {
+        // LatLngBounds 객체에 좌표를 추가
+        bounds.extend(linePath[k]);
+      }
+
+      map.setBounds(bounds, 100, 100, 100, 450);
+      // map.setBounds(bounds);
+    }
   };
 
   useEffect(() => {

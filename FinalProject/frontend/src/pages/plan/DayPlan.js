@@ -307,10 +307,6 @@ const DayPlan = () => {
     marker.setMap(map);
   };
 
-  const mouseEvent = (mapX, mapY) => {
-
-  }
-
   useEffect(() => {
     kakaoMapScript(mapX, mapY);
   }, [mapX, mapY, dayPlan]);
@@ -340,7 +336,7 @@ const DayPlan = () => {
                 // dayPlan이 있을 때만 표시
                 dayPlan && dayPlan.map((place, index) => (
                   <div className='place-list-item' key={index}>
-                    <NumPlaceItem place={place} num={index + 1} focus={false}/>
+                    <NumPlaceItem place={place} num={index + 1} focus={true}/>
                     <div className='btn-wrap'>
                       {/* TODO: drag & drop으로 변경 */}
                       <div className='move-btn'>
