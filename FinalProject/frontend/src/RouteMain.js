@@ -5,7 +5,7 @@ import './App.css';
 import './AppHeemin.css';
 import { CityInfoMain, CityinfoMore, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan } from "./pages/plan";
-import { JoinForm, Auth,LoginForm, KakaoLogin, GoogleLogin } from "./pages/login";
+import { JoinForm, Auth,LoginForm,LoginFormTest, KakaoLogin, GoogleLogin } from "./pages/login";
 import { PlanDetail } from "./pages/detail";
 
 import {Mypage, Dashboard, Profile} from "./pages/mypage";
@@ -37,6 +37,7 @@ const RouteMain = () => {
           <Route path="/join" element={<JoinForm/>} />
           {/* <Route path="/join" element={<SecurityJoin/>} /> */}
           <Route path="/login" element={<LoginForm/>} />
+          <Route path="/loginTest" element={<LoginFormTest/>} />
           {/* <Route path="/login" element={<SecurityLogin/>} /> */}
           <Route path="/oauth/kakao/callback"  element={<Auth/>} />
           <Route path="/kakao"  element={<KakaoLogin/>}/>
