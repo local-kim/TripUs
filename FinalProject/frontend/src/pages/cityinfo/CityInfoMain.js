@@ -14,9 +14,10 @@ import '../../styles/cityinfo.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CityInfoImage from './CityInfoImage';
 import CityInfoMore from './CityInfoMore';
-import { differenceInDays, format } from 'date-fns';
+import { differenceInDays, format, subYears } from 'date-fns';
 import { useInView } from "react-intersection-observer"
 import { PlaceItem } from '../plan';
+import { height } from '@mui/system';
 
 const CityInfoMain = () => {
     
@@ -28,21 +29,21 @@ const CityInfoMain = () => {
 
     // 수동 데이타
     const naVi=useNavigate();
-    const [data2,setData2]=useState([
-        {
-            subject: "냥이로 떠나는 여행",
-            D_day: 1,
-            day: "2022-06-30" 
-        },{
-            subject: "멍이로 떠나는 여행",
-            D_day: 20,
-            day: "2022-07-19" 
-        },{
-            subject: "그냥 떠나는 여행",
-            D_day: 120,
-            day: "2022-10-29" 
-        }
-    ])
+    // const [data2,setData2]=useState([
+    //     {
+    //         subject: "냥이로 떠나는 여행",
+    //         D_day: 1,
+    //         day: "2022-06-30" 
+    //     },{
+    //         subject: "멍이로 떠나는 여행",
+    //         D_day: 20,
+    //         day: "2022-07-19" 
+    //     },{
+    //         subject: "그냥 떠나는 여행",
+    //         D_day: 120,
+    //         day: "2022-10-29" 
+    //     }
+    // ])
 
     // MUi 메뉴 탭
     const [value, setValue] = useState('12');
@@ -68,8 +69,27 @@ const CityInfoMain = () => {
     // 일정 url에 필요한 변수들   
     const [img,setImg]=useState([]);
     const [start_date,setStart_date]=useState('');
+    // const [slast_year,setSlast_year]=useState('');
     const [end_date,setEnd_date]=useState('');
+    // const [elast_year,setElast_year]=useState('');
     const [days,setDays]=useState('');
+    
+    // 작년 날짜로 수정
+    const slastYear = subYears(new Date(start_date), 1);
+    const elastYear = subYears(new Date(end_date), 1);
+    // const slastYear = format(subYears(new Date(start_date), 1), "yyyyMMdd");        // 페이지 로딩후 이걸로 교체
+    // const S_M_D = format((new Date(start_date)), "MMdd");
+    // const elastYear = format(subYears(new Date(end_date), 1), "yyyyMMdd");          // 페이지 로딩후 이걸로 교체
+    // const E_M_D = format((new Date(end_date)), "MMdd");
+    // D-day 구하기 - 더 해야됨
+    // const difDay = differenceInDays(end_date, start_date) + 1;
+    
+    
+    
+    console.log("slastYear : "+slastYear);
+    console.log("elastYear : "+elastYear);
+    // console.log("difDay : "+difDay);
+
 
     // 지역 데이타 변수 
     const [areaCode,setAreaCode]=useState('12');
@@ -109,7 +129,7 @@ const CityInfoMain = () => {
 
     // 날씨 api 받아오는 거         ${cityPlan.data[0].start_date} , ${cityPlan.data[0].end_date}
     
-     let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=${days}&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${start_date}&endDt=${end_date}&stnIds=${num}`;
+     let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=${days}&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${slastYear}&endDt=${elastYear}&stnIds=${num}`;
     // let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=6&dataType=xml&dataCd=ASOS&dateCd=DAY&startDt=${cityPlan.data[0].start_date}&endDt=20210803&stnIds=${cityData.num}`       // 기상청 과거데이터 다됨
     //const weather_url=`https://api.openweathermap.org/data/2.5/forecast/daily?q=${location}&cnt=3&appid=${API_KEY}`         // 최대예측 16일까지 일일데이터 (유료)
     //const weather_url=`https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${API_KEY}`             // 5일간 3시간 간격
@@ -118,7 +138,7 @@ const CityInfoMain = () => {
     //const weather_url=`https://api.aerisapi.com/conditions/summary/${location}?format=json&from=&to=&client_id=${API_ID}&client_secret=${API_KEY}`
     //console.log("wurl : "+weather_url)
     // 관광도시 api 받아오는 거(arrange=P)
-     let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=5&arrange=R&MobileOS=ETC&MobileApp=AppTest&_type=json`;
      if(sigunguCode){  // 시군구 코드가 있는 도시이면
          areaUrl += `&sigunguCode=${sigunguCode}`;
      }
@@ -138,6 +158,7 @@ const CityInfoMain = () => {
     const [result,setResult]=useState([]);  // 날씨 데이터 담는 배열 변수
     
  
+
  
     // useEffect(() => {
     //     // console.log(wthPlaceUrl);
@@ -163,9 +184,9 @@ const CityInfoMain = () => {
     console.log('cityData',cityData);
  
     // 관광정보 더보기
-    const addPlace = () => {
+    // const addPlace = () => {
 
-    }
+    // }
  
     
 
@@ -259,17 +280,17 @@ const CityInfoMain = () => {
 
 
     useEffect(()=>{
-        console.log("222222222 :"+areaUrl);
-        console.log("333333333 :"+weather_url);
-        console.log("444444444 :"+trip_url);
+        // console.log("222222222 :"+areaUrl);
+        // console.log("333333333 :"+weather_url);
+        // console.log("444444444 :"+trip_url);
         axios
             .all([axios.get(trip_url), axios.get(areaUrl), axios.get(weather_url)])
             .then(
                 axios.spread((res1, res2, res3) => {
-                    console.log("res1,res2,res3 :",[res1],[res2],[res3]);
-                    console.log("res1 : ", res1.data);
-                    console.log("res2 : ", res2.data.response.body.items.item);
-                    console.log("res3 : ", res3.data.response.body.items.item);
+                    // console.log("res1,res2,res3 :",[res1],[res2],[res3]);
+                    // console.log("res1 : ", res1.data);
+                    // console.log("res2 : ", res2.data.response.body.items.item);
+                    // console.log("res3 : ", res3.data.response.body.items.item);
                     setAaaT(res1.data);
                     setBbbA(res2.data.response.body.items.item);
                     setCccW(res3.data.response.body.items.item);
@@ -379,10 +400,10 @@ const CityInfoMain = () => {
             <div style={{display:'flex', marginBottom:'20px'}}>
                 <div className='title'>
                     <b>
-                        {cccW[0].stnNm}<br/>
+                        {/* {cccW[0].stnNm}<br/>
                         {aaaT[0].end_date}<br/>
                         {bbbA[0].contentid}<br/>
-                        {cccW[0].maxTa}
+                        {cccW[0].maxTa} */}
                     </b>
                 </div>
                 <div className='searchCity'>
@@ -424,36 +445,48 @@ const CityInfoMain = () => {
                         ))
                     }
                 </div> */}
-                <div style={{border:'1px solid black'}}>
+
+                {/* 날씨 */}
+                {/* <div id='weather-css'>
                     {
                         cccW && cccW.map((item,index) => (
-                            <div style={{marginRight:'5px'}}>
-                                요일 : &nbsp;
-                                날짜 : &nbsp;
-                                최고기온 : {item.maxTa}&nbsp;
-                                최저기온 : {item.minTa}&nbsp;
-                                강수량 : {item.sumRn}&nbsp;
+                            <div style={{marginRight:'5px', border:'1px solid gray'}}>
+                                <div className='ppp' style={{display:'flex'}}>
+                                    <div>
+                                        <div>
+                                            수&nbsp;
+                                        </div>
+                                        <br/>
+                                        <div>
+                                            7월 1일&nbsp;
+                                        </div>
+                                    </div>
+                                    &ensp;&ensp;
+                                    <div>
+                                        <br/>
+                                        날씨
+                                    </div>
+                                    &ensp;&ensp;
+                                    <div>
+                                        <div>
+                                            최고기온 : {item.maxTa}&nbsp;
+                                        </div>
+                                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;/
+                                        <div>
+                                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;최저기온 : {item.minTa}&nbsp;
+                                        </div>
+                                    </div>
+                                    <div><br/>
+                                        <div>
+                                        &emsp;&emsp;강수량 : {item.sumRn}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         ))
                     }
-                </div>                
+                </div>                 */}
             </div>
-                {/* {
-                    cccW && cccW.map((wth, index) => {
-                        
-                    return <div>
-                            최고기온 : {wth.response.body.items.item.maxTa}도&nbsp;
-                            최저기온 : {wth.response.body.items.item.minTa}도&nbsp;
-                            날씨 : {wth.response.body.items.item.iscs}&nbsp;
-                            강수량 : {wth.response.body.items.item.sumRn}mm&nbsp;
-                            평균풍속 : {wth.response.body.items.item.avgWs}km&nbsp;
-                            평균습도 : {wth.response.body.items.item.avgRhm}%&nbsp;
-                            적설량 : {wth.response.body.items.item.ddMes}cm&nbsp;
-                            지역명 : {wth.response.body.items.item.stnNm}&nbsp;
-                            
-                        </div>
-                    })
-                } */}
             <div style={{display:'flex', marginTop:'50px'}}>
                 <div>
                     <Box>

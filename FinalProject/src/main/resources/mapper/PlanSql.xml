@@ -32,7 +32,7 @@
 	</select>
 
 	<select id="getPlanDatas" parameterType="int" resultType="plan">
-		select * from itinerary, place, service_type_code, city where trip_num=#{num} and place_id=contentid and place.cat3 = service_type_code.cat3 and place.city_num = city.num order by `day`, `order`;
+		select * from (select num, trip_num, day, `order`, place_id, contentid, city_num, cat2_name, mapx, mapy, image, `name`, firstimage, `type`, title, place.cat3, cat3_name from itinerary, place, service_type_code, city where trip_num=#{num} and place_id=contentid and place.cat3 = service_type_code.cat3 and place.city_num = city.num order by `day`, `order`) main left outer join (select place_id, truncate(avg(stars), 2) as avg_star from review group by place_id) stars on main.place_id = stars.place_id;
 	</select>
 	
 	<select id="getDate" parameterType="int" resultType="pdate">
@@ -41,5 +41,8 @@
 	
 	<select id="getPlanMember" parameterType="int" resultType="pdate">
 		SELECT * FROM final_project.trip, member where member.num=member_num and trip.num=#{num};
+	</select>
+	<select id="mapKakao" parameterType="int" resultType="planMap">
+		SELECT `day`, `order`, mapx, mapy FROM itinerary, place where place_id = contentid and trip_num=#{num} order by `day`, `order`;
 	</select>
 </mapper>

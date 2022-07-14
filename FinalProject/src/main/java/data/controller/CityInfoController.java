@@ -15,8 +15,8 @@ import data.dto.WeatherDto;
 import data.service.CityInfoService;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/city")
+@CrossOrigin (origins = "*" , exposedHeaders = "**")
 public class CityInfoController {
 
 	@Autowired

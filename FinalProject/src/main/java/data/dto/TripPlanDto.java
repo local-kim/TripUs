@@ -15,9 +15,9 @@ public class TripPlanDto {
 	private String name;	// tripname
 	private int member_num;
 	private int city_num;
-	@JsonFormat(pattern = "yyyyMMdd",timezone="Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="Asia/Seoul")
 	private Date start_date;
-	@JsonFormat(pattern = "yyyyMMdd",timezone="Asia/Seoul")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="Asia/Seoul")
 	private Date end_date;
 	private int days;
 //	private int citynum;

@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../styles/plan.css';
 
-const PlaceItem = (props) => {
+const PlaceItem = ({place, setMapX, setMapY}) => {
   const contentTypeId = {
     A01010100: '국립공원',
     A01010200: '도립공원',
@@ -183,14 +183,14 @@ const PlaceItem = (props) => {
     <div className='place-wrap'>
       {
         // 이미지 없으면 표시하지 않음
-        props.place.firstimage ? <img className='place-img' src={props.place.firstimage} alt=''/> : <span className="no-image material-symbols-outlined">image_not_supported</span>
+        place.firstimage ? <img className='place-img' src={place.firstimage} alt=''/> : <span className="no-image material-symbols-outlined">image_not_supported</span>
       }
 
       <div className='place-info-wrap'>
-        <div>{props.place.title}</div>
-        {/* <div>{props.place.cat3}</div> */}
-        <div className='place-info'>{contentTypeId[props.place.cat3]}</div>
-        {/* <div className='place-info'>{props.place.contentid}</div> */}
+        <div>{place.title}</div>
+        {/* <div>{place.cat3}</div> */}
+        <div className='place-info'>{contentTypeId[place.cat3]}</div>
+        {/* <div className='place-info'>{place.contentid}</div> */}
       </div>
     </div>
   );

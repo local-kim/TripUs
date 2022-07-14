@@ -17,6 +17,7 @@ import data.dto.PlaceDto;
 import data.dto.PlanDateDto;
 import data.dto.PlanDto;
 import data.dto.PlanInsertDto;
+import data.dto.PlanMapDto;
 import data.dto.TripDto;
 import data.service.PlanService;
 
@@ -57,7 +58,7 @@ public class PlanController {
 		
 		// trip(여행 전체 정보)를 insert
 		// member_num, city_num, start_date, end_date, days
-		trip.setMemberNum(1);	// 임시값
+		trip.setMemberNum(3);	// 임시값
 		
 		// 방금 인서트한 trip_num을 받아와서 리턴
 		int tripNum = planService.insertTrip(trip);
@@ -110,5 +111,10 @@ public class PlanController {
 	@GetMapping("/name")
 	public List<PlanDateDto> getPlanMember(@RequestParam int num) {
 		return planService.getPlanMember(num);
+	}
+	
+	@GetMapping("/map")
+	public List<PlanMapDto> mapKakao (@RequestParam int num) {
+		return planService.mapKakao(num);
 	}
 }

@@ -68,7 +68,7 @@ const Main=()=>{
     
         axios.get(searchUrl)
         .then(res=>{
-            // console.log(res.data)
+            console.log(res.data)
         
           setCity(res.data);
             
@@ -102,12 +102,7 @@ const Main=()=>{
                             <div className='search_area' >
                                 <div className='city_autocomplete' style={{display:'block'}}></div>
                                 <input className='search_input' placeholder='국가명,도시명으로 검색' autocomplete="off" onKeyUp={Search} ></input>
-                                <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(
-
-                                    <li onClick={()=>{navi("/city/:num")}} >{data} <span class="h_search_cicu">대한민국</span></li>
-                                )
-                                    
-                                )}</ul>
+                                <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(<li onClick={()=>{navi(`/city/${data.num}`)}} >{data.name} <span class="h_search_cicu">대한민국</span></li> ))}</ul>
                                     <div className='latest_search'>'추천도시':</div>
                             </div>
                         </div>
