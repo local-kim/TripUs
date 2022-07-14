@@ -12,8 +12,8 @@ import lombok.Data;
 @Alias("trip")
 public class TripDto {
 	private int num;
-	private int member_num;
-	private int city_num;
+	private int memberNum;
+	private int cityNum;
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
 	@JsonFormat(pattern = "yyyy-MM-dd")

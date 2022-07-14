@@ -12,4 +12,6 @@ public class CityDto {
 	private String eng_name;
 	private String country;
 	private String image;
+	private int area_code;
+	private int sigungu_code;
 }

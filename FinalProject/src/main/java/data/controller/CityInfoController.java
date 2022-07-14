@@ -16,31 +16,37 @@ import data.service.CityInfoService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/cityinfo")
+@RequestMapping("/city")
 public class CityInfoController {
 
 	@Autowired
 	private CityInfoService ciservice;
 	
-	@GetMapping("/weather")
-	public WeatherDto getData(@RequestParam int num) {
+	@GetMapping("/citydata")
+	public CityDto getData(@RequestParam int num) {
 		return ciservice.getData(num);
 	}
 	
-	@GetMapping("/placename")
-	public void getName(@RequestParam String name) {
-		ciservice.getName(name);
-	}
+	// city랑 trip이랑 join 써본거
+//	@GetMapping("/citydata")
+//	public List<CityDto> getData(@RequestParam int num) {
+//		return ciservice.getData(num);
+//	}
+	
+//	@GetMapping("/placename")
+//	public void getName(@RequestParam String name) {
+//		ciservice.getName(name);
+//	}
 	
 	@GetMapping("/tripdata")
-	public TripDto getTripData(
+	public List<TripDto> getTripData(
 			@RequestParam int member_num,
 			@RequestParam int city_num
 			) {
-		return ciservice.getTripData(member_num, city_num);
+		return ciservice.getTripData(member_num,city_num);
 	}
 	
-	
+	// 현지씌 작품 돈터치!!!
 	// 도시 목록 페이지
 	@GetMapping("/list")
 	public List<CityDto> getCityList(){
