@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { PlaceItem } from '.';
+import { NumPlaceItem, PlaceItem } from '.';
 import '../../styles/plan.css';
+import { format } from 'date-fns';
 
 const { kakao } = window;
 
@@ -48,96 +49,117 @@ const Plan = () => {
     });
   }
 
+  const [focus, setFocus] = useState(0);
+
   // kakao map
-  const kakaoMapScript = (mapX, mapY) => {
-
-    console.log(plan[0]);
-
-    let markerList = [];
-    // let yList = [];
-    // let titleList = [];
-
-    for(let i in plan[0]){
-      // console.log(plan[0][i].mapx);
-      markerList.push({latlng: new kakao.maps.LatLng(plan[0][i].mapy, plan[0][i].mapx), title: plan[0][i].title});
-      // yList.push(plan[0][i].mapy);
-      // titleList.push(plan[0][i].title);
-    }
-
-    console.log(markerList);
-        
-    const container = document.getElementById('map');
+  const kakaoMapScript = () => {
+    const container = document.getElementById('map'); // 지도를 표시할 div  
 
     const options = {
-      center: new kakao.maps.LatLng(35.1795543, 129.0756416), // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
-      level: 9
+      // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
+      center: new kakao.maps.LatLng(35.1795543, 129.0756416), // 지도의 중심좌표
+      level: 9  // 지도의 확대 레벨
     };
     
-    const map = new kakao.maps.Map(container, options);
+    const map = new kakao.maps.Map(container, options); // 지도를 생성합니다
 
-    // //마커가 표시 될 위치
-    // let markerPosition = new kakao.maps.LatLng(mapY, mapX);
+    // 일정에 있는 장소 마커들
+    let markerList = [];
 
-    // // 마커를 생성
-    // let marker = new kakao.maps.Marker({position: markerPosition,});
+    for(let i in plan[focus]){
+      markerList.push({latlng: new kakao.maps.LatLng(plan[focus][i].mapy, plan[focus][i].mapx), title: plan[focus][i].title});
+    }
 
-    // // 마커를 지도 위에 표시
-    // marker.setMap(map);
+    // 커스텀 오버레이
+    for (let i in markerList) {
+      // 커스텀 오버레이에 표시할 내용
+      // HTML 문자열 또는 Dom Element
+      let content = `<div class ="label">${Number(i) + 1}</div>`;
 
-    // 마커 이미지의 이미지 주소입니다
-    var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-      
-    for (var i in markerList) {
-      // 마커 이미지의 이미지 크기 입니다
-      var imageSize = new kakao.maps.Size(24, 35); 
-      
-      // 마커 이미지를 생성합니다    
-      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-      
-      // 마커를 생성합니다
-      var marker = new kakao.maps.Marker({
-          map: map, // 마커를 표시할 지도
-          position: markerList[i].latlng, // 마커를 표시할 위치
-          title : markerList[i].title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-          image : markerImage // 마커 이미지 
+      // 커스텀 오버레이가 표시될 위치
+      let position = markerList[i].latlng;
+
+      // 커스텀 오버레이를 생성
+      let customOverlay = new kakao.maps.CustomOverlay({
+          position: markerList[i].latlng,
+          content: content
       });
+
+      // 커스텀 오버레이를 지도에 표시
+      customOverlay.setMap(map);
+    }
+
+    // 마커와 마커 사이에 선 그리기
+    // 선을 구성하는 좌표 배열
+    let linePath = [];
+
+    for(let j in plan[focus]){
+      linePath.push(new kakao.maps.LatLng(plan[focus][j].mapy, plan[focus][j].mapx));
+    }
+
+    // 지도에 표시할 선을 생성
+    let polyline = new kakao.maps.Polyline({
+      path: linePath, // 선을 구성하는 좌표 배열
+      strokeWeight: 2.5, // 선의 두께
+      strokeColor: '#333333', // 선의 색깔
+      strokeOpacity: 0.6, // 선의 불투명도: 1에서 0 사이의 값, 0에 가까울수록 투명
+      strokeStyle: 'shortdash' // 선의 스타일
+    });
+
+    // 지도에 선을 표시
+    polyline.setMap(map);
+
+    if(linePath.length !== 0){  // 좌표 없이 범위 재설정 시 지도가 안 뜸
+      // 지도 범위 재설정
+      // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성
+      var bounds = new kakao.maps.LatLngBounds();
+
+      for (let k in linePath) {
+        // LatLngBounds 객체에 좌표를 추가
+        bounds.extend(linePath[k]);
+      }
+
+      map.setBounds(bounds, 100, 100, 100, 450);
+      // map.setBounds(bounds);
     }
   };
 
   useEffect(() => {
     kakaoMapScript();
-  }, []);
+  }, [focus]);
 
   return (
     <div id='plan'>
 
       <div id='map'></div>
       
-      <div className='place-list'>
+      <div className='box-wrap'>
         <div className='title'>{cityName} 여행</div>
         {
-          days == 1 ? <div className='period'>{startDate} ({days}일)</div> : <div className='period'>{startDate} ~ {endDate} ({days}일)</div>
+          days == 1 ? <div className='period'>{format(startDate, "yyyy-MM-dd")} ({days}일)</div> : <div className='period'>{format(startDate, "yyyy-MM-dd")} ~ {format(endDate, "yyyy-MM-dd")} ({days}일)</div>
         }
 
-        <button type='button' className='btn btn-primary btn-sm' onClick={insertPlan}>일정 생성하기</button>
+        <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={insertPlan}>일정 생성하기</button>
         {
           // days 만큼 반복문 돌리기
           [...Array(days)].map((day, index) => (
             <div key={index + 1} className='day'>
-              <span>Day {index + 1}</span>
+              <span className='title' onClick={() => {
+                setFocus(index);
+              }}>Day {index + 1}</span>
               <div className='day-place-list'>
                 {
-                  plan[index] && plan[index].map((place, index) => (
-                    <div className='place-list-item' key={index}>
-                      <PlaceItem place={place}/>
+                  plan[index] && plan[index].map((place, i) => (
+                    <div className='place-list-item' key={i}>
+                      <NumPlaceItem place={place} num={i + 1} focus={focus === (index) ? true : false}/>
                     </div>
                   ))
                 }
               </div>
-              <button type='button' className='btn btn-outline-primary btn-sm' onClick={() => {
+              <button type='button' className='btn btn-outline-primary btn-sm btn-place' onClick={() => {
                 navigate(`/plan/${index + 1}`);
               }}>장소 추가</button>
-              <button type='button' className='btn btn-outline-secondary btn-sm'>메모 추가</button>
+              <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
             </div>
           ))
         }

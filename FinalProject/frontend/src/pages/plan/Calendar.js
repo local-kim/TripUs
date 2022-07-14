@@ -20,6 +20,7 @@ const Calendar = () => {
   // console.log(cityNum);
   
   const cityName = useRef();
+  // const [cityName, setCityName] = useState('');
   const areaCode = useRef();
   const sigunguCode = useRef();
 
@@ -48,13 +49,12 @@ const Calendar = () => {
       areaCode.current = res.data.area_code;
       sigunguCode.current = res.data.sigungu_code;
       cityName.current = res.data.city_name;
+      // setCityName(res.data.city_name);
       // console.log(areaCode, sigunguCode);
     })
     .catch(err => {
       console.log(err);
-      alert("로그인 후 이용해주세요.");
-      navigate("/login");
-    })
+    });
   }, []);
 
   const [state, setState] = useState([
@@ -67,35 +67,40 @@ const Calendar = () => {
 
   return (
     <div id='plan-calendar'>
-      <div className='title'>날짜를 선택하세요</div>
-      <DateRangePicker
-        locale={ko}
-        onChange={item => setState([item.selection])}
-        showSelectionPreview={true}
-        moveRangeOnFirstSelection={false}
-        months={2}
-        ranges={state}
-        direction="horizontal"
-        dateDisplayFormat={'yyyy-MM-dd'}
-        monthDisplayFormat={'yyyy년 M월'}
-        rangeColors={['#98dde3', '#ffffff']}
-        color={'#98dde3'}
-      />
-
       <div>
-        <button type='button' className='next-btn btn btn-primary' onClick={() => {
-          // console.log(state[0].startDate, state[0].endDate);
-          // 시작 날짜 : state[0].startDate
-          // 끝 날짜 : state[0].endDate
-          const start = format(state[0].startDate, "yyyy-MM-dd");
-          const end = format(state[0].endDate, "yyyy-MM-dd");
-          const days = differenceInDays(state[0].endDate, state[0].startDate) + 1;
-          // console.log({start, end, days, cityNum, areaCode, sigunguCode});
-          dispatch(setPlanInfo(start, end, days, cityNum, cityName.current, areaCode.current, sigunguCode.current));
+        <div className='title'>여행 일정을 선택하세요</div>
+        <DateRangePicker
+          locale={ko}
+          onChange={item => setState([item.selection])}
+          showSelectionPreview={true}
+          moveRangeOnFirstSelection={false}
+          months={2}
+          ranges={state}
+          direction="horizontal"
+          dateDisplayFormat={'yyyy-MM-dd'}
+          monthDisplayFormat={'yyyy년 M월'}
+          rangeColors={['#98dde3', '#ffffff']}
+          color={'#98dde3'}
+        />
 
-          navigate("/plan");
-        }}>선택 완료</button>
+        <div>
+          <button type='button' className='btn-ok btn btn-primary' onClick={() => {
+            // console.log(state[0].startDate, state[0].endDate);
+            // 시작 날짜 : state[0].startDate
+            // 끝 날짜 : state[0].endDate
+            // const start = format(state[0].startDate, "yyyy-MM-dd");
+            // const end = format(state[0].endDate, "yyyy-MM-dd");
+            const start = state[0].startDate;
+            const end = state[0].endDate;
+            const days = differenceInDays(state[0].endDate, state[0].startDate) + 1;
+            // console.log({start, end, days, cityNum, areaCode, sigunguCode});
+            dispatch(setPlanInfo(start, end, days, cityNum, cityName.current, areaCode.current, sigunguCode.current));
+
+            navigate("/plan");
+          }}>일정 만들기</button>
+        </div>
       </div>
+      
     </div>
   );
 };
