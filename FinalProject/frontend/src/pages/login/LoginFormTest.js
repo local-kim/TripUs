@@ -6,10 +6,21 @@ import kakao_icon from '../../assets/images/kakao_icon.png';
 import naver_icon from '../../assets/images/naver_icon.png';
 import google_icon from '../../assets/images/google_icon.png';
 import { GoogleLogin } from 'react-google-login';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../modules/auth';
 
 const LoginFormTest = () => {
+  const saveId=useSelector(state => state.auth.saveId);
+  const saveUser=useSelector(state => state.auth.user.id);
+  const [isChecked, setIsChecked] = useState(saveId);
+  const handleChecked = (event) => {
+      setIsChecked(event.target.checked);
+      if(!isChecked){
+     saveId(true);  
+  }else{
+     saveId(false);
+  }
+   };
 
    // redux
   const dispatch = useDispatch();
@@ -64,15 +75,21 @@ const LoginFormTest = () => {
        console.log(response);
    }
   return (
-    <div className='container'>
+    <div className='container_login'>
       <form onSubmit={onClickLogin}>
         <div className='text'>LOGIN</div>
         <div className='small_text'>나만의 여행 플래너 - TRIP:US</div>
      
       <div className='form_container'>
-        <div className='data'>
+        <div className="id_checked">
+            <input type="checkbox"  id='id_checkbox'
+              checked={isChecked} onChange={handleChecked}/>
+            <label className="loginPage_text" >ID 저장하기</label>
+        </div>
+      <div className='data'>
           <label>아이디</label>
-          <input type="text" id="LoginId" value={inputId} onChange={handleInputId}required></input>
+            <input type="text" id="LoginId" value={isChecked ? saveUser : inputId } onChange={handleInputId}
+            required></input>
         </div>
         <div className='data'>
           <label>비밀번호</label>
@@ -81,7 +98,7 @@ const LoginFormTest = () => {
         <div className='forgot_pass'>
           <a href='/findPassword'>비밀번호를 잊으셨나요?</a>
         </div>
-        <div className='btn'>
+        <div className='login_btn'>
           <button type='submit' id='loginBtn'>로그인</button>
         </div>
         <div className='signup_link'>
@@ -96,10 +113,7 @@ const LoginFormTest = () => {
       <div className='sns_text'>SNS 간편 로그인</div>
       <div className='socialBtn-container'>
         <div className='socialBtn'>
-          <img src={kakao_icon} alt='카카오'><h1>
-          <a href={KAKAO_AUTH_URL}>Kakao Login</a>
-      </h1>
-          </img>
+          <img src={kakao_icon} alt='카카오'></img>
         </div>
         <div className='socialBtn'>
           <img src={naver_icon} alt='네이버'></img>
