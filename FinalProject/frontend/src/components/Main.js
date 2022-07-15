@@ -15,9 +15,8 @@ import jQuery from 'jquery';
 import { NavLink } from 'react-router-dom';
 import { setDate } from 'date-fns';
 
-import Sea from './Sea.mp4';
+
 import Beach from './Beach.mp4';
-import Clouds from './Clouds.mp4';
 import Islands from './Islands.mp4';
 import Cliff from './Cliff.mp4';
 import Wave from './Waves.mp4';
