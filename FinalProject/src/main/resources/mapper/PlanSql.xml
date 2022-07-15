@@ -25,6 +25,12 @@
 		(#{city_num}, #{contentid}, #{contenttypeid}, #{title}, #{cat3}, #{addr1}, #{addr2}, #{firstimage}, #{mapx}, #{mapy})
 	</insert>
 	
+	<!-- 일정 수정 페이지 -->
+	<select id="getTripInfo" parameterType="int" resultType="citytrip">
+		select trip.num as tripNum, trip.name as tripName, member_num as memberNum, city_num as cityNum, start_date as startDate, end_date as endDate, days, city.name as cityName, area_code, sigungu_code, x, y 
+		from trip, city where city_num=city.num and trip.num=#{tripNum}
+	</select>
+	
 <!--                                                -->
 
 	<select id="getNavNum" resultType="plan">

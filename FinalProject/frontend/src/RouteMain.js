@@ -4,7 +4,7 @@ import { FinalHead, Footer, Header, Main, Menu } from "./components";
 import './App.css';
 import './AppHeemin.css';
 import { CityInfoMain, CityinfoMore, PlaceInfo } from "./pages/cityinfo";
-import { Calendar, Plan, DayPlan } from "./pages/plan";
+import { Calendar, Plan, DayPlan, UpdatePlan, UpdateDayPlan } from "./pages/plan";
 import { JoinForm, Auth,LoginForm, KakaoLogin, GoogleLogin } from "./pages/login";
 import { PlanDetail } from "./pages/detail";
 
@@ -47,6 +47,10 @@ const RouteMain = () => {
           <Route path="/plan/calendar/:cityNum" element={<Calendar/>} />
           <Route path="/plan" element={<Plan/>} />
           <Route path="/plan/:day" element={<DayPlan/>} />
+
+          {/* Update Plan */}
+          <Route path="/plan/update/:tripNum" element={<UpdatePlan/>} />
+          <Route path="/plan/update/:tripNum/:num" element={<UpdateDayPlan/>} />
           
           {/* PlaceInfo */}
           <Route path="/place/placedetail" element={<PlaceInfo/>}/>

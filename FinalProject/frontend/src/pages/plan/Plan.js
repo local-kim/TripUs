@@ -11,13 +11,14 @@ const { kakao } = window;
 const Plan = () => {
   // redux에서 변수 얻기
   // const dispatch = useDispatch();
-  const days = useSelector(state => state.planner.days);
-  const startDate = useSelector(state => state.planner.startDate);
-  const endDate = useSelector(state => state.planner.endDate);
-  const cityNum = useSelector(state => state.planner.cityNum);
-  const cityName = useSelector(state => state.planner.cityName);
-  const areaCode = useSelector(state => state.planner.areaCode);
-  const sigunguCode = useSelector(state => state.planner.sigunguCode);
+  // const days = useSelector(state => state.planner.days);
+  // const startDate = useSelector(state => state.planner.startDate);
+  // const endDate = useSelector(state => state.planner.endDate);
+  // const cityNum = useSelector(state => state.planner.cityNum);
+  // const cityName = useSelector(state => state.planner.cityName);
+  // const areaCode = useSelector(state => state.planner.areaCode);
+  // const sigunguCode = useSelector(state => state.planner.sigunguCode);
+  const trip = useSelector(state => state.planner.trip);
   const plan = useSelector(state => state.planner.plan);
 
   // console.log(areaCode, sigunguCode);
@@ -33,10 +34,10 @@ const Plan = () => {
     axios.post(insertUrl, {
       plan: plan,
       trip: {
-        cityNum: cityNum,
-        startDate: startDate,
-        endDate: endDate,
-        days: days
+        cityNum: trip.cityNum,
+        startDate: trip.startDate,
+        endDate: trip.endDate,
+        days: trip.days
       }
     })
     .then(res => {
@@ -57,7 +58,7 @@ const Plan = () => {
 
     const options = {
       // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
-      center: new kakao.maps.LatLng(35.1795543, 129.0756416), // 지도의 중심좌표
+      center: new kakao.maps.LatLng(37.5666805, 126.9784147), // 지도의 중심좌표
       level: 9  // 지도의 확대 레벨
     };
     
@@ -81,8 +82,8 @@ const Plan = () => {
 
       // 커스텀 오버레이를 생성
       let customOverlay = new kakao.maps.CustomOverlay({
-          position: markerList[i].latlng,
-          content: content
+        position: markerList[i].latlng,
+        content: content
       });
 
       // 커스텀 오버레이를 지도에 표시
@@ -109,14 +110,13 @@ const Plan = () => {
     // 지도에 선을 표시
     polyline.setMap(map);
 
+    // 지도 범위 재설정
     if(linePath.length !== 0){  // 좌표 없이 범위 재설정 시 지도가 안 뜸
-      // 지도 범위 재설정
       // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성
       var bounds = new kakao.maps.LatLngBounds();
 
       for (let k in linePath) {
-        // LatLngBounds 객체에 좌표를 추가
-        bounds.extend(linePath[k]);
+        bounds.extend(linePath[k]); // LatLngBounds 객체에 좌표를 추가
       }
 
       map.setBounds(bounds, 100, 100, 100, 450);
@@ -134,15 +134,16 @@ const Plan = () => {
       <div id='map'></div>
       
       <div className='box-wrap'>
-        <div className='title'>{cityName} 여행</div>
+        <div className='title'>{trip.cityName} 여행</div>
         {
-          days == 1 ? <div className='period'>{format(startDate, "yyyy-MM-dd")} ({days}일)</div> : <div className='period'>{format(startDate, "yyyy-MM-dd")} ~ {format(endDate, "yyyy-MM-dd")} ({days}일)</div>
+          trip.days == 1 ? <div className='period'>{format(trip.startDate, "yyyy-MM-dd")} ({trip.days}일)</div> : <div className='period'>{format(trip.startDate, "yyyy-MM-dd")} ~ {format(trip.endDate, "yyyy-MM-dd")} ({trip.days}일)</div>
+          // trip.days == 1 ? <div className='period'>{format(new Date(trip.startDate), "yyyy-MM-dd")} ({trip.days}일)</div> : <div className='period'>{format(new Date(trip.startDate), "yyyy-MM-dd")} ~ {format(new Date(trip.endDate), "yyyy-MM-dd")} ({trip.days}일)</div>
         }
 
         <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={insertPlan}>일정 생성하기</button>
         {
           // days 만큼 반복문 돌리기
-          [...Array(days)].map((day, index) => (
+          [...Array(trip.days)].map((day, index) => (
             <div key={index + 1} className='day'>
               <span className='title' onClick={() => {
                 setFocus(index);

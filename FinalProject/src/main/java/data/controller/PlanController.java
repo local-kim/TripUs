@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import data.dto.CityTripDto;
 import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
 import data.dto.PlanDateDto;
@@ -89,6 +90,18 @@ public class PlanController {
 		}
 		
 		return tripNum;
+	}
+	
+	@GetMapping("/info")
+	public CityTripDto getTripInfo(@RequestParam int tripNum) {
+		return planService.getTripInfo(tripNum);
+	}
+	
+	@GetMapping("/updated-plan")
+	public List<List<PlaceDto>> getUpdatedPlan(@RequestParam int tripNum){
+		
+		
+		return null;
 	}
 	
 	

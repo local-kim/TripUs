@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import data.dto.CityTripDto;
 import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
 import data.dto.PlanDateDto;
@@ -54,6 +55,10 @@ public class PlanService implements PlanServiceInter {
 	@Override
 	public void insertPlace(PlaceDto place) {
 		planMapper.insertPlace(place);
+	}
+	
+	public CityTripDto getTripInfo(int tripNum) {
+		return planMapper.getTripInfo(tripNum);
 	}
 	
 	//////////////////////////////////////////

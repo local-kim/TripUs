@@ -8,7 +8,7 @@ import { da } from 'date-fns/locale';
 import { differenceInDays } from 'date-fns';
 import { addDays } from 'date-fns';
 import { useDispatch } from 'react-redux';
-import { setPlanInfo } from '../../modules/planner';
+import { savePlan } from '../../modules/planner';
 import Rating from '@mui/material/Rating';
 import { PlanDetailMain, PlanDetailMessage } from '.';
 
@@ -195,7 +195,7 @@ const PlanDetail = () => {
         const days = differenceInDays(endDate, startDate) + 1;
         const cityName = placeName;
         // console.log({start, end, days, cityNum, areaCode, sigunguCode});
-        dispatch(setPlanInfo(start, end, days, cityName));
+        dispatch(savePlan(start, end, days, cityName));
 
         navi('../../../plan');
         

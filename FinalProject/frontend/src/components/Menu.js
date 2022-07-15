@@ -25,8 +25,8 @@ const ResponsiveAppBar = () => {
   const loginNum = useSelector(state => state.auth.user.num);
   const loginName = useSelector(state => state.auth.user.name);
 
-  const pages = ['여행지', '일정 만들기', '일정 보기', 'About'];
-  const pageLinks = ['city/list', 'plan/calendar/159', 'plan/detail/1', ''];
+  const pages = ['여행지', '일정 만들기', '일정 보기', '일정 수정', 'About'];
+  const pageLinks = ['city/list', 'plan/calendar/159', 'plan/detail/1', 'plan/update/48', ''];
 
   const loginSettings = ['Mypage', 'Dashboard','Logout'];
   const loginLinks = ['mypage/1', 'dashboard','logout'];
