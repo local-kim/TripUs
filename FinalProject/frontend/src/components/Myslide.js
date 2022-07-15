@@ -40,7 +40,7 @@ const Myslide=() => {
                                 <div className="plan_bg_inner">
                                     <span>2015-07-29</span>
                                     <span className="tour_day">5DAYS</span>
-                                    <br/>싱가포르!!!</div>
+                                    <br/>제주!!!</div>
                                 </div>
                                 
                                 <div className="plan_img_box">	
@@ -53,7 +53,7 @@ const Myslide=() => {
                                     <div className="fr pn_list_view_icon">148</div>
                                     <div className="fr pn_list_spot_icon">30</div>
                                     <div className="clear"></div>
-                                    <div className="pn_list_city">싱가포르</div>
+                                    <div className="pn_list_city">제주</div>
                                     <div className="clear"></div>
                                     <div className="pn_list_user">윤지은</div>
                                 </div>
@@ -76,7 +76,7 @@ const Myslide=() => {
                                 <div className="plan_bg_inner">
                                     <span>2015-07-29</span>
                                     <span className="tour_day">5DAYS</span>
-                                    <br/>싱가포르!!!</div>
+                                    <br/>제주!!!</div>
                                 </div>
                                 
                                 <div className="plan_img_box">	
@@ -89,7 +89,7 @@ const Myslide=() => {
                                     <div className="fr pn_list_view_icon">148</div>
                                     <div className="fr pn_list_spot_icon">30</div>
                                     <div className="clear"></div>
-                                    <div className="pn_list_city">싱가포르</div>
+                                    <div className="pn_list_city">제주</div>
                                     <div className="clear"></div>
                                     <div className="pn_list_user">윤지은</div>
                                 </div>
@@ -116,7 +116,7 @@ const Myslide=() => {
                                 <div className="plan_bg_inner">
                                     <span>2015-07-29</span>
                                     <span className="tour_day">5DAYS</span>
-                                    <br/>싱가포르!!!</div>
+                                    <br/>제주!!!</div>
                                 </div>
                                 
                                 <div className="plan_img_box">	
@@ -129,7 +129,7 @@ const Myslide=() => {
                                     <div className="fr pn_list_view_icon">148</div>
                                     <div className="fr pn_list_spot_icon">30</div>
                                     <div className="clear"></div>
-                                    <div className="pn_list_city">싱가포르</div>
+                                    <div className="pn_list_city">제주</div>
                                     <div className="clear"></div>
                                     <div className="pn_list_user">윤지은</div>
                                 </div>
@@ -151,7 +151,7 @@ const Myslide=() => {
         <div className="plan_bg_inner">
             <span>2015-07-29</span>
             <span className="tour_day">5DAYS</span>
-            <br/>싱가포르!!!</div>
+            <br/>제주!!!</div>
         </div>
         
         <div className="plan_img_box">	
@@ -164,7 +164,7 @@ const Myslide=() => {
             <div className="fr pn_list_view_icon">148</div>
             <div className="fr pn_list_spot_icon">30</div>
             <div className="clear"></div>
-            <div className="pn_list_city">싱가포르</div>
+            <div className="pn_list_city">제주</div>
             <div className="clear"></div>
             <div className="pn_list_user">윤지은</div>
         </div>
@@ -186,7 +186,7 @@ const Myslide=() => {
         <div className="plan_bg_inner">
             <span>2015-07-29</span>
             <span className="tour_day">5DAYS</span>
-            <br/>싱가포르!!!</div>
+            <br/>제주!!!</div>
         </div>
         
         <div className="plan_img_box">	
@@ -199,7 +199,7 @@ const Myslide=() => {
             <div className="fr pn_list_view_icon">148</div>
             <div className="fr pn_list_spot_icon">30</div>
             <div className="clear"></div>
-            <div className="pn_list_city">싱가포르</div>
+            <div className="pn_list_city">제주</div>
             <div className="clear"></div>
             <div className="pn_list_user">윤지은</div>
         </div>
