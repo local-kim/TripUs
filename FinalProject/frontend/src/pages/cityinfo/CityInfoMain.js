@@ -75,11 +75,11 @@ const CityInfoMain = () => {
     const [days,setDays]=useState('');
     
     // 작년 날짜로 수정
-    const slastYear = subYears(new Date(start_date), 1);
-    const elastYear = subYears(new Date(end_date), 1);
-    // const slastYear = format(subYears(new Date(start_date), 1), "yyyyMMdd");        // 페이지 로딩후 이걸로 교체
+    // const slastYear = subYears(new Date(start_date), 1);
+    // const elastYear = subYears(new Date(end_date), 1);
+    const slastYear = format(subYears(new Date(start_date), 1), "yyyyMMdd");        // 페이지 로딩후 이걸로 교체
     // const S_M_D = format((new Date(start_date)), "MMdd");
-    // const elastYear = format(subYears(new Date(end_date), 1), "yyyyMMdd");          // 페이지 로딩후 이걸로 교체
+    const elastYear = format(subYears(new Date(end_date), 1), "yyyyMMdd");          // 페이지 로딩후 이걸로 교체
     // const E_M_D = format((new Date(end_date)), "MMdd");
     // D-day 구하기 - 더 해야됨
     // const difDay = differenceInDays(end_date, start_date) + 1;
@@ -400,8 +400,8 @@ const CityInfoMain = () => {
             <div style={{display:'flex', marginBottom:'20px'}}>
                 <div className='title'>
                     <b>
-                        {/* {cccW[0].stnNm}<br/>
-                        {aaaT[0].end_date}<br/>
+                        {cccW[0].stnNm}<br/>
+                        {/* {aaaT[0].end_date}<br/>
                         {bbbA[0].contentid}<br/>
                         {cccW[0].maxTa} */}
                     </b>
@@ -447,7 +447,7 @@ const CityInfoMain = () => {
                 </div> */}
 
                 {/* 날씨 */}
-                {/* <div id='weather-css'>
+                <div id='weather-css'>
                     {
                         cccW && cccW.map((item,index) => (
                             <div style={{marginRight:'5px', border:'1px solid gray'}}>
@@ -485,7 +485,7 @@ const CityInfoMain = () => {
                             </div>
                         ))
                     }
-                </div>                 */}
+                </div>                
             </div>
             <div style={{display:'flex', marginTop:'50px'}}>
                 <div>
