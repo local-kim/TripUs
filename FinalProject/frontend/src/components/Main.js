@@ -137,7 +137,7 @@ const Main=()=>{
                     <div className='page white'>
                     {/* <Menu></Menu> */}
                         <div className='wrap'>
-                            <div className='page_title' style={{marginTop:'150px'}}>BitRip에서 여행을 시작하세요!</div>
+                            <div className='page_title' style={{marginTop:'150px'}}>Trip Us에서 여행을 시작하세요!</div>
                             <div className='clear'></div>
                             <div className="intro_list">
                                 <div className="intro_box" onclick="location.href='/ko/area';">

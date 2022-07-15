@@ -217,12 +217,12 @@
     float: right;
     padding-top: 13px;
 }
-.container{
+/* .container{
     width: 410px;
     background-color: #fff;
     padding: 30px;
     box-shadow: unset;
-}
+} */
 .container .text{
     font-size: 35px;
     font-weight: 600;

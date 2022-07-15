@@ -1,0 +1,32 @@
+.fc .fc-scrollgrid-liquid {
+    
+    margin-top: 20px;
+
+}
+
+
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 1.5em;
+    margin-top: 150px;
+    margin-right: 200px;
+    margin-left: 200px;
+}
+
+
+.fc .fc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 150px;
+}
+
+
+.fc .fc-view-harness-active > .fc-view {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin-right: 200px;
+    margin-left: 200px;
+}
