@@ -15,8 +15,21 @@ import jQuery from 'jquery';
 import { NavLink } from 'react-router-dom';
 import { setDate } from 'date-fns';
 
+import Sea from './Sea.mp4';
+import Beach from './Beach.mp4';
+import Clouds from './Clouds.mp4';
+import Islands from './Islands.mp4';
+import Cliff from './Cliff.mp4';
+import Wave from './Waves.mp4';
 
 
+
+const video =[Beach, Cliff, Islands, Wave];
+const video_Number = 4;
+
+const getRandom=()=>{
+    return Math.floor(Math.random()* video_Number)
+}
 
 
 
@@ -94,18 +107,27 @@ const Main=()=>{
             <FullPageSections>
                 
                 <FullpageSection style={sectionStyle3}>
-                    
-                    <div className='main_top'>
-                        <div className="wrap"style={{marginTop:'60px'}}>
-                            <div className='main_top_title'>나만의 여행 플래너 Trip Us!</div>
-                            <div className='main_top_desc'>쉽고 빠르게 여행을 계획하세요.</div>
+
+                   
+                     <div className='main_top'>
+                             <div style={{zIndex:'-9999'}}>
+                            <video muted autoPlay loop style={{width:'100%', height:'100vh', objectFit:'cover',position:'absolute'}}>
+                                <source src={video[getRandom()]} type="video/mp4"/>
+                            </video>
+                            </div> 
+                             <div className="wrap"style={{marginTop:'60px'}}>
+                         
+                            <div className='main_top_title' >나만의 여행 플래너 Trip Us!</div>
+                            <div className='main_top_desc' >쉽고 빠르게 여행을 계획하세요.</div>
                             <div className='search_area' >
                                 <div className='city_autocomplete' style={{display:'block'}}></div>
                                 <input className='search_input' placeholder='국가명,도시명으로 검색' autocomplete="off" onKeyUp={Search} ></input>
                                 <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(<li onClick={()=>{navi(`/city/${data.num}`)}} >{data.name} <span class="h_search_cicu">대한민국</span></li> ))}</ul>
-                                    <div className='latest_search'>'추천도시':</div>
+                                    <div className='latest_search'>추천도시:  서울  부산  제주  강릉  인천 </div>
                             </div>
+                            
                         </div>
+                        
                     </div>  
               
                 </FullpageSection>
@@ -164,36 +186,47 @@ const Main=()=>{
                 <FullpageSection style={sectionStyle}>
                      <div className="page silver">
                         <div className="wrap">
-                            <div className="page_title">인기도시 TOP7</div>
+                            <div className="page_title">인기도시</div>
                                 <div className="top_city_list">
-                                    <a href="/ko/city/london_309" className="top_city w2">
-                                        <div className="top_city_title">런던</div>
-                                        <img src="https://www.earthtory.com/res/img/main/po_city/po_city_01.jpg" alt=""/>
+                                    {/* <a href="/ko/city/london_309" className="top_city w2">
+                                        <div className="top_city_title">가평</div>
+                                        <img src="https://www.myro.co.kr/myro_image/city/gapyeong.jpg" alt=""/>
+                                    </a> */}
+
+                                    <a href="/ko/city/london_309" className="top_city">
+                                        <div className="top_city_title">가평</div>
+                                        <img src="https://www.myro.co.kr/myro_image/city/gapyeong.jpg" alt=""/>
                                     </a>
                                 
                                     <a href="/ko/city/paris_307" className="top_city">
-                                        <div className="top_city_title"> 파리</div>
-                                        <img src="https://www.earthtory.com/res/img/main/po_city/po_city_02.jpg" alt=""/>
+                                        <div className="top_city_title"> 안동</div>
+                                        <img src="https://www.myro.co.kr/myro_image/city/andong.jpg" alt=""/>
                                     </a>
+
+                                    <a href="/ko/city/paris_307" className="top_city">
+                                        <div className="top_city_title"> 전주</div>
+                                        <img src="https://www.myro.co.kr/myro_image/city/jeonju.jpg" alt=""/>
+                                    </a>
+
                                     <a href="/ko/city/singapore_243" className="top_city">
-                                        <div className="top_city_title"> 싱가포르</div>
-                                        <img src="https://www.earthtory.com/res/img/main/po_city/po_city_03.jpg" alt=""/>
+                                        <div className="top_city_title"> 여수</div>
+                                        <img src="https://www.myro.co.kr/myro_image/city/daejeon.jpg" alt=""/>
                                     </a>
 
                                     <a href="/ko/city/istanbul_202" className="top_city">
-                                        <div className="top_city_title"> 이스탄불</div>
-                                        <img src="https://www.earthtory.com/res/img/main/po_city/po_city_04.jpg" alt=""/>
+                                        <div className="top_city_title"> 대전</div>
+                                        <img src="https://www.myro.co.kr/myro_image/city/daejeon.jpg" alt=""/>
                                     </a>
                                     
                                     <a href="/ko/city/venice_187" className="top_city">
-                                        <div className="top_city_title">  베네치아</div>
-                                        <img src="https://www.earthtory.com/res/img/main/po_city/po_city_02.jpg" alt=""/>
+                                        <div className="top_city_title">  강릉</div>
+                                        <img src="https://www.myro.co.kr/myro_image/city/gangneung.jpg" alt=""/>
                                     
                                     </a>
                                     
                                     <a href="/ko/city/barcelona_10005" className="top_city">
-                                        <div className="top_city_title"> 바르셀로나	</div>
-                                        <img src="https://www.earthtory.com/res/img/main/po_city/po_city_02.jpg" alt=""/>
+                                        <div className="top_city_title"> 경주	</div>
+                                        <img src="https://www.myro.co.kr/myro_image/city/gyeongju.jpg" alt=""/>
                                     </a>
                                     
                                     {/* <a href="/ko/city/taipei_92" className="top_city h2">
@@ -213,7 +246,7 @@ const Main=()=>{
                                     
                                     <a href="/ko/city/jeju_312" className="top_city">
                                         <div className="top_city_title"> 제주도	</div>
-                                        <img src="https://www.earthtory.com/res/img/main/po_city/po_city_02.jpg" alt=""/>
+                                        <img src="https://www.myro.co.kr/myro_image/city/jeju.jpg" alt=""/>
                                     </a>
                         
                                     <div className="clear"></div>

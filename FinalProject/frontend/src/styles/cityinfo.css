@@ -52,7 +52,7 @@
     font-size: 13px;
     margin-right: 5px;
     color: gray;
-    background-color: beige;
+    background-color: silver;
 }
 
 #cityinfo .scheduleBtnBox {
@@ -93,10 +93,23 @@
     color: gray;
 }
 
-#cityinfo .weatherCss {
-    width: 300px;
-    border: 1px solid black;
-    margin-left: 50px;
+/* 날씨 데이터 */
+#cityinfo #weather-css {
+    width: 500px;
+    height: 360px;
+    border: 1px solid gray;
+    overflow: scroll;
+    background-color: gray;
+    color: white;
+    scrollbar-width:none;
+    margin-left: 10px;
+    padding-left: 5px;
+}
+#cityinfo #weather-css::-webkit-scrollbar{
+    display:none;
+}
+#cityinfo .ppp{
+    border: 1px solid white;
 }
 
 

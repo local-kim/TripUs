@@ -165,8 +165,8 @@ const Profile = () => {
     
     return (
         <div>
-            <div className="wrapper">
-            <div className="container">
+            <div className="wrapper2">
+            <div className="container2">
                 <div className="top-background-div"></div>
                 <div className="top-container">
                     <div className="profilePhotoContainer">
@@ -289,7 +289,7 @@ const Profile = () => {
                     <button className="btn-quit" id="deleteUserBtn" onClick={deleteUser}>회원탈퇴</button>
                 </div>
                 <div className="flex-container p-5">
-                    <button className="btn-normal" onClick={()=>{navi("/mypage")}}>취소하기</button>
+                    <button className="btn-normal" onClick={()=>{navi("/mypage/1")}}>취소하기</button>
                     <button className="btn-normal" id="saveUserInfo" onClick={save}>저장하기</button>
                     <button className="btn-normal" id="saveUserInfo">비밀번호 변경</button>
                 </div>

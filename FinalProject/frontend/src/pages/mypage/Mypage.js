@@ -10,6 +10,10 @@ import { useBoolean, useInterval } from "react-use";
 import { differenceInDays, format } from 'date-fns';
 import { style } from "@mui/system";
 import { Link } from "react-router-dom";
+import KakaoShareButton from './KakaoShareButton';
+
+
+
 
 const Mypage = () => {
     const navi=useNavigate();
@@ -24,7 +28,12 @@ const Mypage = () => {
     const fileInput = useRef(null)
     const {currentPage} = useParams(); 
     const [data, setData] = useState(''); 
-    
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const [passOk,setPassOk]=useState(false);
+    const [btnOk,setBtnOk]=useState(false);
+    const [open, setOpen] = React.useState(false);
 
     // url
     let pagelistUrl = process.env.REACT_APP_SPRING_URL + "mypage/pagelist" //?currentPage=" + currentPage;
@@ -39,7 +48,8 @@ const Mypage = () => {
 
  
 
-
+        
+  
 
   const  citytriplist = () => {
     
@@ -129,7 +139,7 @@ const Mypage = () => {
                     
                     alert("삭제되었습니다.");
                 
-                   //  window.location.replace("/mypage");
+                   window.location.replace("/mypage/1");
                 })
                 .catch(err => {
                     alert(err);
@@ -211,16 +221,16 @@ const Mypage = () => {
             <div className="container uk-container-large" id="mypageData">
                 <div className="uk-padding-small">
                     <div className="section-title-container" >
-                        <h3 className="section-title"><b>나의 일정</b></h3>
+                        <h3 className="section-title"><b>나의 일정</b>  </h3>
                     </div>
-                     { 
+                     {
               data2.list && data2.list.map((row, index)=>( 
                     <span id="resultArea"><div style={{margin:"16px 0 "}}>
         <div className="uk-card uk-card-default uk-grid-collapse uk-grid" style={{padding:"16px"}} uk-grid="">
             <div className="uk-width-1-3@m uk-first-column">
                 <div className="uk-grid" uk-grid="" style={{margin: "0" , height: "60%"}}>
                     <div className="uk-width-1-2 info-container uk-first-column">
-                        <img className="width:100%" src={`../city_image/${row.image}`} alt={row.image} />
+                        <img className="width:100%" src={`../city_image/${row.image}`} alt={row.image} onClick={()=>{navi(`/plan/detail/${row.tripNum}`)}} />
                         <div className="d-day-circle" style={{backgroundColor:calculateDday(row.startDate) < 0 && calculateDday(row.endDate) > 0 ? "red" : calculateDday(row.startDate) === 0 ? "orange" : ""}}>
                             {calculateDday(row.startDate) === 0 ? "디데이": calculateDday(row.startDate) > 0 ? `D-${calculateDday(row.startDate)}` : calculateDday(row.endDate) > 0 ?<div style={{backgroundColor:'red'}}>"여행중"</div>  :"지난일정" }
                             </div>
@@ -323,15 +333,15 @@ const Mypage = () => {
                             </div>
 
                             <div className="uk-width-1-4">
-                                <div>
-                                    <button className="
+                                <div> 
+                                     <button className=" 
                                             uk-button
                                             uk-button-large
                                             uk-card-default
                                         " uk-toggle="target:#modal-center_idx_0"  aria-expanded="false">
-                                        일정 공유
-                                    </button>
-                                </div>
+                                             <KakaoShareButton row={row} key={index}></KakaoShareButton>
+                                     </button>
+                                 </div> 
                             </div>
                             <div className="uk-width-1-4">
                                 <div>
@@ -339,7 +349,7 @@ const Mypage = () => {
                                             uk-button
                                             uk-button-large
                                             uk-card-default
-                                        " id="deleteSavedBtn_0" >
+                                        " id="deleteSavedBtn_0" style={{marginRight:'30px'}}>
                                         삭제
                                     </button>
                                 </div>
@@ -429,7 +439,7 @@ const Mypage = () => {
                 </div>    
 
                 <div style={{width:'700px',textAlign:'center'}}>
-                    <ul className='pagination'>
+                    <ul className='pagination' style={{marginLeft:'580px', paddingLeft:'30px'}}>
 
                         {
                         (data2.startPage>1?<li>
@@ -459,10 +469,11 @@ const Mypage = () => {
                 </div>
                         
 
-                <div class="info-container p-5">
+  
+            </div>
+                 <div class="info-container p-5" style={{marginRight:'20px'}}>
                     <button class="btn-normal" onClick={()=>{navi("/")}}>홈으로 가기</button>
                 </div>
-            </div>
             
         </div>    
         
