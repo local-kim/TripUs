@@ -15,9 +15,8 @@ import jQuery from 'jquery';
 import { NavLink } from 'react-router-dom';
 import { setDate } from 'date-fns';
 
-import Sea from './Sea.mp4';
+
 import Beach from './Beach.mp4';
-import Clouds from './Clouds.mp4';
 import Islands from './Islands.mp4';
 import Cliff from './Cliff.mp4';
 import Wave from './Waves.mp4';
@@ -137,7 +136,7 @@ const Main=()=>{
                     <div className='page white'>
                     {/* <Menu></Menu> */}
                         <div className='wrap'>
-                            <div className='page_title' style={{marginTop:'150px'}}>BitRip에서 여행을 시작하세요!</div>
+                            <div className='page_title' style={{marginTop:'150px'}}>Trip Us에서 여행을 시작하세요!</div>
                             <div className='clear'></div>
                             <div className="intro_list">
                                 <div className="intro_box" onclick="location.href='/ko/area';">

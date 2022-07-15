@@ -222,7 +222,9 @@ const Mypage = () => {
                 <div className="uk-padding-small">
                     <div className="section-title-container" >
                         <h3 className="section-title"><b>나의 일정</b>  </h3>
+                        
                     </div>
+                        
                      {
               data2.list && data2.list.map((row, index)=>( 
                     <span id="resultArea"><div style={{margin:"16px 0 "}}>
