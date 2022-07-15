@@ -21,6 +21,12 @@ public class MemberSecurityDto implements UserDetails {
 	private String id;
 	private String password;
 	private int type;
+	private String email;
+	private String tel;
+	private String birthday;
+	private String zonecode;
+	private String address1;
+	private String address2;
 	private String token;
 	private boolean isAccountNonExpired;
 	private boolean isAccountNonLocked;

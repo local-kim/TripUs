@@ -4,17 +4,19 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import planner from './planner';
 import auth from './auth';
+import base from './base';
 
 const persistConfig = {
   key: "root",
   storage,  // localStorage에 저장
-  whitelist: ["auth"] // storage에 저장할 reducer
+  whitelist: ["auth", "planner"] // storage에 저장할 reducer
   // blacklist : 제외할 reducer
 };
 
 const rootReducer = combineReducers({
   planner,
-  auth
+  auth,
+  base
 });
 
 // export default rootReducer;

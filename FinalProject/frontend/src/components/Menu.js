@@ -53,6 +53,9 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
+  // 헤더 숨기기
+  if ((window.location.pathname.startsWith('/plan/calendar') || window.location.pathname === '/plan' || window.location.pathname.startsWith('/plan/')) && !window.location.pathname.startsWith('/plan/detail')) return null;
+
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
@@ -150,7 +153,12 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={loginName} src="/static/images/avatar/2.jpg" />
+                {
+                  isLoggedIn && <Avatar alt={loginName} src="/static/images/avatar/2.jpg" />
+                }
+                {
+                  !isLoggedIn && <Avatar src="/static/images/avatar/2.jpg" />
+                }
               </IconButton>
             </Tooltip>
             <Menu

@@ -34,12 +34,14 @@ const SecurityLogin = () => {
           console.log(res.data);
           localStorage.setItem('jwtToken', res.data.token); // 로컬 스토리지에 토큰 저장
           dispatch(login(res.data)); // redux에 로그인 유저 정보 저장
-          navigation("/");
+          navigation(-1);
         })
         .catch(err => {
           // console.log(err);
           alert("아이디 또는 비밀번호가 일치하지 않습니다.");
           // input 초기화
+          setId('');
+          setPassword('');
         })
       }}>Login</button>
     </div>

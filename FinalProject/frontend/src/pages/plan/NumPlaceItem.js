@@ -1,7 +1,7 @@
 import React from 'react';
 import '../../styles/plan.css';
 
-const PlaceItem = ({place, setMapX, setMapY}) => {
+const PlaceItem = ({place, num, focus}) => {
   const contentTypeId = {
     A01010100: '국립공원',
     A01010200: '도립공원',
@@ -181,10 +181,8 @@ const PlaceItem = ({place, setMapX, setMapY}) => {
 
   return (
     <div className='place-wrap'>
-      {
-        // 이미지 없으면 표시하지 않음
-        place.firstimage ? <img className='place-img' src={place.firstimage} alt=''/> : <span className="no-image material-symbols-outlined">image_not_supported</span>
-      }
+      <span className={`num ${focus ? "focus" : ""}`}
+      >{num}</span>
 
       <div className='place-info-wrap'>
         <div>{place.title}</div>

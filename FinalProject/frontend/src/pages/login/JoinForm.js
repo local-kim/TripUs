@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DaumPostcode from "react-daum-postcode";
@@ -7,10 +7,12 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-
+import { useForm } from "react-hook-form";
 
 
 const JoinForm = (props) => {
+    let joinUrl = `${process.env.REACT_APP_SPRING_URL}auth/join`;
+
     const navi=useNavigate();
     const [data,setData]=useState({
         id:'',
@@ -22,8 +24,6 @@ const JoinForm = (props) => {
         tel:'',
         birthday:'',
         zonecode:''
-
-        
     });
     const [birth,setBirth]=useState({
         year:'',
@@ -39,6 +39,13 @@ const JoinForm = (props) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const {
+        register,
+        watch,
+        handleSubmit,
+        formState: { errors },
+      } = useForm();
+    
     
     const modalStyle = {
         position: 'absolute',
@@ -52,15 +59,10 @@ const JoinForm = (props) => {
         p: 4,
       };
 
-  
- 
-
-
     //submit 호출될 함수
     const onSave=(e)=>{
         e.preventDefault(); //기본이벤트(submit이 action으로 넘어가는것)를 무효화
 
-    
         if(!btnOk){
             alert("아이디 중복체크를 해주세요");
             return;
@@ -70,18 +72,24 @@ const JoinForm = (props) => {
             return;
         }
 
-        const url = process.env.REACT_APP_SPRING_URL + "member/insert";
-            axios.post(url, ({
-                ...data,
-                birthday:birth.year+birth.month+birth.day
+        console.log({
+            ...data,
+            birthday:birth.year+birth.month+birth.day
+        });
 
-            }))
-            .then(res => {
-            //   alert("insert 성공");
-            console.log(data);
-              navi("/login")
-            });
-
+        // const url = process.env.REACT_APP_SPRING_URL + "member/insert";
+        axios.post(joinUrl, ({
+            ...data,
+            birthday:birth.year+birth.month+birth.day
+        }))
+        .then(res => {
+        //   alert("insert 성공");
+            console.log(res.data);
+            navi("/login");
+        })
+        .catch(err => {
+            console.log(err);
+        })
     }
     //data 관련 데이터 입력시 호출
     const onDataChange=(e)=>{
@@ -100,10 +108,10 @@ const JoinForm = (props) => {
           ...birth,
           [name]:value
       });
-  }
+    }
 
-     //두번째 pass 입력시 호출
-     const onPassChange=(e)=>{
+    //두번째 pass 입력시 호출
+    const onPassChange=(e)=>{
         const {value}=e.target;
         if(value===data.password)
             setPassOk(true)
@@ -145,44 +153,41 @@ const JoinForm = (props) => {
         });
     }
 
-        // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
-        const handlePostCode = (kakaoData) => {
-            let fullAddress = kakaoData.address;
-            let extraAddress = ''; 
-            
-            if (kakaoData.addressType === 'R') {
-              if (kakaoData.bname !== '') {
-                extraAddress += kakaoData.bname;
-              }
-              if (kakaoData.buildingName !== '') {
-                extraAddress += (extraAddress !== '' ? `, ${kakaoData.buildingName}` : kakaoData.buildingName);
-              }
-              fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
-            }
-            console.log(kakaoData)
-            console.log(fullAddress)
-            console.log(kakaoData.zonecode)
-            // setAddress1(fullAddress);
-            setData({...data, address1: fullAddress, address2: extraAddress, zonecode: kakaoData.zonecode});
-            // setData({...data, address2: extraAddress});
-            // setData({...data, zonecode: data.zonecode});
-            // setAddress2(extraAddress);
-            // setZonecode(data.zonecode);
-            // console.log(address1)
-            handleClose()
-        }
-     
-        // const postCodeStyle = {
-        //     display: "block",
-        //     position: "relative",
-        //     top: "10%",
-        //     width: "600px",
-        //     height: "600px",
-        //     padding: "7px",
-        //   };
+    // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
+    const handlePostCode = (kakaoData) => {
+        let fullAddress = kakaoData.address;
+        let extraAddress = ''; 
         
-     
-
+        if (kakaoData.addressType === 'R') {
+            if (kakaoData.bname !== '') {
+            extraAddress += kakaoData.bname;
+            }
+            if (kakaoData.buildingName !== '') {
+            extraAddress += (extraAddress !== '' ? `, ${kakaoData.buildingName}` : kakaoData.buildingName);
+            }
+            fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+        }
+        console.log(kakaoData)
+        console.log(fullAddress)
+        console.log(kakaoData.zonecode)
+        // setAddress1(fullAddress);
+        setData({...data, address1: fullAddress, address2: extraAddress, zonecode: kakaoData.zonecode});
+        // setData({...data, address2: extraAddress});
+        // setData({...data, zonecode: data.zonecode});
+        // setAddress2(extraAddress);
+        // setZonecode(data.zonecode);
+        // console.log(address1)
+        handleClose()
+    }
+    
+    // const postCodeStyle = {
+    //     display: "block",
+    //     position: "relative",
+    //     top: "10%",
+    //     width: "600px",
+    //     height: "600px",
+    //     padding: "7px",
+    //   };
 
     return (
         <div className='member_join'>
@@ -206,33 +211,74 @@ const JoinForm = (props) => {
                         <tr>
                             <th>비밀번호<span class="ico">*</span></th>
                             <td>
-                            <input type="password" name="password"  className="form-control" autoComplete="off" required
-                            onChange={onDataChange} label="비밀번호" maxLength="16" placeholder="비밀번호를 입력해주세요"/>
+                            <input type="password" name="password"  className="form-control"
+                             placeholder="비밀번호를 입력해주세요"
+                            {...register("password", {
+                                required: "비밀번호를 입력해주세요",
+                                minLength: {
+                                  value: 6,
+                                  message: "6자 이상의 비밀번호만 사용 가능합니다.",
+                                },
+                                maxLength: {
+                                  value: 16,
+                                  message: "16자 이하의 비밀번호만 사용 가능합니다.",
+                                },
+                                pattern: {
+                                  value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
+                                  message: "영문, 숫자를 혼용하여 입력해주세요..",
+                                },
+                              })}/>
                             </td>
                         </tr>
                         <tr>
                             <th>비밀번호확인<span class="ico">*</span></th>
                             <td>
-                            <input type="password" className="form-control" name="password" required
+                            <input type="password" className="form-control" name="password_confirm" required
                             onChange={onPassChange} autoComplete="off"
-                            label="비밀번호확인" maxLength="16" placeholder="비밀번호를 한번 더 입력해주세요"/>
+                            label="비밀번호확인" maxLength="16" placeholder="비밀번호를 한번 더 입력해주세요"
+                            {...register("password_confirm", {
+                                required: "비밀번호를 입력해주세요",
+                                // validate: (value) => value === password.current,
+                              })}/>
                             <span style={{marginLeft:'5px',color:passOk?'':'green'}}>{passOk?'사용가능':'동일한 비밀번호를 입력해주세요'}</span>
-                           
-  
                             </td>
                         </tr>
                         <tr>
                             <th>이름<span class="ico">*</span></th>
                             <td>
                             <input type="text" name="name" className="form-control" value={data.name}
-                            label="이름" onChange={onDataChange} placeholder="이름을 입력해주세요" required />
+                            label="이름" onChange={onDataChange} placeholder="이름을 입력해주세요" required
+                            {...register("name", {
+                                required: "이름을 입력해주세요",
+                                minLength: {
+                                  value: 2,
+                                  message: "2자 이상의 이름만 사용 가능합니다.",
+                                },
+                                maxLength: {
+                                  value: 12,
+                                  message: "12자 이하의 이름만 사용 가능합니다.",
+                                },
+                                pattern: {
+                                  value: /^([가-힣])|([a-zA-Z])$/,
+                                  message: "이름은 한글 또는 영문으로만 입력해주세요",
+                                },
+                              })} />
                             </td>
                         </tr>
                         <tr>
                             <th>이메일<span class="ico">*</span></th>
                             <td>
-                            <input type="text" name="email" value={data.email} size="30" onChange={onDataChange}
-                            label="이메일" placeholder="예: bitrip@bitrip.com" className="form-control" required/>
+                            <input type="text" name="email" value={data.email} onChange={onDataChange}
+                             placeholder="예: bitrip@bitrip.com" className="form-control"
+                            
+                            {...register("user_email", {
+                              required: "이메일을 입력해주세요",
+                              pattern: {
+                                value: /^\S+@\S+$/,
+                                message: "이메일 형식에 맞게 입력해주세요",
+                              },
+                              // validate: (value) => value === user_email_check,
+                            })}/>
                             <button type='button' className='btn'
                              onClick={onEmailCheck}>중복확인</button>
                             </td>
@@ -282,11 +328,6 @@ const JoinForm = (props) => {
                                 </Box>
                             </Modal>
                             </div>
-                        
-                           
-                            
-
-
                             </td>
                         </tr>
                         <tr>
@@ -302,23 +343,18 @@ const JoinForm = (props) => {
                                 </div>
                             </td>
                             </div>
-
                         </tr>
                         <tr>
                             <td colSpan={2} style={{textAlign:'center'}}>
                             <button type="submit" className="btn_type1 btn_member">
                             <span className="txt_type">가입하기</span>
                             </button>
-                      
                             </td>
                         </tr>
-                        
                     </tbody>
                 </table>
-
             </form>
             </div>
-            
         </div>
     );
 };

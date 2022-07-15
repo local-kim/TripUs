@@ -11,6 +11,7 @@ import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
 import data.dto.PlanDateDto;
 import data.dto.PlanDto;
+import data.dto.PlanMapDto;
 import data.dto.TripDto;
 import data.mapper.PlanMapper;
 
@@ -70,5 +71,9 @@ public class PlanService implements PlanServiceInter {
 	
 	public List<PlanDateDto> getPlanMember(int num) {
 		return planMapper.getPlanMember(num);
+	}
+	
+	public List<PlanMapDto> mapKakao (int num) {
+		return planMapper.mapKakao(num);
 	}
 }
