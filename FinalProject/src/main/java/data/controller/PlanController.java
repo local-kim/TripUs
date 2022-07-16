@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import data.dto.CityDto;
 import data.dto.CityTripDto;
 import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
@@ -19,6 +20,7 @@ import data.dto.PlanDateDto;
 import data.dto.PlanDto;
 import data.dto.PlanInsertDto;
 import data.dto.PlanMapDto;
+import data.dto.PlanPlaceDto;
 import data.dto.TripDto;
 import data.service.PlanService;
 
@@ -31,7 +33,7 @@ public class PlanController {
 	private PlanService planService;
 	
 	@GetMapping("/city-code")
-	public Map<String, Object> getCityCode(
+	public CityDto getCityCode(
 			@RequestParam int cityNum
 			){
 		return planService.getCityCode(cityNum);
@@ -92,20 +94,19 @@ public class PlanController {
 		return tripNum;
 	}
 	
-	@GetMapping("/info")
+	// 일정 수정 페이지
+	@GetMapping("/trip-info")
 	public CityTripDto getTripInfo(@RequestParam int tripNum) {
 		return planService.getTripInfo(tripNum);
 	}
 	
-	@GetMapping("/updated-plan")
-	public List<List<PlaceDto>> getUpdatedPlan(@RequestParam int tripNum){
-		
-		
-		return null;
+	@GetMapping("/place-list")
+	public List<PlanPlaceDto> getPlaceList(@RequestParam int tripNum){
+		return planService.getPlaceList(tripNum);
 	}
 	
-	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	@GetMapping("/nav")
 	public List<PlanDto> getNavNum(@RequestParam int num){
 		return planService.getNavNum(num);

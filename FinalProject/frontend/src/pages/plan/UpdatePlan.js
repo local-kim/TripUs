@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { NumPlaceItem } from '.';
 import { format, addDays } from 'date-fns';
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { saveTrip, savePlan } from '../../modules/planner';
 
 const { kakao } = window;
@@ -22,31 +22,84 @@ const UpdatePlan = () => {
   });
 
   const [plan, setPlan] = useState([]);
+  // const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
+  // console.log(plan);
 
   const [focus, setFocus] = useState(0);
 
-  let tripUrl = `${process.env.REACT_APP_SPRING_URL}plan/info?tripNum=`
+  let tripUrl = `${process.env.REACT_APP_SPRING_URL}plan/trip-info?tripNum=`;
+  let planUrl = `${process.env.REACT_APP_SPRING_URL}plan/place-list?tripNum=`;
 
-  const getTripInfo = () => {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
-    axios.get(tripUrl + tripNum)
-    .then(res => {
-      console.log(res.data);
-      setTripInfo(res.data);
-      // setPlan(Array.from(Array(res.data.days), () => new Array()));
-      dispatch(saveTrip(res.data));
-      // dispatch(setPlan(Array.from(Array(res.data.days), () => new Array())));
-      // console.log(plan);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-  };
-
-  // 도시 정보, 일정 가저오기
+  // multi axios request
   useEffect(() => {
-    getTripInfo();
+    axios.all([axios.get(tripUrl + tripNum), axios.get(planUrl + tripNum)])
+    .then(
+      axios.spread((res1, res2) => {
+        // trip info 처리
+        setTripInfo(res1.data);
+        dispatch(saveTrip({...res1.data, areaCode: res1.data.area_code, sigunguCode: res1.data.sigungu_code}));
+
+        // plan 처리
+        for(let i = 0; i < res1.data.days; i++){
+          plan.push(res2.data.filter(place => place.day == i + 1));
+          // console.log(`day ${i + 1}`, plan[i]);
+        }
+      })
+    )
+    .then(()=>{
+      dispatch(savePlan(plan));
+    })
+    .catch(err => console.log(err));
   }, []);
+
+  // const getTripInfo = () => {
+  //   console.log("1 : get trip");
+  //   axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+  //   axios.get(tripUrl + tripNum)
+  //   .then(res => {
+  //     console.log(res.data);
+  //     setTripInfo(res.data);
+  //     // setPlan(Array.from(Array(res.data.days), () => new Array()));
+  //     dispatch(saveTrip({...res.data, areaCode: res.data.area_code, sigunguCode: res.data.sigungu_code}));
+  //     // dispatch(setPlan(Array.from(Array(res.data.days), () => new Array())));
+  //     // console.log(plan);
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   });
+  // };
+
+
+  // const getPlan = () => {
+  //   console.log("2 : get plan");
+  //   axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+  //   axios.get(planUrl + tripNum)
+  //   .then(res => {
+  //     console.log(res.data);
+
+  //     for(let i = 0; i < tripInfo.days; i++){
+  //       // setPlan([
+  //       //   ...plan,
+  //       //   res.data.filter(place => place.day == i + 1)
+  //       // ])
+  //       plan.push(res.data.filter(place => place.day == i + 1));
+  //       console.log(`day ${i + 1}`, plan);
+  //     }
+      
+  //     // console.log(plan);
+  //     dispatch(savePlan(plan));
+  //     // dispatch(saveTrip({...res.data, areaCode: res.data.area_code, sigunguCode: res.data.sigungu_code}));
+  //   })
+  //   .catch(err => {
+  //     console.log(err);
+  //   });
+  // };
+
+  // // 도시 정보, 일정 가저오기
+  // useEffect(() => {
+  //   getTripInfo();
+  //   getPlan();
+  // }, []);
 
   const updatePlan = () => {
 
@@ -54,7 +107,6 @@ const UpdatePlan = () => {
 
   // kakao map
   const kakaoMapScript = () => {
-    console.log("map");
     const container = document.getElementById('map'); // 지도를 표시할 div  
 
     const options = {
@@ -129,7 +181,7 @@ const UpdatePlan = () => {
   }, [focus, tripInfo]);
 
   return (
-    <div id='plan-update'>
+    <div id='plan'>
       <div id='map'></div>
 
       <div className='box-wrap'>
@@ -142,10 +194,10 @@ const UpdatePlan = () => {
           days == 1 ? <div className='period'>{new Date(tripInfo.startDate).toDateString} ({tripInfo.days}일)</div> : <div className='period'>{new Date(tripInfo.startDate).toDateString} ~ {new Date(tripInfo.endDate).toDateString} ({tripInfo.days}일)</div>
         } */}
 
-        <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={updatePlan}>수정 완료</button>
+        <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={updatePlan}>일정 저장하기</button>
         {
           // days 만큼 반복문 돌리기
-          [...Array(tripInfo.days)].map((day, index) => (
+          tripInfo && [...Array(tripInfo.days)].map((day, index) => (
             <div key={index + 1} className='day'>
               <span className='title' onClick={() => {
                 setFocus(index);
@@ -161,7 +213,7 @@ const UpdatePlan = () => {
                 }
               </div>
               <button type='button' className='btn btn-outline-primary btn-sm btn-place' onClick={() => {
-                navigate(`/plan/${index + 1}`);
+                navigate(`/plan/update/${tripNum}/${index + 1}`);
               }}>장소 추가</button>
               <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
             </div>

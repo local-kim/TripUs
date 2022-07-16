@@ -54,7 +54,7 @@ const ResponsiveAppBar = () => {
   };
 
   // 헤더 숨기기
-  if ((window.location.pathname.startsWith('/plan/calendar') || window.location.pathname === '/plan' || window.location.pathname.startsWith('/plan/')) && !window.location.pathname.startsWith('/plan/detail')) return null;
+  if ((window.location.pathname.startsWith('/plan')) && !window.location.pathname.startsWith('/plan/detail')) return null;
 
   return (
     <AppBar position="fixed">
@@ -109,8 +109,8 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page, index) => (
-                <Link to={`/${pageLinks[index]}`}>
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <Link to={`/${pageLinks[index]}`} key={index}>
+                  <MenuItem onClick={handleCloseNavMenu}>
                     <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 </Link>
@@ -138,9 +138,8 @@ const ResponsiveAppBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page, index) => (
-              <Link to={`/${pageLinks[index]}`}>
+              <Link to={`/${pageLinks[index]}`} key={index}>
                 <Button
-                  key={page}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'black', display: 'block' }}
                 >

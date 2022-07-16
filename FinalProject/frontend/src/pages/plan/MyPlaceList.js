@@ -4,10 +4,10 @@ import { useSelector } from 'react-redux';
 import { PlaceItem } from '.';
 
 const MyPlaceList = ({addPlace, setMapX, setMapY}) => {
-  const cityNum = useSelector(state => state.planner.cityNum);
+  const trip = useSelector(state => state.planner.trip);
 
   // TODO: 로그인한 회원의 번호 넘기기
-  let myPlaceUrl = `${process.env.REACT_APP_SPRING_URL}plan/my-place-list?cityNum=${cityNum}`;
+  let myPlaceUrl = `${process.env.REACT_APP_SPRING_URL}plan/my-place-list?cityNum=${trip.cityNum}`;
 
   const [places, setPlaces] = useState([]);
 

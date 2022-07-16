@@ -1,8 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Maven+Pro:wght@400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=ABeeZee:ital@0;1&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300;400;600&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Sen:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sen:wght@400;700;800&display=swap');
 
 /* bootstrap button 클릭하면 나오는 효과 제거 */
 #plan-calendar .btn:focus,
@@ -11,6 +8,13 @@
 #plan-update .btn:focus {
   outline: none;
   box-shadow: none;
+}
+
+#plan-calendar .btn,
+#plan .btn,
+#day-plan .btn,
+#plan-update .btn {
+  font-weight: 500;
 }
 
 /*** Calendar.js ***/
@@ -79,6 +83,7 @@
 
 #plan .period{
   color: gray;
+  font-size: 15px;
 }
 
 #plan #map{
@@ -462,159 +467,3 @@
 }
 
 /* UpdatePlan.js */
-/* #plan-update{
-  text-align: center;
-}
-
-#plan-update .title{
-  font-size: 20px;
-  font-weight: 500;
-}
-
-#plan-update .period{
-  color: gray;
-}
-
-#plan-update .btn-plan{
-  margin: 5px;
-  background-color: rgb(152, 221, 227);
-  border-color: rgb(152, 221, 227);
-  width: 100%;
-}
-
-#plan-update .day .btn-place{
-  margin: 5px;
-  border-color: rgb(85, 181, 190);
-  color: rgb(85, 181, 190);
-}
-
-#plan-update .day .btn-place:hover{
-  margin: 5px;
-  background-color: rgb(152, 221, 227);
-  border-color: rgb(152, 221, 227);
-  color: white;
-}
-
-#plan-update .day .btn-memo{
-  margin: 5px;
-  border-color: #888888;
-  color: #888888;
-}
-
-#plan-update .btn-memo:hover{
-  background-color: #bebebe;
-  border-color: #bebebe;
-  color: white;
-}
-
-#plan-update #map{
-  width: 100%;
-  height: 100%;
-  position:absolute;
-  left:0;
-  top:0;
-  margin:0;
-  padding:0;
-  z-index: -999;
-
-  padding-left: 350px;
-}
-
-#plan-update .box-wrap{
-  padding: 20px;
-  background-color: white;
-  width: 350px;
-  height: 100vh;
-  overflow: scroll;
-  overflow-x: hidden;
-  scrollbar-width:none
-}
-
-#plan-update .box-wrap::-webkit-scrollbar{
-  display:none;
-} */
-
-#plan-update{
-  text-align: center;
-}
-
-#plan-update .title{
-  font-size: 20px;
-  font-weight: 500;
-}
-
-#plan-update .period{
-  color: gray;
-}
-
-#plan-update #map{
-  width: 100%;
-  height: 100%;
-  position:absolute;
-  left:0;
-  top:0;
-  margin:0;
-  padding:0;
-  z-index: -999;
-
-  padding-left: 350px;
-}
-
-#plan-update .day{
-  margin: 15px auto;
-}
-
-#plan-update .day span.title{
-  font-family: 'Sen';
-  font-size: 22px;
-  /* font-weight: 600; */
-  line-height: 1.3;
-  cursor: pointer;
-}
-
-#plan-update .btn-plan{
-  margin: 5px;
-  background-color: rgb(152, 221, 227);
-  border-color: rgb(152, 221, 227);
-  width: 100%;
-  /* color: white; */
-}
-
-#plan-update .day .btn-place{
-  margin: 5px;
-  border-color: rgb(85, 181, 190);
-  color: rgb(85, 181, 190);
-}
-
-#plan-update .day .btn-place:hover{
-  margin: 5px;
-  background-color: rgb(152, 221, 227);
-  border-color: rgb(152, 221, 227);
-  color: white;
-}
-
-#plan-update .day .btn-memo{
-  margin: 5px;
-  border-color: #888888;
-  color: #888888;
-}
-
-#plan-update .btn-memo:hover{
-  background-color: #bebebe;
-  border-color: #bebebe;
-  color: white;
-}
-
-#plan-update .box-wrap{
-  padding: 20px;
-  background-color: white;
-  width: 350px;
-  height: 100vh;
-  overflow: scroll;
-  overflow-x: hidden;
-  scrollbar-width:none
-}
-
-#plan-update .box-wrap::-webkit-scrollbar{
-  display:none;
-}

@@ -22,9 +22,10 @@ const Calendar = () => {
   // const cityName = useRef();
   // const areaCode = useRef();
   // const sigunguCode = useRef();
-  const [cityName, setCityName] = useState('');
-  const [areaCode, setAreaCode] = useState();
-  const [sigunguCode, setSigunguCode] = useState();
+  // const [cityName, setCityName] = useState('');
+  // const [areaCode, setAreaCode] = useState();
+  // const [sigunguCode, setSigunguCode] = useState();
+  const [cityInfo, setCityInfo] = useState({});
 
   let cityUrl = process.env.REACT_APP_SPRING_URL + `plan/city-code?cityNum=${cityNum}`;
 
@@ -51,10 +52,12 @@ const Calendar = () => {
       // areaCode.current = res.data.area_code;
       // sigunguCode.current = res.data.sigungu_code;
       // cityName.current = res.data.city_name;
-      setCityName(res.data.city_name);
-      setAreaCode(res.data.area_code);
-      setSigunguCode(res.data.sigungu_code);
+      // setCityName(res.data.city_name);
+      // setAreaCode(res.data.area_code);
+      // setSigunguCode(res.data.sigungu_code);
       // console.log(areaCode, sigunguCode);
+      console.log(res.data);
+      setCityInfo({...res.data, cityName: res.data.name, cityNum: res.data.num});
     })
     .catch(err => {
       console.log(err);
@@ -99,7 +102,8 @@ const Calendar = () => {
             const days = differenceInDays(state[0].endDate, state[0].startDate) + 1;
             // console.log({start, end, days, cityNum, areaCode, sigunguCode});
             // dispatch(setTripInfo(start, end, days, cityNum, cityName.current, areaCode.current, sigunguCode.current));
-            dispatch(saveTrip({startDate: start, endDate: end, days, cityNum, cityName, areaCode, sigunguCode}));
+            // dispatch(saveTrip({startDate: start, endDate: end, days, cityNum, cityName, areaCode, sigunguCode}));
+            dispatch(saveTrip({...cityInfo, startDate: start, endDate: end, days}));
 
             navigate("/plan");
           }}>일정 만들기</button>

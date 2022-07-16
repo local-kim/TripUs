@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="data.mapper.PlanMapper">
-	<select id="getCityCode" parameterType="int" resultType="Map">
-		select name as city_name, area_code, sigungu_code from city where num=#{cityNum}
+	<!-- 일정 만들기 페이지 -->
+	<select id="getCityCode" parameterType="int" resultType="city">
+		select * from city where num=#{cityNum}
 	</select>
 	<select id="getMyPlaceList" parameterType="Map" resultType="place">
 		select * from `like`, place where `like`.place_id=place.contentid and place.city_num=#{city_num} and `check`=1 and member_num=#{member_num}
@@ -29,6 +30,11 @@
 	<select id="getTripInfo" parameterType="int" resultType="citytrip">
 		select trip.num as tripNum, trip.name as tripName, member_num as memberNum, city_num as cityNum, start_date as startDate, end_date as endDate, days, city.name as cityName, area_code, sigungu_code, x, y 
 		from trip, city where city_num=city.num and trip.num=#{tripNum}
+	</select>
+	<select id="getPlaceList" parameterType="int" resultType="plan-place">
+		select * from itinerary, place 
+		where itinerary.place_id=place.contentid and trip_num=#{tripNum} 
+		order by `day`, `order`
 	</select>
 	
 <!--                                                -->

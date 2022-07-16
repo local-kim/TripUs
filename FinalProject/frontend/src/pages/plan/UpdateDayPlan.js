@@ -15,22 +15,19 @@ import ko from 'date-fns/locale/ko';
 const { kakao } = window;
 
 const UpdateDayPlan = () => {
+  const navigate = useNavigate();
+  const {tripNum, day} = useParams();
+
   // redux에서 변수 얻기
   const dispatch = useDispatch();
-  // const plan = useSelector(state => state.planner.plan);
-  const days = useSelector(state => state.planner.days);
-  const areaCode = useSelector(state => state.planner.areaCode);
-  const sigunguCode = useSelector(state => state.planner.sigunguCode);
   const statePlan = useSelector(state => state.planner.plan);
   const [plan, setPlan] = useState(statePlan);
-
-  // test
-  const startDate = useSelector(state => state.planner.startDate);
+  // console.log(plan);
+  const trip = useSelector(state => state.planner.trip);
   
-  const navigate = useNavigate();
-  const {day} = useParams();
   // const [plan, setPlan] = useState(Array.from(Array(days), () => new Array())); // [days x n] 2차원 배열
   const [dayPlan, setDayPlan] = useState(plan[day - 1]);
+  // console.log(dayPlan);
 
   const [places, setPlaces] = useState([]);
 
@@ -84,22 +81,23 @@ const UpdateDayPlan = () => {
   }, [inView]);
 
   // 추천 장소 url(arrange=P)
-  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${trip.areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
-  if(sigunguCode){  // 시군구 코드가 있는 도시이면
-    areaUrl += `&sigunguCode=${sigunguCode}`;
+  if(trip.sigunguCode){  // 시군구 코드가 있는 도시이면
+    areaUrl += `&sigunguCode=${trip.sigunguCode}`;
   }
 
   // 키워드 검색 url
-  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${trip.areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
-  if(sigunguCode){  // 시군구 코드가 있는 도시이면
-    keywordUrl += `&sigunguCode=${sigunguCode}`;
+  if(trip.sigunguCode){  // 시군구 코드가 있는 도시이면
+    keywordUrl += `&sigunguCode=${trip.sigunguCode}`;
   }
 
   useEffect(() => {
     // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
     if(keyword == ''){
+      console.log(areaUrl);
       // setAuthorizationToken(null);
       // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
       delete axios.defaults.headers.common['Authorization'];
@@ -115,6 +113,7 @@ const UpdateDayPlan = () => {
     }
     // 키워드 검색 장소
     else{
+      console.log(areaUrl);
       // console.log("keyword 검색 요청");
       // console.log(keywordUrl);
       delete axios.defaults.headers.common['Authorization'];
@@ -171,13 +170,13 @@ const UpdateDayPlan = () => {
   const prevDay = () => {
     // addPlan();
     setDayPlan(plan[Number(day) - 2]);
-    navigate(`/plan/${Number(day) - 1}`);
+    navigate(`/plan/update/${tripNum}/${Number(day) - 1}`);
   }
 
   const nextDay = () => {
     // addPlan();
     setDayPlan(plan[Number(day)]);  // dayPlan에 다음날의 일정을 저장
-    navigate(`/plan/${Number(day) + 1}`);
+    navigate(`/plan/update/${tripNum}/${Number(day) + 1}`);
   }
 
   // 선택한 장소를 dayPlan에 추가
@@ -317,7 +316,7 @@ const UpdateDayPlan = () => {
 
       <div className='list-container'>
         <div className='left'>
-          <div style={{textAlign:'center',color:'gray',fontSize:'14px'}}>{format(add(startDate, {days: day - 1}), "MM/dd (eee)", {locale: ko})}</div>
+          <div style={{textAlign:'center',color:'gray',fontSize:'14px'}}>{format(add(new Date(trip.startDate), {days: day - 1}), "MM/dd (eee)", {locale: ko})}</div>
           <div className='title-wrap'>
             {
               // day1이면 이전 날짜 버튼 안보임
@@ -326,7 +325,7 @@ const UpdateDayPlan = () => {
             <span className='title'>DAY {day}</span>
             {
               // 마지막 날이면 다음 날짜 버튼 안보임
-              day == days ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
+              day == trip.days ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
             }
           </div>
           <div className='plan-place-list'>
@@ -357,11 +356,13 @@ const UpdateDayPlan = () => {
           </div>
 
           <div style={{textAlign:'center', marginTop:'10px'}}>
-            <button type='button' className='btn btn-secondary btn-ok' onClick={() => {
+            <button type='button' className='btn btn-secondary btn-sm btn-ok' onClick={() => {
               // addPlan();
               // plan을 redux 전역 변수에 저장
+              console.log(plan);
               dispatch(savePlan(plan));
-              navigate("/plan");
+              navigate(`/plan/update/${tripNum}`);
+              // navigate(`/..`);
             }}>완료</button>
           </div>
         </div>

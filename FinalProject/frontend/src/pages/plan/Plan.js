@@ -58,7 +58,7 @@ const Plan = () => {
 
     const options = {
       // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
-      center: new kakao.maps.LatLng(37.5666805, 126.9784147), // 지도의 중심좌표
+      center: new kakao.maps.LatLng(trip.y, trip.x), // 지도의 중심좌표
       level: 9  // 지도의 확대 레벨
     };
     

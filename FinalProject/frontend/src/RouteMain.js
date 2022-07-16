@@ -42,7 +42,6 @@ const RouteMain = () => {
           <Route path="/kakao"  element={<KakaoLogin/>}/>
           <Route path="/google" element={<GoogleLogin/>}/>
 
-    
           {/* Planning */}
           <Route path="/plan/calendar/:cityNum" element={<Calendar/>} />
           <Route path="/plan" element={<Plan/>} />
@@ -50,7 +49,7 @@ const RouteMain = () => {
 
           {/* Update Plan */}
           <Route path="/plan/update/:tripNum" element={<UpdatePlan/>} />
-          <Route path="/plan/update/:tripNum/:num" element={<UpdateDayPlan/>} />
+          <Route path="/plan/update/:tripNum/:day" element={<UpdateDayPlan/>} />
           
           {/* PlaceInfo */}
           <Route path="/place/placedetail" element={<PlaceInfo/>}/>
