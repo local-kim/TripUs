@@ -68,9 +68,7 @@ const DayPlan = () => {
             console.dir(res.data.response.body.items.item);
             setPlaces([...places, ...res.data.response.body.items.item]);
             setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
-          }).catch((err) => {
-            console.log(err.data);
-          });
+          }).catch((err) => console.log(err.data));
         }
         // 키워드 검색 장소
         else{
@@ -83,9 +81,7 @@ const DayPlan = () => {
             console.dir(res.data.response.body.items.item);
             setPlaces([...places, ...res.data.response.body.items.item]);
             setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
-          }).catch((err) => {
-            console.log(err.data);
-          });
+          }).catch((err) => console.log(err.data));
         }
       }
   }, [inView]);
@@ -93,15 +89,15 @@ const DayPlan = () => {
   // 추천 장소 url(arrange=P)
   let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${trip.area_code}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
-  if(trip.sigunguCode){  // 시군구 코드가 있는 도시이면
-    areaUrl += `&sigunguCode=${trip.sigunguCode}`;
+  if(trip.sigungu_code){  // 시군구 코드가 있는 도시이면
+    areaUrl += `&sigunguCode=${trip.sigungu_code}`;
   }
 
   // 키워드 검색 url
   let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${trip.area_code}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
-  if(trip.sigunguCode){  // 시군구 코드가 있는 도시이면
-    keywordUrl += `&sigunguCode=${trip.sigunguCode}`;
+  if(trip.sigungu_code){  // 시군구 코드가 있는 도시이면
+    keywordUrl += `&sigunguCode=${trip.sigungu_code}`;
   }
 
   useEffect(() => {
@@ -117,9 +113,7 @@ const DayPlan = () => {
         setPlaces(res.data.response.body.items.item);
         setCategoryPlace(res.data.response.body.items.item);
         kakaoMapScript(res.data.response.body.items.item[0].mapx, res.data.response.body.items.item[0].mapy);
-      }).catch((err) => {
-        console.log(err.data);
-      });
+      }).catch((err) => console.log(err.data));
     }
     // 키워드 검색 장소
     else{
@@ -132,9 +126,7 @@ const DayPlan = () => {
         console.dir(res.data.response.body.items.item);
         setPlaces(res.data.response.body.items.item);
         setCategoryPlace(res.data.response.body.items.item);
-      }).catch((err) => {
-        console.log(err.data);
-      });
+      }).catch((err) => console.log(err.data));
     }
   }, [keyword]);
 
@@ -145,9 +137,7 @@ const DayPlan = () => {
   //   .then((res) => {
   //     console.dir(res.data.response.body.items.item);
   //     setPlaces(res.data.response.body.items.item);
-  //   }).catch((err) => {
-  //     console.log(err.data);
-  //   });
+  //   }).catch((err) => console.log(err.data));
   // }, []);
 
   // 카테고리 필터링
@@ -237,7 +227,7 @@ const DayPlan = () => {
     const container = document.getElementById('map'); // 지도를 표시할 div
 
     const options = {
-      // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
+      // 도시마다 중심 좌표 다르게(DB에 넣어놓기)
       center: new kakao.maps.LatLng(trip.y, trip.x), // 지도의 중심좌표
       level: 8  // 지도의 확대 레벨
     };

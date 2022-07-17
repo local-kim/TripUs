@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -103,6 +104,36 @@ public class PlanController {
 	@GetMapping("/place-list")
 	public List<PlanPlaceDto> getPlaceList(@RequestParam int tripNum){
 		return planService.getPlaceList(tripNum);
+	}
+	
+	@PostMapping("/update/{tripNum}/{cityNum}")
+	public void updatePlan(@PathVariable int tripNum, @PathVariable int cityNum, @RequestBody List<List<PlaceDto>> plan) {
+  		// tripNum에 대하여 존재하던 itinerary를 모두 삭제
+		planService.deleteAllItinerary(tripNum);
+		
+		for(int i = 0; i < plan.size(); i++) {
+			for(int j = 0; j < plan.get(i).size(); j++) {
+				PlaceDto place = plan.get(i).get(j);
+				
+				// place가 테이블에 없으면 insert
+				// place_id,,,
+				place.setCity_num(cityNum);
+				
+				if(planService.checkPlace(place.getContentid()) == 0) {
+					planService.insertPlace(place);
+				}
+				
+				// itinerary(여행 일정 순서)를 insert
+				// trip_num, day, order, place_id
+				ItineraryDto itinerary = new ItineraryDto();
+				itinerary.setTrip_num(tripNum);
+				itinerary.setDay(i + 1);
+				itinerary.setOrder(j + 1);
+				itinerary.setPlace_id(place.getContentid());
+				
+				planService.insertItinerary(itinerary);
+			}
+		}
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////

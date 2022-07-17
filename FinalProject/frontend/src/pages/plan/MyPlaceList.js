@@ -17,9 +17,7 @@ const MyPlaceList = ({addPlace, setMapX, setMapY}) => {
     .then(res => {
       setPlaces(res.data);
     })
-    .catch(err => {
-      console.log(err);
-    })
+    .catch(err => console.log(err));
   }, []);
 
   return (

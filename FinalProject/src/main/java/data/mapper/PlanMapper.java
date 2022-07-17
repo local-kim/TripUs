@@ -28,6 +28,7 @@ public interface PlanMapper {
 	// 일정 수정 페이지
 	public CityTripDto getTripInfo(int tripNum);
 	public List<PlanPlaceDto> getPlaceList(int tripNum);
+	public void deleteAllItinerary(int tripNum);
 	
 	public List<PlanDto> getNavNum(int num);
 	public List<PlanDto> getPlanDatas(int num);

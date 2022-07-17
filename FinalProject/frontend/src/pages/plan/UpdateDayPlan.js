@@ -58,9 +58,7 @@ const UpdateDayPlan = () => {
             console.dir(res.data.response.body.items.item);
             setPlaces([...places, ...res.data.response.body.items.item]);
             setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
-          }).catch((err) => {
-            console.log(err.data);
-          });
+          }).catch((err) => console.log(err.data));
         }
         // 키워드 검색 장소
         else{
@@ -73,9 +71,7 @@ const UpdateDayPlan = () => {
             console.dir(res.data.response.body.items.item);
             setPlaces([...places, ...res.data.response.body.items.item]);
             setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
-          }).catch((err) => {
-            console.log(err.data);
-          });
+          }).catch((err) => console.log(err.data));
         }
       }
   }, [inView]);
@@ -107,9 +103,7 @@ const UpdateDayPlan = () => {
         setPlaces(res.data.response.body.items.item);
         setCategoryPlace(res.data.response.body.items.item);
         kakaoMapScript(res.data.response.body.items.item[0].mapx, res.data.response.body.items.item[0].mapy);
-      }).catch((err) => {
-        console.log(err.data);
-      });
+      }).catch((err) => console.log(err.data));
     }
     // 키워드 검색 장소
     else{
@@ -122,23 +116,9 @@ const UpdateDayPlan = () => {
         console.dir(res.data.response.body.items.item);
         setPlaces(res.data.response.body.items.item);
         setCategoryPlace(res.data.response.body.items.item);
-      }).catch((err) => {
-        console.log(err.data);
-      });
+      }).catch((err) => console.log(err.data));
     }
   }, [keyword]);
-
-  // 처음 렌더링 시 api에서 목록 받아옴
-  // useEffect(() => {
-  //   // console.log(areaUrl);
-  //   axios.get(areaUrl)
-  //   .then((res) => {
-  //     console.dir(res.data.response.body.items.item);
-  //     setPlaces(res.data.response.body.items.item);
-  //   }).catch((err) => {
-  //     console.log(err.data);
-  //   });
-  // }, []);
 
   // 카테고리 필터링
   useEffect(() => {

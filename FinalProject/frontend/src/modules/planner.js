@@ -3,6 +3,7 @@
 // 이렇게 하면 다른 모듈과 액션 이름이 중복되는 것을 방지 할 수 있습니다.
 const SAVE_TRIP = 'plan/SAVE_TRIP';
 const SAVE_PLAN = 'plan/SAVE_PLAN';
+const RESET_PLAN = 'plan/RESET_PLAN';
 
 // Action Creators
 export const saveTrip = (tripInfo) => (
@@ -18,6 +19,12 @@ export const savePlan = (plan) => (
 		plan: plan
 	}
 );
+
+export const resetPlan = () => (
+	{
+		type: RESET_PLAN
+	}
+)
 
 // 초기 상태, 객체가 아니어도 된다.
 const initialState = {
@@ -39,7 +46,11 @@ export default function reducer(state = initialState, action){
 			return {
 				...state,
 				trip: action.trip,
-				plan: Array.from(Array(action.trip.days), () => new Array()),
+			}
+		case RESET_PLAN:
+			return {
+				trip: {},
+				plan: []
 			}
 		default:
 			return state; //반드시 default는 state return

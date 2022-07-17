@@ -36,6 +36,9 @@
 		where itinerary.place_id=place.contentid and trip_num=#{tripNum} 
 		order by `day`, `order`
 	</select>
+	<delete id="deleteAllItinerary" parameterType="int">
+		delete from itinerary where trip_num=#{tripNum}
+	</delete>
 	
 <!--                                                -->
 

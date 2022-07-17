@@ -1,9 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 #city-list{
   text-align: center;
-  padding-top: 100px;
+  /* padding-top: 100px; */
+  margin: 100px;
 }
 
 #city-list .title{
@@ -13,29 +14,33 @@
 }
 
 #city-list .city-item-wrap{
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: wrap; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
+  justify-content: center;
+  row-gap: 30px;
 }
 
 #city-list .city-item{
-  margin: 10px 15px;
-  text-align: center;
+  /* margin: 10px 15px;
+  text-align: center; */
 }
 
 #city-list .city-item .city-image{
-  width: 200px;
-  height: 200px;
-  background-size: cover;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: rgba(255, 255, 255, 0.95);
-  font-size: 28px;
-  border-radius: 100px;
+  width: 220px;
+  height: 220px;
+  border-radius: 100%;
   margin-bottom: 10px;
-  font-family: 'Lexend';
-  font-weight: 600;
+  background-size: cover;
+  font-family: 'Montserrat';
+  font-weight: 700;
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 #city-list .city-item .city-name{

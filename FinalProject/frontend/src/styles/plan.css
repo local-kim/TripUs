@@ -47,20 +47,35 @@
 }
 
 #plan-calendar .rdrDateDisplayItem{
-  /* border: 1px solid gray; */
+  border-width: 2px;
   box-shadow: none;
 }
 
 #plan-calendar .rdrDateDisplayItem input{
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 500;
 }
 
+/* 오늘 날짜 밑줄 색 */
+/* range 밖 */
+.rdrDayToday .rdrDayNumber span:after{
+  background: #75b4bd;
+}
+
+/* range 안 */
+.rdrDayToday:not(.rdrDayPassive) .rdrInRange ~ .rdrDayNumber span:after,
+.rdrDayToday:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span:after,
+.rdrDayToday:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span:after,
+.rdrDayToday:not(.rdrDayPassive) .rdrSelected ~ .rdrDayNumber span:after {
+  background: #fff;
+}
+
 /* 캘린더에서 선택된 날짜 */
-.rdrSelected + .rdrDayNumber span,
-.rdrInRange + .rdrDayNumber span,
-.rdrStartEdge + .rdrDayNumber span,
-.rdrEndEdge + .rdrDayNumber span{
+.rdrSelected ~ .rdrDayNumber span,
+.rdrInRange ~ .rdrDayNumber span,
+.rdrStartEdge ~ .rdrDayNumber span,
+.rdrEndEdge ~ .rdrDayNumber span,
+.rdrInRange ~ .rdrDayNumber span{
   font-weight: 600;
 }
 
@@ -130,6 +145,7 @@
   background-color: rgb(152, 221, 227);
   border-color: rgb(152, 221, 227);
   width: 100%;
+  margin: 0;
   /* color: white; */
 }
 
@@ -314,7 +330,7 @@
 
 #day-plan .right .my-place-list{
   /* max-height: 50%; */
-  height: 31vh;
+  /* height: 31vh; */
 }
 
 #day-plan .right .my-place-list .place-list{

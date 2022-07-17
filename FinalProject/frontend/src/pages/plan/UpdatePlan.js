@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { NumPlaceItem } from '.';
-import { format, addDays } from 'date-fns';
-import moment from 'moment';
+import { format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
-import { saveTrip, savePlan } from '../../modules/planner';
+import { saveTrip, savePlan, resetPlan } from '../../modules/planner';
 
 const { kakao } = window;
 
@@ -17,12 +16,12 @@ const UpdatePlan = () => {
   const {tripNum} = useParams();
 
   const [tripInfo, setTripInfo] = useState({
+    ...useSelector(state => state.planner.trip),
     startDate: format(new Date(), "yyyy-MM-dd"),
     endDate: format(new Date(), "yyyy-MM-dd")
   });
 
-  const [plan, setPlan] = useState([]);
-  // const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
+  const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
   // console.log(plan);
 
   const [focus, setFocus] = useState(0);
@@ -30,79 +29,41 @@ const UpdatePlan = () => {
   let tripUrl = `${process.env.REACT_APP_SPRING_URL}plan/trip-info?tripNum=`;
   let planUrl = `${process.env.REACT_APP_SPRING_URL}plan/place-list?tripNum=`;
 
-  // multi axios request
+  // redux에 plan이 없을 때만 axios로 DB에서 일정 가져오기
+  // plan이 있으면 그거 사용하기
   useEffect(() => {
-    axios.all([axios.get(tripUrl + tripNum), axios.get(planUrl + tripNum)])
-    .then(
-      axios.spread((res1, res2) => {
-        // trip info 처리
-        setTripInfo(res1.data);
-        dispatch(saveTrip({...res1.data, areaCode: res1.data.area_code, sigunguCode: res1.data.sigungu_code}));
+    if(plan.length === 0){
+      axios.all([axios.get(tripUrl + tripNum), axios.get(planUrl + tripNum)])
+      .then(
+        axios.spread((res1, res2) => {
+          // trip info 처리
+          setTripInfo(res1.data);
+          dispatch(saveTrip({...res1.data, areaCode: res1.data.area_code, sigunguCode: res1.data.sigungu_code}));
 
-        // plan 처리
-        for(let i = 0; i < res1.data.days; i++){
-          plan.push(res2.data.filter(place => place.day == i + 1));
-          // console.log(`day ${i + 1}`, plan[i]);
-        }
+          // plan 처리
+          for(let i = 0; i < res1.data.days; i++){
+            plan.push(res2.data.filter(place => place.day == i + 1));
+            // console.log(`day ${i + 1}`, plan[i]);
+          }
+        })
+      )
+      .then(()=>{
+        dispatch(savePlan(plan));
       })
-    )
-    .then(()=>{
-      dispatch(savePlan(plan));
-    })
-    .catch(err => console.log(err));
+      .catch(err => console.log(err));
+    }
   }, []);
 
-  // const getTripInfo = () => {
-  //   console.log("1 : get trip");
-  //   axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
-  //   axios.get(tripUrl + tripNum)
-  //   .then(res => {
-  //     console.log(res.data);
-  //     setTripInfo(res.data);
-  //     // setPlan(Array.from(Array(res.data.days), () => new Array()));
-  //     dispatch(saveTrip({...res.data, areaCode: res.data.area_code, sigunguCode: res.data.sigungu_code}));
-  //     // dispatch(setPlan(Array.from(Array(res.data.days), () => new Array())));
-  //     // console.log(plan);
-  //   })
-  //   .catch(err => {
-  //     console.log(err);
-  //   });
-  // };
-
-
-  // const getPlan = () => {
-  //   console.log("2 : get plan");
-  //   axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
-  //   axios.get(planUrl + tripNum)
-  //   .then(res => {
-  //     console.log(res.data);
-
-  //     for(let i = 0; i < tripInfo.days; i++){
-  //       // setPlan([
-  //       //   ...plan,
-  //       //   res.data.filter(place => place.day == i + 1)
-  //       // ])
-  //       plan.push(res.data.filter(place => place.day == i + 1));
-  //       console.log(`day ${i + 1}`, plan);
-  //     }
-      
-  //     // console.log(plan);
-  //     dispatch(savePlan(plan));
-  //     // dispatch(saveTrip({...res.data, areaCode: res.data.area_code, sigunguCode: res.data.sigungu_code}));
-  //   })
-  //   .catch(err => {
-  //     console.log(err);
-  //   });
-  // };
-
-  // // 도시 정보, 일정 가저오기
-  // useEffect(() => {
-  //   getTripInfo();
-  //   getPlan();
-  // }, []);
+  let updateUrl = `${process.env.REACT_APP_SPRING_URL}plan/update/${tripNum}/${tripInfo.cityNum}`;
 
   const updatePlan = () => {
+    // DB 업데이트
+    axios.post(updateUrl, plan)
+    .catch(err => console.log(err));
 
+    // 수정을 완료하면 redux의 plan을 초기화시키고 일정 보기 페이지로 이동
+    dispatch(resetPlan());
+    navigate(`/plan/detail/${tripNum}`);
   }
 
   // kakao map
@@ -190,19 +151,13 @@ const UpdatePlan = () => {
           tripInfo.days == 1 ? <div className='period'>{tripInfo.startDate} ({tripInfo.days}일)</div> : <div className='period'>{tripInfo.startDate} ~ {tripInfo.endDate} ({tripInfo.days}일)</div>
         }
 
-        {/* {
-          days == 1 ? <div className='period'>{new Date(tripInfo.startDate).toDateString} ({tripInfo.days}일)</div> : <div className='period'>{new Date(tripInfo.startDate).toDateString} ~ {new Date(tripInfo.endDate).toDateString} ({tripInfo.days}일)</div>
-        } */}
-
         <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={updatePlan}>일정 저장하기</button>
         {
           // days 만큼 반복문 돌리기
           tripInfo && [...Array(tripInfo.days)].map((day, index) => (
             <div key={index + 1} className='day'>
-              <span className='title' onClick={() => {
-                setFocus(index);
-              }}>Day {index + 1}</span>
-              {/* <span>{format(addDays(new Date(tripInfo.startDate), index), "yyyy-MM-dd")}</span> */}
+              <span className='title' onClick={() => setFocus(index)}>Day {index + 1}</span>
+
               <div className='day-place-list'>
                 {
                   plan[index] && plan[index].map((place, i) => (

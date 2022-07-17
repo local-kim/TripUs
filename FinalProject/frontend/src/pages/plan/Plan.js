@@ -1,36 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { NumPlaceItem, PlaceItem } from '.';
 import '../../styles/plan.css';
 import { format } from 'date-fns';
+import { resetPlan } from '../../modules/planner';
 
 const { kakao } = window;
 
 const Plan = () => {
   // redux에서 변수 얻기
-  // const dispatch = useDispatch();
-  // const days = useSelector(state => state.planner.days);
-  // const startDate = useSelector(state => state.planner.startDate);
-  // const endDate = useSelector(state => state.planner.endDate);
-  // const cityNum = useSelector(state => state.planner.cityNum);
-  // const cityName = useSelector(state => state.planner.cityName);
-  // const areaCode = useSelector(state => state.planner.areaCode);
-  // const sigunguCode = useSelector(state => state.planner.sigunguCode);
+  const dispatch = useDispatch();
   const trip = useSelector(state => state.planner.trip);
   const plan = useSelector(state => state.planner.plan);
-
-  // console.log(areaCode, sigunguCode);
 
   const navigate = useNavigate();
 
   let insertUrl = process.env.REACT_APP_SPRING_URL + `plan/insert`;
 
   const insertPlan = () => {
-    // console.log(plan);
-    // console.log({cityNum, startDate, endDate, days});
-    
     axios.post(insertUrl, {
       plan: plan,
       trip: {
@@ -43,11 +32,10 @@ const Plan = () => {
     .then(res => {
       // console.log(res.data);  // trip_num
       // 해당 일정 상세 페이지로 이동(trip_num 이용)
+      dispatch(resetPlan());
       navigate(`/plan/detail/${res.data}`);
     })
-    .catch(err => {
-      console.log(err);
-    });
+    .catch(err => console.log(err));
   }
 
   const [focus, setFocus] = useState(0);
@@ -57,7 +45,7 @@ const Plan = () => {
     const container = document.getElementById('map'); // 지도를 표시할 div  
 
     const options = {
-      // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
+      // 도시마다 중심 좌표 다르게
       center: new kakao.maps.LatLng(trip.y, trip.x), // 지도의 중심좌표
       level: 9  // 지도의 확대 레벨
     };
@@ -137,7 +125,6 @@ const Plan = () => {
         <div className='title'>{trip.cityName} 여행</div>
         {
           trip.days == 1 ? <div className='period'>{format(trip.startDate, "yyyy-MM-dd")} ({trip.days}일)</div> : <div className='period'>{format(trip.startDate, "yyyy-MM-dd")} ~ {format(trip.endDate, "yyyy-MM-dd")} ({trip.days}일)</div>
-          // trip.days == 1 ? <div className='period'>{format(new Date(trip.startDate), "yyyy-MM-dd")} ({trip.days}일)</div> : <div className='period'>{format(new Date(trip.startDate), "yyyy-MM-dd")} ~ {format(new Date(trip.endDate), "yyyy-MM-dd")} ({trip.days}일)</div>
         }
 
         <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={insertPlan}>일정 생성하기</button>

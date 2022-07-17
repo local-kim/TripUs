@@ -69,6 +69,10 @@ public class PlanService implements PlanServiceInter {
 		return planMapper.getPlaceList(tripNum);
 	}
 	
+	public void deleteAllItinerary(int tripNum) {
+		planMapper.deleteAllItinerary(tripNum);
+	}
+	
 	//////////////////////////////////////////
 	public List<PlanDto> getNavNum(int num) {
 		return planMapper.getNavNum(num);
