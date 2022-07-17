@@ -8,7 +8,6 @@ import { useInView } from 'react-intersection-observer';
 import { PlaceItem, MyPlaceList, NumPlaceItem } from ".";
 import '../../styles/plan.css';
 import setAuthorizationToken from '../../utils/setAuthorizationToken';
-
 import { addDays, format, add } from 'date-fns'
 import ko from 'date-fns/locale/ko';
 
@@ -20,14 +19,11 @@ const UpdateDayPlan = () => {
 
   // redux에서 변수 얻기
   const dispatch = useDispatch();
-  const statePlan = useSelector(state => state.planner.plan);
-  const [plan, setPlan] = useState(statePlan);
-  // console.log(plan);
+  const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
   const trip = useSelector(state => state.planner.trip);
   
   // const [plan, setPlan] = useState(Array.from(Array(days), () => new Array())); // [days x n] 2차원 배열
   const [dayPlan, setDayPlan] = useState(plan[day - 1]);
-  // console.log(dayPlan);
 
   const [places, setPlaces] = useState([]);
 
@@ -207,8 +203,8 @@ const UpdateDayPlan = () => {
     const container = document.getElementById('map'); // 지도를 표시할 div
 
     const options = {
-      // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
-      center: new kakao.maps.LatLng(35.1795543, 129.0756416), // 지도의 중심좌표
+      // 도시마다 중심 좌표 다르게
+      center: new kakao.maps.LatLng(trip.y, trip.x), // 지도의 중심좌표
       level: 8  // 지도의 확대 레벨
     };
     

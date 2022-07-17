@@ -17,22 +17,8 @@ const { kakao } = window;
 const DayPlan = () => {
   // redux에서 변수 얻기
   const dispatch = useDispatch();
-  // const plan = useSelector(state => state.planner.plan);
-  // const days = useSelector(state => state.planner.days);
-  // const areaCode = useSelector(state => state.planner.areaCode);
-  // const sigunguCode = useSelector(state => state.planner.sigunguCode);
-  // const statePlan = useSelector(state => state.planner.plan);
-  // const [plan, setPlan] = useState(statePlan);
-
-  // update
-  const statePlan = useSelector(state => state.planner.plan);
-  const [plan, setPlan] = useState(statePlan);
+  const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
   const trip = useSelector(state => state.planner.trip);
-  // const stateTrip = useSelector(state => state.planner.trip);
-  // const [trip, setTrip] = useState(stateTrip);
-
-  // test
-  // const startDate = useSelector(state => state.planner.startDate);
   
   const navigate = useNavigate();
   const {day} = useParams();
@@ -129,16 +115,6 @@ const DayPlan = () => {
       }).catch((err) => console.log(err.data));
     }
   }, [keyword]);
-
-  // 처음 렌더링 시 api에서 목록 받아옴
-  // useEffect(() => {
-  //   // console.log(areaUrl);
-  //   axios.get(areaUrl)
-  //   .then((res) => {
-  //     console.dir(res.data.response.body.items.item);
-  //     setPlaces(res.data.response.body.items.item);
-  //   }).catch((err) => console.log(err.data));
-  // }, []);
 
   // 카테고리 필터링
   useEffect(() => {

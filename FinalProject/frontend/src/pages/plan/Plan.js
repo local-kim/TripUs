@@ -22,15 +22,9 @@ const Plan = () => {
   const insertPlan = () => {
     axios.post(insertUrl, {
       plan: plan,
-      trip: {
-        cityNum: trip.cityNum,
-        startDate: trip.startDate,
-        endDate: trip.endDate,
-        days: trip.days
-      }
+      trip: trip
     })
     .then(res => {
-      // console.log(res.data);  // trip_num
       // 해당 일정 상세 페이지로 이동(trip_num 이용)
       dispatch(resetPlan());
       navigate(`/plan/detail/${res.data}`);

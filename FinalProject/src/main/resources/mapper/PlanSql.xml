@@ -9,8 +9,8 @@
 		select * from `like`, place where `like`.place_id=place.contentid and place.city_num=#{city_num} and `check`=1 and member_num=#{member_num}
 	</select>
 	<insert id="insertTrip" parameterType="trip">
-		insert into trip (member_num, city_num, start_date, end_date, days) 
-		values (#{memberNum}, #{cityNum}, #{startDate}, #{endDate}, #{days}) 
+		insert into trip (member_num, city_num, start_date, end_date, days, name) 
+		values (#{memberNum}, #{cityNum}, #{startDate}, #{endDate}, #{days}, #{name}) 
 		<selectKey resultType="int" keyProperty="num" order="AFTER">
     	select max(num) from trip
     </selectKey>

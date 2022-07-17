@@ -63,6 +63,7 @@ public class PlanController {
 		// trip(여행 전체 정보)를 insert
 		// member_num, city_num, start_date, end_date, days
 		trip.setMemberNum(3);	// 임시값
+		trip.setName(trip.getCityName() + " 여행");
 		
 		// 방금 인서트한 trip_num을 받아와서 리턴
 		int tripNum = planService.insertTrip(trip);
