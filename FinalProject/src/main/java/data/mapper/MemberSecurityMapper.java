@@ -23,4 +23,9 @@ public interface MemberSecurityMapper {
     
     // 회원가입 시 권한 부여
     void saveAuthority(Map<String, String> map);
+    
+    // 비밀번호 찾기, 변경
+    int checkId(String id);
+	int checkEmail(String email);
+	void changePassword(Map<String, String> map);
 }
