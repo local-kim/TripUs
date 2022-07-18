@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect,useRef,useState } from 'react';
-import { useNavigate,useLocation, useParams} from 'react-router-dom';
+import { useNavigate,useLocation, useParams, Link} from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -11,7 +11,7 @@ import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Ayong from '../../assets/images/IMG_1503.JPG';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal, Pagination } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 
@@ -73,7 +73,7 @@ const PlaceInfo=()=>{
     };
 
     //지도api & 관광지 api 
-    const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502]
+    const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
     //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
     const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; 일웅님 인증키
@@ -97,12 +97,13 @@ const PlaceInfo=()=>{
     const reviewstarsRef = useRef('');
 
      const [refreshReview,setRefreshReview]=useState();
-     const [avgStars,setAvgStars]=useState();
-     const [sumLikes,setSumLikes]=useState();
+     const [avgStars,setAvgStars]=useState(0);
+     const [sumLikes,setSumLikes]=useState(0);
      const [place_id,setPlace_Id]=useState('');
-     const [detailData,setDetailData]=useState('');
+     const [detailData,setDetailData]=useState([0]);
+     const [detailFileData,setDetailFileData]=useState('');
      const [detailData2,setDetailData2]=useState('');
-     const [editDetailData,setEditDetailData]=useState('');
+     const [editDetailData,setEditDetailData]=useState([0]);
      //setPlace_Id(contentId);
      const [member_num,setMember_Num]=useState('');
      const [stars,setStars]=useState();
@@ -112,45 +113,57 @@ const PlaceInfo=()=>{
      const [modalfilename,setModalFileName]=useState();
     // const [sta,setContent]=useState('');
     const [reviewData,setReviewData]=useState([]); //data 받아오기
-    
+    //현재 페이지 번호
+    const {currentPage}=useParams();
+    const [multijson,setMultiJson]=useState([]);
+
     //Spring url선언
-    let pagelistUrl=process.env.REACT_APP_SPRING_URL+"review/allreview?place_id="+contentId;
+    let pagelistUrl=process.env.REACT_APP_SPRING_URL+`review/allreview?place_id=${contentId}&currentPag=${currentPage}`;
+    //let paginationlistUrl=process.env.REACT_APP_SPRING_URL+`review/pagelist?currentPage=${currentPage}&place_id=${contentId}`;
     let placeStarsAvgUrl=process.env.REACT_APP_SPRING_URL+"review/avgstars?place_id="+contentId;
     let placeLikesSumUrl=process.env.REACT_APP_SPRING_URL+"review/sumlikes?place_id="+contentId;
     let insertUrl=process.env.REACT_APP_SPRING_URL+"review/insert";
     let deleteUrl=process.env.REACT_APP_SPRING_URL+"review/delete?num=";
+    let onedeleteUrl=process.env.REACT_APP_SPRING_URL+"review/onedelete?review_photo_num=";
     let detailUrl=process.env.REACT_APP_SPRING_URL+"review/detail?num=";
     let updateUrl=process.env.REACT_APP_SPRING_URL+"review/update";
     let likeUrl=process.env.REACT_APP_SPRING_URL+"review/like?place_id="+contentId;
 
     let uploadUrl=process.env.REACT_APP_SPRING_URL+"review/upload";
     let photoUrl=process.env.REACT_APP_SPRING_URL+"review_photo/";
+    
 
+    const [multiUploadFile,setMultiUploadFile]=useState([]);
      //file change 시 호출 이벤트
      const uploadImage=(e)=>{
-      const uploadFile=e.target.files[0];
+      //const uploadFile=e.target.files[0];
+      const uploadFile=e.target.files;
       const imageFile = new FormData();
-      imageFile.append("uploadFile",uploadFile);// spring의 @RequestParam으로 들어감
-      //axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
-      axios({
-          method: 'post',
+      //imageFile.append("uploadFile",uploadFile);// spring의 @RequestParam으로 들어감
+      for(let i =0; i< uploadFile.length;i++){
+         imageFile.append("imagefile",uploadFile[i]);
+          console.log("imageFile[]:",uploadFile[i]);
+        }
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
+        axios({
+          method: 'POST',
           url: uploadUrl,
           data: imageFile,
           headers: {'Content-Type': 'multipart/form-data'}
         }).then(res => {  // json 형식의 response를 받음
-          setFileName(res.data); // 백엔드에서 보낸 변경된 이미지명을 photo 변수에 넣는다
-        }).catch(err => {
-          alert("photourl:",err);
-        });
+          console.log("axiosmultiphoto",res.data);
+           setFileName(res.data); // 백엔드에서 보낸 변경된 이미지명을 photo 변수에 넣는다
+        }).catch(err=>{
+            console.log("err",err);
+        }) 
       }
-
-
+         
       //updatefile change 시 호출 이벤트
       const modaluploadImage=(e)=>{
         const uploadFile=e.target.files[0];
         const imageFile = new FormData();
         imageFile.append("uploadFile",uploadFile);// spring의 @RequestParam으로 들어감
-        //axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
         axios({
             method: 'post',
             url: uploadUrl,
@@ -165,27 +178,44 @@ const PlaceInfo=()=>{
 
     //ReviewList 호출
     const pageList=()=>{
-
+      axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
         axios.get(pagelistUrl).then(res=>{
-        // if(res.data.length===0){
+        if(res.data.length===0){
             // setReviewData("후기가 없습니다 작성해주시길바랍니다.");
-            // alert("x");
-        // }else{
+            //alert("x");
+        }else{
             setReviewData(res.data);
-
-          // }
-        // console.log(res.data);
+          }
+        console.log(res.data);
         })
         .catch(err => {
             alert(err);
         }) 
     }
 
+    //PaginationList 호출
+    // const paginationList=()=>{
+    //   axios.get(paginationlistUrl).then(res=>{
+    //      if(res.data.length===0){
+    //         setReviewData("후기가 없습니다 작성해주시길바랍니다.");
+    //         alert("x");
+    //     }else{
+    //       setReviewData(res.data);
+    //       }
+    //     console.log(res.data);
+    //     })
+    //     .catch(err => {
+    //         alert(err);
+    //     }) 
+        
         //Review insert
         const writeReview=(e)=>{
           //e.preventDefault();
-          //axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
+          axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.post(insertUrl,{place_id:contentId,member_num,stars,content}).then(res=>{ 
+            if(loginNum!==member_num){
+              alert("먼저 로그인해주세요");
+            }
               alert("성공");
               pageList();
               setStarsValue("");
@@ -198,38 +228,57 @@ const PlaceInfo=()=>{
 
     //ReviewAvgStars 호출
     const AvgStars=()=>{
+      axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
       axios.get(placeStarsAvgUrl).then(res=>{
+        if(res.data===0){
+          alert(res.data);
+        }else{
         setAvgStars(res.data);
-      }).catch(err => {
-        alert("별0",err);
-    })
+      }
+      })
     }
 
     //getSumLikes 호출
     const GetSumLikes=()=>{
+      axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
       axios.get(placeLikesSumUrl).then(res=>{
+        if(res.data.length===0){
+          setSumLikes(0);
+        }else{
         setSumLikes(res.data);
         //console.log("likes:",res.data);
-      }).catch(err => {
-        alert(err);
+      }
       })
-
     }
 
       //mylike select 호출
       const myLike=()=>{
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
         axios.get(likeUrl).then(res=>{
+        //   if(res.data==null){
+        //     setLike(0);
+        // }else{
           setLike(res.data);
           console.log("mylike:",res.data);
+       // }
         }).catch(err => {
-          alert(err);
+          //alert(err);
         })
       }
+        //사진 하나 삭제
+        const onOneDelete=(review_photo_num)=>{
+          axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
+          axios.delete(onedeleteUrl+review_photo_num).then(res=>{
+            console.log("onOneDelete:",res.data);
+          }).catch(err=>{
+            alert(err);
+          })
+        }
 
         //삭제시 호출할 함수
         const onDelete=(num)=>{
           if(window.confirm("정말 삭제하시겠습니까?")){
-          
+            axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.delete(deleteUrl+num).then(res=>{
             alert("삭제되었습니다.");
             if(open===true){
@@ -253,30 +302,33 @@ const PlaceInfo=()=>{
 
          //상세보기 호출할 함수
          const onDetail=(num)=>{
+          axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.get(detailUrl+num).then(res=>{
                 if(res.file_name ===null){
-                setDetailData(res.data);
+                setDetailData(res.data.dto);
                 console.log("notfile_name:",res.data);  
               }
               else{
-              setDetailData(res.data);
-              console.log("detail->",res.data);
+              setDetailData(res.data.dto);
+              setDetailFileData(res.data.fname);
+              console.log("detail->",res.data.dto);
+              console.log("detailfile",res.data.fname);
             }
               setOpen(true);
-             
           })
          }
 
-         const [updateStarsValue, setUpdateStarsValue] = React.useState('0');
 
          //수정상세보기 호출함수
          const onEditReviewDetail=(num)=>{
-      
+          axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.get(detailUrl+num).then(res=>{
-            setEditDetailData(res.data);
-            setUpdateStarsValue(res.data.stars);
-            console.log("editdetail:",res.data); //호출
-            console.log("editdetailnum형태:",res.data.num);
+            setEditDetailData(res.data.dto);
+            setDetailFileData(res.data.fname);
+            console.log(res.data.dto[0]);
+            console.log(res.data.fname);
+            // console.log("editdetail:",res.data); //호출
+            // console.log("editdetailnum형태:",res.data.num);
             //이름 , num
             setUpdateModalOpen(true);
            
@@ -285,7 +337,7 @@ const PlaceInfo=()=>{
 
          //수정하는 함수 이벤트
          const onUpdate=(num)=>{
-          
+          axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.post(updateUrl,{num, stars, content}).then(res=>{
             console.log("update:",res.data);
             setDetailData2(res.data);
@@ -299,13 +351,14 @@ const PlaceInfo=()=>{
 
     useEffect(() => {
        kakaomapscript();
-      myLike();
+      //uploadImage();
     });
 
     useEffect(()=>{
      pageList();
      AvgStars();
      GetSumLikes();
+     myLike();
     },[]);
 
     //modal
@@ -321,7 +374,7 @@ const PlaceInfo=()=>{
     const kakaomapscript = () => {
         
         const container = document.getElementById('place_map');
-
+        delete axios.defaults.headers.common['Authorization'];
         axios.get(apiUrl)
         .then((res) => {
         const apidata=res.data.response.body.items.item;
@@ -376,6 +429,7 @@ const PlaceInfo=()=>{
         });
     };
 
+    delete axios.defaults.headers.common['Authorization'];
     axios.get(apiUrl2).then((res) => {
 
         //console.log("apiUrl2",res.data.response.body.items.item); 대/중/소분류 axios
@@ -410,7 +464,7 @@ const PlaceInfo=()=>{
                  <div style={{width:'700px',height:'500px',display:'flex'}}>
                   <div>
                     {/* <p>{reviewData}</p> */}
-                    {reviewData.length == 0 ? "x" : ""}
+                    {reviewData.length == 0 ? <p style={{color:'gray'}}>후기글을 없습니다</p>: ""}
                     {
                       reviewData&&reviewData.map((row,idx)=>(
                         <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}} >
@@ -439,14 +493,46 @@ const PlaceInfo=()=>{
                         onDelete(row.num);
                        }}>삭제</span>
                     </div>
-                       </div></div>
-                      
+                       </div>
+                       </div>
                       </div>
                       ))
 
                     }
                   </div>
                 </div> 
+                  {/*페이징 */}
+
+                  {/* <Pagination count={10} color="primary" /> */}
+                  
+            {/* <div style={{width:'700px',textAlign:'center'}}>
+                    <ul className='pagination'>
+                        {
+                        (reviewData.startPage>1?<li>
+                            <Link to={`/place/placedetail/${reviewData.startPage-1}`}>이전</Link>
+                        </li>:'')
+                        }
+
+                        {
+                            
+                            reviewData.parr&&reviewData.parr.map(n=>{
+                                const url="/place/placedetail/"+n;
+                                return(
+
+                                    <li className={n == currentPage ? 'active' : ''}>
+                                        <Link to={url}>{n}</Link>
+                                    </li>
+                                )
+                            })
+                        }
+                        {
+                        (reviewData.endPage<reviewData.totalPage?
+                        <li>
+                            <Link to={`/place/placedetail/${reviewData.endPage+1}`}>다음</Link>
+                        </li>:'')
+                    }
+                    </ul>
+                </div> */}
             </TabPanel>
                 {/* <TabPanel value="3">Item Three</TabPanel> */}
             </TabContext>
@@ -516,7 +602,7 @@ const PlaceInfo=()=>{
                     <i className="fa-solid fa-map-location-dot" style={{color:'#1976d2'}}></i>&nbsp;&nbsp;{placeAddr}<br/>
                     {/*별점 좋아요수 */}
                     {/* <Rating name="half-rating-read" defaultValue={avgStars} precision={0.1} readOnly/>{avgStars} */}
-                    <i className="fa-solid fa-star" style={{color:'#faaf00'}}></i>&nbsp;&nbsp;{avgStars}<br/>
+                    <i className="fa-solid fa-star" style={{color:'#faaf00'}}></i>&nbsp;&nbsp;{avgStars===0?0:avgStars}<br/>
                     <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{sumLikes}
                 </div>
             </div>
@@ -539,10 +625,15 @@ const PlaceInfo=()=>{
                 <label for="file">
                   <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
                   </label>
+                  
                   <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} id="file" />
                   {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
                   <p>{filename}</p>
-                     <img src={photoUrl+filename} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
+                  {/*map돌릴예정*/}
+                  {
+                      filename&&filename.map((row,idx)=>(
+                     <img src={photoUrl+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
+                      ))}
           </Box> 
              </div> 
             <div className='place_review_write'>
@@ -570,30 +661,37 @@ const PlaceInfo=()=>{
 
                         <div style={{marginLeft:'10px',fontSize:'16px'}}>
                           <div>
-                          <label>{detailData.name}</label>
+                          <label>{detailData[0].name}</label>
+                          {/* <label>{detailData.name}</label> */}
                           </div>
 
                           <div style={{display:'inline-flex'}}>
                         <label>{placeTitle}</label>&nbsp;/&nbsp;
-                        <label>{detailData.created_at}</label>&nbsp;/&nbsp;
+                        <label>{detailData[0].created_at}</label>&nbsp;/&nbsp;
+                        {/* <label>{detailData.created_at}</label>&nbsp;/&nbsp; */}
                         </div>
-                       <Rating name="read-only" ref={reviewstarsRef} value={detailData.stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/>
+                       {/* <Rating name="read-only" ref={reviewstarsRef} value={detailData[0].stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/> */}
+                       <Rating name="read-only" ref={reviewstarsRef} value={detailData[0].stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/>
                         </div>
                       </div>
                       </Typography>
 
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                      <img src={detailData.file_name?photoUrl+detailData.file_name:{Ayong}} alt={detailData.file_name} style={{width:'300px'}} />
+                      {
+                      detailFileData&&detailFileData.map((row,idx)=>(
+                      <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} />
+                           ))}
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                         <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData.content}</pre>
+                         {/* <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre> */}
+                         <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre>
                       </div>
 
                       <div style={{justifyContent:'center',display:'inline-flex'}}>
-                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{onEditReviewDetail(detailData.num);}}>수정</button>&nbsp;&nbsp;
+                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{onEditReviewDetail(detailData[0].num);}}>수정</button>&nbsp;&nbsp;
                          <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
-                        onDelete(detailData.num);
+                        onDelete(detailData[0].num);
                        }}>삭제</button>
                       </div>
                       </Typography>
@@ -620,35 +718,44 @@ const PlaceInfo=()=>{
 
                         <div style={{marginLeft:'10px',fontSize:'16px'}}>
                           <div>
-                          <label>{editDetailData.name}</label>
+                          <label>{editDetailData[0].name}</label>
                           </div>
 
                           <div style={{display:'inline-flex'}}>
                         <label>{placeTitle}</label>&nbsp;/&nbsp;
-                        <label>{editDetailData.created_at}</label>&nbsp;/&nbsp;
+                        <label>{editDetailData[0].created_at}</label>&nbsp;/&nbsp;
                         </div>
                        {/* <Rating name="read-only" defaultValue={editDetailData.stars}  size="small" precision={0.5} style={{marginTop:'5px'}}/> */}
-                       <Rating name="half-rating" className='updatestar' defaultValue={updateStarsValue} precision={0.5}
+                       <Rating name="half-rating" className='updatestar' defaultValue={editDetailData[0].stars} precision={0.5}
                           onChange={(event, newValue) => {
                             setStars(newValue);
                           }}/> 
+                          <Rating name="read-only" ref={reviewstarsRef} value={detailData[0].stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/>
                         </div>
                       </div>
                       </Typography>
 
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                      <img src={photoUrl+detailData.file_name!==photoUrl+filename?photoUrl+detailData.file_name:photoUrl+modalfilename} alt={detailData2.file_name} style={{width:'300px'}} />
+                      {
+                      detailFileData&&detailFileData.map((row,idx)=>(
+                        <div>
+                      <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} />
+                           <button type="button" onClick={()=>{
+                            onOneDelete(editDetailData[idx].review_photo_num);
+                           }}>삭제</button>
+                           </div>
+                           ))}  
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                         <textarea style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} defaultValue={editDetailData.content} onChange={(e)=>{
+                         <textarea style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} defaultValue={editDetailData[0].content} onChange={(e)=>{
                           setContent(e.target.value);
                          }}></textarea>
                       </div>
 
                       <div style={{justifyContent:'center',display:'inline-flex'}}>
                          <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
-                          onUpdate(editDetailData.num);
+                          onUpdate(editDetailData[0].num);
                          }}>수정완료</button>
 
                          {/*imgfile */}

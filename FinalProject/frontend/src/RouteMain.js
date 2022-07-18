@@ -49,6 +49,7 @@ const RouteMain = () => {
           <Route path="/plan/:day" element={<DayPlan/>} />
           
           {/* PlaceInfo */}
+          {/* <Route path="/place/placedetail" element={<PlaceInfo/>}/> */}
           <Route path="/place/placedetail" element={<PlaceInfo/>}/>
 
           {/* Detail-Plan */}
