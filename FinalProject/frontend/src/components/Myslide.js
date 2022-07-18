@@ -23,8 +23,9 @@ const Myslide=() => {
       navigation
       pagination={{ clickable: true }}
       
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log('slide change')} >
+    //   onSwiper={(swiper) => console.log(swiper)}
+    //   onSlideChange={() => console.log('slide change')} 
+    >
 
 
        <SwiperSlide>
@@ -35,12 +36,12 @@ const Myslide=() => {
               
                            
 
-                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" class="box">
+                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
                             <div className="plan_bg">
                                 <div className="plan_bg_inner">
                                     <span>2015-07-29</span>
                                     <span className="tour_day">5DAYS</span>
-                                    <br/>싱가포르!!!</div>
+                                    <br/>제주!!!</div>
                                 </div>
                                 
                                 <div className="plan_img_box">	
@@ -53,7 +54,7 @@ const Myslide=() => {
                                     <div className="fr pn_list_view_icon">148</div>
                                     <div className="fr pn_list_spot_icon">30</div>
                                     <div className="clear"></div>
-                                    <div className="pn_list_city">싱가포르</div>
+                                    <div className="pn_list_city">제주</div>
                                     <div className="clear"></div>
                                     <div className="pn_list_user">윤지은</div>
                                 </div>
@@ -71,12 +72,12 @@ const Myslide=() => {
       <div className="plan_list" style={{width:'1150px'}}> 
                
 
-                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" class="box">
+                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
                             <div className="plan_bg">
                                 <div className="plan_bg_inner">
                                     <span>2015-07-29</span>
                                     <span className="tour_day">5DAYS</span>
-                                    <br/>싱가포르!!!</div>
+                                    <br/>제주!!!</div>
                                 </div>
                                 
                                 <div className="plan_img_box">	
@@ -89,7 +90,7 @@ const Myslide=() => {
                                     <div className="fr pn_list_view_icon">148</div>
                                     <div className="fr pn_list_spot_icon">30</div>
                                     <div className="clear"></div>
-                                    <div className="pn_list_city">싱가포르</div>
+                                    <div className="pn_list_city">제주</div>
                                     <div className="clear"></div>
                                     <div className="pn_list_user">윤지은</div>
                                 </div>
@@ -111,12 +112,12 @@ const Myslide=() => {
             <div className="plan_list" style={{width:'1150px'}}> 
     
 
-                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" class="box">
+                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
                             <div className="plan_bg">
                                 <div className="plan_bg_inner">
                                     <span>2015-07-29</span>
                                     <span className="tour_day">5DAYS</span>
-                                    <br/>싱가포르!!!</div>
+                                    <br/>제주!!!</div>
                                 </div>
                                 
                                 <div className="plan_img_box">	
@@ -129,7 +130,7 @@ const Myslide=() => {
                                     <div className="fr pn_list_view_icon">148</div>
                                     <div className="fr pn_list_spot_icon">30</div>
                                     <div className="clear"></div>
-                                    <div className="pn_list_city">싱가포르</div>
+                                    <div className="pn_list_city">제주</div>
                                     <div className="clear"></div>
                                     <div className="pn_list_user">윤지은</div>
                                 </div>
@@ -146,12 +147,12 @@ const Myslide=() => {
       <div className="plan_list" style={{width:'1150px'}}> 
     
 
-    <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" class="box">
+    <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
     <div className="plan_bg">
         <div className="plan_bg_inner">
             <span>2015-07-29</span>
             <span className="tour_day">5DAYS</span>
-            <br/>싱가포르!!!</div>
+            <br/>제주!!!</div>
         </div>
         
         <div className="plan_img_box">	
@@ -164,7 +165,7 @@ const Myslide=() => {
             <div className="fr pn_list_view_icon">148</div>
             <div className="fr pn_list_spot_icon">30</div>
             <div className="clear"></div>
-            <div className="pn_list_city">싱가포르</div>
+            <div className="pn_list_city">제주</div>
             <div className="clear"></div>
             <div className="pn_list_user">윤지은</div>
         </div>
@@ -181,12 +182,12 @@ const Myslide=() => {
       <div className="plan_list" style={{width:'1150px'}}> 
     
 
-    <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" class="box">
+    <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
     <div className="plan_bg">
         <div className="plan_bg_inner">
             <span>2015-07-29</span>
             <span className="tour_day">5DAYS</span>
-            <br/>싱가포르!!!</div>
+            <br/>제주!!!</div>
         </div>
         
         <div className="plan_img_box">	
@@ -199,7 +200,7 @@ const Myslide=() => {
             <div className="fr pn_list_view_icon">148</div>
             <div className="fr pn_list_spot_icon">30</div>
             <div className="clear"></div>
-            <div className="pn_list_city">싱가포르</div>
+            <div className="pn_list_city">제주</div>
             <div className="clear"></div>
             <div className="pn_list_user">윤지은</div>
         </div>

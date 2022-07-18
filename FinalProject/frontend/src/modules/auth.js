@@ -5,9 +5,10 @@ const SET_TOKEN = 'auth/SET_TOKEN';
 const SET_CURRENT_USER = 'auth/SET_CURRENT_USER';
 
 // Action Creators
-export const login = (user) => (
+export const login = (saveId, user) => (
 	{
 		type: LOGIN,
+    saveId: saveId,
     user: user
 	}
 );
@@ -34,6 +35,7 @@ export const logout = () => (
 // 초기 상태, 객체가 아니어도 된다.
 const initialState = {
   isLoggedIn: false,
+  saveId: false,
 	// isAuthenticated: false,
   user: {}
 };
@@ -44,6 +46,7 @@ export default function reducer(state = initialState, action){
 		case LOGIN:
 			return {
 				isLoggedIn: true,
+        saveId: action.saveId,
         // isAuthenticated: true,
         user: action.user
 			};

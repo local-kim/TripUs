@@ -4,15 +4,13 @@ import { FinalHead, Footer, Header, Main, Menu } from "./components";
 import './App.css';
 import './AppHeemin.css';
 import { CityInfoMain, CityinfoMore, PlaceInfo } from "./pages/cityinfo";
-import { Calendar, Plan, DayPlan } from "./pages/plan";
-import { JoinForm, Auth,LoginForm, KakaoLogin, GoogleLogin } from "./pages/login";
+import { Calendar, Plan, DayPlan, UpdatePlan, UpdateDayPlan } from "./pages/plan";
+import { JoinForm, Auth, LoginForm, LoginFormTest, KakaoLogin, GoogleLogin } from "./pages/login";
 import { PlanDetail } from "./pages/detail";
-
-import {Mypage, Dashboard, Profile} from "./pages/mypage";
+import { Mypage, Dashboard, Profile } from "./pages/mypage";
 import { CityList } from './pages/citylist';
-import SecurityLogin from "./pages/login/SecurityLogin";
-import SecurityJoin from "./pages/login/SecurityJoin";
-// import { Dashboard } from "./pages/mypage";
+// import SecurityLogin from "./pages/login/SecurityLogin";
+// import SecurityJoin from "./pages/login/SecurityJoin";
 
 const RouteMain = () => {
  
@@ -29,6 +27,7 @@ const RouteMain = () => {
 
           {/* cityinfo */}
           <Route path="/city/:num" element={<CityInfoMain/>} />
+          <Route path="/city/:city_num/:member_num" element={<CityInfoMain/>} />
           <Route path="/city/infomore" element={<CityinfoMore/>}/>
           {/* <Route path="/city/weather/:num" element={<CityInfoMain/>} /> */}
           {/* <Route path="/city/placename/:name" element={<CityInfoMain/>} /> */}
@@ -37,16 +36,20 @@ const RouteMain = () => {
           <Route path="/join" element={<JoinForm/>} />
           {/* <Route path="/join" element={<SecurityJoin/>} /> */}
           <Route path="/login" element={<LoginForm/>} />
+          <Route path="/loginTest" element={<LoginFormTest/>} />
           {/* <Route path="/login" element={<SecurityLogin/>} /> */}
           <Route path="/oauth/kakao/callback"  element={<Auth/>} />
           <Route path="/kakao"  element={<KakaoLogin/>}/>
           <Route path="/google" element={<GoogleLogin/>}/>
 
-    
           {/* Planning */}
           <Route path="/plan/calendar/:cityNum" element={<Calendar/>} />
           <Route path="/plan" element={<Plan/>} />
           <Route path="/plan/:day" element={<DayPlan/>} />
+
+          {/* Update Plan */}
+          <Route path="/plan/update/:tripNum" element={<UpdatePlan/>} />
+          <Route path="/plan/update/:tripNum/:day" element={<UpdateDayPlan/>} />
           
           {/* PlaceInfo */}
           {/* <Route path="/place/placedetail" element={<PlaceInfo/>}/> */}

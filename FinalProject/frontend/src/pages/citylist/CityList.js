@@ -6,7 +6,7 @@ import '../../styles/citylist.css';
 const CityList = () => {
   const [list, setList] = useState([]);
 
-  let cityListUrl = `${process.env.REACT_APP_SPRING_URL}cityinfo/list`;
+  let cityListUrl = `${process.env.REACT_APP_SPRING_URL}city/list`;
 
   useEffect(() => {
     // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
@@ -33,9 +33,7 @@ const CityList = () => {
       setList(res.data);
       console.log(res.data);
     })
-    .catch(err => {
-      console.log(err);
-    })
+    .catch(err => console.log(err));
   }, []);
 
   return (

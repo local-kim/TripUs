@@ -25,8 +25,8 @@ const ResponsiveAppBar = () => {
   const loginNum = useSelector(state => state.auth.user.num);
   const loginName = useSelector(state => state.auth.user.name);
 
-  const pages = ['여행지', '일정 만들기', '일정 보기', 'About'];
-  const pageLinks = ['city/list', 'plan/calendar/159', 'plan/detail/1', ''];
+  const pages = ['여행지', '일정 만들기', '일정 보기', '일정 수정', 'About'];
+  const pageLinks = ['city/list', 'plan/calendar/159', 'plan/detail/1', 'plan/update/48', ''];
 
   const loginSettings = ['Mypage', 'Dashboard','Logout'];
   const loginLinks = ['mypage/1', 'dashboard','logout'];
@@ -54,7 +54,7 @@ const ResponsiveAppBar = () => {
   };
 
   // 헤더 숨기기
-  if ((window.location.pathname.startsWith('/plan/calendar') || window.location.pathname === '/plan' || window.location.pathname.startsWith('/plan/')) && !window.location.pathname.startsWith('/plan/detail')) return null;
+  if ((window.location.pathname.startsWith('/plan')) && !window.location.pathname.startsWith('/plan/detail')) return null;
 
   return (
     <AppBar position="fixed">
@@ -109,8 +109,8 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page, index) => (
-                <Link to={`/${pageLinks[index]}`}>
-                  <MenuItem key={page} onClick={handleCloseNavMenu}>
+                <Link to={`/${pageLinks[index]}`} key={index}>
+                  <MenuItem onClick={handleCloseNavMenu}>
                     <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 </Link>
@@ -138,9 +138,8 @@ const ResponsiveAppBar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page, index) => (
-              <Link to={`/${pageLinks[index]}`}>
+              <Link to={`/${pageLinks[index]}`} key={index}>
                 <Button
-                  key={page}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: 'black', display: 'block' }}
                 >
@@ -153,7 +152,12 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={loginName} src="/static/images/avatar/2.jpg" />
+                {
+                  isLoggedIn && <Avatar alt={loginName} src="/static/images/avatar/2.jpg" />
+                }
+                {
+                  !isLoggedIn && <Avatar src="/static/images/avatar/2.jpg" />
+                }
               </IconButton>
             </Tooltip>
             <Menu

@@ -19,7 +19,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
 
   
   .main_top{
-     background-image:url(./assets/images/cloude.gif); 
+     /* background-image:url(./assets/images/cloude.gif);  */
     
   
     width: 100%;
@@ -479,4 +479,8 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     
     height: 12px;
     line-height: 12px;
+}
+
+.video{
+  z-index: -999;
 }

@@ -187,10 +187,7 @@ const PlaceItem = ({place, setMapX, setMapY}) => {
       }
 
       <div className='place-info-wrap'>
-        <div onMouseOver={()=>{
-          setMapX(place.mapx);
-          setMapY(place.mapy);
-        }}>{place.title}</div>
+        <div>{place.title}</div>
         {/* <div>{place.cat3}</div> */}
         <div className='place-info'>{contentTypeId[place.cat3]}</div>
         {/* <div className='place-info'>{place.contentid}</div> */}

@@ -1,3 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sen:wght@400;700;800&display=swap');
+
+/* bootstrap button 클릭하면 나오는 효과 제거 */
+#plan-calendar .btn:focus,
+#plan .btn:focus,
+#day-plan .btn:focus,
+#plan-update .btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+#plan-calendar .btn,
+#plan .btn,
+#day-plan .btn,
+#plan-update .btn {
+  font-weight: 500;
+}
+
 /*** Calendar.js ***/
 #plan-calendar{
   text-align: center;
@@ -28,20 +47,35 @@
 }
 
 #plan-calendar .rdrDateDisplayItem{
-  /* border: 1px solid gray; */
+  border-width: 2px;
   box-shadow: none;
 }
 
 #plan-calendar .rdrDateDisplayItem input{
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 500;
 }
 
+/* 오늘 날짜 밑줄 색 */
+/* range 밖 */
+.rdrDayToday .rdrDayNumber span:after{
+  background: #75b4bd;
+}
+
+/* range 안 */
+.rdrDayToday:not(.rdrDayPassive) .rdrInRange ~ .rdrDayNumber span:after,
+.rdrDayToday:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span:after,
+.rdrDayToday:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span:after,
+.rdrDayToday:not(.rdrDayPassive) .rdrSelected ~ .rdrDayNumber span:after {
+  background: #fff;
+}
+
 /* 캘린더에서 선택된 날짜 */
-.rdrSelected + .rdrDayNumber span,
-.rdrInRange + .rdrDayNumber span,
-.rdrStartEdge + .rdrDayNumber span,
-.rdrEndEdge + .rdrDayNumber span{
+.rdrSelected ~ .rdrDayNumber span,
+.rdrInRange ~ .rdrDayNumber span,
+.rdrStartEdge ~ .rdrDayNumber span,
+.rdrEndEdge ~ .rdrDayNumber span,
+.rdrInRange ~ .rdrDayNumber span{
   font-weight: 600;
 }
 
@@ -64,6 +98,7 @@
 
 #plan .period{
   color: gray;
+  font-size: 15px;
 }
 
 #plan #map{
@@ -79,31 +114,18 @@
   padding-left: 350px;
 }
 
-/* 지도 위의 마커 */
-#plan #map .label{
-  width:28px;
-  height:28px;
-  border-radius: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 500;
-  background-color: orange;
-  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
-  color: white;
-}
-
-#plan .place-wrap .num{
+/* 지도 위의 커스텀 오버레이 마커 */
+#map .label{
   width: 25px;
   height: 25px;
-  background-color: rgb(181 181 181);
-  color: white;
   border-radius: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 13px;
   font-weight: 500;
+  background-color: rgb(152, 221, 227);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+  color: white;
 }
 
 #plan .day{
@@ -111,9 +133,9 @@
 }
 
 #plan .day span.title{
-  font-family: 'Montserrat';
-  font-size: 20px;
-  font-weight: 500;
+  font-family: 'Sen';
+  font-size: 22px;
+  /* font-weight: 600; */
   line-height: 1.3;
   cursor: pointer;
 }
@@ -123,6 +145,7 @@
   background-color: rgb(152, 221, 227);
   border-color: rgb(152, 221, 227);
   width: 100%;
+  margin: 0;
   /* color: white; */
 }
 
@@ -141,16 +164,14 @@
 
 #plan .day .btn-memo{
   margin: 5px;
+  border-color: #888888;
+  color: #888888;
 }
 
 #plan .btn-memo:hover{
   background-color: #bebebe;
   border-color: #bebebe;
-}
-
-#plan .btn:focus {
-  outline: none;
-  box-shadow: none;
+  color: white;
 }
 
 #plan .box-wrap{
@@ -166,6 +187,10 @@
 #plan .box-wrap::-webkit-scrollbar{
   display:none;
 }
+
+/* #plan .place-info-wrap{
+  width: 272px;
+} */
 
 /*** DayPlan.js ***/
 #day-plan{
@@ -184,6 +209,19 @@
   z-index: -999;
 }
 
+/* #day-plan #map .label{
+  width:25px;
+  height:25px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  background-color: rgb(152, 221, 227);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+  color: white;
+} */
+
 #day-plan .title-wrap{
   display: flex;
   justify-content: space-between;
@@ -198,8 +236,8 @@
 
 #day-plan .title{
   font-size: 23px;
-  font-weight: 400;
-  font-family: 'Montserrat';
+  /* font-weight: 600; */
+  font-family: 'Sen';
 }
 
 #day-plan .list-container{
@@ -218,7 +256,7 @@
 }
 
 #day-plan .left .plan-place-list{
-  height: 90%;
+  /* height: 90%; */
 }
 
 #day-plan .left .plan-place-list .place-list{
@@ -226,6 +264,19 @@
   overflow: auto;
   overflow-x: hidden;
 }
+
+/* #day-plan .place-wrap .num{
+  width: 25px;
+  height: 25px;
+  background-color: rgb(181 181 181);
+  color: white;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 13px;
+  font-weight: 500;
+} */
 
 #day-plan .left .btn-ok{
   background-color: rgb(152, 221, 227);
@@ -265,12 +316,28 @@
 }
 
 #day-plan .right .api-place-list{
-  max-height: 68%;
+  /* max-height: 50%; */
+  height: 66vh;
 }
 
 #day-plan .right .api-place-list .place-list{
-  height: 500px;
+  /* height: 400px; */
   /* max-height: 95%; */
+  /* max-height: 45%; */
+  height: 94%;
+  overflow: scroll;
+}
+
+#day-plan .right .my-place-list{
+  /* max-height: 50%; */
+  /* height: 31vh; */
+}
+
+#day-plan .right .my-place-list .place-list{
+  /* height: 200px; */
+  /* max-height: 95%; */
+  /* max-height: 45%; */
+  overflow: scroll;
 }
 
 #day-plan .label{
@@ -316,11 +383,6 @@
   background-color: white;
   /* border-color: #bebebe; */
   color: #888888;
-}
-
-#day-plan .btn:focus {
-  outline: none;
-  box-shadow: none;
 }
 
 #day-plan .btn-wrap{
@@ -372,7 +434,8 @@
 }
 
 .place-wrap .place-img{
-  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
   height: 50px;
   object-fit: cover;
   border-radius: 100px;
@@ -380,10 +443,11 @@
 }
 
 .place-wrap .no-image{
-  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
   height: 50px;
   border-radius: 100px;
-  background-color: white;
+  background-color: #eeeeee;
   color: gray;
   margin-right: 10px;
   display: flex;
@@ -399,3 +463,23 @@
   font-size: 14px;
   color: rgb(100, 100, 100);
 }
+
+/* NumPlaceItem.js */
+.place-wrap .num{
+  min-width: 25px;
+  height: 25px;
+  background-color: rgb(199, 199, 199);
+  color: white;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 13px;
+  font-weight: 500;
+}
+
+.place-wrap .num.focus{
+  background-color: rgb(152, 221, 227);
+}
+
+/* UpdatePlan.js */
