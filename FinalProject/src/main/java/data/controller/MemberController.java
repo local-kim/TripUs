@@ -29,8 +29,21 @@ public class MemberController {
 	
 	@PostMapping("/insert")
 	public void insert(@RequestBody MemberDto dto
+//			@RequestParam String year,
+//			@RequestParam String month,
+//			@RequestParam String day
+//			@RequestParam String address1,
+//			@RequestParam String address2,
+//			@RequestParam String zonecode		
+			
 			) {
+//		System.out.println(dto);
+//		System.out.println(year+',' +month+','+ day);
+//		String birthday = year+month+day;
+//		dto.setBirthday(birthday);
+//		System.out.println(birthday);
 		memberService.insertMember(dto);
+		
 	}
 	@GetMapping("/idcheck")
 	public int idcheck(@RequestParam String id) {

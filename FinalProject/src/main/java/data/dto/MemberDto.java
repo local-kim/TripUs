@@ -19,9 +19,6 @@ public class MemberDto {
 	private String email;
 	private String tel;
 	private String birthday;
-	private String year;
-	private String month;
-	private String day;
 	private String zonecode;
 	private String address1;
 	private String address2;
