@@ -9,7 +9,10 @@ const { kakao } = window;
 
 const PlanDetailMap = () => {
 
+    // 전체 데이타 (좌표, 타이틀) URL
     const [mapData, setMapData] = useState('');
+    // NAV 리모컨 데이타 (Day별)
+    const [navData, setNavData] = useState('');
     
     const [cDay, setCDay] = useState(0);
     
@@ -17,6 +20,7 @@ const PlanDetailMap = () => {
 
     const SPRING_URL = process.env.REACT_APP_SPRING_URL;
     let mapUrl = SPRING_URL + "plan/map?num="+num;
+    let navUrl = SPRING_URL + "plan/nav?num="+num;
 
       // kakao map
   const kakaoMapScript = () => {
@@ -43,7 +47,7 @@ const PlanDetailMap = () => {
     for (let i in markerList) {
       // 커스텀 오버레이에 표시할 내용
       // HTML 문자열 또는 Dom Element
-      let content = `<div class ="label">${markerList[cDay][i].title}</div>`;
+      let content = `<div class ="label">${Number(i)+1}</div>`;
 
       // 커스텀 오버레이가 표시될 위치
       let position = markerList[i].latlng;
@@ -120,6 +124,25 @@ const PlanDetailMap = () => {
     });
   }, []);
 
+  const [navPlan, setNavPlan] = useState([]);
+  
+  useEffect(() => {
+    axios.get(navUrl)
+    .then(res => {
+      setNavData(res.data)
+
+      // for(let i = 0; i < res.data.length; i++){
+      //   navPlan.push(res.data.filter(data => data.day == i + 1));
+      //   // console.log(i)
+      //   console.log('navdata'+res.data.length)
+      //   console.log(res.data)
+      // }
+      
+    }).catch(err => {
+      alert(err.data)
+    });
+  }, []);
+
   
   const changeDay = (i) => {
     console.log(i);
@@ -133,9 +156,9 @@ const PlanDetailMap = () => {
             <div id='detail-map'>
             <div className='map-day-box'>
                 {
-                    dayPlan && dayPlan.map((day, index) => (
+                    navData && navData.map((day, index) => (
                         <div className='map-day-list' style={{zIndex:'999'}}
-                            onClick={()=>{changeDay(index)}}>Day {index+1}</div>
+                            onClick={()=>{changeDay(day.day-1)}}>Day {day.day}</div>
                     ))
                 }
             </div>
