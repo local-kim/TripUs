@@ -16,13 +16,19 @@ public class CityTripDto {
 	private String eng_name;
 	private String country;
 	private String image;
+	private int area_code;
+	private int sigungu_code;
+	private String x;
+	private String y;
 	
-	
-	private int memberNum;
 	private int tripNum;
 	private String tripName;
+//	@JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ",timezone="Asia/Seoul")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="Asia/Seoul")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone="Asia/Seoul")
 	private Date startDate;
+//	@JsonFormat(pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ",timezone="Asia/Seoul")
+//	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="Asia/Seoul")
 	@JsonFormat(pattern = "yyyy-MM-dd",timezone="Asia/Seoul")
 	private Date endDate;
 	private int days;

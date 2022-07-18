@@ -24,9 +24,12 @@ public class ReviewService implements ReviewServiceInter {
 	}
 	
 	@Override
-	public void insertPhoto(ReviewDto dto) {
+	public void insertPhoto(String num,String file_name) {
 		// TODO Auto-generated method stub
-		reviewMapper.insertPhoto(dto);
+		Map<String, String> map = new HashMap<>();
+		map.put("num", num);
+		map.put("file_name",file_name);
+		reviewMapper.insertPhoto(map);
 	}
 
 	@Override
@@ -51,11 +54,22 @@ public class ReviewService implements ReviewServiceInter {
 	}
 
 	@Override
-	public ReviewDto getData(int num) {
+	public List<ReviewDto> getData(int num) {
 		// TODO Auto-generated method stub
 		return reviewMapper.getData(num);
 	}
 	
+	@Override
+	public String getOneDataPhoto(int num) {
+		// TODO Auto-generated method stub
+		return reviewMapper.getOneDataPhoto(num);
+	}
+	
+	@Override
+	public List<String> getDataFiles(int num) {
+		// TODO Auto-generated method stub
+		return reviewMapper.getDataFiles(num);
+	}
 	@Override
 	public double getAvgStars(String place_id) {
 		return reviewMapper.getAvgStars(place_id);
@@ -83,6 +97,12 @@ public class ReviewService implements ReviewServiceInter {
 		// TODO Auto-generated method stub
 		reviewMapper.deletePhoto(num);
 		
+	}
+	
+	@Override
+	public void oneDeletePhoto(int num) {
+		// TODO Auto-generated method stub
+		reviewMapper.oneDeletePhoto(num);
 	}
 	@Override
 	public void updateReview(ReviewDto dto) {

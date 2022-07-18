@@ -14,6 +14,7 @@ public class TripDto {
 	private int num;
 	private int memberNum;
 	private int cityNum;
+	private String cityName;
 	@JsonFormat(pattern = "yyyy-MM-dd" ,timezone="Asia/Seoul")
 	private Date startDate;
 	@JsonFormat(pattern = "yyyy-MM-dd" ,timezone="Asia/Seoul")

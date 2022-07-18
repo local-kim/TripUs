@@ -6,18 +6,22 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import data.dto.CityDto;
+import data.dto.CityTripDto;
 import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
 import data.dto.PlanDateDto;
 import data.dto.PlanDto;
 import data.dto.PlanInsertDto;
 import data.dto.PlanMapDto;
+import data.dto.PlanPlaceDto;
 import data.dto.TripDto;
 import data.service.PlanService;
 
@@ -30,7 +34,7 @@ public class PlanController {
 	private PlanService planService;
 	
 	@GetMapping("/city-code")
-	public Map<String, Object> getCityCode(
+	public CityDto getCityCode(
 			@RequestParam int cityNum
 			){
 		return planService.getCityCode(cityNum);
@@ -59,6 +63,7 @@ public class PlanController {
 		// trip(여행 전체 정보)를 insert
 		// member_num, city_num, start_date, end_date, days
 		trip.setMemberNum(3);	// 임시값
+		trip.setName(trip.getCityName() + " 여행");
 		
 		// 방금 인서트한 trip_num을 받아와서 리턴
 		int tripNum = planService.insertTrip(trip);
@@ -91,8 +96,49 @@ public class PlanController {
 		return tripNum;
 	}
 	
+	// 일정 수정 페이지
+	@GetMapping("/trip-info")
+	public CityTripDto getTripInfo(@RequestParam int tripNum) {
+		return planService.getTripInfo(tripNum);
+	}
+	
+	@GetMapping("/place-list")
+	public List<PlanPlaceDto> getPlaceList(@RequestParam int tripNum){
+		return planService.getPlaceList(tripNum);
+	}
+	
+	@PostMapping("/update/{tripNum}/{cityNum}")
+	public void updatePlan(@PathVariable int tripNum, @PathVariable int cityNum, @RequestBody List<List<PlaceDto>> plan) {
+  		// tripNum에 대하여 존재하던 itinerary를 모두 삭제
+		planService.deleteAllItinerary(tripNum);
+		
+		for(int i = 0; i < plan.size(); i++) {
+			for(int j = 0; j < plan.get(i).size(); j++) {
+				PlaceDto place = plan.get(i).get(j);
+				
+				// place가 테이블에 없으면 insert
+				// place_id,,,
+				place.setCity_num(cityNum);
+				
+				if(planService.checkPlace(place.getContentid()) == 0) {
+					planService.insertPlace(place);
+				}
+				
+				// itinerary(여행 일정 순서)를 insert
+				// trip_num, day, order, place_id
+				ItineraryDto itinerary = new ItineraryDto();
+				itinerary.setTrip_num(tripNum);
+				itinerary.setDay(i + 1);
+				itinerary.setOrder(j + 1);
+				itinerary.setPlace_id(place.getContentid());
+				
+				planService.insertItinerary(itinerary);
+			}
+		}
+	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	@GetMapping("/nav")
 	public List<PlanDto> getNavNum(@RequestParam int num){
 		return planService.getNavNum(num);

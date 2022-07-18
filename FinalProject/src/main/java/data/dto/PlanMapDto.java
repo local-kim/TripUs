@@ -9,6 +9,8 @@ import lombok.Data;
 public class PlanMapDto {
 	private int day;
 	private int order;
+	private int days;
 	private double mapx;
 	private double mapy;
+	private String title;
 }

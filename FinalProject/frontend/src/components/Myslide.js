@@ -39,8 +39,9 @@ const Myslide=() => {
       navigation
       pagination={{ clickable: true }}
       
-      onSwiper={(swiper) => console.log(swiper)}
-      onSlideChange={() => console.log('slide change')} >
+    //   onSwiper={(swiper) => console.log(swiper)}
+    //   onSlideChange={() => console.log('slide change')} 
+    >
 
 
        <SwiperSlide>
@@ -51,7 +52,7 @@ const Myslide=() => {
               
                            
 
-                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" class="box">
+                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
                             <div className="plan_bg">
                                 <div className="plan_bg_inner">
                                     <span>2015-07-29</span>
@@ -87,7 +88,7 @@ const Myslide=() => {
       <div className="plan_list" style={{width:'1150px'}}> 
                
 
-                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" class="box">
+                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
                             <div className="plan_bg">
                                 <div className="plan_bg_inner">
                                     <span>2015-07-29</span>
@@ -127,7 +128,7 @@ const Myslide=() => {
             <div className="plan_list" style={{width:'1150px'}}> 
     
 
-                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" class="box">
+                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
                             <div className="plan_bg">
                                 <div className="plan_bg_inner">
                                     <span>2015-07-29</span>
@@ -162,7 +163,7 @@ const Myslide=() => {
       <div className="plan_list" style={{width:'1150px'}}> 
     
 
-    <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" class="box">
+    <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
     <div className="plan_bg">
         <div className="plan_bg_inner">
             <span>2015-07-29</span>
@@ -197,7 +198,7 @@ const Myslide=() => {
       <div className="plan_list" style={{width:'1150px'}}> 
     
 
-    <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" class="box">
+    <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
     <div className="plan_bg">
         <div className="plan_bg_inner">
             <span>2015-07-29</span>
