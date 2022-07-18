@@ -10,7 +10,7 @@ import { addDays } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import { setPlanInfo } from '../../modules/planner';
 import Rating from '@mui/material/Rating';
-import { PlanDetailMain, PlanDetailMessage } from '.';
+import { PlanDetailMain, PlanDetailMessage, PlanDetailMap } from '.';
 
 const PlanDetail = () => {
 
@@ -248,7 +248,9 @@ const PlanDetail = () => {
         
     return (
         <div id = 'plan-detail'>
+            <div className='all-top'>
             {/* 좌측 이동 리스트 */}
+            {mainList == 1 ? 
             <div className='scroll-item'>
                 <div className='scroll-item-prev'></div>
                 <div className='scroll-item-list' >
@@ -266,7 +268,7 @@ const PlanDetail = () => {
                 </div>
                 <div className='scroll-item-next'></div>
             </div>
-
+            : ''}
             {/* 대표 이미지 */}
             <div className='main-image'
                 style={{backgroundImage:'url(../../city_detail_image/'+dimage+')'}}>
@@ -319,7 +321,7 @@ const PlanDetail = () => {
                     <div className='header-menu-line'></div>
                     <div className='header-menu'
                         onClick={() => {
-                            setMainList(4);
+                            setMainList(2);
                         }}>일정표</div>
                     <div className='header-menu-line'></div>
                     <div className='header-menu'
@@ -329,7 +331,7 @@ const PlanDetail = () => {
                     <div className='header-menu-line'></div>
                     <div className='header-menu'
                         onClick={() => {
-                            setMainList(2);
+                            setMainList(4);
                         }}>댓글</div>
                     <div className='header-menu-line'></div>
 
@@ -341,10 +343,11 @@ const PlanDetail = () => {
                 </div>
                 {/* 메뉴 리스트 */}
                 {mainList == 1 ? < PlanDetailMain /> :
-                    2 ? < PlanDetailMessage /> :
-                    3 ? '' :
-                    4 ? '' : < PlanDetailMain />
+                 mainList == 3 ? < PlanDetailMap /> :
+                                < PlanDetailMessage /> 
+                     
                 }
+            </div>
             </div>
         </div>
     );

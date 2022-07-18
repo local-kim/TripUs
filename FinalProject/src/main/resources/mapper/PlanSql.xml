@@ -43,6 +43,6 @@
 		SELECT * FROM final_project.trip, member where member.num=member_num and trip.num=#{num};
 	</select>
 	<select id="mapKakao" parameterType="int" resultType="planMap">
-		SELECT `day`, `order`, mapx, mapy FROM itinerary, place where place_id = contentid and trip_num=#{num} order by `day`, `order`;
+		SELECT `day`, `order`, mapx, mapy, days, title FROM itinerary, place, trip where place_id = contentid and trip_num=#{num} and itinerary.trip_num = trip.num order by `day`, `order`;
 	</select>
 </mapper>
