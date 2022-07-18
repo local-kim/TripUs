@@ -19,6 +19,7 @@
     width: 1050px;
     margin: 0 auto;
     padding: 50px 0 51px;
+    text-align: center;
 }
 .member_join .page_sub {
     padding-bottom: 10px;
@@ -26,6 +27,7 @@
     color: #666;
     line-height: 17px;
     text-align: right;
+    margin-right: 200px;
 }
 .member_join .tbl_comm {
     width: 700px;
@@ -105,9 +107,9 @@
     border-color: inherit;
 }
 .member_join .btn {
-    border: 1px solid #5f0080;
-    background-color: #fff;
-    color: #5f0080;
+    border: 1px solid  #98dde3;
+    background-color:  #98dde3;
+    color: #fff;
    
     width: 140px;
     margin-left: 5px;
@@ -119,14 +121,14 @@
     overflow: hidden;
     width: 332px;
     height: 44px;
-    border: 1px solid #5f0080;
-    color: #5f0080;
-    background-color: #fff;
+    border: 0;
+    color: #fff;
+    background-color: #98dde3;
     border-radius: 3px;
     text-align: center;
 }
 .member_join .ico{
-    color: #ee6a7b;
+    color: #1e87f0;
 }
 .btn_active{
     border: 1px solid #5f0081;
@@ -166,8 +168,9 @@
     line-height: 1;
 }
 .btn_type1 {
-    border: 1px solid #5f0081;
-    background-color: #5f0080;
+    border: 1px solid #75b4bd;
+    background-color: #fff;
+    color: #75b4bd;
    
 }
 .btn_type2 {
@@ -187,9 +190,9 @@
 .section_login .btn_member {
     margin-top: 10px;
 }
-.btn_type1 .txt_type {
+/* .btn_type1 .txt_type {
     color: #fff;
-}
+} */
 .btn_type2 .txt_type {
     color: #5f0080;
 }
@@ -225,6 +228,8 @@
     background-color: #fff;
     padding: 30px;
     box-shadow: unset;
+    margin: 0 auto;
+    margin-top: 100px;
 }
 .container_login .text{
 
@@ -290,7 +295,7 @@
     letter-spacing: 1px;
     cursor: pointer;
     border-radius: 4px;
-    background-color: #98dde3;;
+    background-color: #98dde3;
 }
 .divider{
     position: absolute;

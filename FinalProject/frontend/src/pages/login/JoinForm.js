@@ -14,7 +14,7 @@ const JoinForm = (props) => {
     let joinUrl = `${process.env.REACT_APP_SPRING_URL}auth/join`;
 
     const navi=useNavigate();
-    const [data,setData]=useState({
+    const [joinData,setJoinData]=useState({
         id:'',
         name:'',
         password:'',
@@ -77,10 +77,12 @@ const JoinForm = (props) => {
         });
 
         // const url = process.env.REACT_APP_SPRING_URL + "member/insert";
-        axios.post(joinUrl, ({
+        axios.post(joinUrl, {
             ...data,
-            birthday:birth.year+birth.month+birth.day
-        }))
+            address1:joinData.address1,
+            address2:joinData.address2,
+            zonecode:joinData.zonecode,
+            birthday:data.year+data.month+data.day})
         .then(res => {
         //   alert("insert 성공");
             console.log(res.data);
@@ -96,11 +98,11 @@ const JoinForm = (props) => {
         //이벤트 발생 name이 pass일 경우 무조건 passok는 false
         // if(name==='pass')
         //     setPassOk(false);
-        setData({
-            ...data,
+        setJoinData({
+            ...joinData,
             [name]:value
         });
-        console.log(data.password);
+        console.log(joinData.password);
     }
     const onBirthChange=(e)=>{
       const {name,value}=e.target;
@@ -113,7 +115,7 @@ const JoinForm = (props) => {
     //두번째 pass 입력시 호출
     const onPassChange=(e)=>{
         const {value}=e.target;
-        if(value===data.password)
+        if(value===joinData.password)
             setPassOk(true)
            
         else
@@ -122,7 +124,7 @@ const JoinForm = (props) => {
     }
     //아이디 중복 체크 버튼 이벤트
     const onIdCheck=()=>{
-        const url=process.env.REACT_APP_SPRING_URL+"member/idcheck?id="+data.id;
+        const url=process.env.REACT_APP_SPRING_URL+"member/idcheck?id="+watch('id');
         axios.get(url)
         .then(res=>{
             if(res.data===0){
@@ -140,7 +142,7 @@ const JoinForm = (props) => {
     }
     //이메일 중복 체크 버튼 이벤트
     const onEmailCheck=()=>{
-        const url=process.env.REACT_APP_SPRING_URL+"member/emailcheck?email="+data.email;
+        const url=process.env.REACT_APP_SPRING_URL+"member/emailcheck?email="+joinData.email;
         axios.get(url)
         .then(res=>{
             if(res.data===0){
@@ -171,7 +173,7 @@ const JoinForm = (props) => {
         console.log(fullAddress)
         console.log(kakaoData.zonecode)
         // setAddress1(fullAddress);
-        setData({...data, address1: fullAddress, address2: extraAddress, zonecode: kakaoData.zonecode});
+        setJoinData({...joinData, address1: fullAddress, address2: extraAddress, zonecode: kakaoData.zonecode});
         // setData({...data, address2: extraAddress});
         // setData({...data, zonecode: data.zonecode});
         // setAddress2(extraAddress);
@@ -220,7 +222,7 @@ const JoinForm = (props) => {
                                 },
                               })}/>
                             <button type='button' className='btn' onClick={onIdCheck} >중복확인</button>
-                            {errors.id && <p>{errors.id?.message}</p>}
+                            {errors.id && <p style={{color:'#1e87f0'}}>{errors.id?.message}</p>}
                             </td>
                         </tr>
                         <tr>
@@ -244,7 +246,7 @@ const JoinForm = (props) => {
                                   message: "영문, 숫자를 혼용하여 입력해주세요..",
                                 }
                               })}/>
-                              {errors.password && <p>{errors.password?.message}</p>}
+                              {errors.password && <p style={{color:'#1e87f0'}}>{errors.password?.message}</p>}
                             </td>
                         </tr>
                         <tr>
@@ -255,7 +257,7 @@ const JoinForm = (props) => {
                             {...register("password_confirm", {
                                 validate: value => value===watch("password") || '비밀번호가 일치하지 않습니다.'
                               })}/>
-                              {errors.password_confirm && <p>{errors.password_confirm?.message}</p>}
+                              {errors.password_confirm && <p style={{color:'#1e87f0'}}>{errors.password_confirm?.message}</p>}
                             </td>
                         </tr>
                         <tr>
@@ -278,6 +280,7 @@ const JoinForm = (props) => {
                                   message: "이름은 한글 또는 영문으로만 입력해주세요",
                                 },
                               })} />
+                              {errors.name && <p style={{color:'#1e87f0'}}>{errors.name?.message}</p>}
                             </td>
                         </tr>
                         <tr>
@@ -296,6 +299,7 @@ const JoinForm = (props) => {
                             })}/>
                             <button type='button' className='btn'
                              onClick={onEmailCheck}>중복확인</button>
+                             {errors.email && <p style={{color:'#1e87f0'}}>{errors.email?.message}</p>}
                             </td>
                         </tr>
                         <tr>
@@ -311,26 +315,25 @@ const JoinForm = (props) => {
                                 },
                               })}
                             />
-                            {errors.tel && <p>{errors.tel?.message}</p>}
                             <button id="" className='btn' type="button">인증번호 받기</button>
+                            {errors.tel && <p style={{color:'#1e87f0'}}>{errors.tel?.message}</p>}
                             </td>
                         </tr>
                         <tr>
                             <th>주소<span class="ico">*</span></th>
                             <td>
                             <input type='text' className="form-control"
-                             name="address1" value={data.address1}
-                             {...register("address1")}
+                             name="address1" value={joinData.address1}
+                             
                             required/>
                             <input type='text' className="form-control"
-                             name="address2" value={data.address2}
-                             {...register("address2")}
+                             name="address2" value={joinData.address2}
+                             
                             required/>
                             <input type='text' className="form-control"
-                             name="zonecode" value={data.zonecode}
-                             {...register("zonecode")}
+                             name="zonecode" value={joinData.zonecode}
+                             
                             required/>
-                           
                            <div className="App">
                          
                             <Button onClick={handleOpen} style={{paddingLeft:'30px'}}>
@@ -357,7 +360,7 @@ const JoinForm = (props) => {
                             </td>
                         </tr>
                         <tr>
-                            <th>생년월일</th>
+                            <th>생년월일<span class="ico">*</span></th>
                             <div className='birth_day'>
                             <td style={{textAlign:'center', margin:'0,auto'}}>
                                 <div style={{textAlign:'center'}}>
@@ -425,9 +428,9 @@ const JoinForm = (props) => {
                                 placeholder="DD"/>
 
                                 </div>
-                                {errors.year && <p>{errors.year?.message}</p>}
-                                {!errors.year && errors.month && <p>{errors.month?.message}</p>}
-                                {!errors.year && !errors.month && errors.day && <p>{errors.day?.message}</p>}
+                                {errors.year && <p style={{color:'#1e87f0'}}>{errors.year?.message}</p>}
+                                {!errors.year && errors.month && <p style={{color:'#1e87f0'}}>{errors.month?.message}</p>}
+                                {!errors.year && !errors.month && errors.day && <p style={{color:'#1e87f0'}}>{errors.day?.message}</p>}
                             </td>
                             </div>
                         </tr>
