@@ -5,16 +5,20 @@ import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux'
 import { savePlan } from '../../modules/planner';
 import { useInView } from 'react-intersection-observer';
-import { PlaceItem, MyPlaceList, NumPlaceItem } from ".";
+import { PlaceItem, MyPlaceList, NumPlaceItem, DayPlaceList } from '.';
 import '../../styles/plan.css';
 import setAuthorizationToken from '../../utils/setAuthorizationToken';
-
 import { addDays, format, add } from 'date-fns'
 import ko from 'date-fns/locale/ko';
+import { usePrompt } from '../../utils/Blocker';
 
 const { kakao } = window;
 
 const DayPlan = () => {
+  // prompt
+//   usePrompt(`현재 페이지에서 나가면 일정이 저장되지 않습니다. 
+// 정말 나가시겠습니까?`, true);
+
   // redux에서 변수 얻기
   const dispatch = useDispatch();
   const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
@@ -45,7 +49,7 @@ const DayPlan = () => {
         setPage(page + 1);
 
         // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
-        if(keyword == ''){
+        if(keyword === ''){
           areaUrl += `&pageNo=${page}`;
           console.log(areaUrl);
           delete axios.defaults.headers.common['Authorization'];
@@ -88,7 +92,7 @@ const DayPlan = () => {
 
   useEffect(() => {
     // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
-    if(keyword == ''){
+    if(keyword === ''){
       console.log(areaUrl);
       // setAuthorizationToken(null);
       // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
@@ -118,23 +122,23 @@ const DayPlan = () => {
 
   // 카테고리 필터링
   useEffect(() => {
-    if(category == ''){
+    if(category === ''){
       setCategoryPlace(places);
       return;
     }
-    if(category == 12){ // 관광지, 문화시설
+    if(category === 12){ // 관광지, 문화시설
       // console.log(category);
-      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '12' || place.contenttypeid == '14'));
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid === 12 || place.contenttypeid === 14));
       // console.log(categoryPlace);
     }
-    else if(category == 39){  // 음식점
+    else if(category === 39){  // 음식점
       // console.log(category);
-      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '39'));
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid === 39));
       // console.log(categoryPlace);
     }
     else{ // 숙박
       // console.log(category);
-      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '32'));
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid === 32));
       // console.log(categoryPlace);
     }
   }, [category, places]);
@@ -304,36 +308,11 @@ const DayPlan = () => {
               day == trip.days ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
             }
           </div>
-          <div className='plan-place-list'>
-            {/* <span className='label'>나의 일정</span> */}
-            <div className='place-list'>
-              {
-                // dayPlan이 있을 때만 표시
-                dayPlan && dayPlan.map((place, index) => (
-                  <div className='place-list-item' key={index}>
-                    <NumPlaceItem place={place} num={index + 1} focus={true}/>
-                    <div className='btn-wrap'>
-                      {/* TODO: drag & drop으로 변경 */}
-                      <div className='move-btn'>
-                        {
-                          index === 0 ? "" : <button type='button' className='btn btn-sm' onClick={() => upPlace(index)}>↑</button>
-                        }
-                        {
-                          index === dayPlan.length - 1 ? "" : <button type='button' className='btn btn-sm' onClick={() => downPlace(index)}>↓</button>
-                        }
-                      </div>
-                    
-                      <button type='button' className='edit-btn btn btn-danger btn-sm' onClick={() => removePlace(index)}>−</button>
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
+
+          <DayPlaceList dayPlan={dayPlan} setDayPlan={setDayPlan} removePlace={removePlace}/>
 
           <div style={{textAlign:'center', marginTop:'10px'}}>
             <button type='button' className='btn btn-secondary btn-sm btn-ok' onClick={() => {
-              // addPlan();
               // plan을 redux 전역 변수에 저장
               dispatch(savePlan(plan));
               navigate("/plan");
@@ -344,7 +323,7 @@ const DayPlan = () => {
         <div className='right'>
           {/* 장소 검색창 */}
           <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
-            if(e.key === 'Enter' && e.target.value != ''){
+            if(e.key === 'Enter' && e.target.value !== ''){
               setKeyword(e.target.value);
               e.target.value = '';
               setPlaces([]);
@@ -362,24 +341,24 @@ const DayPlan = () => {
 
               {/* 카테고리 필터(관광지, 음식점, 숙소,,) */}
               <span className='category-btn'>
-                <button type='button' className={category == 12 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
-                  if(category == 12){
+                <button type='button' className={category === 12 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category === 12){
                     setCategory('');
                   }
                   else{
                     setCategory(12);
                   }
                 }}>관광</button>
-                <button type='button' className={category == 39 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
-                  if(category == 39){
+                <button type='button' className={category === 39 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category === 39){
                     setCategory('');
                   }
                   else{
                     setCategory(39);
                   }
                 }}>맛집</button>
-                <button type='button' className={category == 32 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
-                  if(category == 32){
+                <button type='button' className={category === 32 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category === 32){
                     setCategory('');
                   }
                   else{
@@ -391,10 +370,10 @@ const DayPlan = () => {
             
             <div className='place-list'>
               {
-                // TODO: 끝까지 스크롤하면 장소 더 불러오기
+                // 끝까지 스크롤하면 장소 더 불러오기
                 // places && places.map((place, index) => (
                 categoryPlace && categoryPlace.map((place, index) => (
-                  (categoryPlace.length - 1 == index) ? (
+                  (categoryPlace.length - 1 === index) ? (
                     <div className='place-list-item' key={index} ref={ref} onMouseOver={()=>{
                       setMapX(place.mapx);
                       setMapY(place.mapy);

@@ -21,9 +21,14 @@
 #plan-calendar{
   text-align: center;
   height: 100vh;
-  display: flex;
+  /* display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
+}
+
+#plan-calendar > .calendar-wrap{
+  position: relative;
+  top: 17vh;
 }
 
 #plan-calendar .trip-title{
@@ -141,11 +146,11 @@
 }
 
 #plan .btn-plan{
-  margin: 5px;
   background-color: rgb(152, 221, 227);
   border-color: rgb(152, 221, 227);
   width: 100%;
-  margin: 0;
+  margin-top: 10px;
+  /* margin: 10px 0 0; */
   /* color: white; */
 }
 

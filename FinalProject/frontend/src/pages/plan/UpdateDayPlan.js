@@ -45,7 +45,7 @@ const UpdateDayPlan = () => {
         setPage(page + 1);
 
         // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
-        if(keyword == ''){
+        if(keyword === ''){
           areaUrl += `&pageNo=${page}`;
           console.log(areaUrl);
           delete axios.defaults.headers.common['Authorization'];
@@ -88,7 +88,7 @@ const UpdateDayPlan = () => {
 
   useEffect(() => {
     // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
-    if(keyword == ''){
+    if(keyword === ''){
       console.log(areaUrl);
       // setAuthorizationToken(null);
       // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
@@ -118,23 +118,23 @@ const UpdateDayPlan = () => {
 
   // 카테고리 필터링
   useEffect(() => {
-    if(category == ''){
+    if(category === ''){
       setCategoryPlace(places);
       return;
     }
-    if(category == 12){ // 관광지, 문화시설
+    if(category === 12){ // 관광지, 문화시설
       // console.log(category);
-      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '12' || place.contenttypeid == '14'));
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid === '12' || place.contenttypeid === '14'));
       // console.log(categoryPlace);
     }
-    else if(category == 39){  // 음식점
+    else if(category === 39){  // 음식점
       // console.log(category);
-      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '39'));
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid === '39'));
       // console.log(categoryPlace);
     }
     else{ // 숙박
       // console.log(category);
-      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '32'));
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid === '32'));
       // console.log(categoryPlace);
     }
   }, [category, places]);
@@ -346,7 +346,7 @@ const UpdateDayPlan = () => {
         <div className='right'>
           {/* 장소 검색창 */}
           <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
-            if(e.key === 'Enter' && e.target.value != ''){
+            if(e.key === 'Enter' && e.target.value !== ''){
               setKeyword(e.target.value);
               e.target.value = '';
               setPlaces([]);
@@ -364,24 +364,24 @@ const UpdateDayPlan = () => {
 
               {/* 카테고리 필터(관광지, 음식점, 숙소,,) */}
               <span className='category-btn'>
-                <button type='button' className={category == 12 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
-                  if(category == 12){
+                <button type='button' className={category === 12 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category === 12){
                     setCategory('');
                   }
                   else{
                     setCategory(12);
                   }
                 }}>관광</button>
-                <button type='button' className={category == 39 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
-                  if(category == 39){
+                <button type='button' className={category === 39 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category === 39){
                     setCategory('');
                   }
                   else{
                     setCategory(39);
                   }
                 }}>맛집</button>
-                <button type='button' className={category == 32 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
-                  if(category == 32){
+                <button type='button' className={category === 32 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category === 32){
                     setCategory('');
                   }
                   else{
@@ -396,7 +396,7 @@ const UpdateDayPlan = () => {
                 // TODO: 끝까지 스크롤하면 장소 더 불러오기
                 // places && places.map((place, index) => (
                 categoryPlace && categoryPlace.map((place, index) => (
-                  (categoryPlace.length - 1 == index) ? (
+                  (categoryPlace.length - 1 === index) ? (
                     <div className='place-list-item' key={index} ref={ref} onMouseOver={()=>{
                       setMapX(place.mapx);
                       setMapY(place.mapy);

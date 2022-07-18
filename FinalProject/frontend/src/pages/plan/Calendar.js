@@ -9,8 +9,13 @@ import ko from 'date-fns/locale/ko';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import '../../styles/plan.css';
+import { usePrompt } from '../../utils/Blocker';
 
 const Calendar = () => {
+  // prompt
+//   usePrompt(`현재 페이지에서 나가면 일정이 저장되지 않습니다. 
+// 정말 나가시겠습니까?`, true);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -72,7 +77,7 @@ const Calendar = () => {
 
   return (
     <div id='plan-calendar'>
-      <div style={{marginBottom:'40px'}}>
+      <div className='calendar-wrap'>
         <div className='title'>여행 일정을 선택하세요</div>
         <DateRangePicker
           locale={ko}
