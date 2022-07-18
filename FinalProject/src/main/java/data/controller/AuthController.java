@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import data.dto.LoginDto;
@@ -20,6 +21,8 @@ import data.dto.TokenDto;
 import data.jwt.JwtFilter;
 import data.jwt.TokenProvider;
 import data.service.CustomMemberDetailsService;
+
+import java.util.HashMap;
 
 import javax.validation.Valid;
 
@@ -64,6 +67,31 @@ public class AuthController {
     public ResponseEntity<String> join(@RequestBody MemberSecurityDto member){
     	service.join(member, "ROLE_USER");	// 일반회원 가입시 ROLE_USER로 권한 설정
     	return ResponseEntity.ok("Sign up success");
+    }
+    
+    @PostMapping("/findPw")
+    public ResponseEntity<String> findPassword(@RequestBody HashMap<String, Object> request) {
+//    	System.out.println(request.get("id"));
+//    	System.out.println(request.get("email"));
+    	
+    	if(service.checkId((String)request.get("id")) == 0) {
+    		return new ResponseEntity<>("회원정보를 찾을 수 없습니다.", HttpStatus.NOT_FOUND);
+    	}
+    	
+    	if(service.checkEmail((String)request.get("email")) == 0) {
+    		return new ResponseEntity<>("이메일 주소를 다시 확인해주세요.", HttpStatus.NOT_FOUND);
+    	}
+    	
+    	return new ResponseEntity<>(HttpStatus.OK);
+    }
+    
+    @PostMapping("/changePw")
+    public ResponseEntity<String> changePassword(@RequestBody HashMap<String, Object> request) {
+    	System.out.println(request);
+    	
+    	service.changePassword((String)request.get("id"), (String)request.get("password"));
+    	
+    	return new ResponseEntity<>(HttpStatus.OK);
     }
     
 //    @PostMapping("/login")
