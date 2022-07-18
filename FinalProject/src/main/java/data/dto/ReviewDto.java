@@ -12,6 +12,7 @@ import lombok.Data;
 @Data
 public class ReviewDto {
 	private int num;
+	private int review_photo_num;
 	private String place_id;
 	private int member_num;
 	private String name;

@@ -4,15 +4,13 @@ import { FinalHead, Footer, Header, Main, Menu } from "./components";
 import './App.css';
 import './AppHeemin.css';
 import { CityInfoMain, CityinfoMore, PlaceInfo } from "./pages/cityinfo";
-import { Calendar, Plan, DayPlan } from "./pages/plan";
-import { JoinForm, Auth,LoginForm,LoginFormTest, KakaoLogin, GoogleLogin } from "./pages/login";
+import { Calendar, Plan, DayPlan, UpdatePlan, UpdateDayPlan } from "./pages/plan";
+import { JoinForm, Auth, LoginForm, LoginFormTest, KakaoLogin, GoogleLogin } from "./pages/login";
 import { PlanDetail } from "./pages/detail";
-
-import {Mypage, Dashboard, Profile} from "./pages/mypage";
+import { Mypage, Dashboard, Profile } from "./pages/mypage";
 import { CityList } from './pages/citylist';
-import SecurityLogin from "./pages/login/SecurityLogin";
-import SecurityJoin from "./pages/login/SecurityJoin";
-// import { Dashboard } from "./pages/mypage";
+// import SecurityLogin from "./pages/login/SecurityLogin";
+// import SecurityJoin from "./pages/login/SecurityJoin";
 
 const RouteMain = () => {
  
@@ -44,13 +42,17 @@ const RouteMain = () => {
           <Route path="/kakao"  element={<KakaoLogin/>}/>
           <Route path="/google" element={<GoogleLogin/>}/>
 
-    
           {/* Planning */}
           <Route path="/plan/calendar/:cityNum" element={<Calendar/>} />
           <Route path="/plan" element={<Plan/>} />
           <Route path="/plan/:day" element={<DayPlan/>} />
+
+          {/* Update Plan */}
+          <Route path="/plan/update/:tripNum" element={<UpdatePlan/>} />
+          <Route path="/plan/update/:tripNum/:day" element={<UpdateDayPlan/>} />
           
           {/* PlaceInfo */}
+          {/* <Route path="/place/placedetail" element={<PlaceInfo/>}/> */}
           <Route path="/place/placedetail" element={<PlaceInfo/>}/>
 
           {/* Detail-Plan */}

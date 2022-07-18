@@ -5,27 +5,24 @@ import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux'
 import { savePlan } from '../../modules/planner';
 import { useInView } from 'react-intersection-observer';
-import { PlaceItem, MyPlaceList, NumPlaceItem } from ".";
+import { PlaceItem, MyPlaceList, NumPlaceItem, DayPlaceList } from '.';
 import '../../styles/plan.css';
 import setAuthorizationToken from '../../utils/setAuthorizationToken';
-
 import { addDays, format, add } from 'date-fns'
 import ko from 'date-fns/locale/ko';
+import { usePrompt } from '../../utils/Blocker';
 
 const { kakao } = window;
 
 const DayPlan = () => {
+  // prompt
+//   usePrompt(`현재 페이지에서 나가면 일정이 저장되지 않습니다. 
+// 정말 나가시겠습니까?`, true);
+
   // redux에서 변수 얻기
   const dispatch = useDispatch();
-  // const plan = useSelector(state => state.planner.plan);
-  const days = useSelector(state => state.planner.days);
-  const areaCode = useSelector(state => state.planner.areaCode);
-  const sigunguCode = useSelector(state => state.planner.sigunguCode);
-  const statePlan = useSelector(state => state.planner.plan);
-  const [plan, setPlan] = useState(statePlan);
-
-  // test
-  const startDate = useSelector(state => state.planner.startDate);
+  const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
+  const trip = useSelector(state => state.planner.trip);
   
   const navigate = useNavigate();
   const {day} = useParams();
@@ -52,7 +49,7 @@ const DayPlan = () => {
         setPage(page + 1);
 
         // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
-        if(keyword == ''){
+        if(keyword === ''){
           areaUrl += `&pageNo=${page}`;
           console.log(areaUrl);
           delete axios.defaults.headers.common['Authorization'];
@@ -61,9 +58,7 @@ const DayPlan = () => {
             console.dir(res.data.response.body.items.item);
             setPlaces([...places, ...res.data.response.body.items.item]);
             setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
-          }).catch((err) => {
-            console.log(err.data);
-          });
+          }).catch((err) => console.log(err.data));
         }
         // 키워드 검색 장소
         else{
@@ -76,30 +71,29 @@ const DayPlan = () => {
             console.dir(res.data.response.body.items.item);
             setPlaces([...places, ...res.data.response.body.items.item]);
             setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
-          }).catch((err) => {
-            console.log(err.data);
-          });
+          }).catch((err) => console.log(err.data));
         }
       }
   }, [inView]);
 
   // 추천 장소 url(arrange=P)
-  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${trip.area_code}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
-  if(sigunguCode){  // 시군구 코드가 있는 도시이면
-    areaUrl += `&sigunguCode=${sigunguCode}`;
+  if(trip.sigungu_code){  // 시군구 코드가 있는 도시이면
+    areaUrl += `&sigunguCode=${trip.sigungu_code}`;
   }
 
   // 키워드 검색 url
-  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${trip.area_code}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
-  if(sigunguCode){  // 시군구 코드가 있는 도시이면
-    keywordUrl += `&sigunguCode=${sigunguCode}`;
+  if(trip.sigungu_code){  // 시군구 코드가 있는 도시이면
+    keywordUrl += `&sigunguCode=${trip.sigungu_code}`;
   }
 
   useEffect(() => {
     // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
-    if(keyword == ''){
+    if(keyword === ''){
+      console.log(areaUrl);
       // setAuthorizationToken(null);
       // axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`;
       delete axios.defaults.headers.common['Authorization'];
@@ -109,12 +103,11 @@ const DayPlan = () => {
         setPlaces(res.data.response.body.items.item);
         setCategoryPlace(res.data.response.body.items.item);
         kakaoMapScript(res.data.response.body.items.item[0].mapx, res.data.response.body.items.item[0].mapy);
-      }).catch((err) => {
-        console.log(err.data);
-      });
+      }).catch((err) => console.log(err.data));
     }
     // 키워드 검색 장소
     else{
+      console.log(areaUrl);
       // console.log("keyword 검색 요청");
       // console.log(keywordUrl);
       delete axios.defaults.headers.common['Authorization'];
@@ -123,43 +116,29 @@ const DayPlan = () => {
         console.dir(res.data.response.body.items.item);
         setPlaces(res.data.response.body.items.item);
         setCategoryPlace(res.data.response.body.items.item);
-      }).catch((err) => {
-        console.log(err.data);
-      });
+      }).catch((err) => console.log(err.data));
     }
   }, [keyword]);
 
-  // 처음 렌더링 시 api에서 목록 받아옴
-  // useEffect(() => {
-  //   // console.log(areaUrl);
-  //   axios.get(areaUrl)
-  //   .then((res) => {
-  //     console.dir(res.data.response.body.items.item);
-  //     setPlaces(res.data.response.body.items.item);
-  //   }).catch((err) => {
-  //     console.log(err.data);
-  //   });
-  // }, []);
-
   // 카테고리 필터링
   useEffect(() => {
-    if(category == ''){
+    if(category === ''){
       setCategoryPlace(places);
       return;
     }
-    if(category == 12){ // 관광지, 문화시설
+    if(category === 12){ // 관광지, 문화시설
       // console.log(category);
-      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '12' || place.contenttypeid == '14'));
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid === 12 || place.contenttypeid === 14));
       // console.log(categoryPlace);
     }
-    else if(category == 39){  // 음식점
+    else if(category === 39){  // 음식점
       // console.log(category);
-      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '39'));
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid === 39));
       // console.log(categoryPlace);
     }
     else{ // 숙박
       // console.log(category);
-      setCategoryPlace(places.filter((place, index) => place.contenttypeid == '32'));
+      setCategoryPlace(places.filter((place, index) => place.contenttypeid === 32));
       // console.log(categoryPlace);
     }
   }, [category, places]);
@@ -228,8 +207,8 @@ const DayPlan = () => {
     const container = document.getElementById('map'); // 지도를 표시할 div
 
     const options = {
-      // TODO: 도시마다 중심 좌표 다르게(DB에 넣어놓기)
-      center: new kakao.maps.LatLng(35.1795543, 129.0756416), // 지도의 중심좌표
+      // 도시마다 중심 좌표 다르게(DB에 넣어놓기)
+      center: new kakao.maps.LatLng(trip.y, trip.x), // 지도의 중심좌표
       level: 8  // 지도의 확대 레벨
     };
     
@@ -317,7 +296,7 @@ const DayPlan = () => {
 
       <div className='list-container'>
         <div className='left'>
-          <div style={{textAlign:'center',color:'gray',fontSize:'14px'}}>{format(add(startDate, {days: day - 1}), "MM/dd (eee)", {locale: ko})}</div>
+          <div style={{textAlign:'center',color:'gray',fontSize:'14px'}}>{format(add(new Date(trip.startDate), {days: day - 1}), "MM/dd (eee)", {locale: ko})}</div>
           <div className='title-wrap'>
             {
               // day1이면 이전 날짜 버튼 안보임
@@ -326,39 +305,14 @@ const DayPlan = () => {
             <span className='title'>DAY {day}</span>
             {
               // 마지막 날이면 다음 날짜 버튼 안보임
-              day == days ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
+              day == trip.days ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
             }
           </div>
-          <div className='plan-place-list'>
-            {/* <span className='label'>나의 일정</span> */}
-            <div className='place-list'>
-              {
-                // dayPlan이 있을 때만 표시
-                dayPlan && dayPlan.map((place, index) => (
-                  <div className='place-list-item' key={index}>
-                    <NumPlaceItem place={place} num={index + 1} focus={true}/>
-                    <div className='btn-wrap'>
-                      {/* TODO: drag & drop으로 변경 */}
-                      <div className='move-btn'>
-                        {
-                          index === 0 ? "" : <button type='button' className='btn btn-sm' onClick={() => upPlace(index)}>↑</button>
-                        }
-                        {
-                          index === dayPlan.length - 1 ? "" : <button type='button' className='btn btn-sm' onClick={() => downPlace(index)}>↓</button>
-                        }
-                      </div>
-                    
-                      <button type='button' className='edit-btn btn btn-danger btn-sm' onClick={() => removePlace(index)}>−</button>
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
+
+          <DayPlaceList dayPlan={dayPlan} setDayPlan={setDayPlan} removePlace={removePlace}/>
 
           <div style={{textAlign:'center', marginTop:'10px'}}>
-            <button type='button' className='btn btn-secondary btn-ok' onClick={() => {
-              // addPlan();
+            <button type='button' className='btn btn-secondary btn-sm btn-ok' onClick={() => {
               // plan을 redux 전역 변수에 저장
               dispatch(savePlan(plan));
               navigate("/plan");
@@ -369,7 +323,7 @@ const DayPlan = () => {
         <div className='right'>
           {/* 장소 검색창 */}
           <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
-            if(e.key === 'Enter' && e.target.value != ''){
+            if(e.key === 'Enter' && e.target.value !== ''){
               setKeyword(e.target.value);
               e.target.value = '';
               setPlaces([]);
@@ -387,24 +341,24 @@ const DayPlan = () => {
 
               {/* 카테고리 필터(관광지, 음식점, 숙소,,) */}
               <span className='category-btn'>
-                <button type='button' className={category == 12 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
-                  if(category == 12){
+                <button type='button' className={category === 12 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category === 12){
                     setCategory('');
                   }
                   else{
                     setCategory(12);
                   }
                 }}>관광</button>
-                <button type='button' className={category == 39 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
-                  if(category == 39){
+                <button type='button' className={category === 39 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category === 39){
                     setCategory('');
                   }
                   else{
                     setCategory(39);
                   }
                 }}>맛집</button>
-                <button type='button' className={category == 32 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
-                  if(category == 32){
+                <button type='button' className={category === 32 ? 'btn btn-dark btn-sm' : 'btn btn-outline-dark btn-sm'} onClick={() => {
+                  if(category === 32){
                     setCategory('');
                   }
                   else{
@@ -416,10 +370,10 @@ const DayPlan = () => {
             
             <div className='place-list'>
               {
-                // TODO: 끝까지 스크롤하면 장소 더 불러오기
+                // 끝까지 스크롤하면 장소 더 불러오기
                 // places && places.map((place, index) => (
                 categoryPlace && categoryPlace.map((place, index) => (
-                  (categoryPlace.length - 1 == index) ? (
+                  (categoryPlace.length - 1 === index) ? (
                     <div className='place-list-item' key={index} ref={ref} onMouseOver={()=>{
                       setMapX(place.mapx);
                       setMapY(place.mapy);

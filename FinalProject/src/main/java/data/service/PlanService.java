@@ -7,11 +7,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import data.dto.CityDto;
+import data.dto.CityTripDto;
 import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
 import data.dto.PlanDateDto;
 import data.dto.PlanDto;
 import data.dto.PlanMapDto;
+import data.dto.PlanPlaceDto;
 import data.dto.TripDto;
 import data.mapper.PlanMapper;
 
@@ -21,9 +24,10 @@ public class PlanService implements PlanServiceInter {
 	@Autowired
 	private PlanMapper planMapper;
 	
+	// 일정 만들기 페이지
 	@Override
-	public Map<String, Object> getCityCode(int cityNum) {
-		return planMapper.getCityCode(cityNum).get(0);
+	public CityDto getCityCode(int cityNum) {
+		return planMapper.getCityCode(cityNum);
 	}
 	
 	@Override
@@ -54,6 +58,19 @@ public class PlanService implements PlanServiceInter {
 	@Override
 	public void insertPlace(PlaceDto place) {
 		planMapper.insertPlace(place);
+	}
+	
+	// 일정 수정 페이지
+	public CityTripDto getTripInfo(int tripNum) {
+		return planMapper.getTripInfo(tripNum);
+	}
+	
+	public List<PlanPlaceDto> getPlaceList(int tripNum){
+		return planMapper.getPlaceList(tripNum);
+	}
+	
+	public void deleteAllItinerary(int tripNum) {
+		planMapper.deleteAllItinerary(tripNum);
 	}
 	
 	//////////////////////////////////////////
