@@ -218,7 +218,7 @@
     padding-top: 13px;
 }
 .container_login{
-    width: 410px;
+    width: 500px;
     background-color: #fff;
     padding: 30px;
     box-shadow: unset;
@@ -332,9 +332,12 @@
    
 }
 .container_login .loginPage_text{
-    margin-left: 200px;
+    
     height: 10px;
 }
 .form_container .id_checked{
+    margin-left: 250px;
+    float: right;
+    margin-bottom: 20px;
  
 }

@@ -8,6 +8,9 @@ import { SearchId, SearchPass } from './index.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../modules/auth';
 import {useCookies}from 'react-cookie';
+import kakao_icon from '../../assets/images/kakao_icon.png';
+import naver_icon from '../../assets/images/naver_icon.png';
+import google_icon from '../../assets/images/google_icon.png';
 
 const LoginForm = () => {
 
@@ -15,8 +18,8 @@ const LoginForm = () => {
    const [SearchId_modal,setSearchId_modal] = useState(false);
    const [SeachPass_modal,setSearchPass_modal] = useState(false);
 
-   const saveId=useSelector(state => state.auth.saveId);
-   const saveUser=useSelector(state => state.auth.user.id);
+   let saveId=useSelector(state => state.auth.saveId);
+   let saveUser=useSelector(state => state.auth.user.id);
    console.log(saveUser);
 
     // redux
@@ -86,8 +89,8 @@ const LoginForm = () => {
     const failGoogle = (response) => {
         console.log(response);
     }
-    const [id, setId] = useState("");
-    const [isRemember, setIsRemember] = useState(false);
+    // const [id, setId] = useState("");
+    // const [isRemember, setIsRemember] = useState(false);
   
 
     // useEffect(() => {
@@ -108,67 +111,142 @@ const LoginForm = () => {
     const [isChecked, setIsChecked] = useState(saveId);
     const handleChecked = (event) => {
         setIsChecked(event.target.checked);
-        if(!isChecked){
-       saveId(true);  
-    }else{
-        setId(false);
-    }
+        if (event.target.checked) {
+            localStorage.clear();
+            saveUser='';
+            saveId=false;
+        } else {
+            saveId(true);  
+            saveUser(inputId);
+        }
+    //     if(!event.target.checked){
+    //    saveId(true);  
+    //    saveUser(inputId);
+    // } else{
+    //     saveId(false);  
+    //     setInputId('');
+    //    saveUser('');
+    // }
      };
+     const removeStorage = () => {
+        if(!isChecked) {
+            localStorage.clear();
+            saveUser='';
+            saveId=false;
+        }
+     }
+
+     useEffect(()=>{
+        removeStorage();
+     },[])
+
     return (
-        <div className="section_login">
-            <form onSubmit={onClickLogin}>
-                <h3 className="tit_login">로그인</h3>
-                <div className="write_form">
-
-                <input type="text" name="" size="20" placeholder="아이디를 입력해주세요"
-                    value={isChecked ? saveUser : inputId } onChange={handleInputId}/>
-                <label className="loginPage_text">
-                    <input type="checkbox" 
-                    checked={isChecked} onChange={handleChecked}
-                        />
-                    ID 저장하기
-                </label>
-                <input type="password" name="" size="20" placeholder="비밀번호를 입력해주세요"
-                    value={inputPw} onChange={handleInputPw}/>
-                    <div className="login_search">
-                        <a className="link"  onclick="" href=''>
-                        아이디 찾기
-                        </a>
-                        <span className="bar"></span>
-                        <a className="link">
-                        비밀번호 찾기
-                        </a>
-                    </div>
-                </div>
-             
-
-                <button className="btn_type1" type="submit">
-                    <span className="txt_type">로그인</span>
-                </button>
-            
-                <button type='button' className="btn_type2 btn_member" onClick={()=>{
-                    console.log("hi");
-                    navi("/join");
-                }} >
-                    <span className="txt_type">회원가입</span>
-                </button>
-            
-                <h1>
-                    <a href={KAKAO_AUTH_URL}>Kakao Login</a>
-                </h1>
-                
-                <div className="grid-naver" id='naverIdLogin'></div>
-                
-                <GoogleLogin
-                    clientId="362168925347-7h80oeftm2cub12235gac45dvhjo9fce.apps.googleusercontent.com"
-                    buttonText="Login"
-                    onSuccess={successGoogle}
-                    onFailure={failGoogle}
-                    cookiePolicy={'single_host_origin'}
-                />
-            </form>
+        
+        <div className='container_login'>
+      <form onSubmit={onClickLogin}>
+        <div className='text'>LOGIN</div>
+        <div className='small_text'>나만의 여행 플래너 - TRIP:US</div>
+     
+      <div className='form_container'>
+      <div className='data'>
+          <label>아이디</label>
+            <input type="text" id="LoginId" value={isChecked ? saveUser : inputId } onChange={handleInputId}
+            required></input>
         </div>
+        <div className="id_checked">
+            <input type="checkbox"  id='id_checkbox'
+              checked={isChecked} onChange={handleChecked}/>
+            <label className="loginPage_text" >아이디 저장</label>
+        </div>
+        <br></br>
+        <div className='data'>
+          <label>비밀번호</label>
+          <input type="password" id="LoginPass" value={inputPw} onChange={handleInputPw} required></input>
+        </div>
+        <div className='forgot_pass'>
+          <a href='/findPassword'>비밀번호를 잊으셨나요?</a>
+        </div>
+        <div className='login_btn'>
+          <button type='submit' id='loginBtn'>로그인</button>
+        </div>
+        <div className='signup_link'>
+          회원이 아니세요?
+          <a href="join">회원가입하기</a>
+        </div>
+      </div>
+      <div className='divider_container'>
+        <div className='divider'></div>
+        <span>or</span>
+      </div>
+      <div className='sns_text'>SNS 간편 로그인</div>
+      <div className='socialBtn-container'>
+        <div className='socialBtn'>
+          <img src={kakao_icon} alt='카카오'></img>
+        </div>
+        <div className='socialBtn'>
+          <img src={naver_icon} alt='네이버'></img>
+        </div>
+        <div className='socialBtn'>
+          <img src={google_icon} alt='구글'></img>
+        </div>
+      </div>
+      </form>
+    </div>
     );
 };
 
 export default LoginForm;
+
+// <div className="section_login">
+        //     <form onSubmit={onClickLogin}>
+        //         <h3 className="tit_login">로그인</h3>
+        //         <div className="write_form">
+
+        //         <input type="text" name="" size="20" placeholder="아이디를 입력해주세요"
+        //             value={isChecked ? saveUser : inputId } onChange={handleInputId}/>
+        //         <label className="loginPage_text">
+        //             <input type="checkbox" 
+        //             checked={isChecked} onChange={handleChecked}
+        //                 />
+        //             ID 저장하기
+        //         </label>
+        //         <input type="password" name="" size="20" placeholder="비밀번호를 입력해주세요"
+        //             value={inputPw} onChange={handleInputPw}/>
+        //             <div className="login_search">
+        //                 <a className="link"  onclick="" href=''>
+        //                 아이디 찾기
+        //                 </a>
+        //                 <span className="bar"></span>
+        //                 <a className="link">
+        //                 비밀번호 찾기
+        //                 </a>
+        //             </div>
+        //         </div>
+             
+
+        //         <button className="btn_type1" type="submit">
+        //             <span className="txt_type">로그인</span>
+        //         </button>
+            
+        //         <button type='button' className="btn_type2 btn_member" onClick={()=>{
+        //             console.log("hi");
+        //             navi("/join");
+        //         }} >
+        //             <span className="txt_type">회원가입</span>
+        //         </button>
+            
+        //         <h1>
+        //             <a href={KAKAO_AUTH_URL}>Kakao Login</a>
+        //         </h1>
+                
+        //         <div className="grid-naver" id='naverIdLogin'></div>
+                
+        //         <GoogleLogin
+        //             clientId="362168925347-7h80oeftm2cub12235gac45dvhjo9fce.apps.googleusercontent.com"
+        //             buttonText="Login"
+        //             onSuccess={successGoogle}
+        //             onFailure={failGoogle}
+        //             cookiePolicy={'single_host_origin'}
+        //         />
+        //     </form>
+        // </div>
