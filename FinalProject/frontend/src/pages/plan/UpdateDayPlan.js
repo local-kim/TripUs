@@ -8,20 +8,20 @@ import { useInView } from 'react-intersection-observer';
 import { PlaceItem, MyPlaceList, NumPlaceItem } from ".";
 import '../../styles/plan.css';
 import setAuthorizationToken from '../../utils/setAuthorizationToken';
-
 import { addDays, format, add } from 'date-fns'
 import ko from 'date-fns/locale/ko';
 
 const { kakao } = window;
 
-const DayPlan = () => {
+const UpdateDayPlan = () => {
+  const navigate = useNavigate();
+  const {tripNum, day} = useParams();
+
   // redux에서 변수 얻기
   const dispatch = useDispatch();
   const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
   const trip = useSelector(state => state.planner.trip);
   
-  const navigate = useNavigate();
-  const {day} = useParams();
   // const [plan, setPlan] = useState(Array.from(Array(days), () => new Array())); // [days x n] 2차원 배열
   const [dayPlan, setDayPlan] = useState(plan[day - 1]);
 
@@ -73,17 +73,17 @@ const DayPlan = () => {
   }, [inView]);
 
   // 추천 장소 url(arrange=P)
-  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${trip.area_code}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${trip.areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
-  if(trip.sigungu_code){  // 시군구 코드가 있는 도시이면
-    areaUrl += `&sigunguCode=${trip.sigungu_code}`;
+  if(trip.sigunguCode){  // 시군구 코드가 있는 도시이면
+    areaUrl += `&sigunguCode=${trip.sigunguCode}`;
   }
 
   // 키워드 검색 url
-  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${trip.area_code}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${trip.areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
-  if(trip.sigungu_code){  // 시군구 코드가 있는 도시이면
-    keywordUrl += `&sigunguCode=${trip.sigungu_code}`;
+  if(trip.sigunguCode){  // 시군구 코드가 있는 도시이면
+    keywordUrl += `&sigunguCode=${trip.sigunguCode}`;
   }
 
   useEffect(() => {
@@ -146,13 +146,13 @@ const DayPlan = () => {
   const prevDay = () => {
     // addPlan();
     setDayPlan(plan[Number(day) - 2]);
-    navigate(`/plan/${Number(day) - 1}`);
+    navigate(`/plan/update/${tripNum}/${Number(day) - 1}`);
   }
 
   const nextDay = () => {
     // addPlan();
     setDayPlan(plan[Number(day)]);  // dayPlan에 다음날의 일정을 저장
-    navigate(`/plan/${Number(day) + 1}`);
+    navigate(`/plan/update/${tripNum}/${Number(day) + 1}`);
   }
 
   // 선택한 장소를 dayPlan에 추가
@@ -203,7 +203,7 @@ const DayPlan = () => {
     const container = document.getElementById('map'); // 지도를 표시할 div
 
     const options = {
-      // 도시마다 중심 좌표 다르게(DB에 넣어놓기)
+      // 도시마다 중심 좌표 다르게
       center: new kakao.maps.LatLng(trip.y, trip.x), // 지도의 중심좌표
       level: 8  // 지도의 확대 레벨
     };
@@ -335,8 +335,10 @@ const DayPlan = () => {
             <button type='button' className='btn btn-secondary btn-sm btn-ok' onClick={() => {
               // addPlan();
               // plan을 redux 전역 변수에 저장
+              console.log(plan);
               dispatch(savePlan(plan));
-              navigate("/plan");
+              navigate(`/plan/update/${tripNum}`);
+              // navigate(`/..`);
             }}>완료</button>
           </div>
         </div>
@@ -430,4 +432,4 @@ const DayPlan = () => {
   );
 };
 
-export default DayPlan;
+export default UpdateDayPlan;

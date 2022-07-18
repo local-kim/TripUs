@@ -1,46 +1,77 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { NumPlaceItem, PlaceItem } from '.';
-import '../../styles/plan.css';
+import { useNavigate, useParams } from 'react-router-dom';
+import { NumPlaceItem } from '.';
 import { format } from 'date-fns';
-import { resetPlan } from '../../modules/planner';
+import { useDispatch, useSelector } from 'react-redux';
+import { saveTrip, savePlan, resetPlan } from '../../modules/planner';
 
 const { kakao } = window;
 
-const Plan = () => {
+const UpdatePlan = () => {
   // redux에서 변수 얻기
   const dispatch = useDispatch();
-  const trip = useSelector(state => state.planner.trip);
-  const plan = useSelector(state => state.planner.plan);
 
   const navigate = useNavigate();
+  const {tripNum} = useParams();
 
-  let insertUrl = process.env.REACT_APP_SPRING_URL + `plan/insert`;
+  const [tripInfo, setTripInfo] = useState({
+    ...useSelector(state => state.planner.trip),
+    startDate: format(new Date(), "yyyy-MM-dd"),
+    endDate: format(new Date(), "yyyy-MM-dd")
+  });
 
-  const insertPlan = () => {
-    axios.post(insertUrl, {
-      plan: plan,
-      trip: trip
-    })
-    .then(res => {
-      // 해당 일정 상세 페이지로 이동(trip_num 이용)
-      dispatch(resetPlan());
-      navigate(`/plan/detail/${res.data}`);
-    })
-    .catch(err => console.log(err));
-  }
+  const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
+  // console.log(plan);
 
   const [focus, setFocus] = useState(0);
+
+  let tripUrl = `${process.env.REACT_APP_SPRING_URL}plan/trip-info?tripNum=`;
+  let planUrl = `${process.env.REACT_APP_SPRING_URL}plan/place-list?tripNum=`;
+
+  // redux에 plan이 없을 때만 axios로 DB에서 일정 가져오기
+  // plan이 있으면 그거 사용하기
+  useEffect(() => {
+    if(plan.length === 0){
+      axios.all([axios.get(tripUrl + tripNum), axios.get(planUrl + tripNum)])
+      .then(
+        axios.spread((res1, res2) => {
+          // trip info 처리
+          setTripInfo(res1.data);
+          dispatch(saveTrip({...res1.data, areaCode: res1.data.area_code, sigunguCode: res1.data.sigungu_code}));
+
+          // plan 처리
+          for(let i = 0; i < res1.data.days; i++){
+            plan.push(res2.data.filter(place => place.day == i + 1));
+            // console.log(`day ${i + 1}`, plan[i]);
+          }
+        })
+      )
+      .then(()=>{
+        dispatch(savePlan(plan));
+      })
+      .catch(err => console.log(err));
+    }
+  }, []);
+
+  let updateUrl = `${process.env.REACT_APP_SPRING_URL}plan/update/${tripNum}/${tripInfo.cityNum}`;
+
+  const updatePlan = () => {
+    // DB 업데이트
+    axios.post(updateUrl, plan)
+    .catch(err => console.log(err));
+
+    // 수정을 완료하면 redux의 plan을 초기화시키고 일정 보기 페이지로 이동
+    dispatch(resetPlan());
+    navigate(`/plan/detail/${tripNum}`);
+  }
 
   // kakao map
   const kakaoMapScript = () => {
     const container = document.getElementById('map'); // 지도를 표시할 div  
 
     const options = {
-      // 도시마다 중심 좌표 다르게
-      center: new kakao.maps.LatLng(trip.y, trip.x), // 지도의 중심좌표
+      center: new kakao.maps.LatLng(tripInfo.y, tripInfo.x), // 지도의 중심좌표
       level: 9  // 지도의 확대 레벨
     };
     
@@ -108,27 +139,25 @@ const Plan = () => {
 
   useEffect(() => {
     kakaoMapScript();
-  }, [focus]);
+  }, [focus, tripInfo]);
 
   return (
     <div id='plan'>
-
       <div id='map'></div>
-      
+
       <div className='box-wrap'>
-        <div className='title'>{trip.cityName} 여행</div>
+        <div className='title'>{tripInfo.cityName} 여행</div>
         {
-          trip.days == 1 ? <div className='period'>{format(trip.startDate, "yyyy-MM-dd")} ({trip.days}일)</div> : <div className='period'>{format(trip.startDate, "yyyy-MM-dd")} ~ {format(trip.endDate, "yyyy-MM-dd")} ({trip.days}일)</div>
+          tripInfo.days == 1 ? <div className='period'>{tripInfo.startDate} ({tripInfo.days}일)</div> : <div className='period'>{tripInfo.startDate} ~ {tripInfo.endDate} ({tripInfo.days}일)</div>
         }
 
-        <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={insertPlan}>일정 생성하기</button>
+        <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={updatePlan}>일정 저장하기</button>
         {
           // days 만큼 반복문 돌리기
-          [...Array(trip.days)].map((day, index) => (
+          tripInfo && [...Array(tripInfo.days)].map((day, index) => (
             <div key={index + 1} className='day'>
-              <span className='title' onClick={() => {
-                setFocus(index);
-              }}>Day {index + 1}</span>
+              <span className='title' onClick={() => setFocus(index)}>Day {index + 1}</span>
+
               <div className='day-place-list'>
                 {
                   plan[index] && plan[index].map((place, i) => (
@@ -139,16 +168,16 @@ const Plan = () => {
                 }
               </div>
               <button type='button' className='btn btn-outline-primary btn-sm btn-place' onClick={() => {
-                navigate(`/plan/${index + 1}`);
+                navigate(`/plan/update/${tripNum}/${index + 1}`);
               }}>장소 추가</button>
               <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
             </div>
           ))
         }
       </div>
-      
+
     </div>
   );
 };
 
-export default Plan;
+export default UpdatePlan;
