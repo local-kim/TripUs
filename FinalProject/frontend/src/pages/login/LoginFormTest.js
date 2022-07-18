@@ -63,7 +63,7 @@ const LoginFormTest = () => {
          setInputId('');
          setInputPw('');
        })
-   }
+   };
 
    //로그인 성공했을 떄 처리 함수 
    const successGoogle = (response) => {
@@ -73,7 +73,8 @@ const LoginFormTest = () => {
    //로그인 실패했을 때 처리 함수 
    const failGoogle = (response) => {
        console.log(response);
-   }
+   };
+   
   return (
     <div className='container_login'>
       <form onSubmit={onClickLogin}>
@@ -81,19 +82,20 @@ const LoginFormTest = () => {
         <div className='small_text'>나만의 여행 플래너 - TRIP:US</div>
      
       <div className='form_container'>
-        <div className="id_checked">
-            <input type="checkbox"  id='id_checkbox'
-              checked={isChecked} onChange={handleChecked}/>
-            <label className="loginPage_text" >ID 저장하기</label>
-        </div>
       <div className='data'>
           <label>아이디</label>
             <input type="text" id="LoginId" value={isChecked ? saveUser : inputId } onChange={handleInputId}
             required></input>
         </div>
+        <div className="id_checked">
+            <input type="checkbox"  id='id_checkbox'
+              checked={isChecked} onChange={handleChecked}/>
+            <label className="loginPage_text" >아이디 저장</label>
+        </div>
+        <br></br>
         <div className='data'>
           <label>비밀번호</label>
-          <input type="text" id="LoginPass" value={inputPw} onChange={handleInputPw} required></input>
+          <input type="password" id="LoginPass" value={inputPw} onChange={handleInputPw} required></input>
         </div>
         <div className='forgot_pass'>
           <a href='/findPassword'>비밀번호를 잊으셨나요?</a>
@@ -122,19 +124,6 @@ const LoginFormTest = () => {
           <img src={google_icon} alt='구글'></img>
         </div>
       </div>
-      <h1>
-          <a href={KAKAO_AUTH_URL}>Kakao Login</a>
-      </h1>
-
-      <div className="grid-naver" id='naverIdLogin'></div>
-
-      <GoogleLogin
-          clientId="362168925347-7h80oeftm2cub12235gac45dvhjo9fce.apps.googleusercontent.com"
-          buttonText="Login"
-          onSuccess={successGoogle}
-          onFailure={failGoogle}
-          cookiePolicy={'single_host_origin'}
-      />
       </form>
     </div>
   );
