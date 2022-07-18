@@ -104,5 +104,11 @@ public class MypageService implements MypageServiceInter {
 		mapper.updateTripName(map);
 	}
 	
+	@Override
+	public List<TripDto> getAllDates3(int memberNum) {
+		// TODO Auto-generated method stub
+		
+		return mapper.getAllDates3(memberNum);
+	}
 }
 	

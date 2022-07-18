@@ -1,0 +1,95 @@
+.card .card-image img {
+    display: block;
+    border-radius: 2px 2px 0 0;
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    
+}
+
+.imgbox img {
+    backface-visibility: hidden;
+    transition: all 200ms ease-in-out;
+    -moz-transition: all 200ms ease-in-out;
+    -ms-transition: all 200ms ease-in-out;
+    -o-transition: all 200ms ease-in-out;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    width: 100%;
+}
+
+.city-card-contents-div {
+    padding: 24px;
+    border-radius: 0 0 2px 2px;
+
+    
+}
+
+
+
+.citynamefont {
+    font-size: 1.4rem;
+    /* font-weight: 600; */
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    height: 80px;
+    margin-top: 30px;
+    border-color: #f6f6f6;
+}
+
+.city-card-contents-div {
+    padding: 24px;
+    border-radius: 0 0 2px 2px;
+}
+
+
+.citynamefont h6 {
+    margin: 0 !important;
+}
+
+
+b, strong {
+    font-weight: bolder;
+}
+
+
+
+.row .col.l3 {
+    width: 25%;
+    margin-left: auto;
+    left: auto;
+    right: auto;
+}
+
+.swiper-horizontal>.swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal, .swiper-pagination-custom, .swiper-pagination-fraction {
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    
+}
+
+.swiper-pagination {
+    position: relative;
+    text-align: center;
+    transition: .3s opacity;
+    transform: translate3d(0,0,0);
+    z-index: 10;
+    margin-top: 30px;
+    
+}
+
+.swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
+    content: 'next';
+    color: white;
+}
+.swiper-button-prev:after, .swiper-rtl .swiper-button-next:after {
+    content: 'prev';
+    color: white;
+}

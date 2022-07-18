@@ -40,7 +40,7 @@ public interface MyPageMapper {
 	//유저 일정 정보
 	public List<TripDto> getAllDates();
 	
-	//유저 리뷰 갯수 가져오
+	//유저 리뷰 갯수 가져오기
 	public int userReview(int member_num);
 	
 	//마이페이지 프로필 등록
@@ -63,4 +63,7 @@ public interface MyPageMapper {
 	
 	//일정 이름 업데이트
 	public void updateTripName(Map<String, String> map);
+	
+	//캘린
+	public List<TripDto> getAllDates3(int memberNum);
 }

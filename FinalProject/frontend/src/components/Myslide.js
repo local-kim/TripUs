@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import '../App.css';
+import axios from 'axios';
 
 
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
@@ -13,6 +14,21 @@ import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
 const Myslide=() => {
+
+    let cityDataUrl = process.env.REACT_APP_SPRING_URL + "/cityData";
+
+    const [citydata,setCityData] = useState('');
+
+    const cityData=()=>{
+        axios.get(cityDataUrl)
+        .then(res=>{
+            setCityData(res.data);
+            console.log(res.data);      
+        })
+        .catch(err => {
+            alert(err);
+        })
+      }
 
   return (
     <Swiper
