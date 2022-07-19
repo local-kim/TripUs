@@ -12,7 +12,7 @@ import weatherdata from './weatherdata';
 const persistConfig = {
   key: "root",
   storage,  // localStorage에 저장
-  whitelist: ["auth", "planner"] // storage에 저장할 reducer
+  whitelist: ["auth"] // storage에 저장할 reducer
   // blacklist : 제외할 reducer
 };
 

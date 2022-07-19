@@ -14,7 +14,7 @@ const JoinForm = (props) => {
     let joinUrl = `${process.env.REACT_APP_SPRING_URL}auth/join`;
 
     const navi=useNavigate();
-    const [data,setData]=useState({
+    const [joinData,setJoinData]=useState({
         id:'',
         name:'',
         password:'',
@@ -46,7 +46,6 @@ const JoinForm = (props) => {
         formState: { errors },
       } = useForm();
     
-    
     const modalStyle = {
         position: 'absolute',
         top: '50%',
@@ -60,17 +59,17 @@ const JoinForm = (props) => {
       };
 
     //submit 호출될 함수
-    const onSave=(e)=>{
-        e.preventDefault(); //기본이벤트(submit이 action으로 넘어가는것)를 무효화
+    const onSave=(data)=>{
+        // e.preventDefault(); //기본이벤트(submit이 action으로 넘어가는것)를 무효화
 
         if(!btnOk){
             alert("아이디 중복체크를 해주세요");
             return;
         }
-        if(!passOk){
-            alert("비밀번호 확인");
-            return;
-        }
+        // if(!passOk){
+        //     alert("비밀번호 확인");
+        //     return;
+        // }
 
         console.log({
             ...data,
@@ -78,10 +77,12 @@ const JoinForm = (props) => {
         });
 
         // const url = process.env.REACT_APP_SPRING_URL + "member/insert";
-        axios.post(joinUrl, ({
+        axios.post(joinUrl, {
             ...data,
-            birthday:birth.year+birth.month+birth.day
-        }))
+            address1:joinData.address1,
+            address2:joinData.address2,
+            zonecode:joinData.zonecode,
+            birthday:data.year+data.month+data.day})
         .then(res => {
         //   alert("insert 성공");
             console.log(res.data);
@@ -95,12 +96,13 @@ const JoinForm = (props) => {
     const onDataChange=(e)=>{
         const {name,value}=e.target;
         //이벤트 발생 name이 pass일 경우 무조건 passok는 false
-        if(name==='pass')
-            setPassOk(false);
-        setData({
-            ...data,
+        // if(name==='pass')
+        //     setPassOk(false);
+        setJoinData({
+            ...joinData,
             [name]:value
         });
+        console.log(joinData.password);
     }
     const onBirthChange=(e)=>{
       const {name,value}=e.target;
@@ -113,7 +115,7 @@ const JoinForm = (props) => {
     //두번째 pass 입력시 호출
     const onPassChange=(e)=>{
         const {value}=e.target;
-        if(value===data.password)
+        if(value===joinData.password)
             setPassOk(true)
            
         else
@@ -122,7 +124,7 @@ const JoinForm = (props) => {
     }
     //아이디 중복 체크 버튼 이벤트
     const onIdCheck=()=>{
-        const url=process.env.REACT_APP_SPRING_URL+"member/idcheck?id="+data.id;
+        const url=process.env.REACT_APP_SPRING_URL+"member/idcheck?id="+watch('id');
         axios.get(url)
         .then(res=>{
             if(res.data===0){
@@ -140,7 +142,7 @@ const JoinForm = (props) => {
     }
     //이메일 중복 체크 버튼 이벤트
     const onEmailCheck=()=>{
-        const url=process.env.REACT_APP_SPRING_URL+"member/emailcheck?email="+data.email;
+        const url=process.env.REACT_APP_SPRING_URL+"member/emailcheck?email="+joinData.email;
         axios.get(url)
         .then(res=>{
             if(res.data===0){
@@ -171,7 +173,7 @@ const JoinForm = (props) => {
         console.log(fullAddress)
         console.log(kakaoData.zonecode)
         // setAddress1(fullAddress);
-        setData({...data, address1: fullAddress, address2: extraAddress, zonecode: kakaoData.zonecode});
+        setJoinData({...joinData, address1: fullAddress, address2: extraAddress, zonecode: kakaoData.zonecode});
         // setData({...data, address2: extraAddress});
         // setData({...data, zonecode: data.zonecode});
         // setAddress2(extraAddress);
@@ -192,7 +194,7 @@ const JoinForm = (props) => {
     return (
         <div className='member_join'>
             <div className='member_join'>
-            <form className="form-inline" onSubmit={onSave}>
+            <form className="form-inline" onSubmit={handleSubmit(onSave)}>
                 <caption><h3 className='tit'>회원가입</h3></caption> 
                 <p className="page_sub"><span class="ico">*</span>필수입력사항</p>
                 <table className="tbl_comm">
@@ -200,12 +202,27 @@ const JoinForm = (props) => {
                         <tr>
                             <th>아이디<span class="ico">*</span></th>
                             <td>
-                            <input type="text" name="id" value={data.id} maxLength="16" required label="아이디"
+                            <input type="text" name="id" label="아이디"
                             className="form-control"
-                            
                             onChange={onDataChange}
-                            placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"/>
+                            placeholder="6자 이상의 영문 혹은 영문과 숫자를 조합"
+                            {...register("id", {
+                                required: "아이디를 입력해주세요",
+                                minLength: {
+                                  value: 6,
+                                  message: "6자 이상의 아이디만 사용 가능합니다.",
+                                },
+                                maxLength: {
+                                  value: 12,
+                                  message: "12자 이하의 아이디만 사용 가능합니다.",
+                                },
+                                pattern: {
+                                  value: /^([a-z])|([a-z0-9])$/,
+                                  message: "아이디는 소문자와 숫자만 입력해주세요",
+                                },
+                              })}/>
                             <button type='button' className='btn' onClick={onIdCheck} >중복확인</button>
+                            {errors.id && <p style={{color:'#1e87f0'}}>{errors.id?.message}</p>}
                             </td>
                         </tr>
                         <tr>
@@ -213,40 +230,40 @@ const JoinForm = (props) => {
                             <td>
                             <input type="password" name="password"  className="form-control"
                              placeholder="비밀번호를 입력해주세요"
+                             onChange={onDataChange}
                             {...register("password", {
                                 required: "비밀번호를 입력해주세요",
                                 minLength: {
-                                  value: 6,
-                                  message: "6자 이상의 비밀번호만 사용 가능합니다.",
+                                  value: 8,
+                                  message: "8자 이상의 비밀번호만 사용 가능합니다.",
                                 },
                                 maxLength: {
                                   value: 16,
                                   message: "16자 이하의 비밀번호만 사용 가능합니다.",
                                 },
                                 pattern: {
-                                  value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
+                                  value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
                                   message: "영문, 숫자를 혼용하여 입력해주세요..",
-                                },
+                                }
                               })}/>
+                              {errors.password && <p style={{color:'#1e87f0'}}>{errors.password?.message}</p>}
                             </td>
                         </tr>
                         <tr>
                             <th>비밀번호확인<span class="ico">*</span></th>
                             <td>
-                            <input type="password" className="form-control" name="password_confirm" required
-                            onChange={onPassChange} autoComplete="off"
-                            label="비밀번호확인" maxLength="16" placeholder="비밀번호를 한번 더 입력해주세요"
+                            <input type="password" name="password_confirm"  className="form-control"
+                             placeholder="비밀번호를 입력해주세요"
                             {...register("password_confirm", {
-                                required: "비밀번호를 입력해주세요",
-                                // validate: (value) => value === password.current,
+                                validate: value => value===watch("password") || '비밀번호가 일치하지 않습니다.'
                               })}/>
-                            <span style={{marginLeft:'5px',color:passOk?'':'green'}}>{passOk?'사용가능':'동일한 비밀번호를 입력해주세요'}</span>
+                              {errors.password_confirm && <p style={{color:'#1e87f0'}}>{errors.password_confirm?.message}</p>}
                             </td>
                         </tr>
                         <tr>
                             <th>이름<span class="ico">*</span></th>
                             <td>
-                            <input type="text" name="name" className="form-control" value={data.name}
+                            <input type="text" name="name" className="form-control"
                             label="이름" onChange={onDataChange} placeholder="이름을 입력해주세요" required
                             {...register("name", {
                                 required: "이름을 입력해주세요",
@@ -263,48 +280,60 @@ const JoinForm = (props) => {
                                   message: "이름은 한글 또는 영문으로만 입력해주세요",
                                 },
                               })} />
+                              {errors.name && <p style={{color:'#1e87f0'}}>{errors.name?.message}</p>}
                             </td>
                         </tr>
                         <tr>
                             <th>이메일<span class="ico">*</span></th>
                             <td>
-                            <input type="text" name="email" value={data.email} onChange={onDataChange}
+                            <input type="text" name="email" onChange={onDataChange}
                              placeholder="예: bitrip@bitrip.com" className="form-control"
                             
-                            {...register("user_email", {
+                            {...register("email", {
                               required: "이메일을 입력해주세요",
                               pattern: {
-                                value: /^\S+@\S+$/,
+                                value: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i,
                                 message: "이메일 형식에 맞게 입력해주세요",
                               },
                               // validate: (value) => value === user_email_check,
                             })}/>
                             <button type='button' className='btn'
                              onClick={onEmailCheck}>중복확인</button>
+                             {errors.email && <p style={{color:'#1e87f0'}}>{errors.email?.message}</p>}
                             </td>
                         </tr>
                         <tr>
                             <th>연락처<span class="ico">*</span></th>
                             <td>
-                            <input type="text" value={data.tel} pattern="[0-9]*" name="tel" className="form-control" placeholder="숫자만 입력해주세요"
+                            <input type="text" name="tel" className="form-control" placeholder="숫자만 입력해주세요"
                             onChange={onDataChange}
+                            {...register("tel", {
+                                required: "숫자만 입력해주세요",
+                                pattern: {
+                                  value: /^01([0|1|6|7|8|9]{0})?([0-9]{8,9})$/,
+                                  message: "숫자만 입력해주세요",
+                                },
+                              })}
                             />
                             <button id="" className='btn' type="button">인증번호 받기</button>
+                            {errors.tel && <p style={{color:'#1e87f0'}}>{errors.tel?.message}</p>}
                             </td>
                         </tr>
                         <tr>
                             <th>주소<span class="ico">*</span></th>
                             <td>
                             <input type='text' className="form-control"
-                             name="address" value={data.address1}
+                             name="address1" value={joinData.address1}
+                             
                             required/>
                             <input type='text' className="form-control"
-                             name="address" value={data.address2}
+                             name="address2" value={joinData.address2}
+                             
                             required/>
                             <input type='text' className="form-control"
-                             name="address" value={data.zonecode}
+                             name="zonecode" value={joinData.zonecode}
+                             
                             required/>
-                           
                            <div className="App">
                          
                             <Button onClick={handleOpen} style={{paddingLeft:'30px'}}>
@@ -331,16 +360,77 @@ const JoinForm = (props) => {
                             </td>
                         </tr>
                         <tr>
-                            <th>생년월일</th>
+                            <th>생년월일<span class="ico">*</span></th>
                             <div className='birth_day'>
                             <td style={{textAlign:'center', margin:'0,auto'}}>
                                 <div style={{textAlign:'center'}}>
-                                <input type="text" value={birth.year} onChange={onBirthChange} name="year" id="birth_year" pattern="[0-9]*" label="생년월일" size="4" maxLength="4" placeholder="YYYY"/>
+                                <input type="text" onChange={onBirthChange} name="year" id="birth_year"
+                                maxLength="4"
+                                {...register("year", {
+                                    required: "숫자만 입력해주세요",
+                                    pattern: {
+                                      value: /^[0-9]*$/,
+                                      message: "숫자만 입력해주세요",
+                                    },
+                                    maxLength: {
+                                        value: 4
+                                      },
+                                    minLength: {
+                                        value: 4
+                                      },
+                                    validate: value => (value >= new Date().getFullYear()-100 && value <= new Date().getFullYear()) || '출생년도를 다시 입력하세요'
+                                  })}
+                                placeholder="YYYY"/>
+
                                 <span class="bar"></span>
-                                <input type="text" value={birth.month} onChange={onBirthChange} name="month" id="birth_month" pattern="[0-9]*" label="생년월일" size="2" maxLength="2" placeholder="MM"/>
+
+                                <input type="text" onChange={onBirthChange} name="month" id="birth_month"
+                                 maxLength="2"
+                                 {...register("month", {
+                                    required: "숫자만 입력해주세요",
+                                    pattern: {
+                                      value: /^[0-9]*$/,
+                                      message: "숫자만 입력해주세요",
+                                    },
+                                    maxLength: {
+                                        value: 2
+                                      },
+                                    minLength: {
+                                        value: 2
+                                      },
+                                      validate: value => (value >= 1 && value <=12) || '양식에 맞게 입력하세요'
+                                  })}
+                                placeholder="MM"/>
+
                                 <span class="bar"></span>
-                                <input type="text" value={birth.day} onChange={onBirthChange} name="day" id="birth_day" pattern="[0-9]*" label="생년월일" size="2" maxLength="2" placeholder="DD"/>
+
+                                <input type="text" onChange={onBirthChange} name="day" id="birth_day"
+                                 maxLength="2"
+                                {...register("day", {
+                                    required: "숫자만 입력해주세요",
+                                    pattern: {
+                                    value: /^[0-9]*$/,
+                                    message: "숫자만 입력해주세요",
+                                    },
+                                    maxLength: {
+                                        value: 2
+                                    },
+                                    minLength: {
+                                        value: 2
+                                    },
+                                    validate: value => (
+                                        (((watch("year")%4===0 && watch("year")%100!==0) || watch("year")%400===0) && watch("month")==="02" && value >= 1 && value <=29) ||
+                                        (!((watch("year")%4===0 && watch("year")%100!==0) || watch("year")%400===0) && watch("month")==="02" && value >= 1 && value <=28) ||
+                                        ((watch("month")==="04" || watch("month")==="06" || watch("month")==="09" || watch("month")==="11" ) && value >= 1 && value <=30) ||
+                                        ((watch("month")==="01" || watch("month")==="03" || watch("month")==="05" || watch("month")==="07" || watch("month")==="08" || watch("month")==="10" || watch("month")==="12") && value >= 1 && value <=31)
+                                        ) || '양식에 맞게 입력하세요'
+                                })}
+                                placeholder="DD"/>
+
                                 </div>
+                                {errors.year && <p style={{color:'#1e87f0'}}>{errors.year?.message}</p>}
+                                {!errors.year && errors.month && <p style={{color:'#1e87f0'}}>{errors.month?.message}</p>}
+                                {!errors.year && !errors.month && errors.day && <p style={{color:'#1e87f0'}}>{errors.day?.message}</p>}
                             </td>
                             </div>
                         </tr>

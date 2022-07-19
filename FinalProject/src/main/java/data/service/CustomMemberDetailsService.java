@@ -48,6 +48,22 @@ public class CustomMemberDetailsService implements UserDetailsService {
         mapper.saveAuthority(map);
     }
 	
+	public int checkId(String id) {
+		return mapper.checkId(id);
+	}
+	
+	public int checkEmail(String email) {
+		return mapper.checkEmail(email);
+	}
+	
+	public void changePassword(String id, String password) {
+		Map<String, String> map = new HashMap<>();
+		map.put("id", id);
+		map.put("password", passwordEncoder.encode(password));
+		
+		mapper.changePassword(map);
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 		MemberSecurityDto member = mapper.getMemberById(id);

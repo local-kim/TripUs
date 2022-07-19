@@ -5,22 +5,30 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import data.dto.CityDto;
+import data.dto.CityTripDto;
 import data.dto.ItineraryDto;
 import data.dto.PlaceDto;
 import data.dto.PlanDateDto;
 import data.dto.PlanDto;
 import data.dto.PlanMapDto;
+import data.dto.PlanPlaceDto;
 import data.dto.TripDto;
 
 @Mapper
 public interface PlanMapper {
-	public List<Map<String, Object>> getCityCode(int cityNum);
+	// 일정 만들기 페이지
+	public CityDto getCityCode(int cityNum);
 	public List<PlaceDto> getMyPlaceList(Map<String, Integer> map);
 	public int insertTrip(TripDto trip);
 	public void insertItinerary(ItineraryDto itinerary);
 	public int checkPlace(String contentId);
 	public void insertPlace(PlaceDto place);
 	
+	// 일정 수정 페이지
+	public CityTripDto getTripInfo(int tripNum);
+	public List<PlanPlaceDto> getPlaceList(int tripNum);
+	public void deleteAllItinerary(int tripNum);
 	
 	public List<PlanDto> getNavNum(int num);
 	public List<PlanDto> getPlanDatas(int num);
