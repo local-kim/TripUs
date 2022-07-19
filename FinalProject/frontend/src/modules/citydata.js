@@ -4,7 +4,7 @@ const SAVE_CITY_TRIP = 'cityinfo/SAVE_CITY_TRIP';
 
 // Action Creators
 // 관광정보 받는 변수
-export const getCity_data = ({
+export const getCity_data = () => ({
     type : SAVE_CITY_TRIP
 })
 
