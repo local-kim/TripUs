@@ -23,8 +23,8 @@ import { useDispatch } from 'react-redux';
 const CityInfoMain = () => {
     
     //관광명소 api contentId 받아오기
-    const pcontentId = 2360786;
-    // const [pcontentId,setPcontentId]=useState(); //2360786
+    // const pcontentId = 126078;
+    const [pcontentId,setPcontentId]=useState(); //2360786
     // const pnavi =useNavigate();
     // const [pid,setPid]=useState();
     // setPid(contentId);
@@ -274,6 +274,7 @@ const CityInfoMain = () => {
 
     return (
         <div id='cityinfo' style={muiStyle} >
+      
         <div>
             <img alt='' src={weatherImg}></img>
         </div>
@@ -291,11 +292,11 @@ const CityInfoMain = () => {
                         }}/>
                 </div>
             </div>        
-                        <Link to={'/place/placedetail'} state={{state:{pcontentId}}}>춘식이를 눌러주세요</Link>
             <div style={{display:'flex'}}>
                 <div>
                    <CityInfoImage/>
                 </div>
+                <Link to={'/place/placedetail'} state={{state:{pcontentId}}}>춘식이를 눌러주세요</Link>
                 {/* 날씨 */}
                 <div id='weather-css'>
                     {
@@ -409,7 +410,11 @@ const CityInfoMain = () => {
                                                 categoryPlace1 && categoryPlace1.map((item, idx) => (
                                                     <div className='col-sm-3'>
                                                         
-                                                        <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                        <Card value={item} sx={{width: 220, height: 300, marginRight: 12}} onClick={(e)=>{
+                                                                    setPcontentId(e.target.value);
+                                                                    naVi(`/place/placedetail/${item.contentid}`);
+                                                                    console.log("pcontentId : "+pcontentId);
+                                                                }}>
                                                             <CardActionArea>
                                                                 <CardMedia
                                                                 component="img"

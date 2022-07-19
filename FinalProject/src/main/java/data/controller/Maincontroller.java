@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import data.dto.CityDto;
 import data.mapper.MainPageMapper;
-import data.service.MainpageService;
+import data.service.MainPageService;
 
 
 
@@ -19,7 +19,7 @@ import data.service.MainpageService;
 public class Maincontroller {
 	
 	@Autowired
-	private MainpageService service;
+	private MainPageService service;
 	
 	@Autowired
 	MainPageMapper mapper;

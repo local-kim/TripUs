@@ -9,7 +9,7 @@ import data.dto.CityDto;
 import data.mapper.MainPageMapper;
 
 @Service
-public class MainpageService implements MainpageServiceInter {
+public class MainPageService implements MainPageServiceInter {
 	
 	@Autowired
 	MainPageMapper mapper;

@@ -38,8 +38,8 @@ const PlaceInfo=()=>{
   const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
  
        //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
-      // const location = useLocation();
-      //console.log("location",location.state.place); //contentId 받아온거
+      const location = useLocation();
+      console.log("location",location.state.place); //contentId 받아온거
        //const CityInfoMainContendId = location.state.state.pcontentId;
     
     //mui
