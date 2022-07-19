@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Modal } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import '../../styles/join.css';
 import { GoogleLogin } from 'react-google-login';
 import { SearchId, SearchPass } from './index.js';
@@ -69,7 +69,7 @@ const LoginForm = () => {
           console.log(res.data);
           localStorage.setItem('jwtToken', res.data.token); // 로컬 스토리지에 토큰 저장
           dispatch(login(isChecked, res.data)); // redux에 로그인 유저 정보 저장
-          navi(-1);
+          navi("/");
         })
         .catch(err => {
           // console.log(err);
@@ -79,6 +79,24 @@ const LoginForm = () => {
           setInputPw('');
         })
     }
+    const onGoogleSignInSuccess = (res) => {
+ 
+        const params = new URLSearchParams();
+        params.append("idToken", res.tokenObj.id_token);
+    
+        const googleLogin = async () => {
+          const res = await axios.post("요청 주소", params, {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          });
+    
+          localStorage.setItem("accessToken", res.data.token.access);
+          localStorage.setItem("refreshToken", res.data.token.refresh);
+        };
+    
+        googleLogin();
+      };
 
     //로그인 성공했을 떄 처리 함수 
     const successGoogle = (response) => {
@@ -89,6 +107,13 @@ const LoginForm = () => {
     const failGoogle = (response) => {
         console.log(response);
     }
+    <GoogleLogin
+    clientId="362168925347-7h80oeftm2cub12235gac45dvhjo9fce.apps.googleusercontent.com"
+    buttonText="Login"
+    onSuccess={successGoogle}
+    onFailure={failGoogle}
+    cookiePolicy={'single_host_origin'}
+    />
     // const [id, setId] = useState("");
     // const [isRemember, setIsRemember] = useState(false);
   
@@ -181,13 +206,24 @@ const LoginForm = () => {
       <div className='sns_text'>SNS 간편 로그인</div>
       <div className='socialBtn-container'>
         <div className='socialBtn'>
-          <img src={kakao_icon} alt='카카오'></img>
+            <a href={KAKAO_AUTH_URL}>
+            <img src={kakao_icon} alt='카카오'/>
+            </a>
         </div>
         <div className='socialBtn'>
           <img src={naver_icon} alt='네이버'></img>
         </div>
         <div className='socialBtn'>
-          <img src={google_icon} alt='구글'></img>
+          <img src={google_icon} alt='구글'>
+          </img>
+          <GoogleLogin
+                    clientId={process.env.REACT_APP_GOOGLE_API_KEY}
+                    buttonText="Login"
+                    onSuccess={successGoogle}
+                    onFailure={failGoogle}
+                    cookiePolicy={'single_host_origin'}
+                />
+
         </div>
       </div>
       </form>
@@ -242,7 +278,7 @@ export default LoginForm;
         //         <div className="grid-naver" id='naverIdLogin'></div>
                 
         //         <GoogleLogin
-        //             clientId="362168925347-7h80oeftm2cub12235gac45dvhjo9fce.apps.googleusercontent.com"
+        //             clientId={process.env.REACT_APP_GOOGLE_API_KEY}
         //             buttonText="Login"
         //             onSuccess={successGoogle}
         //             onFailure={failGoogle}

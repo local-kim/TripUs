@@ -20,4 +20,17 @@
 	<insert id="saveAuthority" parameterType="Map">
 		insert into authority (id, authority_name) values (#{id}, #{authority_name})
 	</insert>
+	
+	<!-- 비밀번호 찾기 -->
+	<select id="checkId" parameterType="String" resultType="int">
+		select count(*) from member where id=#{id}
+	</select>
+	
+	<select id="checkEmail" parameterType="String" resultType="int">
+		select count(*) from member where email=#{email}
+	</select>
+	
+	<update id="changePassword" parameterType="String">
+		update member set password=#{password} where id=#{id}
+	</update>
 </mapper>

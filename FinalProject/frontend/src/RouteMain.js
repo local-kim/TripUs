@@ -5,7 +5,7 @@ import './App.css';
 import './AppHeemin.css';
 import { CityInfoMain, CityinfoMore, PlaceInfo } from "./pages/cityinfo";
 import { Calendar, Plan, DayPlan, UpdatePlan, UpdateDayPlan } from "./pages/plan";
-import { JoinForm, Auth, LoginForm, LoginFormTest, KakaoLogin, GoogleLogin } from "./pages/login";
+import { JoinForm, Auth, LoginForm, LoginFormTest, KakaoLogin, GoogleLogin, FindPassword, ChangePassword } from "./pages/login";
 import { PlanDetail } from "./pages/detail";
 import { Mypage, Dashboard, Profile } from "./pages/mypage";
 import { CityList } from './pages/citylist';
@@ -41,6 +41,8 @@ const RouteMain = () => {
           <Route path="/oauth/kakao/callback"  element={<Auth/>} />
           <Route path="/kakao"  element={<KakaoLogin/>}/>
           <Route path="/google" element={<GoogleLogin/>}/>
+          <Route path="/find" element={<FindPassword/>} />
+          <Route path="/change" element={<ChangePassword/>} />
 
           {/* Planning */}
           <Route path="/plan/calendar/:cityNum" element={<Calendar/>} />

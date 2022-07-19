@@ -6,3 +6,5 @@ export {default as KakaoLogin} from './KakaoLogin';
 export {default as GoogleLogin} from './GoogleLogin';
 export {default as SearchId} from './SeachId';
 export {default as SearchPass} from './SearchPass';
+export {default as FindPassword} from './FindPassword';
+export {default as ChangePassword} from './ChangePassword';
