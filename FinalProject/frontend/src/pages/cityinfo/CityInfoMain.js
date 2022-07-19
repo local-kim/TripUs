@@ -24,7 +24,7 @@ const CityInfoMain = () => {
     
     //관광명소 api contentId 받아오기
     // const pcontentId = 126078;
-    const [pcontentId,setPcontentId]=useState(); //2360786
+    const [pcontentId,setPcontentId]=useState('126078'); //2360786
     // const pnavi =useNavigate();
     // const [pid,setPid]=useState();
     // setPid(contentId);
@@ -410,11 +410,17 @@ const CityInfoMain = () => {
                                                 categoryPlace1 && categoryPlace1.map((item, idx) => (
                                                     <div className='col-sm-3'>
                                                         
-                                                        <Card value={item} sx={{width: 220, height: 300, marginRight: 12}} onClick={(e)=>{
+                                                        {/* <Card value={item} sx={{width: 220, height: 300, marginRight: 12}} onClick={(e)=>{
                                                                     setPcontentId(e.target.value);
                                                                     naVi(`/place/placedetail/${item.contentid}`);
                                                                     console.log("pcontentId : "+pcontentId);
-                                                                }}>
+                                                                }}> */}
+                                                        <Link to={'/place/placedetail'} state={{state:{pcontentId}}} onClick={()=>{
+                                                                setPcontentId(item.contentid);
+                                                                // naVi(`/place/placedetail`, {state : {setPcontentId(item.contentid)}});
+                                                                console.log("pcontentId : "+pcontentId);
+                                                            }}>
+                                                            <Card value={item} sx={{width: 220, height: 300, marginRight: 12}} >
                                                             <CardActionArea>
                                                                 <CardMedia
                                                                 component="img"
@@ -438,6 +444,7 @@ const CityInfoMain = () => {
                                                                 </Button>
                                                             </CardActions>
                                                         </Card>
+                                                        </Link>
                                                     </div>
                                                 ))
                                             }

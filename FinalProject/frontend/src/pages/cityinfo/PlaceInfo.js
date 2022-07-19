@@ -40,7 +40,9 @@ const PlaceInfo=()=>{
        //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
       const location = useLocation();
       console.log("location",location.state.place); //contentId 받아온거
-       //const CityInfoMainContendId = location.state.state.pcontentId;
+      const CityInfoMainContendId = location.state.state.pcontentId;
+      // const {CityInfoMainContendId}= location.state;
+      console.log("CityInfoMainContendId : "+CityInfoMainContendId);
     
     //mui
     const [value, setValue] = React.useState('1');
