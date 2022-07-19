@@ -409,41 +409,33 @@ const CityInfoMain = () => {
                                             {
                                                 categoryPlace1 && categoryPlace1.map((item, idx) => (
                                                     <div className='col-sm-3'>
-                                                        
-                                                        {/* <Card value={item} sx={{width: 220, height: 300, marginRight: 12}} onClick={(e)=>{
-                                                                    setPcontentId(e.target.value);
-                                                                    naVi(`/place/placedetail/${item.contentid}`);
-                                                                    console.log("pcontentId : "+pcontentId);
-                                                                }}> */}
-                                                        <Link to={'/place/placedetail'} state={{state:{pcontentId}}} onClick={()=>{
-                                                                setPcontentId(item.contentid);
-                                                                // naVi(`/place/placedetail`, {state : {setPcontentId(item.contentid)}});
+                                                        <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{
                                                                 console.log("pcontentId : "+pcontentId);
                                                             }}>
-                                                            <Card value={item} sx={{width: 220, height: 300, marginRight: 12}} >
-                                                            <CardActionArea>
-                                                                <CardMedia
-                                                                component="img"
-                                                                height="180"
-                                                                image={item.firstimage}
-                                                                alt=""
-                                                                
-                                                                />
-                                                                <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
-                                                                    {item.title}
-                                                                </Typography>
-                                                                <Typography variant="h7" color="red">
-                                                                    {item.tel}
-                                                                </Typography>
-                                                                </CardContent>
-                                                            </CardActionArea>
-                                                            <CardActions>
-                                                                <Button className='clipBtn' size="small" color="primary">
-                                                                    {item.addr1}
-                                                                </Button>
-                                                            </CardActions>
-                                                        </Card>
+                                                            <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                                <CardActionArea>
+                                                                    <CardMedia
+                                                                    component="img"
+                                                                    height="180"
+                                                                    image={item.firstimage}
+                                                                    alt=""
+                                                                    
+                                                                    />
+                                                                    <CardContent>
+                                                                        <Typography gutterBottom variant="h7" component="div">
+                                                                            {item.title}
+                                                                        </Typography>
+                                                                        <Typography variant="h7" color="red">
+                                                                            {item.tel}
+                                                                        </Typography>
+                                                                    </CardContent>
+                                                                </CardActionArea>
+                                                                <CardActions>
+                                                                    <Button className='clipBtn' size="small" color="primary">
+                                                                        {item.addr1}
+                                                                    </Button>
+                                                                </CardActions>
+                                                            </Card>
                                                         </Link>
                                                     </div>
                                                 ))
@@ -488,29 +480,34 @@ const CityInfoMain = () => {
                                             {
                                                 categoryPlace2 && categoryPlace2.map((item, idx) => (
                                                     <div className='col-sm-3'>
-                                                        <Card value={item} sx={{width: 220, height: 300, marginRight: 12 }}>
-                                                            <CardActionArea>
-                                                                <CardMedia
-                                                                component="img"
-                                                                height="180"
-                                                                image={item.firstimage}
-                                                                alt=""
-                                                                />
-                                                                <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
-                                                                    {item.title}
-                                                                </Typography>
-                                                                <Typography variant="h7" color="red">
-                                                                    {item.tel}
-                                                                </Typography>
-                                                                </CardContent>
-                                                            </CardActionArea>
-                                                            <CardActions>
-                                                                <Button className='clipBtn' size="small" color="primary">
-                                                                    {item.addr1}
-                                                                </Button>
-                                                            </CardActions>
-                                                        </Card>
+                                                        <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{
+                                                                console.log("pcontentId : "+pcontentId);
+                                                            }}>
+                                                            <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                                <CardActionArea>
+                                                                    <CardMedia
+                                                                    component="img"
+                                                                    height="180"
+                                                                    image={item.firstimage}
+                                                                    alt=""
+                                                                    
+                                                                    />
+                                                                    <CardContent>
+                                                                        <Typography gutterBottom variant="h7" component="div">
+                                                                            {item.title}
+                                                                        </Typography>
+                                                                        <Typography variant="h7" color="red">
+                                                                            {item.tel}
+                                                                        </Typography>
+                                                                    </CardContent>
+                                                                </CardActionArea>
+                                                                <CardActions>
+                                                                    <Button className='clipBtn' size="small" color="primary">
+                                                                        {item.addr1}
+                                                                    </Button>
+                                                                </CardActions>
+                                                            </Card>
+                                                        </Link>
                                                     </div>
                                                 ))
                                             }
@@ -522,29 +519,34 @@ const CityInfoMain = () => {
                                         {
                                            categoryPlace3 && categoryPlace3.map((item, idx) => (
                                                 <div className='col-sm-4'>
-                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12 }}>
-                                                        <CardActionArea>
-                                                            <CardMedia
-                                                            component="img"
-                                                            height="180"
-                                                            image={item.firstimage}
-                                                            alt=""
-                                                            />
-                                                            <CardContent>
-                                                            <Typography gutterBottom variant="h7" component="div">
-                                                                {item.title}
-                                                            </Typography>
-                                                            <Typography variant="h7" color="red">
-                                                                {item.tel}
-                                                            </Typography>
-                                                            </CardContent>
-                                                        </CardActionArea>
-                                                        <CardActions>
-                                                            <Button className='clipBtn' size="small" color="primary">
-                                                                {item.addr1}
-                                                            </Button>
-                                                        </CardActions>
-                                                    </Card>
+                                                    <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{
+                                                                console.log("pcontentId : "+pcontentId);
+                                                            }}>
+                                                            <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                                <CardActionArea>
+                                                                    <CardMedia
+                                                                    component="img"
+                                                                    height="180"
+                                                                    image={item.firstimage}
+                                                                    alt=""
+                                                                    
+                                                                    />
+                                                                    <CardContent>
+                                                                        <Typography gutterBottom variant="h7" component="div">
+                                                                            {item.title}
+                                                                        </Typography>
+                                                                        <Typography variant="h7" color="red">
+                                                                            {item.tel}
+                                                                        </Typography>
+                                                                    </CardContent>
+                                                                </CardActionArea>
+                                                                <CardActions>
+                                                                    <Button className='clipBtn' size="small" color="primary">
+                                                                        {item.addr1}
+                                                                    </Button>
+                                                                </CardActions>
+                                                            </Card>
+                                                        </Link>
                                                 </div>
                                             ))
                                         }
