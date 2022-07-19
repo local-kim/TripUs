@@ -16,64 +16,57 @@ const { kakao } = window;
 
 const DayPlan = () => {
   // prompt
-//   usePrompt(`현재 페이지에서 나가면 일정이 저장되지 않습니다. 
-// 정말 나가시겠습니까?`, true);
+  // usePrompt(`현재 페이지에서 나가면 일정이 저장되지 않습니다. 정말 나가시겠습니까?`, true);
+
+  const navigate = useNavigate();
+  const {day} = useParams();
 
   // redux에서 변수 얻기
   const dispatch = useDispatch();
   const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
-  const trip = useSelector(state => state.planner.trip);
-  
-  const navigate = useNavigate();
-  const {day} = useParams();
-  // const [plan, setPlan] = useState(Array.from(Array(days), () => new Array())); // [days x n] 2차원 배열
   const [dayPlan, setDayPlan] = useState(plan[day - 1]);
+  const trip = useSelector(state => state.planner.trip);
 
   const [places, setPlaces] = useState([]);
-
   const [keyword, setKeyword] = useState('');
   const [category, setCategory] = useState('');
   const [categoryPlace, setCategoryPlace] = useState([]);
 
-  // 호버된 장소 좌표
-  const [mapX, setMapX] = useState();
-  const [mapY, setMapY] = useState();
-  
   // scroll paging
   const [ref, inView] = useInView();
   const [page, setPage] = useState(2);
 
   useEffect(() => {
     // 사용자가 마지막 요소를 보고 있는 경우
-      if(inView){
-        setPage(page + 1);
+    if(inView){
+      setPage(page + 1);
 
-        // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
-        if(keyword === ''){
-          areaUrl += `&pageNo=${page}`;
-          console.log(areaUrl);
-          delete axios.defaults.headers.common['Authorization'];
-          axios.get(areaUrl)
-          .then((res) => {
-            console.dir(res.data.response.body.items.item);
-            setPlaces([...places, ...res.data.response.body.items.item]);
-            setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
-          }).catch((err) => console.log(err.data));
-        }
-        // 키워드 검색 장소
-        else{
-          keywordUrl += `&pageNo=${page}`;
-          // console.log("keyword 검색 요청");
-          console.log(keywordUrl);
-          delete axios.defaults.headers.common['Authorization'];
-          axios.get(keywordUrl)
-          .then((res) => {
-            console.dir(res.data.response.body.items.item);
-            setPlaces([...places, ...res.data.response.body.items.item]);
-            setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
-          }).catch((err) => console.log(err.data));
-        }
+      // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
+      if(keyword === ''){
+        areaUrl += `&pageNo=${page}`;
+        console.log(areaUrl);
+        delete axios.defaults.headers.common['Authorization'];
+        axios.get(areaUrl)
+        .then((res) => {
+          console.dir(res.data.response.body.items.item);
+          setPlaces([...places, ...res.data.response.body.items.item]);
+          setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
+        }).catch((err) => console.log(err.data));
       }
+      // 키워드 검색 장소
+      else{
+        keywordUrl += `&pageNo=${page}`;
+        // console.log("keyword 검색 요청");
+        console.log(keywordUrl);
+        delete axios.defaults.headers.common['Authorization'];
+        axios.get(keywordUrl)
+        .then((res) => {
+          console.dir(res.data.response.body.items.item);
+          setPlaces([...places, ...res.data.response.body.items.item]);
+          setCategoryPlace([...categoryPlace, ...res.data.response.body.items.item]);
+        }).catch((err) => console.log(err.data));
+      }
+    }
   }, [inView]);
 
   // 추천 장소 url(arrange=P)
@@ -127,19 +120,13 @@ const DayPlan = () => {
       return;
     }
     if(category === 12){ // 관광지, 문화시설
-      // console.log(category);
       setCategoryPlace(places.filter((place, index) => place.contenttypeid === 12 || place.contenttypeid === 14));
-      // console.log(categoryPlace);
     }
     else if(category === 39){  // 음식점
-      // console.log(category);
       setCategoryPlace(places.filter((place, index) => place.contenttypeid === 39));
-      // console.log(categoryPlace);
     }
     else{ // 숙박
-      // console.log(category);
       setCategoryPlace(places.filter((place, index) => place.contenttypeid === 32));
-      // console.log(categoryPlace);
     }
   }, [category, places]);
 
@@ -202,6 +189,10 @@ const DayPlan = () => {
     ]);
   }
 
+  // 호버된 장소 좌표
+  const [mapX, setMapX] = useState();
+  const [mapY, setMapY] = useState();
+  
   // kakao map
   const kakaoMapScript = (mapX, mapY) => {    
     const container = document.getElementById('map'); // 지도를 표시할 div
