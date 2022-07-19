@@ -1,4 +1,4 @@
-import { Margin } from '@mui/icons-material';
+import { BorderAll, Margin } from '@mui/icons-material';
 import { height, textAlign } from '@mui/system';
 import React ,{useState} from 'react';
 import { ReactDOM } from 'react';
@@ -8,12 +8,29 @@ import { useNavigate } from 'react-router-dom';
 
 import Fullpage,{FullPageSections,FullpageSection,FullpageNavigation} from '@ap.cx/react-fullpage';
 import Myslide from './Myslide';
+import Myslide2 from './Myslide2';
 import Menu from './Menu';
 import '../AppHeemin.css';
 import axios from 'axios';
 import jQuery from 'jquery';
 import { NavLink } from 'react-router-dom';
 import { setDate } from 'date-fns';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Box from '@mui/material/Box';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
+import Grow from '@mui/material/Grow';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
+import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
+import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
+import FormatAlignJustifyIcon from '@mui/icons-material/FormatAlignJustify';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 
 import Beach from './Beach.mp4';
@@ -30,10 +47,68 @@ const getRandom=()=>{
     return Math.floor(Math.random()* video_Number)
 }
 
+const options = ['인기순','오름차순' ,'내림차순'];
+
+
 
 
 
 const Main=()=>{
+
+    
+    let cityDataUrl = process.env.REACT_APP_SPRING_URL + "/cityData";
+
+    const [alignment, setAlignment] = React.useState('web');
+
+    const handleChange = (event, newAlignment) => {
+      setAlignment(newAlignment);
+    };
+
+  const control = {
+    value: alignment,
+    onChange: handleChange,
+    exclusive: true,
+  };
+    
+    const [open, setOpen] = React.useState(false);
+    const anchorRef = React.useRef(null);
+    const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+
+    const handleClick = () => {
+        console.info(`You clicked ${options[selectedIndex]}`);
+      };
+      
+      const handleMenuItemClick = (event, index) => {
+        setSelectedIndex(index);
+        setOpen(false);
+      };
+      
+      const handleToggle = () => {
+        setOpen((prevOpen) => !prevOpen);
+      };
+      
+      const handleClose = (event) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target)) {
+          return;
+        }
+      
+        setOpen(false);
+
+    }
+    const [citydata,setCityData] = useState('');
+
+    const cityData=()=>{
+        axios.get(cityDataUrl)
+        .then(res=>{
+            setCityData(res.data);
+            console.log(res.data);      
+        })
+        .catch(err => {
+            alert(err);
+        })
+      }
+
     const [city, setCity] = useState([]) 
     const navi=useNavigate();
 
@@ -185,69 +260,104 @@ const Main=()=>{
                 <FullpageSection style={sectionStyle}>
                      <div className="page silver">
                         <div className="wrap">
-                            <div className="page_title">인기도시</div>
-                                <div className="top_city_list">
-                                    {/* <a href="/ko/city/london_309" className="top_city w2">
-                                        <div className="top_city_title">가평</div>
-                                        <img src="https://www.myro.co.kr/myro_image/city/gapyeong.jpg" alt=""/>
-                                    </a> */}
+                            <div className="page_title" style={{marginTop:'50px'}}>인기도시</div>
+                            <p className="uk-text-meta">  여행지를 목록에서 직접 선택해주세요.  </p>
 
-                                    <a href="/ko/city/london_309" className="top_city">
-                                        <div className="top_city_title">가평</div>
-                                        <img src="https://www.myro.co.kr/myro_image/city/gapyeong.jpg" alt=""/>
-                                    </a>
+                        <div style={{textAlign:'center' , borderColor:'white'}}>
+                            <ToggleButtonGroup
+                                color="primary"
+                                value={alignment}
+                                exclusive
+                                onChange={handleChange}
+                                >
+                                <ToggleButton value="web">전체</ToggleButton>
+                                <ToggleButton value="ios">도시</ToggleButton>
+                                <ToggleButton value="android">바다</ToggleButton>
+                                <ToggleButton value="heemin">테마</ToggleButton>
                                 
-                                    <a href="/ko/city/paris_307" className="top_city">
-                                        <div className="top_city_title"> 안동</div>
-                                        <img src="https://www.myro.co.kr/myro_image/city/andong.jpg" alt=""/>
-                                    </a>
 
-                                    <a href="/ko/city/paris_307" className="top_city">
-                                        <div className="top_city_title"> 전주</div>
-                                        <img src="https://www.myro.co.kr/myro_image/city/jeonju.jpg" alt=""/>
-                                    </a>
+                             </ToggleButtonGroup>
+                        </div>
 
-                                    <a href="/ko/city/singapore_243" className="top_city">
-                                        <div className="top_city_title"> 여수</div>
-                                        <img src="https://www.myro.co.kr/myro_image/city/daejeon.jpg" alt=""/>
-                                    </a>
 
-                                    <a href="/ko/city/istanbul_202" className="top_city">
-                                        <div className="top_city_title"> 대전</div>
-                                        <img src="https://www.myro.co.kr/myro_image/city/daejeon.jpg" alt=""/>
-                                    </a>
-                                    
-                                    <a href="/ko/city/venice_187" className="top_city">
-                                        <div className="top_city_title">  강릉</div>
-                                        <img src="https://www.myro.co.kr/myro_image/city/gangneung.jpg" alt=""/>
-                                    
-                                    </a>
-                                    
-                                    <a href="/ko/city/barcelona_10005" className="top_city">
-                                        <div className="top_city_title"> 경주	</div>
-                                        <img src="https://www.myro.co.kr/myro_image/city/gyeongju.jpg" alt=""/>
-                                    </a>
-                                    
-                                    {/* <a href="/ko/city/taipei_92" className="top_city h2">
-                                        <div className="top_city_title"> 타이베이 </div>
-                                        <img src="https://www.earthtory.com/res/img/main/po_city/po_city_07.jpg" alt="" style={{height:'590px'}}/>
-                                    </a> */}
+                            {/* 
+                                 <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        '& > *': {
+                                        m: 1,
+                                        },
+                                    }}
+                                    >
+                          
+                                    <ButtonGroup variant="text" aria-label="text button group">
+                                        <Button>전체</Button>
+                                        <Button>바다</Button>
+                                        <Button>전통</Button>
+                                        <Button>산악</Button>
+                                    </ButtonGroup>
+                                    </Box> */}
 
-                                    {/* <a href="/ko/city/hong-kong_245" className="top_city">
-                                        <div className="top_city_title"> 홍콩 </div>
-                                        <img src="https://www.earthtory.com/res/img/main/po_city/po_city_02.jpg" alt=""/>
-                                    </a>
-                                    
-                                    <a href="/ko/city/bangkok_86" className="top_city">
-                                        <div className="top_city_title"> 방콕 </div>
-                                        <img src="https://www.earthtory.com/res/img/main/po_city/po_city_02.jpg" alt=""/>
-                                    </a> */}
-                                    
-                                    <a href="/ko/city/jeju_312" className="top_city">
-                                        <div className="top_city_title"> 제주도	</div>
-                                        <img src="https://www.myro.co.kr/myro_image/city/jeju.jpg" alt=""/>
-                                    </a>
-                        
+                           
+                   
+
+                                <div style={{float:'right'  ,borderColor:'#f6f6f6'}}>
+                                    <React.Fragment>
+                                        <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" style={{zIndex:'1000'}}>
+                                            <Button onClick={handleClick}>{options[selectedIndex]}</Button>
+                                            <Button
+                                            size="small"
+                                            aria-controls={open ? 'split-button-menu' : undefined}
+                                            aria-expanded={open ? 'true' : undefined}
+                                            aria-label="select merge strategy"
+                                            aria-haspopup="menu"
+                                            onClick={handleToggle}
+                                            >
+                                            <ArrowDropDownIcon />
+                                            </Button>
+                                        </ButtonGroup>
+                                        <Popper 
+                                            open={open}
+                                            anchorEl={anchorRef.current}
+                                            role={undefined}
+                                            transition
+                                            disablePortal
+                                            style={{zIndex:'1000'}} >
+                                            {({ TransitionProps, placement }) => (
+                                            <Grow
+                                                {...TransitionProps}
+                                                style={{
+                                                transformOrigin:
+                                                    placement === 'bottom' ? 'center top' : 'center bottom',
+                                                }}
+                                            >
+                                                <Paper>
+                                                <ClickAwayListener onClickAway={handleClose}>
+                                                    <MenuList id="split-button-menu" autoFocusItem>
+                                                    {options.map((option, index) => (
+                                                        <MenuItem
+                                                        key={option}
+                                                        // disabled={index === 2}
+                                                        selected={index === selectedIndex}
+                                                        onClick={(event) => handleMenuItemClick(event, index)}
+                                                        >
+                                                        {option}
+                                                        </MenuItem>
+                                                    ))}
+                                                    </MenuList>
+                                                </ClickAwayListener>
+                                                </Paper>
+                                            </Grow>
+                                            )}
+                                        </Popper>
+                                        </React.Fragment>
+                                    </div>
+
+                                <div className="top_city_list">
+                                    <Myslide2></Myslide2>
+                                             
                                     <div className="clear"></div>
                                 </div>
                             </div>

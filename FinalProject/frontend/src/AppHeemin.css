@@ -484,3 +484,105 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
 .video{
   z-index: -999;
 }
+
+.css-14ajw3y {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  
+  height: auto;
+  margin: 10px auto;
+  border-radius: 30px;
+  box-sizing: border-box;
+}
+
+.css-14ajw3y .css-1or64il-MuiButtonGroup-root .MuiButtonGroup-grouped:not(:last-of-type) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 1px solid #F6F6F6;
+  border-color: #F6F6F6;
+  /* border-color: rgba(25, 118, 210, 0.5); */
+  color: black;
+}
+
+
+.css-1or64il-MuiButtonGroup-root .MuiButtonGroup-grouped:not(:last-of-type) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 1px solid #F6F6F6;
+  border-color: #F6F6F6;
+  /* border-color: rgba(25, 118, 210, 0.5); */
+  color: black;
+}
+.css-1or64il-MuiButtonGroup-root .MuiButtonGroup-grouped:not(:first-of-type) {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  color:black;
+  border-right: 1px solid #F6F6F6;
+  border-color: #F6F6F6;
+}
+
+
+.MuiButtonGroup-root.MuiButtonGroup-contained.css-zqcytf-MuiButtonGroup-root .MuiButtonGroup-grouped:not(:last-of-type) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-right: 1px solid #f6f6f6;
+  border-color: #f6f6f6;
+  float: right;
+  color: black;
+  background-color: #f6f6f6;
+}
+
+.css-zqcytf-MuiButtonGroup-root .MuiButtonGroup-grouped {
+  min-width: 40px;
+  box-shadow: none;
+  background-color: #f6f6f6;
+  border-color: #f6f6f6;
+  color: black;
+  border-left: #F6F6F6;
+}
+
+.css-zqcytf-MuiButtonGroup-root .MuiButtonGroup-grouped {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  
+  border-color: #f6f6f6;
+}
+
+.MuiButtonGroup-root.MuiButtonGroup-contained.css-zqcytf-MuiButtonGroup-root .css-11qr2p8-MuiButtonBase-root-MuiButton-root:hover{
+  background-color: #1565c000;
+}
+
+.uk-text-meta {
+  margin-top: 5px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #999;
+  text-align: center;
+  
+}
+
+
+.css-1gjgmky-MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:last-of-type) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-color: #f6f6f6;
+  color: black;
+}
+
+.css-1gjgmky-MuiToggleButtonGroup-root .MuiToggleButtonGroup-grouped:not(:first-of-type) {
+  margin-left: -1px;
+  border-left: 1px solid transparent;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-color: #f6f6f6;
+  color: black;
+}

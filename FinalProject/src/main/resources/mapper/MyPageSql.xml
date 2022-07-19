@@ -26,7 +26,7 @@
    	</select>
    
    <select id="getAllDatas" resultType="trip">
-      select * from trip order by num desc
+      select * from trip where order by desc
    </select>
    
    	 <select id="userReview" parameterType="int" resultType="int">
@@ -61,6 +61,13 @@
 		UPDATE trip set name=#{name} where num=#{num}
 	</update>
 	
+		
+	<select id="getAllDates3" resultType="trip" parameterType="int">
+	
+	    SELECT num, name, member_num as memberNum, start_date as startDate, end_date as endDate, days  FROM trip where  member_num=#{memberNum} 
+	    
+	</select>
+	   
    
 </mapper>
 

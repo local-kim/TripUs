@@ -14,7 +14,6 @@ import KakaoShareButton from './KakaoShareButton';
 
 
 
-
 const Mypage = () => {
     const navi=useNavigate();
     const [photo,setPhoto] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
@@ -226,6 +225,7 @@ const Mypage = () => {
                     </div>
                         
                      {
+                        
               data2.list && data2.list.map((row, index)=>( 
                     <span id="resultArea"><div style={{margin:"16px 0 "}}>
         <div className="uk-card uk-card-default uk-grid-collapse uk-grid" style={{padding:"16px"}} uk-grid="">
@@ -233,7 +233,8 @@ const Mypage = () => {
                 <div className="uk-grid" uk-grid="" style={{margin: "0" , height: "60%"}}>
                     <div className="uk-width-1-2 info-container uk-first-column">
                         <img className="width:100%" src={`../city_image/${row.image}`} alt={row.image} onClick={()=>{navi(`/plan/detail/${row.tripNum}`)}} />
-                        <div className="d-day-circle" style={{backgroundColor:calculateDday(row.startDate) < 0 && calculateDday(row.endDate) > 0 ? "red" : calculateDday(row.startDate) === 0 ? "orange" : ""}}>
+                        <div className="d-day-circle" style={{backgroundColor:calculateDday(row.startDate) < 0 && calculateDday(row.endDate) > 0 ? "red" : calculateDday(row.startDate) === 0 ? "orange" : calculateDday(row.startDate) < 0 ? "gray" : ""}}>
+                        
                             {calculateDday(row.startDate) === 0 ? "디데이": calculateDday(row.startDate) > 0 ? `D-${calculateDday(row.startDate)}` : calculateDday(row.endDate) > 0 ?<div style={{backgroundColor:'red'}}>"여행중"</div>  :"지난일정" }
                             </div>
                         <div className="share-circle" id="sharedLogo_idx_0" style={{display:"none"}}>공유</div>
@@ -246,7 +247,7 @@ const Mypage = () => {
                         <div className="uk-text-meta" style={{fontSize:"12px", marginTop:"8px"}}>
                             
                         </div>
-                        <div className="info-container" style={{marginTop: "40px"}}>
+                        <div className="info-container" style={{marginTop: "40px" , backgroundColor:'white'}}>
                             <div  style={{
                                 
                                       display: "flex",
@@ -255,8 +256,8 @@ const Mypage = () => {
                                     width:"70px",
                                     height:"70px",
                                     borderRadius:"50%",
-                                    backgroundColor: "#717171",
-                                    color: "#fff",
+                                    backgroundColor: "#f6f6f6",
+                                    color: "black",
                                     fontWeight: "700"}} 
                                     >
                                        
@@ -440,8 +441,8 @@ const Mypage = () => {
     ))}
                 </div>    
 
-                <div style={{width:'700px',textAlign:'center'}}>
-                    <ul className='pagination' style={{marginLeft:'580px', paddingLeft:'30px'}}>
+                <div style={{textAlign:'center'}}>
+                    <ul className='pagination' style={{textAlign:"center"}}>
 
                         {
                         (data2.startPage>1?<li>
