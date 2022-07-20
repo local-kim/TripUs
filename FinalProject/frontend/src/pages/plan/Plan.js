@@ -10,10 +10,8 @@ import { usePrompt } from '../../utils/Blocker';
 
 const { kakao } = window;
 
-const Plan = () => {
-  // prompt
-//   usePrompt(`현재 페이지에서 나가면 일정이 저장되지 않습니다. 
-// 정말 나가시겠습니까?`, true);
+const Plan = ({view, setView, day, setDay, setIsBlocking}) => {
+  const loginNum = useSelector(state => state.auth.user.num);
 
   // redux에서 변수 얻기
   const dispatch = useDispatch();
@@ -25,9 +23,12 @@ const Plan = () => {
   let insertUrl = process.env.REACT_APP_SPRING_URL + `plan/insert`;
 
   const insertPlan = () => {
+    setIsBlocking(false); // usePrompt 비활성화
+
     axios.post(insertUrl, {
       plan: plan,
-      trip: trip
+      trip: trip,
+      loginNum: loginNum
     })
     .then(res => {
       // 해당 일정 상세 페이지로 이동(trip_num 이용)
@@ -127,6 +128,7 @@ const Plan = () => {
         }
 
         <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={insertPlan}>일정 생성하기</button>
+
         {
           // days 만큼 반복문 돌리기
           [...Array(trip.days)].map((day, index) => (
@@ -144,7 +146,9 @@ const Plan = () => {
                 }
               </div>
               <button type='button' className='btn btn-outline-primary btn-sm btn-place' onClick={() => {
-                navigate(`/plan/${index + 1}`);
+                // navigate(`/plan/${index + 1}`);
+                setView(2);
+                setDay(index + 1);
               }}>장소 추가</button>
               <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
             </div>

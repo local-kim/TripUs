@@ -11,4 +11,5 @@ import lombok.Data;
 public class PlanInsertDto {
 	private List<List<PlaceDto>> plan;
 	private TripDto trip;
+	private int loginNum;
 }

@@ -11,8 +11,8 @@ import lombok.Data;
 @Data
 @Alias("tripdata")
 public class TripPlanDto {
-	private int num;		// tripmnum
-	private String name;	// tripname
+	private int num;		// tripNum
+	private String name;	// tripName
 	private int member_num;
 	private int city_num;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="Asia/Seoul")
@@ -20,8 +20,8 @@ public class TripPlanDto {
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="Asia/Seoul")
 	private Date end_date;
 	private int days;
-//	private int citynum;
-//	private String cityname;
+//	private int cityNum;
+//	private String cityName;
 //	private String eng_name;
 //	private String country;
 //	private String image;

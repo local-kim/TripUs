@@ -46,3 +46,12 @@
 #city-list .city-item .city-name{
   font-size: 18px;
 }
+
+#city-list .city-item a{
+  color: black;
+  font-weight: normal;
+}
+
+#city-list .city-item a:hover{
+  color: black;
+}
