@@ -14,12 +14,9 @@ import { usePrompt } from '../../utils/Blocker';
 
 const { kakao } = window;
 
-const DayPlan = () => {
-  // prompt
-  // usePrompt(`현재 페이지에서 나가면 일정이 저장되지 않습니다. 정말 나가시겠습니까?`, true);
-
+const DayPlan = ({view, setView, day, setDay}) => {
   const navigate = useNavigate();
-  const {day} = useParams();
+  // const {day} = useParams();
 
   // redux에서 변수 얻기
   const dispatch = useDispatch();
@@ -137,13 +134,17 @@ const DayPlan = () => {
   const prevDay = () => {
     // addPlan();
     setDayPlan(plan[Number(day) - 2]);
-    navigate(`/plan/${Number(day) - 1}`);
+    // navigate(`/plan/${Number(day) - 1}`);
+
+    setDay(day - 1);
   }
 
   const nextDay = () => {
     // addPlan();
     setDayPlan(plan[Number(day)]);  // dayPlan에 다음날의 일정을 저장
-    navigate(`/plan/${Number(day) + 1}`);
+    // navigate(`/plan/${Number(day) + 1}`);
+
+    setDay(day + 1);
   }
 
   // 선택한 장소를 dayPlan에 추가
@@ -291,12 +292,12 @@ const DayPlan = () => {
           <div className='title-wrap'>
             {
               // day1이면 이전 날짜 버튼 안보임
-              day == 1 ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐸ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={prevDay}>ᐸ</button>
+              day == 1 ? <button type='button' className='btn btn-sm btn-arrow' style={{opacity:'0',cursor:'default'}}>ᐸ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={prevDay}>ᐸ</button>
             }
             <span className='title'>DAY {day}</span>
             {
               // 마지막 날이면 다음 날짜 버튼 안보임
-              day == trip.days ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
+              day == trip.days ? <button type='button' className='btn btn-sm btn-arrow' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
             }
           </div>
 
@@ -306,7 +307,9 @@ const DayPlan = () => {
             <button type='button' className='btn btn-secondary btn-sm btn-ok' onClick={() => {
               // plan을 redux 전역 변수에 저장
               dispatch(savePlan(plan));
-              navigate("/plan");
+              // navigate("/plan");
+
+              setView(1);
             }}>완료</button>
           </div>
         </div>
