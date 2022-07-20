@@ -17,4 +17,5 @@ public class CityDto {
 	private int cat;
 	private String x;
 	private String y;
+	private int count;
 }

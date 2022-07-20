@@ -442,7 +442,7 @@ const Mypage = () => {
                 </div>    
 
                 <div style={{textAlign:'center'}}>
-                    <ul className='pagination' style={{textAlign:"center"}}>
+                    <ul className='pagination' style={{textAlign:"center" , display:'inline-block'}}>
 
                         {
                         (data2.startPage>1?<li>
@@ -456,7 +456,7 @@ const Mypage = () => {
                                 const url="/mypage/"+n;
                                 return(
 
-                                    <li className={n == currentPage ? 'active' : ''}>
+                                    <li className={n == currentPage ? 'active' : ''} style={{float:'left'}}>
                                         <Link to={url}>{n}</Link>
                                     </li>
                                 )
@@ -474,7 +474,7 @@ const Mypage = () => {
 
   
             </div>
-                 <div class="info-container p-5" style={{marginRight:'20px'}}>
+                 <div class="info-container p-5">
                     <button class="btn-normal" onClick={()=>{navi("/")}}>홈으로 가기</button>
                 </div>
             
