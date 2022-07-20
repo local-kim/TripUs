@@ -82,7 +82,7 @@ const JoinForm = (props) => {
             address1:joinData.address1,
             address2:joinData.address2,
             zonecode:joinData.zonecode,
-            birthday:data.year+data.month+data.day})
+            birthday:data.year+data.month+data.day})//오빠 왔다 간다.
         .then(res => {
         //   alert("insert 성공");
             console.log(res.data);
@@ -142,7 +142,7 @@ const JoinForm = (props) => {
     }
     //이메일 중복 체크 버튼 이벤트
     const onEmailCheck=()=>{
-        const url=process.env.REACT_APP_SPRING_URL+"member/emailcheck?email="+joinData.email;
+        const url=process.env.REACT_APP_SPRING_URL+"member/emailcheck?email="+watch('email');
         axios.get(url)
         .then(res=>{
             if(res.data===0){
@@ -150,7 +150,7 @@ const JoinForm = (props) => {
                 alert("가입가능 이메일주소")
             }else{
                 setBtnOk(false);
-                alert("이미있는 이미있는 이메일주소")
+                alert("이미있는 이메일주소")
             }
         });
     }
