@@ -46,7 +46,7 @@ const Dashboard = () => {
         <div>
 
 
-            <div className="App" style={{height:'700px'}}>
+            <div className="App" style={{height:'100%'}}>
 
                     
                     <FullCalendar  defaultView="dayGridMonth" plugins={[ dayGridPlugin ]}

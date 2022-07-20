@@ -23,4 +23,30 @@ public class MainPageService implements MainPageServiceInter {
 		
 	}
 
+	
+	@Override
+	public List<CityDto> getData2() {
+		// TODO Auto-generated method stub
+		
+		
+		return mapper.getData2();
+		
+	}
+	@Override
+	public List<CityDto> getData3() {
+		// TODO Auto-generated method stub
+		
+		
+		return mapper.getData3();
+		
+	}
+	@Override
+	public List<CityDto> getData4() {
+		// TODO Auto-generated method stub
+		
+		
+		return mapper.getData4();
+		
+	}
+	
 }

@@ -39,24 +39,48 @@ import Cliff from './Cliff.mp4';
 import Wave from './Waves.mp4';
 
 
+//ㅡㅡㅡㅡㅡㅡㅡ배경 랜덤 
 
 const video =[Beach, Cliff, Islands, Wave];
 const video_Number = 4;
 
 const getRandom=()=>{
+
     return Math.floor(Math.random()* video_Number)
 }
 
 const options = ['인기순','오름차순' ,'내림차순'];
 
+// ㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+
+const Main=(row)=>{
 
 
+    let cityDataUrl = process.env.REACT_APP_SPRING_URL + "cityData/";
 
+    const [citydata2,setCityData2] = useState([]);
+    const [citydata3,setCityData3] = useState([]);
+    const [citydata4,setCityData4] = useState([]);
 
-const Main=()=>{
+    const [citydata,setCityData] = useState('');
+
+    // const cityData=()=>{
+    //     axios.get(cityDataUrl)
+    //     .then(res=>{
+    //         // setCityData(res.data);
+    //         // console.log(res.data.getData2
+    //         setTogleButton(res.data.getData2);
+    //         setCityData2(res.data.getData2);
+    //         setCityData3(res.data.getData3);
+    //         setCityData4(res.data.getData4);
+    //     })
+    //     .catch(err => {
+    //         alert(err);
+    //     })
+    //   }
 
     
-    let cityDataUrl = process.env.REACT_APP_SPRING_URL + "/cityData";
+    // const [select, setSelect] = useState(''); // set 하라길래 그냥 하나 만들어뒀슴다
 
     const [alignment, setAlignment] = React.useState('web');
 
@@ -72,7 +96,7 @@ const Main=()=>{
     
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
 
 
     const handleClick = () => {
@@ -96,20 +120,9 @@ const Main=()=>{
         setOpen(false);
 
     }
-    const [citydata,setCityData] = useState('');
-
-    const cityData=()=>{
-        axios.get(cityDataUrl)
-        .then(res=>{
-            setCityData(res.data);
-            console.log(res.data);      
-        })
-        .catch(err => {
-            alert(err);
-        })
-      }
-
+   
     const [city, setCity] = useState([]) 
+
     const navi=useNavigate();
 
     const sectionStyle = {
@@ -174,6 +187,15 @@ const Main=()=>{
             setCity();
         }
       }
+
+    //   useEffect(() => {
+
+    //     cityData();
+
+    //   }, [category]);
+
+    const [category, setCategory] = useState(0); //카테고리 숫자 저장 하는 변수 
+
     return(
  
         <Fullpage>
@@ -260,7 +282,7 @@ const Main=()=>{
                 <FullpageSection style={sectionStyle}>
                      <div className="page silver">
                         <div className="wrap">
-                            <div className="page_title" style={{marginTop:'50px'}}>인기도시</div>
+                            <div className="page_title" style={{marginTop:'70px'}}>인기도시</div>
                             <p className="uk-text-meta">  여행지를 목록에서 직접 선택해주세요.  </p>
 
                         <div style={{textAlign:'center' , borderColor:'white'}}>
@@ -270,10 +292,10 @@ const Main=()=>{
                                 exclusive
                                 onChange={handleChange}
                                 >
-                                <ToggleButton value="web">전체</ToggleButton>
-                                <ToggleButton value="ios">도시</ToggleButton>
-                                <ToggleButton value="android">바다</ToggleButton>
-                                <ToggleButton value="heemin">테마</ToggleButton>
+                                <ToggleButton onClick={() => setCategory(0)} value="web">전체</ToggleButton>
+                                <ToggleButton onClick={() => setCategory(1)} value="ios">도시</ToggleButton>
+                                <ToggleButton onClick={() => setCategory(2)} value="android">바다</ToggleButton>
+                                <ToggleButton onClick={() => setCategory(3)} value="tema">테마</ToggleButton>
                                 
 
                              </ToggleButtonGroup>
@@ -356,7 +378,8 @@ const Main=()=>{
                                     </div>
 
                                 <div className="top_city_list">
-                                    <Myslide2></Myslide2>
+
+                                    <Myslide2 row={row} select={selectedIndex} category={category}></Myslide2>
                                              
                                     <div className="clear"></div>
                                 </div>

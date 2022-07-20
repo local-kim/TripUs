@@ -23,5 +23,9 @@ public interface MainPageMapper {
 
 	//도시 정보 가져오기
 	public List<CityDto> getData();
+	public List<CityDto> getData2();
+	public List<CityDto> getData3();
+	public List<CityDto> getData4();
+	
 	
 }

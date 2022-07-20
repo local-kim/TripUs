@@ -3,6 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import '../App.css';
 import axios from 'axios';
+import './Myslide.css'
 
 
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';

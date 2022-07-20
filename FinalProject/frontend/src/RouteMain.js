@@ -16,8 +16,7 @@ const RouteMain = () => {
  
   return (
     <div className="main-main-back">
-      <Menu/>
-
+      <Menu />
       <div id="main">
         <Routes>
           <Route path="/" element={<Main/>} />
