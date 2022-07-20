@@ -36,34 +36,19 @@ const style = {
 const PlaceInfo=()=>{
       
   const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
- 
+
+    //git error catch
        //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
-      const location = useLocation();
-      console.log("location",location.state.place); //contentId 받아온거
-      const CityInfoMainContendId = location.state.state.pcontentId;
-      console.log("CityInfoMainContendId : "+CityInfoMainContendId);
+      // const location = useLocation();
+      // console.log("location",location.state.place); //contentId 받아온거
+      // const CityInfoMainContendId = location.state.state.pcontentId;
+      // console.log("CityInfoMainContendId : "+CityInfoMainContendId);
     
     //mui
     const [value, setValue] = React.useState('1');
     const [starsvalue, setStarsValue] = React.useState('0');
     const [isChecked, setIsChecked] = useState(false);
     const [liked,setLiked]=useState(0);
-
-     const handleChecked = (event) => {
-
-        setIsChecked(event.target.checked);
-
-        if(!isChecked){
-       alert("좋아요+1");
-       setLiked(liked+1);
-       console.log("liked value:",liked);
-    }else{
-        alert("좋아요-1");
-        setLiked(liked-1);
-        console.log("-liked value:",liked);
-    }
-     };
-   
 
     //tab화면전환시 지도 출력        
     const handleChange = (event, newValue) => {
@@ -74,7 +59,8 @@ const PlaceInfo=()=>{
     };
 
     //지도api & 관광지 api 
-    const contentId=CityInfoMainContendId; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
+    //const contentId=CityInfoMainContendId; //city페이지에서 contentid받는곳
+    const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
     //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
     const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; 일웅님 인증키
@@ -108,6 +94,7 @@ const PlaceInfo=()=>{
      //setPlace_Id(contentId);
      const [member_num,setMember_Num]=useState('');
      const [stars,setStars]=useState();
+     const [check,setChekced]=useState();
      const [like,setLike]=useState();
      const [content,setContent]=useState();
      const [filename,setFileName]=useState();
@@ -128,10 +115,11 @@ const PlaceInfo=()=>{
     let onedeleteUrl=process.env.REACT_APP_SPRING_URL+"review/onedelete?review_photo_num=";
     let detailUrl=process.env.REACT_APP_SPRING_URL+"review/detail?num=";
     let updateUrl=process.env.REACT_APP_SPRING_URL+"review/update";
-    let likeUrl=process.env.REACT_APP_SPRING_URL+"review/like?place_id="+contentId;
-
+    let likeUrl=process.env.REACT_APP_SPRING_URL+"review/like?place_id="+contentId+"&loginNum="+loginNum;
+    let insertlikeUrl=process.env.REACT_APP_SPRING_URL+"review/insertlike";
     let uploadUrl=process.env.REACT_APP_SPRING_URL+"review/upload";
     let photoUrl=process.env.REACT_APP_SPRING_URL+"review_photo/";
+    let deletelikeUrl=process.env.REACT_APP_SPRING_URL+"review/deletelike?place_id="+contentId+"&loginNum="+loginNum;
     
 
     const [multiUploadFile,setMultiUploadFile]=useState([]);
@@ -156,9 +144,10 @@ const PlaceInfo=()=>{
            setFileName(res.data); // 백엔드에서 보낸 변경된 이미지명을 photo 변수에 넣는다
         }).catch(err=>{
             console.log("err",err);
-        }) 
+        })
+        
       }
-         
+
       //updatefile change 시 호출 이벤트
       const modaluploadImage=(e)=>{
         const uploadFile=e.target.files[0];
@@ -176,6 +165,7 @@ const PlaceInfo=()=>{
             alert("photourl:",err);
           });
         }
+
 
     //ReviewList 호출
     const pageList=()=>{
@@ -213,14 +203,16 @@ const PlaceInfo=()=>{
         const writeReview=(e)=>{
           //e.preventDefault();
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-          axios.post(insertUrl,{place_id:contentId,member_num,stars,content}).then(res=>{ 
-            if(loginNum!==member_num){
+          axios.post(insertUrl,{place_id:contentId,loginNum,stars,content}).then(res=>{ 
+            if(loginNum==null){
               alert("먼저 로그인해주세요");
-            }
+            }else{
               alert("성공");
               pageList();
               setStarsValue("");
               setRefreshReview("");
+              setFileName(""); 
+            }
             }).catch(err => {
               alert(err);
             })
@@ -252,21 +244,53 @@ const PlaceInfo=()=>{
       })
     }
 
+    const handleChecked = (event) => {
+      if(loginNum===false){
+        alert("먼저 로그인해주세요");
+      }else{
+        console.log("firtsconsole:",event.target.checked);
+        setIsChecked(event.target.checked);
+        console.log("number",Number(isChecked));
+
+        if(!isChecked){
+          axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
+          axios.post(insertlikeUrl,{place_id:String(contentId),loginNum,check:Number(!isChecked)}).then(res=>{
+          console.log("좋아요 true:",res.data);
+          setLike(res.data.check);
+        })}
+        else{
+        axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
+        axios.delete(deletelikeUrl).then(res=>{
+          alert("좋아요-1");
+          setLiked(0); 
+          console.log("-liked value:",liked);
+        })
+    }
+  }
+     };
+   
+     
       //mylike select 호출
       const myLike=()=>{
         axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
         axios.get(likeUrl).then(res=>{
-        //   if(res.data==null){
-        //     setLike(0);
-        // }else{
+          console.log("mylikedat:",res.data);
+          if(res.data===null||res.data===0){
           setLike(res.data);
-          console.log("mylike:",res.data);
-       // }
+          setIsChecked(false);
+          console.log("mylike0:",res.data);
+        }else{
+          setLike(res.data);
+          setIsChecked(true);
+          console.log("mylike1:",res.data);
+        }
         }).catch(err => {
           //alert(err);
         })
       }
-        //사진 하나 삭제
+
+
+        //사진 하나 삭제 11
         const onOneDelete=(review_photo_num)=>{
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.delete(onedeleteUrl+review_photo_num).then(res=>{
@@ -352,14 +376,14 @@ const PlaceInfo=()=>{
 
     useEffect(() => {
        kakaomapscript();
+       myLike();
+       GetSumLikes();
       //uploadImage();
     });
 
     useEffect(()=>{
      pageList();
      AvgStars();
-     GetSumLikes();
-     myLike();
     },[]);
 
     //modal
@@ -535,7 +559,6 @@ const PlaceInfo=()=>{
                     </ul>
                 </div> */}
             </TabPanel>
-                {/* <TabPanel value="3">Item Three</TabPanel> */}
             </TabContext>
             </Box>
         
@@ -633,7 +656,12 @@ const PlaceInfo=()=>{
                   {/*map돌릴예정*/}
                   {
                       filename&&filename.map((row,idx)=>(
+                        <div>
                      <img src={photoUrl+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
+                     <button type="button" onClick={()=>{
+                      onOneDelete(editDetailData[idx].review_photo_num);
+                     }}>삭제</button>
+                     </div>
                       ))}
           </Box> 
              </div> 
@@ -689,7 +717,7 @@ const PlaceInfo=()=>{
                          <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre>
                       </div>
 
-                      <div style={{justifyContent:'center',display:'inline-flex'}}>
+                      <div style={{justifyContent:'center',display:'inline-flex'}}>  
                          <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{onEditReviewDetail(detailData[0].num);}}>수정</button>&nbsp;&nbsp;
                          <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
                         onDelete(detailData[0].num);
@@ -731,7 +759,6 @@ const PlaceInfo=()=>{
                           onChange={(event, newValue) => {
                             setStars(newValue);
                           }}/> 
-                          <Rating name="read-only" ref={reviewstarsRef} value={detailData[0].stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/>
                         </div>
                       </div>
                       </Typography>
