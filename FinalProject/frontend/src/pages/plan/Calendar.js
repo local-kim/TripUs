@@ -11,10 +11,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import '../../styles/plan.css';
 import { usePrompt } from '../../utils/Blocker';
 
-const Calendar = () => {
-  // prompt
-  // usePrompt(`현재 페이지에서 나가면 일정이 저장되지 않습니다. 정말 나가시겠습니까?`, true);
-
+const Calendar = ({view, setView}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -73,7 +70,8 @@ const Calendar = () => {
             dispatch(saveTrip({...cityInfo, startDate: start, endDate: end, days}));
             dispatch(savePlan(Array.from(Array(days), () => new Array()))); // redux plan에 초기값 2차원 배열을 넣어줌
 
-            navigate("/plan");
+            // navigate("/plan");
+            setView(1);
           }}>일정 만들기</button>
         </div>
       </div>

@@ -7,3 +7,4 @@ export {default as DayPlaceList} from './DayPlaceList';
 export {default as MyPlaceList} from './MyPlaceList';
 export {default as UpdatePlan} from './UpdatePlan';
 export {default as UpdateDayPlan} from './UpdateDayPlan';
+export {default as PlannerMain} from './PlannerMain';
