@@ -37,7 +37,7 @@ const CityInfoMain = () => {
 
 
     // MUi 메뉴 탭
-    const [value, setValue] = useState('12');
+    const [value, setValue] = useState('1');
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -71,15 +71,18 @@ const CityInfoMain = () => {
     
     
     
-    console.log("slastYear : "+slastYear);
-    console.log("elastYear : "+elastYear);
-    console.log("difDay : "+difDay);
+    // console.log("slastYear : "+slastYear);
+    // console.log("elastYear : "+elastYear);
+    // console.log("difDay : "+difDay);                   //////////////////////////////////////////////// 얘는 확인해야됨 NaN값나옴
 
 
     // 지역 데이타 변수 
     const [areaCode,setAreaCode]=useState('12');
     const [sigunguCode,setSigunguCode]=useState('');
     const [cityname,setCityname]=useState('');
+    const [arrange,setArrange]=useState('R');
+    const [newValue,setNewValue]=useState('R');
+    const [contenttypeid,setContenttypeid]=useState('12');
     
     const [categoryPlace1,setCategoryPlace1]=useState([]);  // 12 명소
     const [categoryPlace2,setCategoryPlace2]=useState([]);  // 39 음식점
@@ -89,6 +92,7 @@ const CityInfoMain = () => {
     const [categoryPlace6,setCategoryPlace6]=useState([]);  // 28 레포츠
     const [categoryPlace7,setCategoryPlace7]=useState([]);  // 32 숙박  
     const [places, setPlaces] = useState([]);
+    const [places2, setPlaces2] = useState([]);
 
 
     // API
@@ -105,14 +109,44 @@ const CityInfoMain = () => {
     PlaceUrl=process.env.REACT_APP_SPRING_URL+"city/citydata?num="+num;
 
     // 날씨 api 받아오는 거   
-     let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=${days}&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${slastYear}&endDt=${elastYear}&stnIds=${num}`;
+    let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=${days}&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${slastYear}&endDt=${elastYear}&stnIds=${num}`;
     // let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=20&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=20210101&endDt=20210501&stnIds=108`;
     
     // 관광도시 api 받아오는 거(arrange=P)
-    let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=20&arrange=R&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=10&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
          areaUrl += `&sigunguCode=${sigunguCode}`;
      }
+    let area_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=10&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+         area_url += `&sigunguCode=${sigunguCode}`;
+     }
+     // contenttypeid 포함
+    let area_content_type_12_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=12&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+         area_url += `&sigunguCode=${sigunguCode}`;
+     }
+    let area_content_type_39_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=39&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+         area_url += `&sigunguCode=${sigunguCode}`;
+     }
+     let area_content_type_38_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=38&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+         area_url += `&sigunguCode=${sigunguCode}`;
+     }
+     let area_content_type_14_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=14&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+         area_url += `&sigunguCode=${sigunguCode}`;
+     }
+     let area_content_type_28_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=28&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+         area_url += `&sigunguCode=${sigunguCode}`;
+     }
+     let area_content_type_15_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=15&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+         area_url += `&sigunguCode=${sigunguCode}`;
+     }
+
 
     // 날씨 데이타 변수
     const [stnId,setStnId]=useState('');         // 지역번호
@@ -154,52 +188,130 @@ const CityInfoMain = () => {
     let trip_url=`${process.env.REACT_APP_SPRING_URL}city/tripdata?city_num=${city_num}&member_num=3`;     
      // 이거 url에 뜨는 값 가져오는건데 url에서 넘어오는 값이 그냥 num 밖에 없잖아,,... 넘겨줄 때 로그인한 사람 member_num도 같이 넘겨주면 바로 될 듯?
     
-    console.log("start_date:",start_date);
-    console.log("end_date:",end_date);
-    console.log("days:",days);
+    // console.log("start_date:",start_date);
+    // console.log("end_date:",end_date);
+    // console.log("days:",days);
+
+
 
     // axios multiple request   
     useEffect(()=>{
+        // change_city_info();
         axios
-            .all([axios.get(trip_url), axios.get(areaUrl), axios.get(weather_url)])
+            .all([axios.get(trip_url), axios.get(weather_url), axios.get(areaUrl), axios.get(area_content_type_12_url), axios.get(area_content_type_39_url), axios.get(area_content_type_38_url), axios.get(area_content_type_14_url), axios.get(area_content_type_28_url), axios.get(area_content_type_15_url)])
             .then(
-                axios.spread((res1, res2, res3) => {
+                axios.spread((res1, res2, res3, res4, res5, res6, res7, res8, res9) => {
                     setCityPlan(res1.data);
                     setCityPlan2(res1.data[0]);
                     setStart_date([res1.data[0].start_date]);  // 잘 들어가짐
                     setEnd_date([res1.data[0].end_date]);  // 잘 들어가짐
                     setDays([res1.data[0].days]);  // 잘 들어가짐
 
-
-                    setPlaces(res2.data.response.body.items.item);
-                    setCategoryPlace1(res2.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '12' || place.contenttypeid == '14' ))
-                    setCategoryPlace2(res2.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '39'))
-                    setCategoryPlace3(res2.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '38'))
-                    setCategoryPlace4(res2.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '15'))
-                    setCategoryPlace5(res2.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '25'))
-                    setCategoryPlace6(res2.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '28'))
-                    setCategoryPlace7(res2.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '32'))
-
-
-                    setW_data(res3.data.response.body.items.item);
-                    setWeatherImg(res3.data.response.body.items.item);
-                    // if (res3.data.response.body.items.item.iscs != '' || avgWs > 2 || sumRn != ''){
-                    //     setW_use_data(...res3.data.response.body.items.item, `${process.env.PUBLIC_URL}/WeatherImage/흐림.png`)
-                    // }
-                    // setW_use_data(res3.data.response.body.items.item.filter((data,idx) => data == data.stnId || data == data.stnNm || data == data.maxTa || data == data.minTa || data == data.iscs || data == data.sumRn || data == data.avgWs || data == data.avgRhm || data == data.ddMes ))
                     
-                    
+                    setW_data(res2.data.response.body.items.item);
+                    setWeatherImg(res2.data.response.body.items.item);
+
+
+                    console.log("first_areaUrl : "+areaUrl);
+                    setPlaces(res3.data.response.body.items.item);
+                    setPlaces2(res3.data.response.body.items.item);
+                    // setCategoryPlace1(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '12' || place.contenttypeid == '14' ))
+                    // setCategoryPlace2(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '39'))
+                    // setCategoryPlace3(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '38'))
+                    // setCategoryPlace4(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '15'))
+                    // setCategoryPlace5(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '25'))
+                    // setCategoryPlace6(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '28'))
+                    // setCategoryPlace7(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '32'))
+
+
+                    setCategoryPlace1(res4.data.response.body.items.item);
+                    setCategoryPlace2(res5.data.response.body.items.item);
+                    setCategoryPlace3(res6.data.response.body.items.item);
+                    setCategoryPlace4(res7.data.response.body.items.item);
+                    setCategoryPlace5(res8.data.response.body.items.item);
+                    setCategoryPlace6(res9.data.response.body.items.item);
                 })
             )
             .catch((err) => console.log(err));
     },[num,areaUrl,weather_url])
 
+
+
+    // // axios multiple request   
+    // useEffect(()=>{
+    //     // change_city_info();
+    //     axios
+    //         .all([axios.get(trip_url), axios.get(weather_url) , axios.get(areaUrl)])
+    //         .then(
+    //             axios.spread((res1, res2, res3) => {
+    //                 setCityPlan(res1.data);
+    //                 setCityPlan2(res1.data[0]);
+    //                 setStart_date([res1.data[0].start_date]);  // 잘 들어가짐
+    //                 setEnd_date([res1.data[0].end_date]);  // 잘 들어가짐
+    //                 setDays([res1.data[0].days]);  // 잘 들어가짐
+
+                    
+    //                 setW_data(res2.data.response.body.items.item);
+    //                 setWeatherImg(res2.data.response.body.items.item);
+
+
+    //                 console.log("first_areaUrl : "+areaUrl);
+    //                 setPlaces(res3.data.response.body.items.item);
+    //                 setPlaces2(res3.data.response.body.items.item);
+    //                 setCategoryPlace1(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '12' || place.contenttypeid == '14' ))
+    //                 setCategoryPlace2(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '39'))
+    //                 setCategoryPlace3(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '38'))
+    //                 setCategoryPlace4(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '15'))
+    //                 setCategoryPlace5(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '25'))
+    //                 setCategoryPlace6(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '28'))
+    //                 setCategoryPlace7(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '32'))
+    //             })
+    //         )
+    //         .catch((err) => console.log(err));
+    // },[num,areaUrl,weather_url])
+
+    // 같이 넣으니까 모든 셀렉트의 옵션이 같아짐
+    // useEffect(()=>{
+    //     axios
+    //         .all([axios.get(area_url), axios.get(areaUrl)])
+    //         .then(
+    //             axios.spread((respon1,respon2) => {
+    //                 setPlaces2(respon1.data.response.body.items.item);
+    //                 setCategoryPlace1(respon2.data.response.body.items.item);
+    //                 // console.log("change_city_info : places2 : "+respon1.data.response.body.items.item)
+    //                 // console.log("Third_area_url : "+area_url);
+    //             })
+    //         )
+    //         .catch((err) => console.log(err));
+    //     // console.log("newValue : "+newValue);
+    //     // console.log("second_area_url : "+area_url);
+    //     // axios.get(area_url)
+    //     // .then(res=>{
+    // },[newValue])
+
+    useEffect(()=>{
+        console.log("newValue : "+newValue);
+        console.log("second_area_url : "+area_url);
+        axios.get(area_url)
+        .then(res=>{
+            setPlaces2(res.data.response.body.items.item);
+            console.log("change_city_info : places2 : "+res.data.response.body.items.item)
+            console.log("Third_area_url : "+area_url);
+            })
+    },[newValue])
+
+
+
     
-    console.log("cityPlan : ",cityPlan);
-    console.log("places : ",places);
-    console.log("w_data : ",w_data);
-    console.log("weather_url : ",weather_url);
-    console.log("w_use_data : ",w_use_data);
+
+    // console.log("cityPlan : ",cityPlan);
+    // console.log("places : ",places);
+    // console.log("w_data : ",w_data);
+    // console.log("weather_url : ",weather_url);
+    // console.log("w_use_data : ",w_use_data);
+    // console.log("places : "+places);
+    // console.log("places2 : "+places2);
+    
     
 
     // const arr1 = [10,20,30];
@@ -274,11 +386,9 @@ const CityInfoMain = () => {
 
     return (
         <div id='cityinfo' style={muiStyle} >
-      
         <div>
             <img alt='' src={weatherImg}></img>
         </div>
-
             <div style={{display:'flex', marginBottom:'20px'}}>
                 <div className='title'>
                     <b>
@@ -296,7 +406,6 @@ const CityInfoMain = () => {
                 <div>
                    <CityInfoImage/>
                 </div>
-                <Link to={'/place/placedetail'} state={{state:{pcontentId}}}>춘식이를 눌러주세요</Link>
                 {/* 날씨 */}
                 <div id='weather-css'>
                     {
@@ -326,7 +435,6 @@ const CityInfoMain = () => {
                                             (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/흐림.png`}/> :                                             
                                             <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음.png`}/> 
                                         }
-                                        
                                     </div>
                                     &ensp;&ensp;
                                     <div style={{width:'150px', height:'110px',padding:'10px'}}>
@@ -364,13 +472,12 @@ const CityInfoMain = () => {
                 <div className='schedule-big-box row'>
                     {
                         cityPlan && cityPlan.map((item, index) => (
-                                <div className='schedule-box col-sm-4'>
-                                    <h5>{item.name}&emsp;&emsp;&emsp;&emsp;&emsp;</h5>
-                                    <b>[D - {differenceInDays(format(new Date(item.end_date), "yyyy-MM-dd"), format(new Date(item.start_date), "yyyy-MM-dd"))}]</b>&emsp;&nbsp;<b>{item.start_date != "" ? format(new Date(item.start_date), "yyyy-MM-dd") : format(new Date(item.start_date), "yyyy-MM-dd")}</b>&emsp;
-                                    <span class="material-symbols-outlined view-weather" style={{fontSize:'15px'}}>sunny</span>
+                            <div className='schedule-box col-sm-4'>
+                                <h5>{item.name}&emsp;&emsp;&emsp;&emsp;&emsp;{item.days}일</h5>
+                                <b>[D - {format(new Date(item.start_date), "yyyy-MM-dd")}]</b>&emsp;&nbsp;<b>{item.start_date != "" ? format(new Date(item.start_date), "yyyy-MM-dd") : ''}</b>&emsp;
+                                <span class="material-symbols-outlined view-weather" style={{fontSize:'15px'}}>sunny</span>
                             </div>
                         ))
-
                     }
                 </div>
             </div>
@@ -381,220 +488,355 @@ const CityInfoMain = () => {
                         <TabContext value={value} >
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <TabList onChange={handleChange} aria-label="lab API tabs example">
+                                    <Tab label="전체보기" value="1" />
                                     <Tab label="관광명소12" value="12" />
                                     <Tab label="음식점39" value="39" />
                                     <Tab label="쇼 핑38" value="38" />
-                                    <Tab label="문화시설 14" value="2" />
-                                    <Tab label="레포츠 28" value="5" />
-                                    <Tab label="행사/공연/축제 15" value="6" />
-                                    <Tab label="숙 박 32" value="7" />
+                                    <Tab label="문화시설 14" value="14"/>
+                                    <Tab label="레포츠 28" value="28" />
+                                    <Tab label="행사/공연/축제 15" value="15" />
+                                    <Tab label="숙 박 32" value="32" />
                                 </TabList>
                             </Box>
-                                <TabPanel value='12'>
-                                    
-
-                                        <div style={{display:'flex', marginTop:'20px'}}>
-                                            <h3>총 ???개</h3>
-                                            <div className='more-select' >
-                                                <select>
-                                                    <option>최신순</option>
-                                                    <option>인기순</option>
-                                                    <option>이름순</option>
-                                                    <option>??순</option>
-                                                </select>
+                            <TabPanel value='1'>
+                                <div style={{display:'flex', marginTop:'20px'}}>
+                                    <div className='more-select' >
+                                        <select onChange={(e)=>{setNewValue(e.target.value)}} defalutValue={value}>
+                                            <option value="R">생성일순</option>
+                                            <option value="D">최신순</option>
+                                            <option value="B">인기순</option>
+                                            <option value="A">이름순</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style={{display:'flex'}} className='row'>
+                                    {
+                                        places2 && places2.map((item, idx) => (
+                                            <div className='col-sm-3'>
+                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                        <CardActionArea>
+                                                            <CardMedia
+                                                            component="img"
+                                                            height="180"
+                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
+                                                            alt=""
+                                                            />
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                    {item.title}
+                                                                </Typography>
+                                                                <Typography variant="h7" color="red">
+                                                                    {item.tel}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            <Button className='clipBtn' size="small" color="primary">
+                                                                {item.addr1}
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </Link>
                                             </div>
-                                        </div>
-
-                                        <div style={{display:'flex'}} className='row'>
+                                        ))
+                                    }
+                                    {/* <div>   무한 스크롤 실패작
+                                        <div>
                                             {
-                                                categoryPlace1 && categoryPlace1.map((item, idx) => (
-                                                    <div className='col-sm-3'>
-                                                        <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{
-                                                                console.log("pcontentId : "+pcontentId);
-                                                            }}>
-                                                            <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
-                                                                <CardActionArea>
-                                                                    <CardMedia
-                                                                    component="img"
-                                                                    height="180"
-                                                                    image={item.firstimage}
-                                                                    alt=""
-                                                                    
-                                                                    />
-                                                                    <CardContent>
-                                                                        <Typography gutterBottom variant="h7" component="div">
-                                                                            {item.title}
-                                                                        </Typography>
-                                                                        <Typography variant="h7" color="red">
-                                                                            {item.tel}
-                                                                        </Typography>
-                                                                    </CardContent>
-                                                                </CardActionArea>
-                                                                <CardActions>
-                                                                    <Button className='clipBtn' size="small" color="primary">
-                                                                        {item.addr1}
-                                                                    </Button>
-                                                                </CardActions>
-                                                            </Card>
-                                                        </Link>
-                                                    </div>
-                                                ))
-                                            }
-                                            {/* <div>   무한 스크롤 실패작
-                                                <div>
-                                                    {
-                                                        categoryPlace1 && categoryPlace1.map((item,index) => (
-                                                            <React.Fragment key={index}>
-                                                                (categoryPlace1.length - 1 == index) ? (
-                                                                    <div key={index} ref={ref}>
-                                                                        {item}
-                                                                    </div>
-                                                                    ) : (
-                                                                        <div key={index}>
-                                                                        {item}
-                                                                    </div>
-                                                                )
-                                                            </React.Fragment>
-                                                        ))
-                                                    }
-                                                </div>
-                                            </div> */}
-                                        </div>
-                                    {/* </div> 서브카테고리 div 닫는거 */}
-                                </TabPanel>
-                                <TabPanel value='39'>
-                                    
-                                        <div style={{display:'flex'}}>
-                                            <div>총 ???개</div>
-                                            <div className='more-select' >
-                                                <select>
-                                                    <option>최신순</option>
-                                                    <option>인기순</option>
-                                                    <option>이름순</option>
-                                                    <option>??순</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div style={{display:'flex'}} className='row'>
-                                            {
-                                                categoryPlace2 && categoryPlace2.map((item, idx) => (
-                                                    <div className='col-sm-3'>
-                                                        <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{
-                                                                console.log("pcontentId : "+pcontentId);
-                                                            }}>
-                                                            <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
-                                                                <CardActionArea>
-                                                                    <CardMedia
-                                                                    component="img"
-                                                                    height="180"
-                                                                    image={item.firstimage}
-                                                                    alt=""
-                                                                    
-                                                                    />
-                                                                    <CardContent>
-                                                                        <Typography gutterBottom variant="h7" component="div">
-                                                                            {item.title}
-                                                                        </Typography>
-                                                                        <Typography variant="h7" color="red">
-                                                                            {item.tel}
-                                                                        </Typography>
-                                                                    </CardContent>
-                                                                </CardActionArea>
-                                                                <CardActions>
-                                                                    <Button className='clipBtn' size="small" color="primary">
-                                                                        {item.addr1}
-                                                                    </Button>
-                                                                </CardActions>
-                                                            </Card>
-                                                        </Link>
-                                                    </div>
+                                                categoryPlace1 && categoryPlace1.map((item,index) => (
+                                                    <React.Fragment key={index}>
+                                                        (categoryPlace1.length - 1 == index) ? (
+                                                            <div key={index} ref={ref}>
+                                                                {item}
+                                                            </div>
+                                                            ) : (
+                                                                <div key={index}>
+                                                                {item}
+                                                            </div>
+                                                        )
+                                                    </React.Fragment>
                                                 ))
                                             }
                                         </div>
-                                    {/* </div> 서브카테고리 div 닫는거 */}
-                                </TabPanel>
-                                <TabPanel value="38">
-                                    <div style={{display:'flex'}} className='row'>
-                                        {
-                                           categoryPlace3 && categoryPlace3.map((item, idx) => (
-                                                <div className='col-sm-4'>
-                                                    <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{
-                                                                console.log("pcontentId : "+pcontentId);
-                                                            }}>
-                                                            <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
-                                                                <CardActionArea>
-                                                                    <CardMedia
-                                                                    component="img"
-                                                                    height="180"
-                                                                    image={item.firstimage}
-                                                                    alt=""
-                                                                    
-                                                                    />
-                                                                    <CardContent>
-                                                                        <Typography gutterBottom variant="h7" component="div">
-                                                                            {item.title}
-                                                                        </Typography>
-                                                                        <Typography variant="h7" color="red">
-                                                                            {item.tel}
-                                                                        </Typography>
-                                                                    </CardContent>
-                                                                </CardActionArea>
-                                                                <CardActions>
-                                                                    <Button className='clipBtn' size="small" color="primary">
-                                                                        {item.addr1}
-                                                                    </Button>
-                                                                </CardActions>
-                                                            </Card>
-                                                        </Link>
-                                                </div>
-                                            ))
-                                        }
+                                    </div> */}
+                                </div>
+                                {/* </div> 서브카테고리 div 닫는거 */}
+                            </TabPanel>
+                            <TabPanel value='12'>
+                                <div style={{display:'flex', marginTop:'20px'}}>
+                                    <div className='more-select' >
+                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
+                                            <option value="R">생성일순</option>
+                                            <option value="D">최신순</option>
+                                            <option value="B">인기순</option>
+                                            <option value="A">이름순</option>
+                                        </select>
                                     </div>
-
-                                </TabPanel>
-                                {/* <div> 무한 스크롤 실패작
-                                    <div>
-                                        {
-                                            categoryPlace1 && categoryPlace1.map((item,index) => {
-                                                (categoryPlace1.length - 1 == index) ? (
-                                                    <div key={index} ref={ref}>
-                                                      {item.data}
-                                                    </div>
-                                                  ) : (
-                                                    <div key={index}>
-                                                      {item.data}
-                                                    </div>
-                                                  )
-                                            })
-                                        }
+                                </div>
+                                <div style={{display:'flex'}} className='row'>
+                                    {
+                                        categoryPlace1 && categoryPlace1.map((item, idx) => (
+                                            <div className='col-sm-3'>
+                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                        <CardActionArea>
+                                                            <CardMedia
+                                                            component="img"
+                                                            height="180"
+                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
+                                                            alt=""
+                                                            />
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                    {item.title}
+                                                                </Typography>
+                                                                <Typography variant="h7" color="red">
+                                                                    {item.tel}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            <Button className='clipBtn' size="small" color="primary">
+                                                                {item.addr1}
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </Link>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </TabPanel>
+                            <TabPanel value='39'>
+                                <div style={{display:'flex', marginTop:'20px'}}>
+                                    <div className='more-select' >
+                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
+                                            <option value="R">생성일순</option>
+                                            <option value="D">최신순</option>
+                                            <option value="B">인기순</option>
+                                            <option value="A">이름순</option>
+                                        </select>
                                     </div>
-                                </div> */}
+                                </div>
+                                <div style={{display:'flex'}} className='row'>
+                                    {
+                                        categoryPlace2 && categoryPlace2.map((item, idx) => (
+                                            <div className='col-sm-3'>
+                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                        <CardActionArea>
+                                                            <CardMedia
+                                                            component="img"
+                                                            height="180"
+                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
+                                                            alt=""
+                                                            />
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                    {item.title}
+                                                                </Typography>
+                                                                <Typography variant="h7" color="red">
+                                                                    {item.tel}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            <Button className='clipBtn' size="small" color="primary">
+                                                                {item.addr1}
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </Link>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </TabPanel>
+                            <TabPanel value='38'>
+                                <div style={{display:'flex', marginTop:'20px'}}>
+                                    <div className='more-select' >
+                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
+                                            <option value="R">생성일순</option>
+                                            <option value="D">최신순</option>
+                                            <option value="B">인기순</option>
+                                            <option value="A">이름순</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style={{display:'flex'}} className='row'>
+                                    {
+                                        categoryPlace3 && categoryPlace3.map((item, idx) => (
+                                            <div className='col-sm-3'>
+                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                        <CardActionArea>
+                                                            <CardMedia
+                                                            component="img"
+                                                            height="180"
+                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
+                                                            alt=""
+                                                            />
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                    {item.title}
+                                                                </Typography>
+                                                                <Typography variant="h7" color="red">
+                                                                    {item.tel}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            <Button className='clipBtn' size="small" color="primary">
+                                                                {item.addr1}
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </Link>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </TabPanel>
+                            <TabPanel value='14'>
+                                <div style={{display:'flex', marginTop:'20px'}}>
+                                    <div className='more-select' >
+                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
+                                            <option value="R">생성일순</option>
+                                            <option value="D">최신순</option>
+                                            <option value="B">인기순</option>
+                                            <option value="A">이름순</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style={{display:'flex'}} className='row'>
+                                    {
+                                        categoryPlace4 && categoryPlace4.map((item, idx) => (
+                                            <div className='col-sm-3'>
+                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                        <CardActionArea>
+                                                            <CardMedia
+                                                            component="img"
+                                                            height="180"
+                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
+                                                            alt=""
+                                                            />
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                    {item.title}
+                                                                </Typography>
+                                                                <Typography variant="h7" color="red">
+                                                                    {item.tel}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            <Button className='clipBtn' size="small" color="primary">
+                                                                {item.addr1}
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </Link>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </TabPanel>
+                            <TabPanel value='28'>
+                                <div style={{display:'flex', marginTop:'20px'}}>
+                                    <div className='more-select' >
+                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
+                                            <option value="R">생성일순</option>
+                                            <option value="D">최신순</option>
+                                            <option value="B">인기순</option>
+                                            <option value="A">이름순</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style={{display:'flex'}} className='row'>
+                                    {
+                                        categoryPlace5 && categoryPlace5.map((item, idx) => (
+                                            <div className='col-sm-3'>
+                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                        <CardActionArea>
+                                                            <CardMedia
+                                                            component="img"
+                                                            height="180"
+                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
+                                                            alt=""
+                                                            />
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                    {item.title}
+                                                                </Typography>
+                                                                <Typography variant="h7" color="red">
+                                                                    {item.tel}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            <Button className='clipBtn' size="small" color="primary">
+                                                                {item.addr1}
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </Link>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </TabPanel>
+                            <TabPanel value='15'>
+                                <div style={{display:'flex', marginTop:'20px'}}>
+                                    <div className='more-select' >
+                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
+                                            <option value="R">생성일순</option>
+                                            <option value="D">최신순</option>
+                                            <option value="B">인기순</option>
+                                            <option value="A">이름순</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div style={{display:'flex'}} className='row'>
+                                    {
+                                        categoryPlace6 && categoryPlace6.map((item, idx) => (
+                                            <div className='col-sm-3'>
+                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                        <CardActionArea>
+                                                            <CardMedia
+                                                            component="img"
+                                                            height="180"
+                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
+                                                            alt=""
+                                                            />
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                    {item.title}
+                                                                </Typography>
+                                                                <Typography variant="h7" color="red">
+                                                                    {item.tel}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            <Button className='clipBtn' size="small" color="primary">
+                                                                {item.addr1}
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                </Link>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </TabPanel>
                         </TabContext>
                         <button type='button' onClick={()=>{naVi("/city/infomore")}}>+더보기</button>
                     </Box>
-                    
                 </div>
-                {/* <div className='scheduleContainer'>
-                    <div className='scheduleBtnBox'>
-                        <button type='button' className='btn scheduleBtn' 
-                            onClick={()=>{
-                                naVi(`../plan/calendar/108`);
-                            }}>내 일정 만들기</button>
-                        <button type='button' className='btn scheduleBtn'>내 일정 더보기</button>
-                    </div>
-                    <b className='bb'>내 여행 일정</b>
-                    {
-                        cityPlan && cityPlan.map((item, index) => (
-                            <div className='aa'>
-                                <h5>{item.name}</h5>
-                                <b>[D - ??]</b>&emsp;&nbsp;<b>{item.start_date}</b>&emsp;
-                                <span class="material-symbols-outlined" style={{fontSize:'15px'}}>sunny<b>날씨보기</b></span>
-                            </div>
-                        ))
-
-                    }
-                </div> */}
             </div>
             
         </div>
