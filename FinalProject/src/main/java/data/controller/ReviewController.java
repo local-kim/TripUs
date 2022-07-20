@@ -81,8 +81,8 @@ public class ReviewController {
    
    @PostMapping("/insert")
    public void insert(@RequestBody ReviewDto dto) {
-      int member_num=18;
-      dto.setMember_num(member_num);
+//     int member_num=18;
+//	   dto.setMember_num();)
       System.out.println(dto);
       int num=reviewService.insertReview(dto);
       

@@ -36,7 +36,7 @@ const style = {
 const PlaceInfo=()=>{
       
   const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
-
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
     //git error catch
        //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
       // const location = useLocation();
@@ -61,8 +61,8 @@ const PlaceInfo=()=>{
     //지도api & 관광지 api 
     //const contentId=CityInfoMainContendId; //city페이지에서 contentid받는곳
     const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
-    //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
-    const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
+    const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
+    // const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; 일웅님 인증키
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
@@ -98,6 +98,7 @@ const PlaceInfo=()=>{
      const [like,setLike]=useState();
      const [content,setContent]=useState();
      const [filename,setFileName]=useState();
+     const [updatefilename,setUpdateFileName]=useState();
      const [modalfilename,setModalFileName]=useState();
     // const [sta,setContent]=useState('');
     const [reviewData,setReviewData]=useState([]); //data 받아오기
@@ -107,7 +108,7 @@ const PlaceInfo=()=>{
 
     //Spring url선언
     let pagelistUrl=process.env.REACT_APP_SPRING_URL+`review/allreview?place_id=${contentId}&currentPag=${currentPage}`;
-    //let paginationlistUrl=process.env.REACT_APP_SPRING_URL+`review/pagelist?currentPage=${currentPage}&place_id=${contentId}`;
+    let paginationlistUrl=process.env.REACT_APP_SPRING_URL+`review/pagelist?place_id=${contentId}&currentPage=${currentPage}`;
     let placeStarsAvgUrl=process.env.REACT_APP_SPRING_URL+"review/avgstars?place_id="+contentId;
     let placeLikesSumUrl=process.env.REACT_APP_SPRING_URL+"review/sumlikes?place_id="+contentId;
     let insertUrl=process.env.REACT_APP_SPRING_URL+"review/insert";
@@ -118,13 +119,17 @@ const PlaceInfo=()=>{
     let likeUrl=process.env.REACT_APP_SPRING_URL+"review/like?place_id="+contentId+"&loginNum="+loginNum;
     let insertlikeUrl=process.env.REACT_APP_SPRING_URL+"review/insertlike";
     let uploadUrl=process.env.REACT_APP_SPRING_URL+"review/upload";
+    let uploadUrl2=process.env.REACT_APP_SPRING_URL+"review/upload";
     let photoUrl=process.env.REACT_APP_SPRING_URL+"review_photo/";
+    let photoUrl2=process.env.REACT_APP_SPRING_URL+"review_photo/";
+    let profilePhotoUrl=process.env.REACT_APP_SPRING_URL+"save/";
     let deletelikeUrl=process.env.REACT_APP_SPRING_URL+"review/deletelike?place_id="+contentId+"&loginNum="+loginNum;
     
 
     const [multiUploadFile,setMultiUploadFile]=useState([]);
      //file change 시 호출 이벤트
      const uploadImage=(e)=>{
+      console.log("그냥 체인지");
       //const uploadFile=e.target.files[0];
       const uploadFile=e.target.files;
       const imageFile = new FormData();
@@ -148,15 +153,29 @@ const PlaceInfo=()=>{
         
       }
 
+      useEffect(() => {
+        console.log("filename"+filename);
+      }, [filename])
+
+      useEffect(() => {
+        console.log("modalfilename"+modalfilename);
+      }, [modalfilename])
+      
+      
       //updatefile change 시 호출 이벤트
       const modaluploadImage=(e)=>{
-        const uploadFile=e.target.files[0];
+        console.log("modal change");
+        const modaluploadFile=e.target.files;
         const imageFile = new FormData();
-        imageFile.append("uploadFile",uploadFile);// spring의 @RequestParam으로 들어감
+        //imageFile.append("uploadFile",uploadFile);// spring의 @RequestParam으로 들어감
+        for(let i =0; i< modaluploadFile.length;i++){
+          imageFile.append("imagefile",modaluploadFile[i]);
+           console.log("modalimageFile[]:",modaluploadFile[i]);
+         }
         axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
         axios({
             method: 'post',
-            url: uploadUrl,
+            url: uploadUrl2,
             data: imageFile,
             headers: {'Content-Type': 'multipart/form-data'}
           }).then(res => {  // json 형식의 response를 받음
@@ -185,26 +204,21 @@ const PlaceInfo=()=>{
     }
 
     //PaginationList 호출
-    // const paginationList=()=>{
-    //   axios.get(paginationlistUrl).then(res=>{
-    //      if(res.data.length===0){
-    //         setReviewData("후기가 없습니다 작성해주시길바랍니다.");
-    //         alert("x");
-    //     }else{
-    //       setReviewData(res.data);
-    //       }
-    //     console.log(res.data);
-    //     })
-    //     .catch(err => {
-    //         alert(err);
-    //     }) 
-        
+    const paginationList=()=>{
+      axios.get(paginationlistUrl).then(res=>{
+          setReviewData(res.data);
+            console.log("pagination:",res.data);
+        })
+        .catch(err => {
+            alert(err);
+        }) 
+      }
         //Review insert
         const writeReview=(e)=>{
           //e.preventDefault();
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-          axios.post(insertUrl,{place_id:contentId,loginNum,stars,content}).then(res=>{ 
-            if(loginNum==null){
+          axios.post(insertUrl,{place_id:contentId,member_num:loginNum,stars,content}).then(res=>{ 
+            if(!isLoggedIn){
               alert("먼저 로그인해주세요");
             }else{
               alert("성공");
@@ -245,7 +259,7 @@ const PlaceInfo=()=>{
     }
 
     const handleChecked = (event) => {
-      if(loginNum===false){
+      if(!isLoggedIn){
         alert("먼저 로그인해주세요");
       }else{
         console.log("firtsconsole:",event.target.checked);
@@ -277,11 +291,11 @@ const PlaceInfo=()=>{
           console.log("mylikedat:",res.data);
           if(res.data===null||res.data===0){
           setLike(res.data);
-          setIsChecked(false);
+          setIsChecked(true);
           console.log("mylike0:",res.data);
         }else{
           setLike(res.data);
-          setIsChecked(true);
+          setIsChecked(false);
           console.log("mylike1:",res.data);
         }
         }).catch(err => {
@@ -319,25 +333,29 @@ const PlaceInfo=()=>{
            //modal mui
            const [open, setOpen] = React.useState(false);
            const [updateModalOpen,setUpdateModalOpen] = React.useState(false);
-          
+          const [detailidx,setDetailIdx] =useState('');
 
           // const handleOpen = () =>
            const handleClose = () =>{ setOpen(false);  }
            const edithandleClose = () =>{setUpdateModalOpen(false);}
 
          //상세보기 호출할 함수
-         const onDetail=(num)=>{
+         const onDetail=(num,idx)=>{
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.get(detailUrl+num).then(res=>{
                 if(res.file_name ===null){
                 setDetailData(res.data.dto);
+                setDetailIdx(idx);
+                console.log("idx",idx);
                 console.log("notfile_name:",res.data);  
               }
               else{
               setDetailData(res.data.dto);
+              setDetailIdx(idx);
               setDetailFileData(res.data.fname);
               console.log("detail->",res.data.dto);
               console.log("detailfile",res.data.fname);
+              
             }
               setOpen(true);
           })
@@ -465,6 +483,14 @@ const PlaceInfo=()=>{
     }).catch((err) => {
     
     });
+
+      // 파일 삭제
+    const deleteFileImage = (idx) => {
+      URL.revokeObjectURL(filename);
+      URL.revokeObjectURL(modalfilename);
+      setFileName(filename.filter((file, i) => i != idx));
+      setModalFileName(modalfilename.filter((file, i) => i != idx));
+    };
     
     return (
         <div className='place_info'>
@@ -485,7 +511,7 @@ const PlaceInfo=()=>{
                 <div id='place_map'>
                 </div>
             </TabPanel>
-            <TabPanel value="2">
+            <TabPanel value="2" sx={{overflow:'scroll',overflowX:'hidden',padding:'0'}}>
                  <div style={{width:'700px',height:'500px',display:'flex'}}>
                   <div>
                     {/* <p>{reviewData}</p> */}
@@ -496,14 +522,14 @@ const PlaceInfo=()=>{
 
                         <div style={{flexDirection:'column',justifyContent:'center'}}>
                           <div>
-                         <img src={Ayong} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                         <img src={row.file_name==null?Ayong:profilePhotoUrl+row.file_name} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
                           </div>
-                          <div style={{marginTop:'5px'}}>
+                          <div style={{marginTop:'5px',textAlign:'center'}}>
                           {row.name}
                           </div>
                           </div>  
                           <div style={{display:'flex',flexDirection:'column',marginLeft:'15px'}}>
-                          <div style={{backgroundColor:'white',height:'50px',width:'600px',padding:'5px 0px 0px 5px'}} onClick={()=>{onDetail(row.num);}}>
+                          <div style={{backgroundColor:'white',height:'50px',width:'600px',padding:'5px 0px 0px 5px'}} onClick={()=>{onDetail(row.num,idx);}}>
                        {row.content}
                        </div>
                        <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
@@ -511,13 +537,16 @@ const PlaceInfo=()=>{
                         {row.created_at}&nbsp;&nbsp;&nbsp;
                        <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
                        </div>
+                       {isLoggedIn&&loginNum==row.member_num ? 
                        <div style={{flexGrow:'0',marginRight:'10px'}}>
+                        
                        <span style={{cursor:'pointer'}} onClick={()=>{onEditReviewDetail(row.num);}}>수정</span>
                        &nbsp;&nbsp;|&nbsp;&nbsp;
                        <span className='myreviewDelete' style={{cursor:'pointer'}} onClick={()=>{
                         onDelete(row.num);
-                       }}>삭제</span>
-                    </div>
+                       }}>삭제</span></div> : ""
+                      }
+                    
                        </div>
                        </div>
                       </div>
@@ -528,20 +557,20 @@ const PlaceInfo=()=>{
                 </div> 
                   {/*페이징 */}
 
-                  {/* <Pagination count={10} color="primary" /> */}
+                  {/* <Pagination count={10} color="primary" />
                   
-            {/* <div style={{width:'700px',textAlign:'center'}}>
+                <div style={{width:'700px',textAlign:'center'}}>
                     <ul className='pagination'>
                         {
                         (reviewData.startPage>1?<li>
-                            <Link to={`/place/placedetail/${reviewData.startPage-1}`}>이전</Link>
+                            <Link to={`/place/pagelist/${reviewData.startPage-1}`}>이전</Link>
                         </li>:'')
                         }
 
                         {
                             
                             reviewData.parr&&reviewData.parr.map(n=>{
-                                const url="/place/placedetail/"+n;
+                                const url="/place/pagelist/"+n;
                                 return(
 
                                     <li className={n == currentPage ? 'active' : ''}>
@@ -553,7 +582,7 @@ const PlaceInfo=()=>{
                         {
                         (reviewData.endPage<reviewData.totalPage?
                         <li>
-                            <Link to={`/place/placedetail/${reviewData.endPage+1}`}>다음</Link>
+                            <Link to={`/place/pagelist/${reviewData.endPage+1}`}>다음</Link>
                         </li>:'')
                     }
                     </ul>
@@ -623,7 +652,7 @@ const PlaceInfo=()=>{
                   </div>
 
                     <p style={{fontSize:'14px',margin:'0 auto'}}>{cattypename}</p>
-                    <i className="fa-solid fa-map-location-dot" style={{color:'#1976d2'}}></i>&nbsp;&nbsp;{placeAddr}<br/>
+                    <i className="fa-solid fa-map-location-dot" style={{color:'#3a6670'}}></i>&nbsp;&nbsp;{placeAddr}<br/>
                     {/*별점 좋아요수 */}
                     {/* <Rating name="half-rating-read" defaultValue={avgStars} precision={0.1} readOnly/>{avgStars} */}
                     <i className="fa-solid fa-star" style={{color:'#faaf00'}}></i>&nbsp;&nbsp;{avgStars===0?0:avgStars}<br/>
@@ -650,7 +679,7 @@ const PlaceInfo=()=>{
                   <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
                   </label>
                   
-                  <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} id="file" />
+                  <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} onClick={()=>console.log("그냥")}  id="file" />
                   {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
                   <p>{filename}</p>
                   {/*map돌릴예정*/}
@@ -659,7 +688,8 @@ const PlaceInfo=()=>{
                         <div>
                      <img src={photoUrl+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
                      <button type="button" onClick={()=>{
-                      onOneDelete(editDetailData[idx].review_photo_num);
+                      // onOneDelete(editDetailData[idx].review_photo_num);
+                      deleteFileImage(idx);
                      }}>삭제</button>
                      </div>
                       ))}
@@ -685,13 +715,12 @@ const PlaceInfo=()=>{
                       <Typography id="modal-modal-title" variant="h6" component="h2">
                       <div style={{display:'inline-flex',width:'450px',justifyContent:'left'}}>
                         <div>
-                          <img src={Ayong} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                          <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
                       </div>
 
                         <div style={{marginLeft:'10px',fontSize:'16px'}}>
                           <div>
                           <label>{detailData[0].name}</label>
-                          {/* <label>{detailData.name}</label> */}
                           </div>
 
                           <div style={{display:'inline-flex'}}>
@@ -716,14 +745,16 @@ const PlaceInfo=()=>{
                          {/* <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre> */}
                          <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre>
                       </div>
-
+                      {isLoggedIn&&loginNum==detailData[0].member_num? 
                       <div style={{justifyContent:'center',display:'inline-flex'}}>  
                          <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{onEditReviewDetail(detailData[0].num);}}>수정</button>&nbsp;&nbsp;
                          <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
                         onDelete(detailData[0].num);
                        }}>삭제</button>
-                      </div>
+                      </div>:""}
                       </Typography>
+                      {/* {detailData[0].num+1<0?"":<button>←</button>}
+                      {detailData[0].num>detailData.length?"":<button>→</button>} */}
                     </Box>
                   </Modal>
                 </div>
@@ -742,7 +773,7 @@ const PlaceInfo=()=>{
                       <Typography id="modal-modal-title" variant="h6" component="h2">
                       <div style={{display:'inline-flex',width:'450px',justifyContent:'left'}}>
                         <div>
-                          <img src={Ayong} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                          <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
                       </div>
 
                         <div style={{marginLeft:'10px',fontSize:'16px'}}>
@@ -787,11 +818,21 @@ const PlaceInfo=()=>{
                          }}>수정완료</button>
 
                          {/*imgfile */}
-                <label for="file">
+                <label for="file2">
                   <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
                   </label>
-                  <input type='file' name='upload' accept='image/*' multiple onChange={modaluploadImage} id="file" />
-                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
+                  <input type='file' name='modal-upload' accept='image/*' multiple onChange={modaluploadImage} onClick={()=>console.log("modal")} id="file2" />
+                    {/*map돌릴예정*/}
+                    {
+                      modalfilename&&modalfilename.map((row,idx)=>(
+                        <div>
+                     <img src={photoUrl2+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
+                     <button type="button" onClick={()=>{
+                      // onOneDelete(editDetailData[idx].review_photo_num);
+                      deleteFileImage(idx);
+                     }}>삭제</button>
+                     </div>
+                      ))}
                       </div>
                       </Typography>
                     </Box>
