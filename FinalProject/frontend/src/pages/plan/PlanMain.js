@@ -10,10 +10,11 @@ const PlannerMain = () => {
 
   const [view, setView] = useState(0);
   const [day, setDay] = useState(1);
+  const [focus, setFocus] = useState(0);
 
   return (
     <div>
-      {view == 0 ? <Calendar view={view} setView={setView} /> : view == 1 ? <Plan view={view} setView={setView} day={day} setDay={setDay} setIsBlocking={setIsBlocking} /> : <DayPlan view={view} setView={setView} day={day} setDay={setDay} />}
+      {view == 0 ? <Calendar view={view} setView={setView} /> : view == 1 ? <Plan view={view} setView={setView} day={day} setDay={setDay} setIsBlocking={setIsBlocking} focus={focus} setFocus={setFocus} /> : <DayPlan view={view} setView={setView} day={day} setDay={setDay} focus={focus} setFocus={setFocus} />}
     </div>
   );
 };
