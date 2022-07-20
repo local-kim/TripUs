@@ -1,6 +1,8 @@
 package data.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,10 +27,23 @@ public class Maincontroller {
 	MainPageMapper mapper;
 	
 	@GetMapping("/cityData")
-	public List<CityDto> cityData() {
+	public Map<String, Object> cityData() {
 	
+		      
+		List<CityDto> getData2 = service.getData2();
+		List<CityDto> getData3 = service.getData3();
+		List<CityDto> getData4 = service.getData4();
 		
-		return service.getData();
+		
+		Map<String, Object> map = new HashMap<>();
+
+//		map.put("getData", getData);
+		map.put("getData2", getData2);
+		map.put("getData3", getData3);
+		map.put("getData4", getData4);
+
+		
+		return map;
 	}
 }
 

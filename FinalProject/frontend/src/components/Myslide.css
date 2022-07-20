@@ -88,16 +88,9 @@ b, strong {
 .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
     content: 'next';
     color: white;
-    margin-right: 15px;
+    
 }
 .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after {
     content: 'prev';
     color: white;
-}
-
-  .card .card-image:hover img {
-    width: 100%;
-    height: 100%;
-   transform: scale(1.2);
-   
 }
