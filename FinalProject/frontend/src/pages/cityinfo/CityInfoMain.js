@@ -97,8 +97,9 @@ const CityInfoMain = () => {
 
     // API
     // 날씨 
-    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
-
+    // const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
+    // const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
+    const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
     
     // // 일정 계획 데이타
     const [cityPlan,setCityPlan]=useState([]);
@@ -113,36 +114,36 @@ const CityInfoMain = () => {
     // let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=20&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=20210101&endDt=20210501&stnIds=108`;
     
     // 관광도시 api 받아오는 거(arrange=P)
-    let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=10&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
          areaUrl += `&sigunguCode=${sigunguCode}`;
      }
-    let area_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=10&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    let area_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
          area_url += `&sigunguCode=${sigunguCode}`;
      }
      // contenttypeid 포함
-    let area_content_type_12_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=12&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    let area_content_type_12_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=12&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
          area_url += `&sigunguCode=${sigunguCode}`;
      }
-    let area_content_type_39_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=39&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    let area_content_type_39_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=39&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
          area_url += `&sigunguCode=${sigunguCode}`;
      }
-     let area_content_type_38_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=38&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     let area_content_type_38_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=38&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
          area_url += `&sigunguCode=${sigunguCode}`;
      }
-     let area_content_type_14_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=14&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     let area_content_type_14_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=14&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
          area_url += `&sigunguCode=${sigunguCode}`;
      }
-     let area_content_type_28_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=28&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     let area_content_type_28_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=28&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
          area_url += `&sigunguCode=${sigunguCode}`;
      }
-     let area_content_type_15_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=3&arrange=${newValue}&contentTypeId=15&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     let area_content_type_15_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=15&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
          area_url += `&sigunguCode=${sigunguCode}`;
      }
@@ -230,6 +231,12 @@ const CityInfoMain = () => {
                     setCategoryPlace4(res7.data.response.body.items.item);
                     setCategoryPlace5(res8.data.response.body.items.item);
                     setCategoryPlace6(res9.data.response.body.items.item);
+                    console.log(res4.data.response.body.items.item);
+                    console.log(res5.data.response.body.items.item);
+                    console.log(res6.data.response.body.items.item);
+                    console.log(res7.data.response.body.items.item);
+                    console.log(res8.data.response.body.items.item);
+                    console.log(res9.data.response.body.items.item);
                 })
             )
             .catch((err) => console.log(err));
@@ -473,8 +480,9 @@ const CityInfoMain = () => {
                     {
                         cityPlan && cityPlan.map((item, index) => (
                             <div className='schedule-box col-sm-4'>
-                                <h5>{item.name}&emsp;&emsp;&emsp;&emsp;&emsp;{item.days}일</h5>
-                                <b>[D - {format(new Date(item.start_date), "yyyy-MM-dd")}]</b>&emsp;&nbsp;<b>{item.start_date != "" ? format(new Date(item.start_date), "yyyy-MM-dd") : ''}</b>&emsp;
+                                <h5>{item.name}&emsp;&emsp;&emsp;{item.days}일</h5>
+                                <b>[D - {differenceInDays(new Date(item.start_date) ,new Date())}]</b>
+                                &emsp;&nbsp;<b>{item.start_date != "" ? format(new Date(item.start_date), "yyyy-MM-dd") : ''}</b>&emsp;
                                 <span class="material-symbols-outlined view-weather" style={{fontSize:'15px'}}>sunny</span>
                             </div>
                         ))
