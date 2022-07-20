@@ -93,8 +93,6 @@ public class MypageController {
 		}
 	
 		
-
-		
 		
 		@GetMapping("/pagelist") 
 		public Map<String, Object> getPageList(){

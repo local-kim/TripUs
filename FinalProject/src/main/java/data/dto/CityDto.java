@@ -14,6 +14,7 @@ public class CityDto {
 	private String image;
 	private int area_code;
 	private int sigungu_code;
+	private int cat;
 	private String x;
 	private String y;
 }

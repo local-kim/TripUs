@@ -282,9 +282,9 @@ const Profile = () => {
                     </div>
                 </div>
 
-                    <div className="divider-container">
+                    {/* <div className="divider-container">
                     <div className="divider"></div>
-                </div> 
+                </div>  */}
                 <div className="flex-container p-2">
                     <button className="btn-quit" id="deleteUserBtn" onClick={deleteUser}>회원탈퇴</button>
                 </div>

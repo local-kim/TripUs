@@ -153,81 +153,81 @@ const LoginForm = () => {
     //    saveUser('');
     // }
      };
-     const removeStorage = () => {
-        if(!isChecked) {
-            localStorage.clear();
-            saveUser='';
-            saveId=false;
-        }
-     }
+    const removeStorage = () => {
+      if(!isChecked) {
+          localStorage.clear();
+          saveUser='';
+          saveId=false;
+      }
+    }
 
-     useEffect(()=>{
-        removeStorage();
-     },[])
+    useEffect(()=>{
+      removeStorage();
+    },[])
 
     return (
-        
-        <div className='container_login'>
-      <form onSubmit={onClickLogin}>
-        <div className='text'>LOGIN</div>
-        <div className='small_text'>나만의 여행 플래너 - TRIP:US</div>
-     
-      <div className='form_container'>
-      <div className='data'>
-          <label>아이디</label>
-            <input type="text" id="LoginId" value={isChecked ? saveUser : inputId } onChange={handleInputId}
-            required></input>
-        </div>
-        <div className="id_checked">
-            <input type="checkbox"  id='id_checkbox'
-              checked={isChecked} onChange={handleChecked}/>
-            <label className="loginPage_text" >아이디 저장</label>
-        </div>
-        <br></br>
-        <div className='data'>
-          <label>비밀번호</label>
-          <input type="password" id="LoginPass" value={inputPw} onChange={handleInputPw} required></input>
-        </div>
-        <div className='forgot_pass'>
-          <a href='/findPassword'>비밀번호를 잊으셨나요?</a>
-        </div>
-        <div className='login_btn'>
-          <button type='submit' id='loginBtn'>로그인</button>
-        </div>
-        <div className='signup_link'>
-          회원이 아니세요?
-          <a href="join">회원가입하기</a>
-        </div>
-      </div>
-      <div className='divider_container'>
-        <div className='divider'></div>
-        <span>or</span>
-      </div>
-      <div className='sns_text'>SNS 간편 로그인</div>
-      <div className='socialBtn-container'>
-        <div className='socialBtn'>
-            <a href={KAKAO_AUTH_URL}>
-            <img src={kakao_icon} alt='카카오'/>
-            </a>
-        </div>
-        <div className='socialBtn'>
-          <img src={naver_icon} alt='네이버'></img>
-        </div>
-        <div className='socialBtn'>
-          <img src={google_icon} alt='구글'>
-          </img>
-          <GoogleLogin
-                    clientId={process.env.REACT_APP_GOOGLE_API_KEY}
-                    buttonText="Login"
-                    onSuccess={successGoogle}
-                    onFailure={failGoogle}
-                    cookiePolicy={'single_host_origin'}
-                />
+      <div className='container_login'>
+        <form onSubmit={onClickLogin}>
+          <div className='text'>LOGIN</div>
+          <div className='small_text'>나만의 여행 플래너 - TRIP:US</div>
+      
+          <div className='form_container'>
+            <div className='data'>
+              <label>아이디</label>
+                <input type="text" id="LoginId" value={isChecked ? saveUser : inputId } onChange={handleInputId}
+                required></input>
+            </div>
+            <div className="id_checked">
+                <label className="loginPage_text" >
+                  <input type="checkbox"  id='id_checkbox' checked={isChecked} onChange={handleChecked}/>
+                  &nbsp;아이디 저장
+                </label>
+            </div>
+            <br></br>
+            <div className='data'>
+              <label>비밀번호</label>
+              <input type="password" id="LoginPass" value={inputPw} onChange={handleInputPw} required></input>
+            </div>
+            <div className='forgot_pass'>
+              <a href='/find'>비밀번호를 잊으셨나요?</a>
+            </div>
+            <div className='login_btn'>
+              <button type='submit' id='loginBtn'>로그인</button>
+            </div>
+            <div className='signup_link'>
+              회원이 아니세요?
+              <a href="join">회원가입하기</a>
+            </div>
+          </div>
+          <div className='divider_container'>
+            <div className='divider'></div>
+            <span>or</span>
+          </div>
+          <div className='sns_text'>SNS 간편 로그인</div>
+          <div className='socialBtn-container'>
+            <div className='socialBtn'>
+                <a href={KAKAO_AUTH_URL}>
+                <img src={kakao_icon} alt='카카오'/>
+                </a>
+            </div>
+            <div className='socialBtn'>
+              <img src={naver_icon} alt='네이버'></img>
+            </div>
+            <div className='socialBtn'>
+              <img src={google_icon} alt='구글'>
+              </img>
+              <GoogleLogin
+                clientId={process.env.REACT_APP_GOOGLE_API_KEY}
+                buttonText="Login"
+                onSuccess={successGoogle}
+                onFailure={failGoogle}
+                cookiePolicy={'single_host_origin'}
+              />
 
-        </div>
+            </div>
+          </div>
+        </form>
       </div>
-      </form>
-    </div>
     );
 };
 

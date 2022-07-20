@@ -3,50 +3,78 @@ import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import './Dashboard.css';
 import axios from 'axios';
+import moment from 'moment';
 
-const Dashboard = (props) => {
-    const[citytrip,setCityTrip] = useState('');
+const Dashboard = () => {
+    const[trip,setTrip] = useState('');
 
 
-    let citytripUrl=process.env.REACT_APP_SPRING_URL + "mypage/citytrip?currentPage=1";
+    let calendarUrl=process.env.REACT_APP_SPRING_URL + "calendar/";
+    let dDay; 
 
-    const  citytriplist = () => {
-    
-
-        axios.get(citytripUrl)
-        .then(res => {
-        setCityTrip(res.data.list);
-        console.log(res.data.list);
+    const calendar=()=>{
+        axios.get(calendarUrl)
+        .then(res=>{
+            setTrip(res.data);
+            console.log(res.data);
+            
         })
         .catch(err => {
-        alert(err.data);
-        });
+            alert(err);
+        })
+      }
+
+
+      const calculateDday = (date) => {
+            
+        const nowTime = moment();
+        const lastTime = moment(date);
+        dDay = Math.floor((lastTime - nowTime)/86400000)+1;
+
+
+        return dDay;
+        
+
     }
 
-        useEffect(() => {
-             
-            citytriplist();
-      
-           
-        }, []); //currentPage가 변경될때마다 다시 호출
+      useEffect(()=>{
+        calendar();
+    },[]);
             
 
     return (
         <div>
-            <div className="App">
-                <FullCalendar  defaultView="dayGridMonth" plugins={[ dayGridPlugin ]}
 
-                
-                events={[
-                    {title:'start', date: `${citytrip[0].startDate}`},
+
+            <div className="App" style={{height:'700px'}}>
+
                     
-                ]}
+                    <FullCalendar  defaultView="dayGridMonth" plugins={[ dayGridPlugin ]}
 
                 
+                            
+                                    
+                                    events=
+                                        {trip && trip.map((row, index)=>(
+                                           
+                                            {                                               
+                                                title : row.name, 
+                                                color :calculateDday(row.startDate) < 0 && calculateDday(row.endDate) > 0 ? "red" : calculateDday(row.startDate) < 0 ? "gray" : "", //기본이 그냥 파랑임
+                                                start: row.startDate,
+                                                end: row.endDate,
+                                                                                      
+                                            }
+    
+                                        ))}
+                                        
+                                    
+                        
+
                 
                 />
-
+             
             </div>
+            
       </div>
     );
 };

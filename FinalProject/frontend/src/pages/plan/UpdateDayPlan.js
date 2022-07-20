@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux'
 import { savePlan } from '../../modules/planner';
 import { useInView } from 'react-intersection-observer';
-import { PlaceItem, MyPlaceList, NumPlaceItem } from ".";
+import { PlaceItem, MyPlaceList, NumPlaceItem, DayPlaceList } from ".";
 import '../../styles/plan.css';
 import setAuthorizationToken from '../../utils/setAuthorizationToken';
 import { addDays, format, add } from 'date-fns'
@@ -304,41 +304,15 @@ const UpdateDayPlan = () => {
               day == trip.days ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
             }
           </div>
-          <div className='plan-place-list'>
-            {/* <span className='label'>나의 일정</span> */}
-            <div className='place-list'>
-              {
-                // dayPlan이 있을 때만 표시
-                dayPlan && dayPlan.map((place, index) => (
-                  <div className='place-list-item' key={index}>
-                    <NumPlaceItem place={place} num={index + 1} focus={true}/>
-                    <div className='btn-wrap'>
-                      {/* TODO: drag & drop으로 변경 */}
-                      <div className='move-btn'>
-                        {
-                          index === 0 ? "" : <button type='button' className='btn btn-sm' onClick={() => upPlace(index)}>↑</button>
-                        }
-                        {
-                          index === dayPlan.length - 1 ? "" : <button type='button' className='btn btn-sm' onClick={() => downPlace(index)}>↓</button>
-                        }
-                      </div>
-                    
-                      <button type='button' className='edit-btn btn btn-danger btn-sm' onClick={() => removePlace(index)}>−</button>
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
-          </div>
+
+          <DayPlaceList dayPlan={dayPlan} setDayPlan={setDayPlan} removePlace={removePlace}/>
 
           <div style={{textAlign:'center', marginTop:'10px'}}>
             <button type='button' className='btn btn-secondary btn-sm btn-ok' onClick={() => {
-              // addPlan();
               // plan을 redux 전역 변수에 저장
               console.log(plan);
               dispatch(savePlan(plan));
               navigate(`/plan/update/${tripNum}`);
-              // navigate(`/..`);
             }}>완료</button>
           </div>
         </div>
@@ -393,7 +367,7 @@ const UpdateDayPlan = () => {
             
             <div className='place-list'>
               {
-                // TODO: 끝까지 스크롤하면 장소 더 불러오기
+                // 끝까지 스크롤하면 장소 더 불러오기
                 // places && places.map((place, index) => (
                 categoryPlace && categoryPlace.map((place, index) => (
                   (categoryPlace.length - 1 === index) ? (

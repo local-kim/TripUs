@@ -42,12 +42,10 @@ public class PlanController {
 	
 	@GetMapping("/my-place-list")
 	public List<PlaceDto> getMyPlaceList(
-			@RequestParam int cityNum
+			@RequestParam int cityNum,
+			@RequestParam int loginNum
 			){
-		// 임시 회원 번호
-		int memberNum = 3;
-		
-		return planService.getMyPlaceList(cityNum, memberNum);
+		return planService.getMyPlaceList(cityNum, loginNum);
 	}
 	
 	@PostMapping("/insert")
@@ -56,13 +54,14 @@ public class PlanController {
 			) throws Exception {
 		List<List<PlaceDto>> plan = dto.getPlan();
 		TripDto trip = dto.getTrip();
+		int loginNum = dto.getLoginNum();
 		
 //		System.out.println(plan);
 //		System.out.println(trip);
 		
 		// trip(여행 전체 정보)를 insert
 		// member_num, city_num, start_date, end_date, days
-		trip.setMemberNum(3);	// 임시값
+		trip.setMemberNum(loginNum);
 		trip.setName(trip.getCityName() + " 여행");
 		
 		// 방금 인서트한 trip_num을 받아와서 리턴

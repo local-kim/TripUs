@@ -19,6 +19,8 @@ public interface MypageServiceInter {
 	
 	public List<TripDto> getAllDates();
 	
+	public List<TripDto> getAllDates3(int memberNum);
+	
 	public int userReview(int member_num);
 	
 	//로딩시 사진 가져오기

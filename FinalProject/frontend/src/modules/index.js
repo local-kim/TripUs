@@ -5,6 +5,9 @@ import storage from "redux-persist/lib/storage";
 import planner from './planner';
 import auth from './auth';
 import base from './base';
+import citydata from './citydata';
+import tripdata from './tripdata';
+import weatherdata from './weatherdata';
 
 const persistConfig = {
   key: "root",
@@ -16,7 +19,10 @@ const persistConfig = {
 const rootReducer = combineReducers({
   planner,
   auth,
-  base
+  base,
+  citydata,
+  tripdata,
+  weatherdata
 });
 
 // export default rootReducer;

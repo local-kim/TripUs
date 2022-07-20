@@ -16,9 +16,9 @@ const UpdatePlan = () => {
   const {tripNum} = useParams();
 
   const [tripInfo, setTripInfo] = useState({
-    ...useSelector(state => state.planner.trip),
     startDate: format(new Date(), "yyyy-MM-dd"),
-    endDate: format(new Date(), "yyyy-MM-dd")
+    endDate: format(new Date(), "yyyy-MM-dd"),
+    ...useSelector(state => state.planner.trip),
   });
 
   const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
