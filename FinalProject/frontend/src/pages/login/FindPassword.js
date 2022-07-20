@@ -54,7 +54,7 @@ const FindPassword = () => {
       {/* <div class="small-text">* 메일이 도착하기까지 몇 분 정도 소요될 수 있습니다.</div>
       <div class="small-text">* 스팸 메일함으로 발송될 수 있으니 체크바랍니다.</div> */}
 
-      <button class="btn btn-back">뒤로가기</button>
+      <button class="btn btn-back" onClick={() => navigate(-1)}>뒤로가기</button>
     </div>
   );
 };
