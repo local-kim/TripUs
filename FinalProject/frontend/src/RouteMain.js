@@ -4,20 +4,18 @@ import { FinalHead, Footer, Header, Main, Menu } from "./components";
 import './App.css';
 import './AppHeemin.css';
 import { CityInfoMain, CityinfoMore, PlaceInfo } from "./pages/cityinfo";
-import { Calendar, Plan, DayPlan, UpdatePlan, UpdateDayPlan, PlannerMain } from "./pages/plan";
+import { PlanMain } from "./pages/plan";
+import { UpdatePlanMain } from "./pages/update_plan";
 import { JoinForm, Auth, LoginForm, LoginFormTest, KakaoLogin, GoogleLogin, FindPassword, ChangePassword } from "./pages/login";
 import { PlanDetail } from "./pages/detail";
 import { Mypage, Dashboard, Profile } from "./pages/mypage";
 import { CityList } from './pages/citylist';
-// import SecurityLogin from "./pages/login/SecurityLogin";
-// import SecurityJoin from "./pages/login/SecurityJoin";
 
 const RouteMain = () => {
  
   return (
     <div className="main-main-back">
-      <Menu/>
-
+      <Menu />
       <div id="main">
         <Routes>
           <Route path="/" element={<Main/>} />
@@ -48,12 +46,12 @@ const RouteMain = () => {
           {/* <Route path="/plan/calendar/:cityNum" element={<Calendar/>} />
           <Route path="/plan" element={<Plan/>} />
           <Route path="/plan/:day" element={<DayPlan/>} /> */}
-
-          <Route path="/plan/city/:cityNum" element={<PlannerMain/>} />
+          <Route path="/plan/city/:cityNum" element={<PlanMain/>} />
 
           {/* Update Plan */}
-          <Route path="/plan/update/:tripNum" element={<UpdatePlan/>} />
-          <Route path="/plan/update/:tripNum/:day" element={<UpdateDayPlan/>} />
+          {/* <Route path="/plan/update/:tripNum" element={<UpdatePlan/>} />
+          <Route path="/plan/update/:tripNum/:day" element={<UpdateDayPlan/>} /> */}
+          <Route path="/plan/update/:tripNum" element={<UpdatePlanMain/>} />
           
           {/* PlaceInfo */}
           {/* <Route path="/place/placedetail" element={<PlaceInfo/>}/> */}

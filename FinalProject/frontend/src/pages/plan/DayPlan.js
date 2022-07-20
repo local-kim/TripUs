@@ -14,7 +14,7 @@ import { usePrompt } from '../../utils/Blocker';
 
 const { kakao } = window;
 
-const DayPlan = ({view, setView, day, setDay}) => {
+const DayPlan = ({view, setView, day, setDay, focus, setFocus}) => {
   const navigate = useNavigate();
   // const {day} = useParams();
 
@@ -137,6 +137,7 @@ const DayPlan = ({view, setView, day, setDay}) => {
     // navigate(`/plan/${Number(day) - 1}`);
 
     setDay(day - 1);
+    setFocus(day - 2);
   }
 
   const nextDay = () => {
@@ -145,6 +146,7 @@ const DayPlan = ({view, setView, day, setDay}) => {
     // navigate(`/plan/${Number(day) + 1}`);
 
     setDay(day + 1);
+    setFocus(day);
   }
 
   // 선택한 장소를 dayPlan에 추가

@@ -19,6 +19,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../modules/auth';
 
 const ResponsiveAppBar = () => {
+
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const updateScroll = () => {
+      setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+  }
+  useEffect(()=>{
+      window.addEventListener('scroll', updateScroll);
+  });
   // redux에서 변수 얻기
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
@@ -56,6 +64,8 @@ const ResponsiveAppBar = () => {
   // 헤더 숨기기
   if ((window.location.pathname.startsWith('/plan')) && !window.location.pathname.startsWith('/plan/detail')) return null;
 
+  
+
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
@@ -76,7 +86,7 @@ const ResponsiveAppBar = () => {
               textDecoration: 'none',
             }}
           >
-            <img src={MainLogo} alt='' style={{width:'60px', marginTop:'10px'}}/>
+            <img src={MainLogo} alt='' style={{width:'60px'}}/>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

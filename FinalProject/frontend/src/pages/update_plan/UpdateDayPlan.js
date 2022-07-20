@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import { useDispatch, useSelector } from 'react-redux'
 import { savePlan } from '../../modules/planner';
 import { useInView } from 'react-intersection-observer';
-import { PlaceItem, MyPlaceList, NumPlaceItem, DayPlaceList } from ".";
+import { PlaceItem, MyPlaceList, NumPlaceItem, DayPlaceList } from "../plan";
 import '../../styles/plan.css';
 import setAuthorizationToken from '../../utils/setAuthorizationToken';
 import { addDays, format, add } from 'date-fns'
@@ -13,9 +13,10 @@ import ko from 'date-fns/locale/ko';
 
 const { kakao } = window;
 
-const UpdateDayPlan = () => {
+const UpdateDayPlan = ({view, setView, day, setDay, focus, setFocus}) => {
   const navigate = useNavigate();
-  const {tripNum, day} = useParams();
+  // const {tripNum, day} = useParams();
+  const {tripNum} = useParams();
 
   // redux에서 변수 얻기
   const dispatch = useDispatch();
@@ -146,13 +147,17 @@ const UpdateDayPlan = () => {
   const prevDay = () => {
     // addPlan();
     setDayPlan(plan[Number(day) - 2]);
-    navigate(`/plan/update/${tripNum}/${Number(day) - 1}`);
+    setDay(day - 1);
+    setFocus(day - 2);
+    // navigate(`/plan/update/${tripNum}/${Number(day) - 1}`);
   }
 
   const nextDay = () => {
     // addPlan();
     setDayPlan(plan[Number(day)]);  // dayPlan에 다음날의 일정을 저장
-    navigate(`/plan/update/${tripNum}/${Number(day) + 1}`);
+    setDay(day + 1);
+    setFocus(day);
+    // navigate(`/plan/update/${tripNum}/${Number(day) + 1}`);
   }
 
   // 선택한 장소를 dayPlan에 추가
@@ -296,12 +301,12 @@ const UpdateDayPlan = () => {
           <div className='title-wrap'>
             {
               // day1이면 이전 날짜 버튼 안보임
-              day == 1 ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐸ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={prevDay}>ᐸ</button>
+              day == 1 ? <button type='button' className='btn btn-sm btn-arrow' style={{opacity:'0',cursor:'default'}}>ᐸ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={prevDay}>ᐸ</button>
             }
             <span className='title'>DAY {day}</span>
             {
               // 마지막 날이면 다음 날짜 버튼 안보임
-              day == trip.days ? <button type='button' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
+              day == trip.days ? <button type='button' className='btn btn-sm btn-arrow' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
             }
           </div>
 
@@ -312,7 +317,8 @@ const UpdateDayPlan = () => {
               // plan을 redux 전역 변수에 저장
               console.log(plan);
               dispatch(savePlan(plan));
-              navigate(`/plan/update/${tripNum}`);
+              // navigate(`/plan/update/${tripNum}`);
+              setView(1);
             }}>완료</button>
           </div>
         </div>
