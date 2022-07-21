@@ -16,6 +16,7 @@ import data.dto.PlanDto;
 import data.dto.PlanMapDto;
 import data.dto.PlanPlaceDto;
 import data.dto.TripDto;
+import data.dto.TripRankDto;
 import data.mapper.PlanMapper;
 
 @Service
@@ -71,6 +72,11 @@ public class PlanService implements PlanServiceInter {
 	
 	public void deleteAllItinerary(int tripNum) {
 		planMapper.deleteAllItinerary(tripNum);
+	}
+	
+	// 인기 일정
+	public List<TripRankDto> getTripRank(){
+		return planMapper.getTripRank();
 	}
 	
 	//////////////////////////////////////////

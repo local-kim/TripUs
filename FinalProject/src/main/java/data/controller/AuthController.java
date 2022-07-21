@@ -56,7 +56,8 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
         
-        MemberSecurityDto member = (MemberSecurityDto)service.loadUserByUsername(loginDto.getId());
+//        MemberSecurityDto member = (MemberSecurityDto)service.loadUserByUsername(loginDto.getId());
+        MemberSecurityDto member = service.getLoginInfo(loginDto.getId());	// 프로필 사진도 같이 받아옴
         member.setToken(jwt);
 
 //        return new ResponseEntity<>(new TokenDto(jwt), httpHeaders, HttpStatus.OK);

@@ -14,6 +14,7 @@ import data.dto.PlanDto;
 import data.dto.PlanMapDto;
 import data.dto.PlanPlaceDto;
 import data.dto.TripDto;
+import data.dto.TripRankDto;
 
 @Mapper
 public interface PlanMapper {
@@ -29,6 +30,9 @@ public interface PlanMapper {
 	public CityTripDto getTripInfo(int tripNum);
 	public List<PlanPlaceDto> getPlaceList(int tripNum);
 	public void deleteAllItinerary(int tripNum);
+	
+	// 인기 일정
+	public List<TripRankDto> getTripRank();
 	
 	public List<PlanDto> getNavNum(int num);
 	public List<PlanDto> getPlanDatas(int num);

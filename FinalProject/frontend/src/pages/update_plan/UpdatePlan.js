@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { NumPlaceItem } from '.';
+import { NumPlaceItem } from '../plan';
 import { format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import { saveTrip, savePlan, resetPlan } from '../../modules/planner';
 
 const { kakao } = window;
 
-const UpdatePlan = () => {
+const UpdatePlan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}) => {
   // redux에서 변수 얻기
   const dispatch = useDispatch();
 
@@ -24,7 +24,7 @@ const UpdatePlan = () => {
   const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
   // console.log(plan);
 
-  const [focus, setFocus] = useState(0);
+  // const [focus, setFocus] = useState(0);
 
   let tripUrl = `${process.env.REACT_APP_SPRING_URL}plan/trip-info?tripNum=`;
   let planUrl = `${process.env.REACT_APP_SPRING_URL}plan/place-list?tripNum=`;
@@ -57,13 +57,16 @@ const UpdatePlan = () => {
   let updateUrl = `${process.env.REACT_APP_SPRING_URL}plan/update/${tripNum}/${tripInfo.cityNum}`;
 
   const updatePlan = () => {
+    setIsBlocking(false); // usePrompt 비활성화
+
     // DB 업데이트
     axios.post(updateUrl, plan)
+    .then(res => {
+      // 수정을 완료하면 redux의 plan을 초기화시키고 일정 보기 페이지로 이동
+      dispatch(resetPlan());
+      navigate(`/plan/detail/${tripNum}`);
+    })
     .catch(err => console.log(err));
-
-    // 수정을 완료하면 redux의 plan을 초기화시키고 일정 보기 페이지로 이동
-    dispatch(resetPlan());
-    navigate(`/plan/detail/${tripNum}`);
   }
 
   // kakao map
@@ -168,7 +171,10 @@ const UpdatePlan = () => {
                 }
               </div>
               <button type='button' className='btn btn-outline-primary btn-sm btn-place' onClick={() => {
-                navigate(`/plan/update/${tripNum}/${index + 1}`);
+                // navigate(`/plan/update/${tripNum}/${index + 1}`);
+                setView(2);
+                setDay(index + 1);
+                setFocus(index);
               }}>장소 추가</button>
               <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
             </div>

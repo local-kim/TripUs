@@ -23,6 +23,7 @@ import data.dto.PlanInsertDto;
 import data.dto.PlanMapDto;
 import data.dto.PlanPlaceDto;
 import data.dto.TripDto;
+import data.dto.TripRankDto;
 import data.service.PlanService;
 
 @RestController
@@ -134,6 +135,12 @@ public class PlanController {
 				planService.insertItinerary(itinerary);
 			}
 		}
+	}
+	
+	// 인기 일정
+	@GetMapping("/rank")
+	public List<TripRankDto> getTripRank(){
+		return planService.getTripRank();
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////

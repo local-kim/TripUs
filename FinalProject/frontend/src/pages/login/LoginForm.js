@@ -72,7 +72,7 @@ const LoginForm = () => {
           navi("/");
         })
         .catch(err => {
-          // console.log(err);
+          console.log(err);
           alert("아이디 또는 비밀번호가 일치하지 않습니다.");
           // input 초기화
           setInputId('');

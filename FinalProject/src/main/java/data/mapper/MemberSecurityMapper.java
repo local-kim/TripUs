@@ -14,6 +14,7 @@ public interface MemberSecurityMapper {
 	
 	// 로그인
     MemberSecurityDto getMemberById(String id);
+    MemberSecurityDto getLoginInfo(String id);
     
     // 권한 정보 얻기
     String getMemberAuthorityById(String id);
