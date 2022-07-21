@@ -1,0 +1,67 @@
+#plan-list{
+  padding-top: 100px;
+}
+
+#plan-list .title{
+  font-size: 25px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+#plan-list .sub-title{
+  font-size: 18px;
+  color: gray;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+#plan-list .trip-wrap{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(auto, 320px));
+  justify-content: center;
+}
+
+#plan-list .plan-item{
+  width: 300px;
+  height: 300px;
+  border: 1px solid #eee;
+}
+
+#plan-list .plan-item .city-img{
+  height: 200px;
+  font-weight: 500;
+  color: white;
+  font-size: 20px;
+  background-position-y: center;
+}
+
+#plan-list .plan-item .info-wrap{
+  padding: 10px;
+}
+
+#plan-list .plan-item .city-name{
+  font-size: 20px;
+}
+
+#plan-list .plan-item .date,
+#plan-list .plan-item .days{
+  font-family: 'Montserrat';
+  font-size: 16px;
+  font-weight: 500;
+  color: gray;
+}
+
+#plan-list .plan-item .member-name{
+  font-size: 16px;
+  color: rgb(110, 110, 110);
+}
+
+#plan-list a{
+  color: black;
+  font-weight: normal;
+}
+
+#plan-list a:hover{
+  color: black;
+}

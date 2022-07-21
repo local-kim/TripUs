@@ -40,6 +40,11 @@
 		delete from itinerary where trip_num=#{tripNum}
 	</delete>
 	
+	<!-- 인기 일정 -->
+	<select id="getTripRank" resultType="trip-rank">
+		select trip.num as tripNum, trip.name as tripName, start_date, end_date, days, member.num as memberNum, member.name as memberName, city.name as cityName, city.num as cityNum, city.image from trip, member, city where member_num=member.num and city_num=city.num order by trip.num desc
+	</select>
+	
 <!--                                                -->
 
 	<select id="getNavNum" resultType="plan">

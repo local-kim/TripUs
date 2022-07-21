@@ -10,6 +10,7 @@ import { JoinForm, Auth, LoginForm, LoginFormTest, KakaoLogin, GoogleLogin, Find
 import { PlanDetail } from "./pages/detail";
 import { Mypage, Dashboard, Profile } from "./pages/mypage";
 import { CityList } from './pages/citylist';
+import { PlanList } from "./pages/plan_list";
 
 const RouteMain = () => {
  
@@ -52,6 +53,9 @@ const RouteMain = () => {
           {/* <Route path="/plan/update/:tripNum" element={<UpdatePlan/>} />
           <Route path="/plan/update/:tripNum/:day" element={<UpdateDayPlan/>} /> */}
           <Route path="/plan/update/:tripNum" element={<UpdatePlanMain/>} />
+
+          {/* 인기 일정 */}
+          <Route path="/plan/list" element={<PlanList/>} />
           
           {/* PlaceInfo */}
           {/* <Route path="/place/placedetail" element={<PlaceInfo/>}/> */}

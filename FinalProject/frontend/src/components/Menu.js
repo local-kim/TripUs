@@ -33,8 +33,8 @@ const ResponsiveAppBar = () => {
   const loginNum = useSelector(state => state.auth.user.num);
   const loginName = useSelector(state => state.auth.user.name);
 
-  const pages = ['여행지', '일정 만들기', '일정 보기', '일정 수정', 'About'];
-  const pageLinks = ['city/list', 'plan/city/108', 'plan/detail/1', 'plan/update/48', ''];
+  const pages = ['여행지', '일정 만들기', '일정 보기', '인기 일정', 'About'];
+  const pageLinks = ['city/list', 'plan/city/108', 'plan/detail/1', 'plan/list', ''];
 
   const loginSettings = ['Mypage', 'Dashboard','Logout'];
   const loginLinks = ['mypage/1', 'dashboard','logout'];
@@ -62,7 +62,7 @@ const ResponsiveAppBar = () => {
   };
 
   // 헤더 숨기기
-  if ((window.location.pathname.startsWith('/plan')) && !window.location.pathname.startsWith('/plan/detail')) return null;
+  if ((window.location.pathname.startsWith('/plan')) && !window.location.pathname.startsWith('/plan/detail') && !window.location.pathname.startsWith('/plan/list')) return null;
 
   
 
