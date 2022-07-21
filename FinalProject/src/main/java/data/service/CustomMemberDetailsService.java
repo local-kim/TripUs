@@ -64,6 +64,10 @@ public class CustomMemberDetailsService implements UserDetailsService {
 		mapper.changePassword(map);
 	}
 	
+	public MemberSecurityDto getLoginInfo(String id) throws UsernameNotFoundException {
+		return mapper.getLoginInfo(id);
+	}
+	
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 		MemberSecurityDto member = mapper.getMemberById(id);

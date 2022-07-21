@@ -28,6 +28,7 @@ public class MemberSecurityDto implements UserDetails {
 	private String address1;
 	private String address2;
 	private String token;
+	private String profile;
 	private boolean isAccountNonExpired;
 	private boolean isAccountNonLocked;
 	private boolean isCredentialsNonExpired;

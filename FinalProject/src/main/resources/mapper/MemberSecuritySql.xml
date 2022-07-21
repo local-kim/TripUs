@@ -10,6 +10,10 @@
 		select authority_name from authority where id=#{id}
 	</select>
 	
+	<select id="getLoginInfo" parameterType="String" resultType="member_security">
+		select member.num, name, id, type, file_name as profile from member left outer join profile_photo on member.num=profile_photo.member_num where id=#{id}
+	</select>
+	
 	<!-- 회원가입 -->
 	<insert id="saveMember" parameterType="member_security">
 		insert into member (id, password, name, type, email, tel, birthday, zonecode, address1, address2, registered_at, isAccountNonExpired, isAccountNonLocked, isCredentialsNonExpired, isEnabled)

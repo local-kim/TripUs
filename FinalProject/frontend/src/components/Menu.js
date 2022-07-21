@@ -32,6 +32,7 @@ const ResponsiveAppBar = () => {
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const loginNum = useSelector(state => state.auth.user.num);
   const loginName = useSelector(state => state.auth.user.name);
+  const loginProfile = useSelector(state => state.auth.user.profile);
 
   const pages = ['여행지', '일정 만들기', '일정 보기', '인기 일정', 'About'];
   const pageLinks = ['city/list', 'plan/city/108', 'plan/detail/1', 'plan/list', ''];
@@ -163,7 +164,7 @@ const ResponsiveAppBar = () => {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {
-                  isLoggedIn && <Avatar alt={loginName} src="/static/images/avatar/2.jpg" />
+                  isLoggedIn && <Avatar alt={loginName} src={`${process.env.REACT_APP_SPRING_URL}save/${loginProfile}`} />
                 }
                 {
                   !isLoggedIn && <Avatar src="/static/images/avatar/2.jpg" />
