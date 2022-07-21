@@ -34,7 +34,7 @@ const CityInfoWeather = () => {
     //     Object.keys(cityPlan);
     //     console.log(cityPlan);
     // }
-    // console.log("cityPlan:"+JSON.Stringify(cityPlan_);          // [object Object]로 콘솔에 나올 때 JSON 방식으로 데이타 보여주는 코드
+    // console.log("cityPlan:"+JSON.Stringify(cityPlan));          // [object Object]로 콘솔에 나올 때 JSON 방식으로 데이타 보여주는 코드
 
 
 
@@ -183,6 +183,149 @@ const CityInfoWeather = () => {
     
     ////////////////////////////////////////////// 7
 
+    // // axios multiple request   
+    // useEffect(()=>{
+    //     // change_city_info();
+    //     axios
+    //         .all([axios.get(trip_url), axios.get(weather_url) , axios.get(areaUrl)])
+    //         .then(
+    //             axios.spread((res1, res2, res3) => {
+    //                 setCityPlan(res1.data);
+    //                 setCityPlan2(res1.data[0]);
+    //                 setStart_date([res1.data[0].start_date]);  // 잘 들어가짐
+    //                 setEnd_date([res1.data[0].end_date]);  // 잘 들어가짐
+    //                 setDays([res1.data[0].days]);  // 잘 들어가짐
+
+                    
+    //                 setW_data(res2.data.response.body.items.item);
+    //                 setWeatherImg(res2.data.response.body.items.item);
+
+
+    //                 console.log("first_areaUrl : "+areaUrl);
+    //                 setPlaces(res3.data.response.body.items.item);
+    //                 setPlaces2(res3.data.response.body.items.item);
+    //                 setCategoryPlace1(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '12' || place.contenttypeid == '14' ))
+    //                 setCategoryPlace2(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '39'))
+    //                 setCategoryPlace3(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '38'))
+    //                 setCategoryPlace4(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '15'))
+    //                 setCategoryPlace5(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '25'))
+    //                 setCategoryPlace6(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '28'))
+    //                 setCategoryPlace7(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '32'))
+    //             })
+    //         )
+    //         .catch((err) => console.log(err));
+    // },[num,areaUrl,weather_url])
+
+
+    ////////////////////////////////////////////// 8
+    // 같이 넣으니까 모든 셀렉트의 옵션이 같아짐
+    // useEffect(()=>{
+    //     axios
+    //         .all([axios.get(area_url), axios.get(areaUrl)])
+    //         .then(
+    //             axios.spread((respon1,respon2) => {
+    //                 setPlaces2(respon1.data.response.body.items.item);
+    //                 setCategoryPlace1(respon2.data.response.body.items.item);
+    //                 // console.log("change_city_info : places2 : "+respon1.data.response.body.items.item)
+    //                 // console.log("Third_area_url : "+area_url);
+    //             })
+    //         )
+    //         .catch((err) => console.log(err));
+    //     // console.log("newValue : "+newValue);
+    //     // console.log("second_area_url : "+area_url);
+    //     // axios.get(area_url)
+    //     // .then(res=>{
+    // },[newValue])
+
+
+    ////////////////////////////////////////////// 8
+    /* <div>   무한 스크롤 실패작
+                                        <div>
+                                            {
+                                                categoryPlace1 && categoryPlace1.map((item,index) => (
+                                                    <React.Fragment key={index}>
+                                                        (categoryPlace1.length - 1 == index) ? (
+                                                            <div key={index} ref={ref}>
+                                                                {item}
+                                                            </div>
+                                                            ) : (
+                                                                <div key={index}>
+                                                                {item}
+                                                            </div>
+                                                        )
+                                                    </React.Fragment>
+                                                ))
+                                            }
+                                        </div>
+                                    </div> */
+
+
+
+    ////////////////////////////////////////////// 9
+
+    // // axios multiple request    
+    // useEffect(()=>{
+        
+    //         console.log("trip_url :: " + trip_url);
+    //         console.log("weather_url :: " + weather_url);
+    //         console.log("areaUrl :: " + areaUrl);
+    //         console.log("area_content_type_12_url :: " + area_content_type_12_url);
+    //         console.log("area_content_type_39_url :: " + area_content_type_39_url);
+    //         console.log("area_content_type_38_url :: " + area_content_type_38_url);
+    //         console.log("area_content_type_14_url :: " + area_content_type_14_url);
+    //         console.log("area_content_type_28_url :: " + area_content_type_28_url);
+    //         console.log("area_content_type_15_url :: " + area_content_type_15_url);
+    //     axios
+    //         .all([axios.get(weather_url)])
+    //         .then(
+    //             axios.spread((res2) => {
+    //                 // setCityPlan(res1.data);
+    //                 // setCityPlan2(res1.data[0]);
+    //                 // setStart_date([res1.data[0].start_date]);  // 잘 들어가짐
+    //                 // setEnd_date([res1.data[0].end_date]);  // 잘 들어가짐
+    //                 // setDays([res1.data[0].days]);  // 잘 들어가짐
+
+
+                    
+    //                 // setW_data(res2.data.response.body.items.item);
+    //                 // setWeatherImg(res2.data.response.body.items.item);
+    //                 // console.log("w_data : " + w_data);
+    //                 // console.log("weatherImg : " + weatherImg);
+
+
+    //                 // console.log("multiple_areaUrl : "+areaUrl);
+    //                 // setPlaces(res3.data.response.body.items.item);
+    //                 // setPlaces2(res3.data.response.body.items.item);
+    //                 // console.log("multiple_areaUrl_data : "+res3.data.response.body.items.item);
+    //                 // // setCategoryPlace1(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '12' || place.contenttypeid == '14' ))
+    //                 // // setCategoryPlace2(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '39'))
+    //                 // // setCategoryPlace3(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '38'))
+    //                 // // setCategoryPlace4(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '15'))
+    //                 // // setCategoryPlace5(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '25'))
+    //                 // // setCategoryPlace6(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '28'))
+    //                 // // setCategoryPlace7(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '32'))
+
+
+    //                 // setCategoryPlace1(res4.data.response.body.items.item);
+    //                 // setCategoryPlace2(res5.data.response.body.items.item);
+    //                 // setCategoryPlace3(res6.data.response.body.items.item);
+    //                 // setCategoryPlace4(res7.data.response.body.items.item);
+    //                 // setCategoryPlace5(res8.data.response.body.items.item);
+    //                 // setCategoryPlace6(res9.data.response.body.items.item);
+    //                 // // console.log(res4.data.response.body.items.item);
+    //                 // // console.log(res5.data.response.body.items.item);
+    //                 // // console.log(res6.data.response.body.items.item);
+    //                 // // console.log(res7.data.response.body.items.item);
+    //                 // // console.log(res8.data.response.body.items.item);
+    //                 // // console.log(res9.data.response.body.items.item);
+    //             })
+    //         )
+    //         .catch((err) => console.log(err));
+    // },[num,areaUrl,weather_url])  
+
+
+
+    ////////////////////////////////////////////// 9
 
     return (
         <div>

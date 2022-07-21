@@ -8,19 +8,22 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button, CardActionArea, CardActions, TextField } from '@mui/material';
 import axios from "axios";
 import '../../styles/cityinfo.css';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CityInfoImage from './CityInfoImage';
 import CityInfoMore from './CityInfoMore';
-import { differenceInDays, format, subYears } from 'date-fns';
+import { add, addDays, differenceInDays, format, subYears } from 'date-fns';
 import { useInView } from "react-intersection-observer"
 import { PlaceItem } from '../plan';
 import { height } from '@mui/system';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import ko from 'date-fns/locale/ko';
 
 const CityInfoMain = () => {
+    const loginNum = useSelector(state => state.auth.user.num);
     
     //관광명소 api contentId 받아오기
     // const pcontentId = 126078;
@@ -53,7 +56,7 @@ const CityInfoMain = () => {
     // 날씨 데이타 db받는 변수
     const [cityData,setCityData]=useState([]);
     let PlaceUrl;
-    const {num,member_num}=useParams();    // url에서 num 데이터 가져오기, 값이 안들어가서 member_num에만 3들어감
+    const {num}=useParams();   
     const city_num = num;
     // const [weatherImg,setWeatherImg]=useState('../../../public/WeatherImage/맑음.png');
     
@@ -61,29 +64,25 @@ const CityInfoMain = () => {
     const [img,setImg]=useState([]);
     const [start_date,setStart_date]=useState(format(new Date(), "yyyy-MM-dd"));    // 기본 타입변경 필수!
     const [end_date,setEnd_date]=useState(format(new Date(), "yyyy-MM-dd"));        // 기본 타입변경 필수!
-    const [days,setDays]=useState('');
+    const [days,setDays]=useState('365');
     
     // 작년 날짜로 수정
     const slastYear = format(subYears(new Date(start_date), 1), "yyyyMMdd");        // 페이지 로딩후 이걸로 교체
     const elastYear = format(subYears(new Date(end_date), 1), "yyyyMMdd");          // 페이지 로딩후 이걸로 교체
-    // D-day 구하기 - 더 해야됨
-    const difDay = differenceInDays(end_date, start_date);
-    
-    
-    
-    // console.log("slastYear : "+slastYear);
-    // console.log("elastYear : "+elastYear);
-    // console.log("difDay : "+difDay);                   //////////////////////////////////////////////// 얘는 확인해야됨 NaN값나옴
 
+    
+    
+    
 
     // 지역 데이타 변수 
-    const [areaCode,setAreaCode]=useState('12');
+    const [areaCode,setAreaCode]=useState('6');
     const [sigunguCode,setSigunguCode]=useState('');
     const [cityname,setCityname]=useState('');
     const [arrange,setArrange]=useState('R');
     const [newValue,setNewValue]=useState('R');
     const [contenttypeid,setContenttypeid]=useState('12');
     
+    const [categoryPlace0,setCategoryPlace0]=useState([]);  // 전체보기
     const [categoryPlace1,setCategoryPlace1]=useState([]);  // 12 명소
     const [categoryPlace2,setCategoryPlace2]=useState([]);  // 39 음식점
     const [categoryPlace3,setCategoryPlace3]=useState([]);  // 38 쇼핑
@@ -92,32 +91,34 @@ const CityInfoMain = () => {
     const [categoryPlace6,setCategoryPlace6]=useState([]);  // 28 레포츠
     const [categoryPlace7,setCategoryPlace7]=useState([]);  // 32 숙박  
     const [places, setPlaces] = useState([]);
-    const [places2, setPlaces2] = useState([]);
+    // const [keyWordPlace,setKeyWordPlace]=useState('');
+    
 
 
     // API
     // 날씨 
-    // const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
+    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
     // const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
-    const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
+    // const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
     
     // // 일정 계획 데이타
     const [cityPlan,setCityPlan]=useState([]);
     const [cityPlan2,setCityPlan2]=useState([]);
-
+    
     // URL
     // db city테이블 가져오는 거
     PlaceUrl=process.env.REACT_APP_SPRING_URL+"city/citydata?num="+num;
-
+    
     // 날씨 api 받아오는 거   
     let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=${days}&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${slastYear}&endDt=${elastYear}&stnIds=${num}`;
     // let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=20&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=20210101&endDt=20210501&stnIds=108`;
     
-    // 관광도시 api 받아오는 거(arrange=P)
+   
     let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-         areaUrl += `&sigunguCode=${sigunguCode}`;
+        areaUrl += `&sigunguCode=${sigunguCode}`;
      }
+
     let area_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
          area_url += `&sigunguCode=${sigunguCode}`;
@@ -125,27 +126,32 @@ const CityInfoMain = () => {
      // contenttypeid 포함
     let area_content_type_12_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=12&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-         area_url += `&sigunguCode=${sigunguCode}`;
+        area_content_type_12_url += `&sigunguCode=${sigunguCode}`;
      }
+
     let area_content_type_39_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=39&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-         area_url += `&sigunguCode=${sigunguCode}`;
+        area_content_type_39_url += `&sigunguCode=${sigunguCode}`;
      }
+
      let area_content_type_38_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=38&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-         area_url += `&sigunguCode=${sigunguCode}`;
+        area_content_type_38_url += `&sigunguCode=${sigunguCode}`;
      }
+
      let area_content_type_14_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=14&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-         area_url += `&sigunguCode=${sigunguCode}`;
+        area_content_type_14_url += `&sigunguCode=${sigunguCode}`;
      }
+
      let area_content_type_28_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=28&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-         area_url += `&sigunguCode=${sigunguCode}`;
+        area_content_type_28_url += `&sigunguCode=${sigunguCode}`;
      }
+
      let area_content_type_15_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=15&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-         area_url += `&sigunguCode=${sigunguCode}`;
+        area_content_type_15_url += `&sigunguCode=${sigunguCode}`;
      }
 
 
@@ -161,202 +167,162 @@ const CityInfoMain = () => {
     const [ddMes,setDdMes]=useState('');            // 일 적설량
     
 
-    const [location,setLocation]=useState('');  // 검색 input 지역 담는 변수
+    const [keyWord,setKeyWord]=useState('부산');  // 검색 input 관광지 contentid 담는 변수
+    const [page,setPage]=useState(1);
     const [w_data,setW_data]=useState([]);  // 날씨 데이터 담는 배열 변수
     const [weatherImg,setWeatherImg]=useState([]);
-    const [w_use_data,setW_use_data]=useState([]);      // 사용하는 날씨 데이터 + 필요한 데이터 주입
-    
- 
+
 
  
     useEffect(() => {
-        place_Data();
-    }, [num]);
-     const place_Data= async()=>{
-        try {
-            const response = await axios.get(PlaceUrl)
-                setCityData(response);
-                setAreaCode(response.data.area_code);
-                setSigunguCode(response.data.sigungu_code);
-                setCityname(response.data.name);
-        }
-        catch(err) {
-            alert(err);
-        }
+        place_area_Data();
+        trip_weather_Data();
+
+    }, []);
+    const place_area_Data = () => {
+        delete axios.defaults.headers.common['Authorization'];
+        axios.get(PlaceUrl)
+        .then(response => {
+            setCityData(response);
+            setAreaCode(response.data.area_code);
+            setSigunguCode(response.data.sigungu_code);
+            setCityname(response.data.name);
+        })
+        .then(() => {
+            delete axios.defaults.headers.common['Authorization'];
+            axios.get(areaUrl)
+            .then((res1) => {
+                setPlaces(res1.data.response.body.items.item);
+                setCategoryPlace0(res1.data.response.body.items.item);
+            })
+            axios.get(area_content_type_12_url)
+            .then((res2) => {
+                setCategoryPlace1(res2.data.response.body.items.item);
+            })
+            axios.get(area_content_type_39_url)
+            .then((res3) => {
+                setCategoryPlace1(res3.data.response.body.items.item);
+            })
+            axios.get(area_content_type_38_url)
+            .then((res4) => {
+                setCategoryPlace1(res4.data.response.body.items.item);
+            })
+            axios.get(area_content_type_14_url)
+            .then((res5) => {
+                setCategoryPlace1(res5.data.response.body.items.item);
+            })
+            axios.get(area_content_type_28_url)
+            .then((res6) => {
+                setCategoryPlace1(res6.data.response.body.items.item);
+            })
+            axios.get(area_content_type_15_url)
+            .then((res7) => {
+                setCategoryPlace1(res7.data.response.body.items.item);
+            })
+        })
+        .catch(err => console.log(err))
     }
-    // console.log('cityData',cityData);
+    const trip_weather_Data = () => {
+        delete axios.defaults.headers.common['Authorization'];
+        axios.get(trip_url)
+        .then((res8) => {
+            setCityPlan(res8.data);
+            setCityPlan2(res8.data[0]);
+            setStart_date([res8.data[0].start_date]);  // 잘 들어가짐
+            setEnd_date([res8.data[0].end_date]);  // 잘 들어가짐
+            setDays([res8.data[0].days]);  // 잘 들어가짐
+        })
+        .then(() => {
+            delete axios.defaults.headers.common['Authorization'];
+            axios.get(weather_url)
+            .then((res9) => {
+                setW_data(res9.data.response.body.items.item);
+                setWeatherImg(res9.data.response.body.items.item);
+            })
+        })
+    }
+   
 
-    let trip_url=`${process.env.REACT_APP_SPRING_URL}city/tripdata?city_num=${city_num}&member_num=3`;     
-     // 이거 url에 뜨는 값 가져오는건데 url에서 넘어오는 값이 그냥 num 밖에 없잖아,,... 넘겨줄 때 로그인한 사람 member_num도 같이 넘겨주면 바로 될 듯?
+    let trip_url=`${process.env.REACT_APP_SPRING_URL}city/tripdata?city_num=${city_num}&loginNum=${loginNum}`;     
     
-    // console.log("start_date:",start_date);
-    // console.log("end_date:",end_date);
-    // console.log("days:",days);
-
-
-
-    // axios multiple request   
-    useEffect(()=>{
-        // change_city_info();
-        axios
-            .all([axios.get(trip_url), axios.get(weather_url), axios.get(areaUrl), axios.get(area_content_type_12_url), axios.get(area_content_type_39_url), axios.get(area_content_type_38_url), axios.get(area_content_type_14_url), axios.get(area_content_type_28_url), axios.get(area_content_type_15_url)])
-            .then(
-                axios.spread((res1, res2, res3, res4, res5, res6, res7, res8, res9) => {
-                    setCityPlan(res1.data);
-                    setCityPlan2(res1.data[0]);
-                    setStart_date([res1.data[0].start_date]);  // 잘 들어가짐
-                    setEnd_date([res1.data[0].end_date]);  // 잘 들어가짐
-                    setDays([res1.data[0].days]);  // 잘 들어가짐
-
-                    
-                    setW_data(res2.data.response.body.items.item);
-                    setWeatherImg(res2.data.response.body.items.item);
-
-
-                    console.log("first_areaUrl : "+areaUrl);
-                    setPlaces(res3.data.response.body.items.item);
-                    setPlaces2(res3.data.response.body.items.item);
-                    // setCategoryPlace1(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '12' || place.contenttypeid == '14' ))
-                    // setCategoryPlace2(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '39'))
-                    // setCategoryPlace3(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '38'))
-                    // setCategoryPlace4(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '15'))
-                    // setCategoryPlace5(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '25'))
-                    // setCategoryPlace6(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '28'))
-                    // setCategoryPlace7(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '32'))
-
-
-                    setCategoryPlace1(res4.data.response.body.items.item);
-                    setCategoryPlace2(res5.data.response.body.items.item);
-                    setCategoryPlace3(res6.data.response.body.items.item);
-                    setCategoryPlace4(res7.data.response.body.items.item);
-                    setCategoryPlace5(res8.data.response.body.items.item);
-                    setCategoryPlace6(res9.data.response.body.items.item);
-                    console.log(res4.data.response.body.items.item);
-                    console.log(res5.data.response.body.items.item);
-                    console.log(res6.data.response.body.items.item);
-                    console.log(res7.data.response.body.items.item);
-                    console.log(res8.data.response.body.items.item);
-                    console.log(res9.data.response.body.items.item);
-                })
-            )
-            .catch((err) => console.log(err));
-    },[num,areaUrl,weather_url])
-
-
-
-    // // axios multiple request   
-    // useEffect(()=>{
-    //     // change_city_info();
-    //     axios
-    //         .all([axios.get(trip_url), axios.get(weather_url) , axios.get(areaUrl)])
-    //         .then(
-    //             axios.spread((res1, res2, res3) => {
-    //                 setCityPlan(res1.data);
-    //                 setCityPlan2(res1.data[0]);
-    //                 setStart_date([res1.data[0].start_date]);  // 잘 들어가짐
-    //                 setEnd_date([res1.data[0].end_date]);  // 잘 들어가짐
-    //                 setDays([res1.data[0].days]);  // 잘 들어가짐
-
-                    
-    //                 setW_data(res2.data.response.body.items.item);
-    //                 setWeatherImg(res2.data.response.body.items.item);
-
-
-    //                 console.log("first_areaUrl : "+areaUrl);
-    //                 setPlaces(res3.data.response.body.items.item);
-    //                 setPlaces2(res3.data.response.body.items.item);
-    //                 setCategoryPlace1(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '12' || place.contenttypeid == '14' ))
-    //                 setCategoryPlace2(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '39'))
-    //                 setCategoryPlace3(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '38'))
-    //                 setCategoryPlace4(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '15'))
-    //                 setCategoryPlace5(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '25'))
-    //                 setCategoryPlace6(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '28'))
-    //                 setCategoryPlace7(res3.data.response.body.items.item.filter((place, idx) => place.contenttypeid == '32'))
-    //             })
-    //         )
-    //         .catch((err) => console.log(err));
-    // },[num,areaUrl,weather_url])
-
-    // 같이 넣으니까 모든 셀렉트의 옵션이 같아짐
-    // useEffect(()=>{
-    //     axios
-    //         .all([axios.get(area_url), axios.get(areaUrl)])
-    //         .then(
-    //             axios.spread((respon1,respon2) => {
-    //                 setPlaces2(respon1.data.response.body.items.item);
-    //                 setCategoryPlace1(respon2.data.response.body.items.item);
-    //                 // console.log("change_city_info : places2 : "+respon1.data.response.body.items.item)
-    //                 // console.log("Third_area_url : "+area_url);
-    //             })
-    //         )
-    //         .catch((err) => console.log(err));
-    //     // console.log("newValue : "+newValue);
-    //     // console.log("second_area_url : "+area_url);
-    //     // axios.get(area_url)
-    //     // .then(res=>{
-    // },[newValue])
 
     useEffect(()=>{
-        console.log("newValue : "+newValue);
-        console.log("second_area_url : "+area_url);
+        delete axios.defaults.headers.common['Authorization'];
         axios.get(area_url)
         .then(res=>{
-            setPlaces2(res.data.response.body.items.item);
-            console.log("change_city_info : places2 : "+res.data.response.body.items.item)
-            console.log("Third_area_url : "+area_url);
-            })
+            setCategoryPlace0(res.data.response.body.items.item);
+        })
     },[newValue])
 
-
+    useEffect(()=>{
+        delete axios.defaults.headers.common['Authorization'];
+        axios.get(weather_url)
+        .then(res=>{
+            setW_data(res.data.response.body.items.item);
+        })
+    },[start_date,end_date])
 
     
 
-    // console.log("cityPlan : ",cityPlan);
-    // console.log("places : ",places);
-    // console.log("w_data : ",w_data);
-    // console.log("weather_url : ",weather_url);
-    // console.log("w_use_data : ",w_use_data);
-    // console.log("places : "+places);
-    // console.log("places2 : "+places2);
+
+
+    // 키워드 검색 url
+    let keyWord_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${API_KEY}&keyword=${keyWord}&areaCode=${areaCode}&numOfRows=2&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+    keyWord_url += `&sigunguCode=${sigunguCode}`;
+    }
+
+    let keyWord_areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+        keyWord_areaUrl += `&sigunguCode=${sigunguCode}`;
+     }
+
+    // 검색
+    useEffect(() => {
+        // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
+        if(keyWord === ''){
+          delete axios.defaults.headers.common['Authorization'];
+          axios.get(keyWord_areaUrl)
+          .then((res) => {
+            setPlaces(res.data.response.body.items.item);
+            setCategoryPlace0(res.data.response.body.items.item);
+          }).catch((err) => console.log(err.data));
+        }
+        // 키워드 검색 장소
+        else{
+          console.log("keyword 검색 요청");
+          console.log(keyWord_url);
+          delete axios.defaults.headers.common['Authorization'];
+          axios.get(keyWord_url)
+          .then((res) => {
+            setPlaces(res.data.response.body.items.item);
+            setCategoryPlace0(res.data.response.body.items.item);
+          }).catch((err) => console.log(err.data));
+        }
+    }, [keyWord]);
+
+
+    // 정보 더보기
+    useEffect(() => {
+        moreinfo();
+    },[])
+    const moreinfo = () => {
+        setPage(page + 1);
+        areaUrl += `&pageNo=${page}`;
+        console.log("areaUrl111111111111111111 : " + areaUrl);
+        axios.get(areaUrl)
+        .then((res) => {
+            setPlaces([...places, ...res.data.response.body.items.item]);
+            setCategoryPlace0([...categoryPlace0, ...res.data.response.body.items.item]);
+    })
+    .catch((err)=>{
+            console.log(err.data)
+        })
+    }
+
+
     
     
-
-    // const arr1 = [10,20,30];
-    // const arr2 = [{1 : '가', 2 : '나', 3 : '다'},{4 : '라', 5 : '마', 6 : '바'},{7 : '사', 8 : '아', 9 : '자'}]
-    // let arr3=[];
-
-    // for (let i = 0; i < 3; i++){
-    //     for(let j = 0; j < 4; j++){
-    //         arr3[i][j]=[...arr2[i][j],arr1[i]];
-    //     }
-    // }
-
-    // for (let i = 0; i < 3; i++){
-    //     arr3[i]=[...arr2[i],arr1[i]];
-    // }
-
-    // for (let i = 0; i < 3; i++){
-    //     for(let j = 0; j < 4; j++){
-    //         if(i == 0){
-    //             arr3[i]=arr1[i];
-    //             arr3[i][j]+=arr2[i][j]
-
-    //         }
-    //     }
-    // }
-    
-    // console.log("arr3 : "+arr3);
-
-    // arr1 && arr1.map((item,index) => (
-    //     arr2 && arr2.map((key,idx) => (
-    //        arr3 = [arr1[index], ...arr2[idx]]
-    //     )
-    // )))
-
-
-
-
-
     // const [ref, inView] = useInView();
     // const [page, setPage] = useState(1);
 
@@ -396,19 +362,11 @@ const CityInfoMain = () => {
         <div>
             <img alt='' src={weatherImg}></img>
         </div>
-            <div style={{display:'flex', marginBottom:'20px'}}>
-                <div className='title'>
-                    <b>
-                        {cityname}
-                    </b>
-                </div>
-                <div className='searchCity'>
-                    <input type='text' placeholder='도시를 입력하세요' value={location} 
-                        onChange={(e)=>{
-                            setLocation(e.target.value);
-                        }}/>
-                </div>
-            </div>        
+            <div className='title' style={{margin:'20px'}}>
+                <b>
+                    {cityname}
+                </b>
+            </div>    
             <div style={{display:'flex'}}>
                 <div>
                    <CityInfoImage/>
@@ -421,28 +379,25 @@ const CityInfoMain = () => {
                                 <div className='ppp' style={{display:'flex'}}>
                                     <div>
                                         <div>
-                                            수&nbsp;
+                                            {
+                                                format(new Date(item.tm), "MM/dd (eee)", {locale: ko})
+                                            }
                                         </div>
-                                        <br/>
                                         <div>
-                                            7월 1일&nbsp;
+                                            {
+                                                (item.iscs == "" || item.iscs != "") && ((item.maxTa > "27" && item.sumRn == "" && item.avgRhm < '55.4') || (item.maxTa > "29" && item.sumRn == "" && item.avgRhm < '55.4')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음.png`}/> : 
+                                                // (item.iscs == "" || item.iscs != "") && (('75.7' < item.avgRhm < '76.0') && ('2' < item.avgWs < '2.2') && ('26.7' < maxTa < '26.9') && ('18.5' < minTa < '18.7')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비온_뒤_맑음.png`}/> : 
+                                                // (item.iscs == "" || item.iscs != "") && ('67' < item.sumRn < '73') && ( '2' < item.avgWs < '3') && (('28' < maxTa && minTa < '22') || ( maxTa < '31' && minTa < '21')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음_뒤_흐림.png`}/> : 
+                                                (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/흐린_뒤_맑음.png`}/> : 
+                                                (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비_번개.png`}/> : 
+                                                (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/눈.png`}/> : 
+                                                (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비.png`}/> : 
+                                                (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/흐림.png`}/> :                                             
+                                                <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음.png`}/> 
+                                            }
                                         </div>
                                     </div>
                                     &ensp;&ensp;
-                                    <div>
-                                        <br/>
-                                        {
-                                            (item.iscs == "" || item.iscs != "") && ((item.maxTa > "27" && item.sumRn == "" && item.avgRhm < '55.4') || (item.maxTa > "29" && item.sumRn == "" && item.avgRhm < '55.4')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음.png`}/> : 
-                                            // (item.iscs == "" || item.iscs != "") && (('75.7' < item.avgRhm < '76.0') && ('2' < item.avgWs < '2.2') && ('26.7' < maxTa < '26.9') && ('18.5' < minTa < '18.7')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비온_뒤_맑음.png`}/> : 
-                                            // (item.iscs == "" || item.iscs != "") && ('67' < item.sumRn < '73') && ( '2' < item.avgWs < '3') && (('28' < maxTa && minTa < '22') || ( maxTa < '31' && minTa < '21')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음_뒤_흐림.png`}/> : 
-                                            (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/흐린_뒤_맑음.png`}/> : 
-                                            (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비_번개.png`}/> : 
-                                            (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/눈.png`}/> : 
-                                            (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비.png`}/> : 
-                                            (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/흐림.png`}/> :                                             
-                                            <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음.png`}/> 
-                                        }
-                                    </div>
                                     &ensp;&ensp;
                                     <div style={{width:'150px', height:'110px',padding:'10px'}}>
                                         <div className='max-temp'>
@@ -471,7 +426,7 @@ const CityInfoMain = () => {
                 <div className='scheduleBtnBox'>
                     <button type='button' className='btn scheduleBtn' 
                         onClick={()=>{
-                            naVi(`../plan/calendar/108`);
+                            naVi(`../plan/city/${num}`);
                         }}>내 일정 만들기</button>
                     <button type='button' className='btn scheduleBtn'>내 일정 더보기</button>
                 </div>
@@ -481,9 +436,16 @@ const CityInfoMain = () => {
                         cityPlan && cityPlan.map((item, index) => (
                             <div className='schedule-box col-sm-4'>
                                 <h5>{item.name}&emsp;&emsp;&emsp;{item.days}일</h5>
-                                <b>[D - {differenceInDays(new Date(item.start_date) ,new Date())}]</b>
+                                <b>{
+                                (new Date() > new Date(item.end_date)) ? <b>지난여행</b> : (new Date() < new Date(item.start_date)) ? <b>D - {differenceInDays(new Date(item.start_date) ,new Date())}</b> : <b>여행중</b>
+                                }</b>
                                 &emsp;&nbsp;<b>{item.start_date != "" ? format(new Date(item.start_date), "yyyy-MM-dd") : ''}</b>&emsp;
-                                <span class="material-symbols-outlined view-weather" style={{fontSize:'15px'}}>sunny</span>
+                                <span class="material-symbols-outlined view-weather" style={{fontSize:'15px'}} onClick={(e)=>{
+                                    setStart_date(item.start_date); setEnd_date(item.end_date); setDays(item.days);
+                                    console.log("item.start_date"+item.start_date);
+                                    console.log("item.end_date"+item.end_date);
+                                    console.log("days"+days);
+                                }}>sunny</span>
                             </div>
                         ))
                     }
@@ -508,8 +470,17 @@ const CityInfoMain = () => {
                             </Box>
                             <TabPanel value='1'>
                                 <div style={{display:'flex', marginTop:'20px'}}>
+                                    <div className='searchCity'>
+                                        <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
+                                            if(e.key === 'Enter' && e.target.value !== ''){
+                                            setKeyWord(e.target.value);
+                                            e.target.value = '';
+                                            setCategoryPlace0([]);
+                                            }
+                                        }}/>
+                                    </div>
                                     <div className='more-select' >
-                                        <select onChange={(e)=>{setNewValue(e.target.value)}} defalutValue={value}>
+                                        <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
                                             <option value="R">생성일순</option>
                                             <option value="D">최신순</option>
                                             <option value="B">인기순</option>
@@ -519,7 +490,7 @@ const CityInfoMain = () => {
                                 </div>
                                 <div style={{display:'flex'}} className='row'>
                                     {
-                                        places2 && places2.map((item, idx) => (
+                                        categoryPlace0 && categoryPlace0.map((item, idx) => (
                                             <div className='col-sm-3'>
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
@@ -549,26 +520,8 @@ const CityInfoMain = () => {
                                             </div>
                                         ))
                                     }
-                                    {/* <div>   무한 스크롤 실패작
-                                        <div>
-                                            {
-                                                categoryPlace1 && categoryPlace1.map((item,index) => (
-                                                    <React.Fragment key={index}>
-                                                        (categoryPlace1.length - 1 == index) ? (
-                                                            <div key={index} ref={ref}>
-                                                                {item}
-                                                            </div>
-                                                            ) : (
-                                                                <div key={index}>
-                                                                {item}
-                                                            </div>
-                                                        )
-                                                    </React.Fragment>
-                                                ))
-                                            }
-                                        </div>
-                                    </div> */}
                                 </div>
+                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='12'>
@@ -842,7 +795,7 @@ const CityInfoMain = () => {
                                 </div>
                             </TabPanel>
                         </TabContext>
-                        <button type='button' onClick={()=>{naVi("/city/infomore")}}>+더보기</button>
+                        
                     </Box>
                 </div>
             </div>
