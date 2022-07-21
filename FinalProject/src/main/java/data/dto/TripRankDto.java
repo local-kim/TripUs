@@ -23,4 +23,5 @@ public class TripRankDto {
 	private int cityNum;
 	private String cityName;
 	private String image;
+	private int count;
 }

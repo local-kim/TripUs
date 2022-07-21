@@ -6,7 +6,7 @@ const UpdatePlanMain = () => {
   const [isBlocking, setIsBlocking] = useState(true);
 
   // prompt
-  usePrompt(`현재 페이지에서 나가면 일정이 저장되지 않습니다. 정말 나가시겠습니까?`, isBlocking);
+  usePrompt(`현재 페이지에서 나가면 일정이 저장되지 않습니다.\n정말 나가시겠습니까?`, isBlocking);
 
   const [view, setView] = useState(1);
   const [day, setDay] = useState(1);

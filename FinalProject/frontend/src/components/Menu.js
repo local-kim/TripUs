@@ -190,26 +190,29 @@ const ResponsiveAppBar = () => {
               {
                 // 로그인 상태의 메뉴
                 isLoggedIn && loginSettings.map((setting,index) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center" onClick={()=>{
-                      if(index === loginSettings.length - 1){ // 마지막 메뉴(로그아웃)를 클릭했을 때
-                        localStorage.removeItem('jwtToken');
-                        dispatch(logout());
-                      }
-                      else{
-                        navi(loginLinks[index]);
-                      }
-                    }}>{setting}</Typography>
+                  <MenuItem key={setting} onClick={() => {
+                    handleCloseUserMenu();
+
+                    if(index === loginSettings.length - 1){ // 마지막 메뉴(로그아웃)를 클릭했을 때
+                      localStorage.removeItem('jwtToken');
+                      dispatch(logout());
+                    }
+                    else{
+                      navi(loginLinks[index]);
+                    }
+                  }}>
+                    <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))
               }
               {
                 // 로그아웃 상태의 메뉴
                 !isLoggedIn && logoutSettings.map((setting,index) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center" onClick={()=>{
-                      navi(logoutLinks[index]);
-                    }}>{setting}</Typography>
+                  <MenuItem key={setting} onClick={() => {
+                    handleCloseUserMenu();
+                    navi(logoutLinks[index]);
+                  }}>
+                    <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))
               }

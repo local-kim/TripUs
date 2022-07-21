@@ -27,9 +27,17 @@ const PlanList = () => {
             tripList && tripList.map((trip, idx) => (
               <Link to={`/plan/detail/${trip.tripNum}`}>
                 <div className='plan-item'>
-                  <div className='city-img' style={{backgroundImage:`url(../../city_image/${trip.image})`}}></div>
+                  <div className='city-img' style={{backgroundImage:`url(../../city_image/${trip.image})`}}>
+                  </div>
                   <div className='info-wrap'>
-                    <div className='city-name'>{trip.tripName}</div>
+                    <div style={{display:'flex',justifyContent:'space-between'}}>
+                      <div className='trip-name'>{trip.tripName}</div>
+                      
+                      <div className='likes'>
+                        <i className="fa-solid fa-heart"></i>
+                        &nbsp;{trip.count}
+                      </div>
+                    </div>
                     <div className='date'>{trip.start_date} ~ {trip.end_date} ({trip.days}일)</div>
                     <div className='member-name'>{trip.memberName}님</div>
                   </div>

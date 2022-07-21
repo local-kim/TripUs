@@ -42,7 +42,8 @@
 	
 	<!-- 인기 일정 -->
 	<select id="getTripRank" resultType="trip-rank">
-		select trip.num as tripNum, trip.name as tripName, start_date, end_date, days, member.num as memberNum, member.name as memberName, city.name as cityName, city.num as cityNum, city.image from trip, member, city where member_num=member.num and city_num=city.num order by trip.num desc
+		<!-- select trip.num as tripNum, trip.name as tripName, start_date, end_date, days, member.num as memberNum, member.name as memberName, city.name as cityName, city.num as cityNum, city.image from trip, member, city where member_num=member.num and city_num=city.num order by trip.num desc -->
+		select trip_num as tripNum, trip.name as tripName, start_date, end_date, days, member.num as memberNum, member.name as memberName, city.num as cityNum, city.name as cityName, image, count(*) as count from plan_like, trip, member, city where plan_like.trip_num=trip.num and trip.member_num=member.num and trip.city_num=city.num group by trip_num order by count(*) desc
 	</select>
 	
 <!--                                                -->

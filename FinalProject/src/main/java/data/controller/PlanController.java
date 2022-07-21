@@ -140,7 +140,6 @@ public class PlanController {
 	// 인기 일정
 	@GetMapping("/rank")
 	public List<TripRankDto> getTripRank(){
-		System.out.println(planService.getTripRank().get(0));
 		return planService.getTripRank();
 	}
 	
