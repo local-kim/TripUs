@@ -40,9 +40,10 @@
 	<select id="getSumLikes" parameterType="String" resultType="int">
 		select sum(`check`) from `like` where place_id = #{place_id}
 	</select>
-	<select id="getLike" parameterType="String" resultType="int">
-		select `check` from `like` where `like`.member_num = 2 and place_id = #{place_id} 
-	</select>
+	  <select id="getLike" parameterType="Map" resultType="int">
+      select count(*) from `like` where `like`.member_num = #{loginNum} and place_id = #{place_id} and `check`=1 
+   </select>
+
 	 <select id="getData" resultType="review" parameterType="int">	
 		  <!-- select review.num,place_id,review.member_num,member.name,stars,content,created_at,review_photo.file_name from review, `member`,review_photo where review.num=#{num} and review.member_num = member.num and review_photo.review_num=review.num -->
 		  <!-- select review.num,place_id,review.member_num,member.name,stars,content,created_at, (select review_photo.file_name from review_photo where review_photo.review_num=#{num}) as file_name from review, `member` where review.num=#{num} and review.member_num = member.num -->
@@ -60,5 +61,11 @@
 	<select id="getDataFiles" resultType="String" parameterType="int">
 		select file_name from review_photo where review_photo.review_num= #{num}
 	</select>
+	   <insert id="insertLike" parameterType="Map">
+      insert into `like`(member_num,place_id,`check`) values (#{member_num},#{place_id},1) 
+   </insert>
+   <delete id="deleteLike" parameterType="Map">
+      delete from `like` where `like`.member_num = #{loginNum} and place_id = #{place_id}
+   </delete>
 	<!-- 상세보기-->
 </mapper>

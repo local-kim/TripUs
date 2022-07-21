@@ -196,7 +196,7 @@ const PlaceInfo=()=>{
         }else{
             setReviewData(res.data);
           }
-        console.log(res.data);
+        console.log("reviewdatalength:",res.data.length);
         })
         .catch(err => {
             alert(err);
@@ -268,16 +268,17 @@ const PlaceInfo=()=>{
 
         if(!isChecked){
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-          axios.post(insertlikeUrl,{place_id:String(contentId),loginNum,check:Number(!isChecked)}).then(res=>{
-          console.log("좋아요 true:",res.data);
+          axios.post(insertlikeUrl,{place_id:String(contentId),loginNum,check:Number(isChecked)}).then(res=>{
+          //alert("좋아요 true:",res.data);
           setLike(res.data.check);
         })}
         else{
         axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
         axios.delete(deletelikeUrl).then(res=>{
-          alert("좋아요-1");
+         // alert("좋아요-1");
           setLiked(0); 
-          console.log("-liked value:",liked);
+          setIsChecked(false);
+          //console.log("-liked value:",liked);
         })
     }
   }
@@ -289,14 +290,14 @@ const PlaceInfo=()=>{
         axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
         axios.get(likeUrl).then(res=>{
           console.log("mylikedat:",res.data);
-          if(res.data===null||res.data===0){
-          setLike(res.data);
-          setIsChecked(true);
-          console.log("mylike0:",res.data);
-        }else{
+          if(res.data==null||res.data==0){
           setLike(res.data);
           setIsChecked(false);
-          console.log("mylike1:",res.data);
+         // console.log("mylike0:",res.data);
+        }else{
+          setLike(res.data);
+          setIsChecked(true);
+         // console.log("mylike1:",res.data);
         }
         }).catch(err => {
           //alert(err);
@@ -341,26 +342,51 @@ const PlaceInfo=()=>{
 
          //상세보기 호출할 함수
          const onDetail=(num,idx)=>{
+          console.log("detailidx",idx);
+          setDetailIdx(idx);
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.get(detailUrl+num).then(res=>{
                 if(res.file_name ===null){
                 setDetailData(res.data.dto);
-                setDetailIdx(idx);
-                console.log("idx",idx);
-                console.log("notfile_name:",res.data);  
+                console.log("detail->",res.data.dto);
+                console.log("detailfile",res.data.fname);
+                console.log("modalidxidx:",idx);
               }
               else{
               setDetailData(res.data.dto);
-              setDetailIdx(idx);
               setDetailFileData(res.data.fname);
               console.log("detail->",res.data.dto);
               console.log("detailfile",res.data.fname);
+              console.log("modalidxidx:",idx);
               
             }
               setOpen(true);
           })
          }
 
+         // 이전페이지로 넘어가기
+         const onPrevDetail=(num,idx)=>{
+          console.log("detailidx",idx);
+          setDetailIdx(idx+1);
+          axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
+          axios.get(detailUrl+(num+1)).then(res=>{
+                if(res.file_name ===null){
+                setDetailData(res.data.dto);
+                console.log("prevdetail->",res.data.dto);
+                console.log("prevdetailfile",res.data.fname);
+                console.log("modalidxidx:",idx);
+              }
+              else{
+              setDetailData(res.data.dto);
+              setDetailFileData(res.data.fname);
+              console.log("prevdetail->",res.data.dto);
+              console.log("prevdetailfile",res.data.fname);
+              console.log("modalidxidx:",idx);
+              
+            }
+              setOpen(true);
+          })
+         }
 
          //수정상세보기 호출함수
          const onEditReviewDetail=(num)=>{
@@ -753,8 +779,11 @@ const PlaceInfo=()=>{
                        }}>삭제</button>
                       </div>:""}
                       </Typography>
-                      {/* {detailData[0].num+1<0?"":<button>←</button>}
-                      {detailData[0].num>detailData.length?"":<button>→</button>} */}
+                      {/* {detailFileData&&detailFileData.map((row,idx)=>(*/}
+                            {detailidx==0?"":<button onClick={()=>onPrevDetail(detailidx,detailData[0].num)}>←</button>}
+                            {detailidx>=(reviewData.length-1)?"":<button>→</button>}
+                            {console.log("reviewdatalength::::"+(reviewData.length-1))}
+                      {/* ))}  */}
                     </Box>
                   </Modal>
                 </div>
