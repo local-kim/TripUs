@@ -11,8 +11,11 @@ import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Ayong from '../../assets/images/IMG_1503.JPG';
+import User from '../../assets/images/User-Profile-PNG-Image.png'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Modal, Pagination } from '@mui/material';
 import { useSelector } from 'react-redux';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 
 
 
@@ -44,6 +47,17 @@ const PlaceInfo=()=>{
       // const CityInfoMainContendId = location.state.state.pcontentId;
       // console.log("CityInfoMainContendId : "+CityInfoMainContendId);
     
+
+      const [anchorEl, setAnchorEl] = React.useState(null);
+      const editopen = Boolean(anchorEl);
+      const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+      };
+      const editeHandleClose = () => {
+        setAnchorEl(null);
+      };
+
+
     //mui
     const [value, setValue] = React.useState('1');
     const [starsvalue, setStarsValue] = React.useState('0');
@@ -61,8 +75,8 @@ const PlaceInfo=()=>{
     //지도api & 관광지 api 
     //const contentId=CityInfoMainContendId; //city페이지에서 contentid받는곳
     const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
-    const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
-    // const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
+    //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
+     const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; 일웅님 인증키
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
@@ -346,15 +360,17 @@ const PlaceInfo=()=>{
           setDetailIdx(idx);
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.get(detailUrl+num).then(res=>{
-                if(res.file_name ===null){
-                setDetailData(res.data.dto);
-                console.log("detail->",res.data.dto);
-                console.log("detailfile",res.data.fname);
-                console.log("modalidxidx:",idx);
-              }
-              else{
+            if(res.file_name ===null){
+              console.log("res.file_name:",res.file_name);
+              setDetailData(res.data.dto);
+              console.log("detail->",res.data.dto);
+              console.log("detailfile",res.data.fname);
+              console.log("modalidxidx:",idx);
+            }
+            else{
               setDetailData(res.data.dto);
               setDetailFileData(res.data.fname);
+              console.log("res.file_name:",res.file_name);
               console.log("detail->",res.data.dto);
               console.log("detailfile",res.data.fname);
               console.log("modalidxidx:",idx);
@@ -367,17 +383,18 @@ const PlaceInfo=()=>{
          // 이전페이지로 넘어가기
          const onPrevDetail=(num,idx)=>{
           console.log("detailidx",idx);
-          setDetailIdx(idx+1);
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.get(detailUrl+(num+1)).then(res=>{
-                if(res.file_name ===null){
+                if(res.data.file_name ===null){
                 setDetailData(res.data.dto);
+                setDetailIdx(idx+1);
                 console.log("prevdetail->",res.data.dto);
                 console.log("prevdetailfile",res.data.fname);
                 console.log("modalidxidx:",idx);
               }
               else{
               setDetailData(res.data.dto);
+              setDetailIdx(idx+1);
               setDetailFileData(res.data.fname);
               console.log("prevdetail->",res.data.dto);
               console.log("prevdetailfile",res.data.fname);
@@ -387,6 +404,32 @@ const PlaceInfo=()=>{
               setOpen(true);
           })
          }
+
+           // 다음페이지로 넘어가기
+           const onNextDetail=(num,idx)=>{
+            console.log("nextdetailidx",idx);
+           
+            axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
+            axios.get(detailUrl+(num-1)).then(res=>{
+                  if(res.data.file_name ===null){
+                  setDetailData(res.data.dto);
+                  setDetailIdx(idx+1);
+                  console.log("nextdetail->",res.data.dto);
+                  console.log("nextdetailfile",res.data.fname);
+                  console.log("nextmodalidxidx:",idx);
+                }
+                else{
+                setDetailData(res.data.dto);
+                setDetailFileData(res.data.fname);
+                setDetailIdx(idx+1);
+                console.log("nextdetail->",res.data.dto);
+                console.log("nextdetailfile",res.data.fname);
+                console.log("nextmodalidxidx:",idx);
+                
+              }
+                setOpen(true);
+            })
+           }
 
          //수정상세보기 호출함수
          const onEditReviewDetail=(num)=>{
@@ -555,24 +598,47 @@ const PlaceInfo=()=>{
                           </div>
                           </div>  
                           <div style={{display:'flex',flexDirection:'column',marginLeft:'15px'}}>
-                          <div style={{backgroundColor:'white',height:'50px',width:'600px',padding:'5px 0px 0px 5px'}} onClick={()=>{onDetail(row.num,idx);}}>
-                       {row.content}
-                       </div>
+                          <div style={{display:'flex',flexDirection:'row'}}>
+                          <div style={{backgroundColor:'white',height:'50px',width:'550px',padding:'5px 0px 0px 5px'}} onClick={()=>{onDetail(row.num,idx);}}>
+                          {row.content}
+                          </div>
+                          {isLoggedIn&&loginNum==row.member_num ? 
+                          <div style={{flexGrow:'0'}}>
+                            <Button
+                              id="basic-button"
+                              aria-controls={editopen ? 'basic-menu' : undefined}
+                              aria-haspopup="true"
+                              aria-expanded={editopen ? 'true' : undefined}
+                              onClick={handleClick}
+                            >
+                              ⋮
+                            </Button>
+                            <Menu
+                              id="basic-menu"
+                              anchorEl={anchorEl}
+                              open={editopen}
+                              onClose={editeHandleClose}
+                              MenuListProps={{
+                                'aria-labelledby': 'basic-button',
+                              }}
+                            >
+                              <MenuItem onClick={()=>{onEditReviewDetail(row.num);}}>수정하기</MenuItem>
+                              <MenuItem onClick={()=>{onDelete(row.num);}}>삭제하기</MenuItem>
+                              {/* <MenuItem onClick={handleClose}>Logout</MenuItem> */}
+                            </Menu>
+                          {/* <span style={{cursor:'pointer'}} onClick={()=>{onEditReviewDetail(row.num);}}>수정</span>
+                          &nbsp;&nbsp;|&nbsp;&nbsp;
+                          <span className='myreviewDelete' style={{cursor:'pointer'}} onClick={()=>{
+                            onDelete(row.num);
+                          }}>삭제</span> */}
+                       </div> : ""
+                      }
+                          </div>
                        <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
                         <div style={{flexGrow:'3'}}>
                         {row.created_at}&nbsp;&nbsp;&nbsp;
                        <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
                        </div>
-                       {isLoggedIn&&loginNum==row.member_num ? 
-                       <div style={{flexGrow:'0',marginRight:'10px'}}>
-                        
-                       <span style={{cursor:'pointer'}} onClick={()=>{onEditReviewDetail(row.num);}}>수정</span>
-                       &nbsp;&nbsp;|&nbsp;&nbsp;
-                       <span className='myreviewDelete' style={{cursor:'pointer'}} onClick={()=>{
-                        onDelete(row.num);
-                       }}>삭제</span></div> : ""
-                      }
-                    
                        </div>
                        </div>
                       </div>
@@ -739,9 +805,9 @@ const PlaceInfo=()=>{
                   >
                     <Box sx={style}>
                       <Typography id="modal-modal-title" variant="h6" component="h2">
-                      <div style={{display:'inline-flex',width:'450px',justifyContent:'left'}}>
+                      <div style={{display:'inline-flex',width:'665px',justifyContent:'left'}}>
                         <div>
-                          <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                          <img src={detailData[0].file_name==undefined?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px',objectFit:'cover'}}/>
                       </div>
 
                         <div style={{marginLeft:'10px',fontSize:'16px'}}>
@@ -758,6 +824,36 @@ const PlaceInfo=()=>{
                        <Rating name="read-only" ref={reviewstarsRef} value={detailData[0].stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/>
                         </div>
                       </div>
+
+                      {isLoggedIn&&loginNum==detailData[0].member_num? 
+                      <div style={{justifyContent:'right',display:'inline-flex'}}>  
+                        <Button
+                          id="basic-button"
+                          aria-controls={editopen ? 'basic-menu' : undefined}
+                          aria-haspopup="true"
+                          aria-expanded={editopen ? 'true' : undefined}
+                          onClick={handleClick}
+                        >
+                          ⋮
+                        </Button>
+                        <Menu
+                          id="basic-menu"
+                          anchorEl={anchorEl}
+                          open={editopen}
+                          onClose={editeHandleClose}
+                          MenuListProps={{
+                            'aria-labelledby': 'basic-button',
+                          }}
+                        >
+                          <MenuItem onClick={()=>{onEditReviewDetail(detailData[0].num);}}>수정하기</MenuItem>
+                          <MenuItem onClick={()=>{onDelete(detailData[0].num);}}>삭제하기</MenuItem>
+                          {/* <MenuItem onClick={handleClose}>Logout</MenuItem> */}
+                        </Menu>
+                         {/* <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{onEditReviewDetail(detailData[0].num);}}>수정</button>&nbsp;&nbsp;
+                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
+                        onDelete(detailData[0].num);
+                       }}>삭제</button> */}
+                      </div>:""}
                       </Typography>
 
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
@@ -771,17 +867,10 @@ const PlaceInfo=()=>{
                          {/* <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre> */}
                          <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre>
                       </div>
-                      {isLoggedIn&&loginNum==detailData[0].member_num? 
-                      <div style={{justifyContent:'center',display:'inline-flex'}}>  
-                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{onEditReviewDetail(detailData[0].num);}}>수정</button>&nbsp;&nbsp;
-                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
-                        onDelete(detailData[0].num);
-                       }}>삭제</button>
-                      </div>:""}
                       </Typography>
                       {/* {detailFileData&&detailFileData.map((row,idx)=>(*/}
-                            {detailidx==0?"":<button onClick={()=>onPrevDetail(detailidx,detailData[0].num)}>←</button>}
-                            {detailidx>=(reviewData.length-1)?"":<button>→</button>}
+                            {detailidx==0?"":<button  onClick={()=>onPrevDetail(detailData[0].num)}>←</button>} 
+                            {detailidx>=(reviewData.length-1)?"":<button onClick={()=>onNextDetail(detailData[0].num)}>→</button>}
                             {console.log("reviewdatalength::::"+(reviewData.length-1))}
                       {/* ))}  */}
                     </Box>
