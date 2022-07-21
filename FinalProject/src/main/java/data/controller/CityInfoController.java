@@ -40,10 +40,10 @@ public class CityInfoController {
 	
 	@GetMapping("/tripdata")
 	public List<TripDto> getTripData(
-			@RequestParam int member_num,
+			@RequestParam int loginNum,
 			@RequestParam int city_num
 			) {
-		return ciservice.getTripData(member_num,city_num);
+		return ciservice.getTripData(loginNum,city_num);
 	}
 	
 	// 현지씌 작품 돈터치!!!
