@@ -10,7 +10,7 @@ import { usePrompt } from '../../utils/Blocker';
 
 const { kakao } = window;
 
-const Plan = ({view, setView, day, setDay, setIsBlocking}) => {
+const Plan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}) => {
   const loginNum = useSelector(state => state.auth.user.num);
 
   // redux에서 변수 얻기
@@ -38,7 +38,7 @@ const Plan = ({view, setView, day, setDay, setIsBlocking}) => {
     .catch(err => console.log(err));
   }
 
-  const [focus, setFocus] = useState(0);
+  // const [focus, setFocus] = useState(0);
 
   // kakao map
   const kakaoMapScript = () => {
@@ -149,6 +149,7 @@ const Plan = ({view, setView, day, setDay, setIsBlocking}) => {
                 // navigate(`/plan/${index + 1}`);
                 setView(2);
                 setDay(index + 1);
+                setFocus(index);
               }}>장소 추가</button>
               <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
             </div>

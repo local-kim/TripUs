@@ -20,21 +20,27 @@ import { logout } from '../modules/auth';
 
 const ResponsiveAppBar = () => {
 
+  
+
   const [scrollPosition, setScrollPosition] = useState(0);
+
   const updateScroll = () => {
       setScrollPosition(window.scrollY || document.documentElement.scrollTop);
   }
+
   useEffect(()=>{
       window.addEventListener('scroll', updateScroll);
   });
+
   // redux에서 변수 얻기
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const loginNum = useSelector(state => state.auth.user.num);
   const loginName = useSelector(state => state.auth.user.name);
+  const loginProfile = useSelector(state => state.auth.user.profile);
 
-  const pages = ['여행지', '일정 만들기', '일정 보기', '일정 수정', 'About'];
-  const pageLinks = ['city/list', 'plan/city/108', 'plan/detail/1', 'plan/update/48', ''];
+  const pages = ['여행지', '일정 만들기', '일정 보기', '인기 일정', 'About'];
+  const pageLinks = ['city/list', 'plan/city/108', 'plan/detail/1', 'plan/list', ''];
 
   const loginSettings = ['Mypage', 'Dashboard','Logout'];
   const loginLinks = ['mypage/1', 'dashboard','logout'];
@@ -62,9 +68,9 @@ const ResponsiveAppBar = () => {
   };
 
   // 헤더 숨기기
-  if ((window.location.pathname.startsWith('/plan')) && !window.location.pathname.startsWith('/plan/detail')) return null;
+  if ((window.location.pathname.startsWith('/plan')) && !window.location.pathname.startsWith('/plan/list')) return null;
 
-  
+  if ((window.location.pathname == '/') && (window.scrollY <= 50)) return null;
 
   return (
     <AppBar position="fixed">
@@ -163,7 +169,7 @@ const ResponsiveAppBar = () => {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {
-                  isLoggedIn && <Avatar alt={loginName} src="/static/images/avatar/2.jpg" />
+                  isLoggedIn && <Avatar alt={loginName} src={`${process.env.REACT_APP_SPRING_URL}save/${loginProfile}`} />
                 }
                 {
                   !isLoggedIn && <Avatar src="/static/images/avatar/2.jpg" />
@@ -189,26 +195,29 @@ const ResponsiveAppBar = () => {
               {
                 // 로그인 상태의 메뉴
                 isLoggedIn && loginSettings.map((setting,index) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center" onClick={()=>{
-                      if(index === loginSettings.length - 1){ // 마지막 메뉴(로그아웃)를 클릭했을 때
-                        localStorage.removeItem('jwtToken');
-                        dispatch(logout());
-                      }
-                      else{
-                        navi(loginLinks[index]);
-                      }
-                    }}>{setting}</Typography>
+                  <MenuItem key={setting} onClick={() => {
+                    handleCloseUserMenu();
+
+                    if(index === loginSettings.length - 1){ // 마지막 메뉴(로그아웃)를 클릭했을 때
+                      localStorage.removeItem('jwtToken');
+                      dispatch(logout());
+                    }
+                    else{
+                      navi(loginLinks[index]);
+                    }
+                  }}>
+                    <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))
               }
               {
                 // 로그아웃 상태의 메뉴
                 !isLoggedIn && logoutSettings.map((setting,index) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center" onClick={()=>{
-                      navi(logoutLinks[index]);
-                    }}>{setting}</Typography>
+                  <MenuItem key={setting} onClick={() => {
+                    handleCloseUserMenu();
+                    navi(logoutLinks[index]);
+                  }}>
+                    <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))
               }

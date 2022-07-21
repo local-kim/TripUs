@@ -47,14 +47,17 @@ const PlanDetailMap = () => {
     for (let i in markerList) {
       // 커스텀 오버레이에 표시할 내용
       // HTML 문자열 또는 Dom Element
-      let content = `<div class ="label">${Number(i)+1}</div>`;
+      let content = `<div class ="label">
+                      <div class="label-title">${markerList[i].title}</div>
+                      <div class="label-num">${Number(i)+1}</div>
+                    </div>`;
 
       // 커스텀 오버레이가 표시될 위치
       let position = markerList[i].latlng;
 
       // 커스텀 오버레이를 생성
       let customOverlay = new kakao.maps.CustomOverlay({
-          position: markerList[i].latlng,
+          position: position,
           content: content
       });
 
@@ -105,6 +108,7 @@ const PlanDetailMap = () => {
     kakaoMapScript();
   }, [mapData, cDay]);
 
+  // dayPlan 에 mapData 배열로 집어넣기
   const [dayPlan, setDayPlan] = useState([]);
 
   useEffect(() => {
@@ -124,6 +128,7 @@ const PlanDetailMap = () => {
     });
   }, []);
 
+  // navData (Day별) 없는날짜 치우고 여행 있는날짜만 추가
   const [navPlan, setNavPlan] = useState([]);
   
   useEffect(() => {
@@ -155,6 +160,7 @@ const PlanDetailMap = () => {
         <div className='wrap-list'>
             <div id='detail-map'>
             <div className='map-day-box'>
+                {/* navData 별로 리모컨 만들어주기 */}
                 {
                     navData && navData.map((day, index) => (
                         <div className='map-day-list' style={{zIndex:'999'}}

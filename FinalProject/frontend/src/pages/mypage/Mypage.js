@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import './Mypage2.css';
 import { NavLink } from 'react-router-dom';
 import { useNavigate, useParams} from "react-router-dom";
@@ -11,10 +11,15 @@ import { differenceInDays, format } from 'date-fns';
 import { style } from "@mui/system";
 import { Link } from "react-router-dom";
 import KakaoShareButton from './KakaoShareButton';
+import { useSelector } from "react-redux";
 
 
 
 const Mypage = () => {
+    // 강제 렌더링
+    const [, updateState] = useState();
+    const forceUpdate = useCallback(() => updateState({}), []);
+
     const navi=useNavigate();
     const [photo,setPhoto] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
     const [dto,setDto] =useState('');
@@ -33,17 +38,19 @@ const Mypage = () => {
     const [passOk,setPassOk]=useState(false);
     const [btnOk,setBtnOk]=useState(false);
     const [open, setOpen] = React.useState(false);
+    const loginNum = useSelector(state => state.auth.user.num);
 
     // url
-    let pagelistUrl = process.env.REACT_APP_SPRING_URL + "mypage/pagelist" //?currentPage=" + currentPage;
+    let pagelistUrl = process.env.REACT_APP_SPRING_URL + "mypage/pagelist?loginNum="+loginNum; //?currentPage=" + currentPage;
     let photoUrl = process.env.REACT_APP_SPRING_URL + "save/";
     let uploadUrl=process.env.REACT_APP_SPRING_URL+"mypage/upload";
     let insertUrl =process.env.REACT_APP_SPRING_URL+"mypage/insert";   
     let updateUrl = "http://localhost:9001/shop/update";
     let detailUrl="http://localhost:9001/shop/detail"; 
-    let mypageUrl = process.env.REACT_APP_SPRING_URL+"mypage/profile";
+    let mypageUrl = process.env.REACT_APP_SPRING_URL+"mypage/profile?loginNum="+loginNum;
     let photonameUrl =  process.env.REACT_APP_SPRING_URL + "mypage/photo";
-    let citytripUrl=process.env.REACT_APP_SPRING_URL + "mypage/citytrip?currentPage="+currentPage;
+    let citytripUrl=`${process.env.REACT_APP_SPRING_URL}mypage/citytrip?currentPage=${currentPage}&loginNum=${loginNum}`;
+    // let myPlaceUrl = `${process.env.REACT_APP_SPRING_URL}plan/my-place-list?cityNum=${trip.cityNum}?loginNum=${loginNum}`;
 
  
 
@@ -128,7 +135,7 @@ const Mypage = () => {
         }
 
         
-        let tripdeleteUrl = process.env.REACT_APP_SPRING_URL + "mypage/tripdelete?num=";
+        let tripdeleteUrl = process.env.REACT_APP_SPRING_URL + `mypage/tripdelete?loginNum=${loginNum}&tripNum=`;
 
         const tripdelete=(num)=>{
             if (window.confirm("정말 삭제합니까?")) {
@@ -178,7 +185,7 @@ const Mypage = () => {
                     
                     <Avatar 
                         src={Image} 
-                        style={{margin:'20px'}} 
+                        style={{margin:'30px'}} 
                         size={200} 
                         onClick={()=>{fileInput.current.click()}}>
 
@@ -232,7 +239,7 @@ const Mypage = () => {
             <div className="uk-width-1-3@m uk-first-column">
                 <div className="uk-grid" uk-grid="" style={{margin: "0" , height: "60%"}}>
                     <div className="uk-width-1-2 info-container uk-first-column">
-                        <img className="width:100%" src={`../city_image/${row.image}`} alt={row.image} onClick={()=>{navi(`/plan/detail/${row.tripNum}`)}} />
+                        <img className="imgclass" src={`../city_image/${row.image}`} alt={row.image} onClick={()=>{navi(`/plan/detail/${row.tripNum}`)}} />
                         <div className="d-day-circle" style={{backgroundColor:calculateDday(row.startDate) < 0 && calculateDday(row.endDate) > 0 ? "red" : calculateDday(row.startDate) === 0 ? "orange" : calculateDday(row.startDate) < 0 ? "gray" : ""}}>
                         
                             {calculateDday(row.startDate) === 0 ? "디데이": calculateDday(row.startDate) > 0 ? `D-${calculateDday(row.startDate)}` : calculateDday(row.endDate) > 0 ?<div style={{backgroundColor:'red'}}>"여행중"</div>  :"지난일정" }
@@ -280,11 +287,11 @@ const Mypage = () => {
                                         
 
                                         <input className="
-                                                uk-input
+                                                uk-input123
                                                 uk-form-blank
                                                 uk-form-width-medium
                                                 small-text
-                                            " type="text"  defaultValue={row.tripName}  id="inputTravelName_idx_0" style={{width:'150px'}} 
+                                            " type="text"  defaultValue={row.tripName}  id="inputTravelName_idx_0" style={{width:'150px'}}  
                                             
                                             onChange={(e) => {
                                                 // setDto({
@@ -292,6 +299,7 @@ const Mypage = () => {
                                                 //     name: e.target.value
                                                 // })
                                                 row.tripName = e.target.value;
+                                                
                                                 // setChangeTripName(e.target.value);
                                                 // tripnamesave(row.tripNum, e.target.value);
                                             }}/>
@@ -357,6 +365,7 @@ const Mypage = () => {
                                     </button>
                                 </div>
                                 
+
                             </div>
                         </div>
                     </div>
@@ -446,7 +455,7 @@ const Mypage = () => {
 
                         {
                         (data2.startPage>1?<li>
-                            <Link to={`/mypage/${data2.startPage-1}`}>이전</Link>
+                            <Link to={`/mypage/${data2.startPage-1}`} onClick={forceUpdate}>이전</Link>
                         </li>:'')
                         }
 
@@ -457,7 +466,7 @@ const Mypage = () => {
                                 return(
 
                                     <li className={n == currentPage ? 'active' : ''} style={{float:'left'}}>
-                                        <Link to={url}>{n}</Link>
+                                        <Link to={url} onClick={forceUpdate}>{n}</Link>
                                     </li>
                                 )
                             })
@@ -465,7 +474,7 @@ const Mypage = () => {
                         {
                         (data2.endPage<data2.totalPage?
                         <li>
-                            <Link to={`/mypage/${data2.endPage+1}`}>다음</Link>
+                            <Link to={`/mypage/${data2.endPage+1}`} onClick={forceUpdate}>다음</Link>
                         </li>:'')
                     }
                     </ul>
@@ -475,7 +484,7 @@ const Mypage = () => {
   
             </div>
                  <div class="info-container p-5">
-                    <button class="btn-normal" onClick={()=>{navi("/")}}>홈으로 가기</button>
+                    <button class="btn-normal" onClick={()=>{navi("/")}} >홈으로 가기</button>
                 </div>
             
         </div>    

@@ -247,7 +247,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   
   
   .page.silver {
-    background: #f6f6f6;
+    background: white;
     height: 100%;
   }
   
@@ -601,4 +601,15 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   display: inline-block;
   padding-left: 0;
   list-style: none;
+}
+
+
+.css-19r6kue-MuiContainer-root {
+    padding-left: 24px;
+    padding-right: 24px;
+    background-color: white;
+}
+
+.latest_search:hover{
+  cursor: pointer;
 }

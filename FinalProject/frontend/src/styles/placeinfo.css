@@ -2,7 +2,7 @@ div.place_info{
     display:flex;
     margin:0 auto;
     justify-content:center;
-    margin-top: 5%;
+    margin-top: 6%;
 }
 
 div#place_map{
@@ -313,4 +313,14 @@ label.css-dqr9h-MuiRating-label{
   #file {
     display: none;
   }
+
+    
+  #file2 {
+    display: none;
+  }
   
+ /* .css-13xfq8m-MuiTabPanel-root  div#mui-p-11655-P-2{
+  overflow:scroll;
+  overflow-x:hidden;
+  padding: 0;
+} */
