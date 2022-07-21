@@ -150,7 +150,7 @@ const Myslide=({row, select, category}) => {
             </div>
                 <div clasName="city-card-contents-div">
                     <li className="city-card-contents-title">
-                        <div className="citynamefont" style={{textAlign:'center',zIndex:'10000'}}>
+                        <div className="citynamefont" style={{textAlign:'center'}}>
                             <b> {row.eng_name}</b><br/>
                             <h6 className="city-card-contents-subtitle"> {row.country} {row.name}</h6>
                         </div>

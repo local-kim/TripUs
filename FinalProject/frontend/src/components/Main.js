@@ -4,6 +4,7 @@ import React ,{useState} from 'react';
 import { ReactDOM } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 import Fullpage,{FullPageSections,FullpageSection,FullpageNavigation} from '@ap.cx/react-fullpage';
@@ -213,13 +214,13 @@ const Main=(row)=>{
                             </div> 
                              <div className="wrap"style={{marginTop:'60px'}}>
                          
-                            <div className='main_top_title' >나만의 여행 플래너 Trip Us!</div>
+                            <div className='main_top_title' >나만의 여행 플래너 Trip:Us!</div>
                             <div className='main_top_desc' >쉽고 빠르게 여행을 계획하세요.</div>
                             <div className='search_area' >
                                 <div className='city_autocomplete' style={{display:'block'}}></div>
                                 <input className='search_input' placeholder='국가명,도시명으로 검색' autocomplete="off" onKeyUp={Search} ></input>
                                 <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(<li onClick={()=>{navi(`/city/${data.num}`)}} >{data.name} <span class="h_search_cicu">대한민국</span></li> ))}</ul>
-                                    <div className='latest_search'>추천도시:  서울  부산  제주  강릉  인천 </div>
+                                    <div className='latest_search'><Link to={`city/list`} style={{color:'white'}}>추천도시</Link>:  <Link to={`city/108`} style={{color:'white'}}>서울</Link> <Link to={`city/159`} style={{color:'white'}}>부산</Link> <Link to={`city/184`} style={{color:'white'}}>제주</Link> <Link to={`city/136`} style={{color:'white'}}>안동</Link> <Link to={`city/105`} style={{color:'white'}}>강릉</Link> </div>
                             </div>
                             
                         </div>
@@ -233,25 +234,25 @@ const Main=(row)=>{
                     <div className='page white'>
                     {/* <Menu></Menu> */}
                         <div className='wrap'>
-                            <div className='page_title' style={{marginTop:'150px'}}>BitRip에서 여행을 시작하세요!</div>
+                            <div className='page_title' style={{marginTop:'150px'}}>Trip:Us에서 여행을 시작하세요!</div>
                             <div className='clear'></div>
                             <div className="intro_list">
                                 <div className="intro_box" onclick="location.href='/ko/area';">
                                     <img src="https://www.earthtory.com/res/img/main/intro_img/intro_1.jpg" alt=""/>
                                 <div className="intro_title">여행정보</div>
-                                <div className="intro_desc"> 전 세계 800개 도시, 30만개의 관광명소, 음식점, 쇼핑 정보를 확인하세요.	</div>
+                                <div className="intro_desc"> 대한민국  162개의도시, 3만개의 관광명소, 음식점<br/> 쇼핑 정보를 확인하세요.	</div>
                             </div>
 
                             <div className="intro_box">
                                 <img src="https://www.earthtory.com/res/img/main/intro_img/intro_2.jpg" alt=""/>
                                 <div class="intro_title"> 여행일정	</div>
-                                <div class="intro_desc">전 세계 100,000개 이상의 여행일정을 확인하고 나만의 일정을 계획해 보세요.</div>
+                                <div class="intro_desc" style={{marginLeft:'5px'}}>대한민국 3000개 이상의 여행일정을 확인하고 <br/> 나만의 일정을 계획해 보세요.</div>
                             </div>
                                         
                             <div class="intro_box">
                                 <img src="https://www.earthtory.com/res/img/main/intro_img/intro_3.jpg" alt=""/>
                                 <div class="intro_title">커뮤니티</div>
-                                <div class="intro_desc">여행자들과 정보를 공유하고, 궁금한 것은 언제든 물어보세요.</div>
+                                <div class="intro_desc" style={{marginLeft:'5px'}}>여행자들과 정보를 공유하고, 궁금한 것은 언제든 물어보세요.</div>
                             </div>
 
                             <div class="clear"></div>

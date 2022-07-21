@@ -1,7 +1,7 @@
 .fc .fc-toolbar-title {
     font-size: 1.75em;
     margin: 0;
-    margin-top: 30px;
+    
 }
 
 .fc .fc-scrollgrid-liquid {
@@ -14,7 +14,7 @@
 
 .fc .fc-toolbar.fc-header-toolbar {
 
-    margin-top: 100px;
+    margin-top: 150px;
     margin-right: 450px;
     margin-left: 450px;
 
@@ -36,4 +36,27 @@
     margin-bottom: 400px;
     
 
+}
+
+.fc, .fc *, .fc *:before, .fc *:after {
+    box-sizing: border-box;
+    
+}
+
+.fc-direction-ltr .fc-daygrid-event .fc-event-time {
+    margin-right: 3px;
+    color: rgba(0, 0, 0, 0);
+    opacity: 100%;
+}
+
+
+
+div.app .fc-view-harness.fc-view-harness-active{
+    height: 700px;
+}
+
+
+
+.fc.fc-media-screen.fc-direction-ltr.fc-theme-standard{
+    height: 700px;
 }

@@ -42,6 +42,7 @@ div {
   font-size: 1.4rem;
   color: #fff;
   font-family: 'Montserrat';
+  background-color: white;
 }
 
 .index-section {
@@ -429,3 +430,8 @@ svg:not(:root) {
   z-index: -999;
 }
 
+.imgclass:hover{
+  transform: scale(1.1);
+  cursor: pointer;
+  
+}

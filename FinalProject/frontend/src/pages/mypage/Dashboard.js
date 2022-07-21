@@ -4,12 +4,15 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import './Dashboard.css';
 import axios from 'axios';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { nextDay } from 'date-fns';
 
 const Dashboard = () => {
     const[trip,setTrip] = useState('');
+    const loginNum = useSelector(state => state.auth.user.num);
 
 
-    let calendarUrl=process.env.REACT_APP_SPRING_URL + "calendar/";
+    let calendarUrl=process.env.REACT_APP_SPRING_URL + "calendar/?loginNum="+loginNum;
     let dDay; 
 
     const calendar=()=>{
@@ -29,6 +32,8 @@ const Dashboard = () => {
             
         const nowTime = moment();
         const lastTime = moment(date);
+
+
         dDay = Math.floor((lastTime - nowTime)/86400000)+1;
 
 
@@ -46,10 +51,10 @@ const Dashboard = () => {
         <div>
 
 
-            <div className="App" style={{height:'100%'}}>
+            <div className="App" style={{height:'700px'}}>
 
                     
-                    <FullCalendar  defaultView="dayGridMonth" plugins={[ dayGridPlugin ]}
+                    <FullCalendar style={{height:'700px'}} defaultView="dayGridMonth" plugins={[ dayGridPlugin ]}
 
                 
                             
@@ -61,7 +66,7 @@ const Dashboard = () => {
                                                 title : row.name, 
                                                 color :calculateDday(row.startDate) < 0 && calculateDday(row.endDate) > 0 ? "red" : calculateDday(row.startDate) < 0 ? "gray" : "", //기본이 그냥 파랑임
                                                 start: row.startDate,
-                                                end: row.endDate,
+                                                end: new Date(row.endDate).getTime(),
                                                                                       
                                             }
     

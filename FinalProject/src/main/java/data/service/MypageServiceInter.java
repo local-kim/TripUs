@@ -36,11 +36,13 @@ public interface MypageServiceInter {
 	public List<CityTripDto>getAllDates2(int member_num);
 	
 	//일정 지우기
-	public void tripDelete(int num);
+	public void tripDelete(int tripNum);
 	
 	//일정 이름 업데이트
 	public void updateTripName(TripDto dto);
 	
+	//사진 추가하기
+	public void profilePhotoInsert(ProfileDto dto);
 	
 	
 	

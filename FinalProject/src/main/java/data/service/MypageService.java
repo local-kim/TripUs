@@ -90,9 +90,11 @@ public class MypageService implements MypageServiceInter {
 }
 	
 	@Override
-	public void tripDelete(int num) {
+	public void tripDelete(int tripNum) {
 		// TODO Auto-generated method stub
-		mapper.tripDelete(num);
+		
+	
+		mapper.tripDelete(tripNum);
 	}
 	
 	@Override
@@ -109,6 +111,12 @@ public class MypageService implements MypageServiceInter {
 		// TODO Auto-generated method stub
 		
 		return mapper.getAllDates3(memberNum);
+	}
+	
+	@Override
+	public void profilePhotoInsert(ProfileDto dto) {
+		// TODO Auto-generated method stub
+		mapper.profilePhotoInsert(dto);
 	}
 }
 	
