@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, state } from 'react';
 import '../../styles/plandetail.css';
 // import ScrollButton from 'react-scroll-button';
-import { useNavigate,useLocation, useParams } from 'react-router-dom';
+import { useNavigate,useLocation, useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { daysToWeeks, format } from 'date-fns';
 import { da } from 'date-fns/locale';
@@ -315,7 +315,7 @@ const PlanDetailMain = () => {
                                         <div className='last-box' id={'page-'+day.day}
                                             style={{
                                                 position:'relative',
-                                                top:'-86px'
+                                                top:'-100px'
                                             }} />
                                         <div className='day-num' id={'day-nav'+day.day}>
                                             Day{day.day}
@@ -347,19 +347,17 @@ const PlanDetailMain = () => {
                                         <div className='list-content'>
                                             <img alt='spot' src={day.firstimage !== null ? day.firstimage : '../../empty_image.jpg'} className='spot-img'/>
                                             <div className='spot-content-box'>
-                                                <div className='spot-name'
-                                                    // 장소 클릭시 state값 가지고 상세페이지로 이동
-                                                    onClick={() => {
-                                                        navi('../../../place/placedetail', {state:{place:day.contentid}})
-                                                    }}>
+                                                <div className='spot-name'>
+                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : day.contentid}}}>
                                                     {day.title}
+                                                </Link>
                                                 </div>
                                                 <div className='spot-info'>
                                                     {/* <img alt src='https://www.earthtory.com/res//img/common/web/hotel_star_1.5.png' className='star' /> */}
                                                     <div className='sinfo-cat2'>{day.cat2_name}</div>
                                                     <div className='sinfo-line' />
                                                     <div className='sinfo-txt'>
-                                                    review&nbsp;<Rating name="read-only" value={day.avg_star} readOnly size="small" precision={0.1} />({day.avg_star == null ? `리뷰없음` : day.avg_star})
+                                                    review&nbsp;<Rating name="read-only" value={day.avg_star} readOnly size="small" precision={0.1} />({day.avg_star == 0 ? `리뷰없음` : day.avg_star})
                                                     </div>
                                                     <div className='clear' />
                                                 </div>

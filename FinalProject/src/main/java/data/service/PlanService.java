@@ -99,4 +99,37 @@ public class PlanService implements PlanServiceInter {
 	public List<PlanMapDto> mapKakao (int num) {
 		return planMapper.mapKakao(num);
 	}
+	
+//	PlanLike 좋아요 
+	@Override
+	public int getPlanLike(int num, int loginNum) {
+		// TODO Auto-generated method stub
+		Map<String, Integer> map = new HashMap<>();
+	    map.put("num", num);
+	    map.put("loginNum", loginNum);
+	    return planMapper.getPlanLike(map);
+	}
+	
+	@Override
+	public int insertPlanLike(int num,int loginNum) {
+		// TODO Auto-generated method stub
+	    Map<String, Integer> map = new HashMap<>();
+	    map.put("num", num);
+	    map.put("loginNum",loginNum);
+	    return planMapper.insertPlanLike(map);
+	}
+	
+	@Override
+	public int deletePlanLike(int num, int loginNum) {
+	   // TODO Auto-generated method stub
+	   Map<String, Integer> map = new HashMap<>();
+	   map.put("num", num);
+	   map.put("loginNum", loginNum);
+	   return planMapper.deletePlanLike(map);
+	}
+	
+	@Override
+	public int getTotalLike(int num) {
+		return planMapper.getTotalLike(num);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -168,5 +169,29 @@ public class PlanController {
 	@GetMapping("/map")
 	public List<PlanMapDto> mapKakao (@RequestParam int num) {
 		return planService.mapKakao(num);
+	}
+	
+//	PlanLike 좋아요관련
+	
+	@GetMapping("/like")
+	public int getPlanLike(@RequestParam int num,@RequestParam int loginNum) {
+		System.out.println(planService.getPlanLike(num,loginNum));
+		return planService.getPlanLike(num,loginNum);
+	}
+	
+	@PostMapping("/insertlike")
+	public void insertPlanLike(@RequestBody Map<String, Integer> map){
+		
+	      planService.insertPlanLike(map.get("num"),map.get("loginNum"));
+    }
+	
+	@DeleteMapping("/deletelike")
+    public void deleteLike(@RequestParam int num, @RequestParam int loginNum) {
+		planService.deletePlanLike(num, loginNum);
+    }
+	
+	@GetMapping("totallike")
+	public int getTotalLike(@RequestParam int num) {
+		return planService.getTotalLike(num);
 	}
 }

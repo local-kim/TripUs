@@ -15,4 +15,10 @@ public interface PlanServiceInter {
 	public int checkPlace(String contentId);
 	public void insertPlace(PlaceDto place);
 	public void insertItinerary(ItineraryDto itinerary);
+	
+	//	좋아요
+	public int getPlanLike(int num,int loginNum);
+	public int insertPlanLike(int num, int loginNum);
+	public int deletePlanLike(int num, int loginNum);
+	public int getTotalLike(int num);
 }

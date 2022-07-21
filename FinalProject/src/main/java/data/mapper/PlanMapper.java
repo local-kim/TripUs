@@ -34,9 +34,16 @@ public interface PlanMapper {
 	// 인기 일정
 	public List<TripRankDto> getTripRank();
 	
+	// 일정 상세 페이지
 	public List<PlanDto> getNavNum(int num);
 	public List<PlanDto> getPlanDatas(int num);
 	public List<PlanMapDto> mapKakao(int num);
 	public List<PlanDateDto> getDate(int num);
 	public List<PlanDateDto> getPlanMember(int num);
+	
+	// 일정 좋아요
+	public int getPlanLike(Map<String ,Integer> map);
+	public int insertPlanLike(Map<String,Integer> map);
+	public int deletePlanLike(Map<String,Integer> map);
+	public int getTotalLike(int num);
 }
