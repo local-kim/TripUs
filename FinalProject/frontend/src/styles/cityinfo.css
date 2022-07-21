@@ -91,9 +91,10 @@
     font-weight: bold;
 }
 
-#cityinfo .searchCity {
+/* #cityinfo .searchCity {
     margin-left: 300px;    
-}
+} */
+
 #cityinfo .searchCity input{
     width: 300px;    
     height: 40px;
@@ -168,8 +169,8 @@
 }
 
 #cityinfo .wimg {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
 }
 
 #cityinfo .css-1h9z7r5-MuiButtonBase-root-MuiTab-root{
@@ -190,7 +191,7 @@
 }
 
 #cityinfo .more-select {
-    margin-left: 900px;
+    margin-left: 300px;
 }
 
 #cityinfo .more-image {
