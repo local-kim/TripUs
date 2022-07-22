@@ -32,6 +32,7 @@ const PlanDetail = () => {
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
     const loginName = useSelector(state => state.auth.user.name);
 
+    const [ myLogin, setMyLogin ] = useState();
     // console.log(loginNum);
     
     //mui
@@ -184,6 +185,7 @@ const PlanDetail = () => {
             setStartDate(res.data[0].start_date);
             setEndDate(res.data[0].end_date);
             setDuringDay(res.data[0].days);
+            setMyLogin(res.data[0].member_num);
             setPdata(res.data);
         }).catch(err => {
             alert(err.data);
@@ -339,11 +341,19 @@ const PlanDetail = () => {
                     )}/>
                 </div>
                 <div className='header-left'>
-                    <div className='header-list' onClick={() => (navi('../../../city/list'))}>여행지</div>
-                    <div className='header-list' onClick={() => (navi('../../../plan/calendar/159'))}>일정 만들기</div>
-                    <div className='header-list' onClick={() => (navi('../../../plan/detail/1'))}>일정 보기</div>
-                    <div className='header-list' onClick={() => (navi(`../../../plan/update/`+num))}>일정 수정</div>
-                    <div className='header-list' onClick={() => (navi('../../../'))}>ABOUT</div>
+                    <div className='header-list' onClick={() => (navi('../../../city/list'))}>
+                        <div className='txt'>여행지</div>
+                    </div>
+                    <div className='header-list' onClick={() => (navi('../../../plan/calendar/159'))}>
+                        <div className='txt'>일정 만들기</div>
+                    </div>
+                    <div className='header-list' onClick={() => (navi('../../../plan/detail/1'))}>
+                        <div className='txt'>일정 보기</div>
+                    </div>
+                    {/* <div className='header-list' onClick={() => (navi(`../../../plan/update/`+num))}>일정 수정</div> */}
+                    <div className='header-list' onClick={() => (navi('../../../'))}>
+                        <div className='txt'>ABOUT</div>
+                    </div>
                 </div>
                 <div className='header-right'>
                 <Box sx={{ flexGrow: 0 }}>
@@ -429,6 +439,7 @@ const PlanDetail = () => {
             : ''}
             {/* 대표 이미지 */}
             <div className='main-image'
+                // style={{backgroundImage:'url(../../city_detail_image/yeosu.jpg)'}}>
                 style={{backgroundImage:'url(../../city_detail_image/'+dimage+')'}}>
                 <div className='top-box'>
                     {/* 좋아요 버튼 on/off */}
@@ -486,9 +497,9 @@ const PlanDetail = () => {
                 {/* 상단 메뉴바 */}
                 <div className='list-header'>
                     <div className='header-menu on'
-                        onClick={() => {
+                        onClick={(e) => {
                             setMainList(1);
-                            switchOn();
+                            switchOn(e);
                         }}>개요</div>
                     <div className='header-menu-line'></div>
                     {/* <div className='header-menu'
@@ -497,17 +508,19 @@ const PlanDetail = () => {
                         }}>일정표</div>
                     <div className='header-menu-line'></div> */}
                     <div className='header-menu'
-                        onClick={() => {
+                        onClick={(e) => {
                             setMainList(3);
+                            switchOn(e);
                         }}>지도</div>
                     <div className='header-menu-line'></div>
                     <div className='header-menu'
-                        onClick={() => {
+                        onClick={(e) => {
                             setMainList(4);
+                            switchOn(e);
                         }}>댓글</div>
                     <div className='header-menu-line'></div>
 
-                    {pdata[0].member_num == loginNum
+                    {myLogin == loginNum
                     ?
                     <div className='header-menu-right1'
                         onClick={() => (navi(`../../../plan/update/`+num))}>수정하기</div>

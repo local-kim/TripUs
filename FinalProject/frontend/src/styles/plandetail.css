@@ -19,6 +19,7 @@
     cursor: pointer;
 }
 #plan-detail .header-left {
+    margin-left: 30px;
     float: left;
 }
 #plan-detail .header-list {
@@ -31,8 +32,18 @@
 }
 #plan-detail .header-list:hover {
     font-weight: bold;
-    text-shadow: 1px 1px 1px white, 1px 1px 1px black;
 }
+#plan-detail .header-list .txt {
+    width: 85px;
+    height: 44px;
+    margin: 10px 0px 10px 10px;
+    line-height: 44px;
+    border-radius: 10px;
+}
+#plan-detail .header-list .txt:hover {
+    background-color: #f7f7f7;
+}
+
 #plan-detail .header-right {
     height: 64px;
     line-height: 64px;
@@ -238,10 +249,12 @@
     border-radius: 100px;
     background-color: white;
     margin-right: 15px;
+    padding: 3px 3px;
 }
 #plan-detail .bottom-head span {
     font-size: 1.7rem;
     height: 100%;
+    position: relative;
 }
 
 #plan-detail .bottom-box .bottom-body {
@@ -311,7 +324,10 @@
     float: left;
     cursor: pointer;
 }
-#plan-detail .header-menu:hover, .header-menu.on {
+#plan-detail .header-menu.on {
+    color: #49b2e9;
+}
+#plan-detail .header-menu:hover, .header-menu .on {
     color: #49b2e9;
 }
 
@@ -490,7 +506,7 @@
     margin: 0 auto;
     font-size: 18px;
     font-weight: bold;
-    line-height: 32px;
+    line-height: 30px;
     text-align: center;
     margin-top: 35px;
 }
@@ -640,9 +656,9 @@
 }
 #plan-detail .spot-number {
     float: left;
-    width: 18px;
+    width: 20px;
     height: 18px;
-    line-height: 20px;
+    line-height: 18px;
     color: white;
     font-weight: bold;
     font-size: 11px;
