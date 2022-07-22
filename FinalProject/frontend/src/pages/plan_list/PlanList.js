@@ -3,52 +3,58 @@ import axios from 'axios';
 import '../../styles/plan_list.css';
 import { Link } from 'react-router-dom';
 import { getMonth } from 'date-fns'
-import { SeasonButton } from '.';
+import { SeasonButton, CitySelect } from '.';
 
 const PlanList = () => {
-  const [seasons, setSeasons] = useState(() => []);
+  const [season, setSeason] = useState(() => []);
 
-  const handleSeason = (event, newSeasons) => {
-    setSeasons(newSeasons);
-    // console.log(seasons);
+  const handleSeason = (event, newSeason) => {
+    setSeason(newSeason);
   };
 
   useEffect(() => {
-    // if(seasons.length == 0){
-    //   setFilteredList(tripList);
-    //   return;
-    // }
-
-    setFilteredList([]);  // 필터링 배열 초기화
-    for(let i in seasons){
-      if(seasons[i] == 'spring'){ // 3, 4, 5월
+    if(!season){ // 전체
+      setFilteredList(tripList);
+      return;
+    }
+    
+    switch(season){
+      case 'spring':
         setFilteredList([
-          ...filteredList,
           ...tripList.filter((trip, idx) => getMonth(new Date(trip.start_date)) == 2 || getMonth(new Date(trip.start_date)) == 3 || getMonth(new Date(trip.start_date)) == 4)
         ]);
-      }
-      else if(seasons[i] == 'summer'){  // 6, 7, 8월
+        break;
+      case 'summer':
         setFilteredList([
-          ...filteredList,
           ...tripList.filter((trip, idx) => getMonth(new Date(trip.start_date)) == 5 || getMonth(new Date(trip.start_date)) == 6 || getMonth(new Date(trip.start_date)) == 7)
         ]);
-      }
-      else if(seasons[i] == 'autumn'){
+        break;
+      case 'autumn':
         setFilteredList([
-          ...filteredList,
           ...tripList.filter((trip, idx) => getMonth(new Date(trip.start_date)) == 8 || getMonth(new Date(trip.start_date)) == 9 || getMonth(new Date(trip.start_date)) == 10)
         ]);
-      }
-      else{
+        break;
+      case 'winter':
         setFilteredList([
-          ...filteredList,
           ...tripList.filter((trip, idx) => getMonth(new Date(trip.start_date)) == 11 || getMonth(new Date(trip.start_date)) == 0 || getMonth(new Date(trip.start_date)) == 1)
         ]);
-      }
+        break;
+      default:
     }
-    // setFilteredList(tripList.filter((trip, idx) => getMonth(new Date(trip.start_date)) == 6 || getMonth(new Date(trip.start_date)) == 7 || getMonth(new Date(trip.start_date)) == 8));
-    console.log(filteredList);
-  }, [seasons]);
+  }, [season]);
+
+  const [city, setCity] = React.useState('');
+
+  const handleCity = (event) => {
+    setCity(event.target.value);
+  };
+
+  useEffect(() => {
+    setFilteredList([
+      ...tripList.filter((trip, idx) => trip.cityNum == city)
+    ]);
+    setSeason('');
+  }, [city]);
 
   let planUrl = `${process.env.REACT_APP_SPRING_URL}plan/rank`;
 
@@ -58,7 +64,7 @@ const PlanList = () => {
   useEffect(() => {
     axios.get(planUrl)
     .then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       setTripList(res.data);
       setFilteredList(res.data);
     })
@@ -70,7 +76,8 @@ const PlanList = () => {
       <div className='title'>인기 여행 일정</div>
       <div className='sub-title'>다른 여행자들의 일정을 참고해 나만의 여행을 계획해보세요!</div>
 
-      <SeasonButton seasons={seasons} setSeasons={setSeasons} handleSeason={handleSeason}/>
+      <SeasonButton season={season} setSeason={setSeason} handleSeason={handleSeason}/>
+      <CitySelect city={city} setCity={setCity} handleCity={handleCity}/>
       
         <div className='trip-wrap'>
           {

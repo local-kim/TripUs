@@ -23,14 +23,15 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   },
 }));
 
-const SeasonButton = ({seasons, setSeasons, handleSeason}) => {
+const SeasonButton = ({season, setSeason, handleSeason}) => {
   
   return (
     <div className='season-btns'>
       <StyledToggleButtonGroup
-        value={seasons}
+        value={season}
         onChange={handleSeason}
         aria-label="season"
+        exclusive
       >
         <ToggleButton value="spring" aria-label="spring">
           봄
