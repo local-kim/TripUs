@@ -56,6 +56,8 @@ const options = ['인기순','오름차순' ,'내림차순'];
 
 const Main=(row)=>{
 
+    
+
 
     let cityDataUrl = process.env.REACT_APP_SPRING_URL + "cityData/";
 
@@ -64,6 +66,25 @@ const Main=(row)=>{
     const [citydata4,setCityData4] = useState([]);
 
     const [citydata,setCityData] = useState('');
+    const [allUserTrip,setAllUserTrip] = useState('');
+
+
+
+    let allTripUrl = process.env.REACT_APP_SPRING_URL + "allUserTrip";
+    
+
+    const allTrip=()=>{
+        axios.get(allTripUrl)
+        .then(res=>{
+    
+            setAllUserTrip(res.data);
+            console.log(res.data);
+   
+        })
+        .catch(err => {
+            alert(err);
+        })
+      }
 
     // const cityData=()=>{
     //     axios.get(cityDataUrl)
@@ -189,11 +210,11 @@ const Main=(row)=>{
         }
       }
 
-    //   useEffect(() => {
+      useEffect(() => {
 
-    //     cityData();
+        allTrip();
 
-    //   }, [category]);
+      }, []);
 
     const [category, setCategory] = useState(0); //카테고리 숫자 저장 하는 변수 
 
@@ -264,7 +285,7 @@ const Main=(row)=>{
                 
             <FullpageSection style={sectionStyle}>
                 <div className="page silver" style={{paddingTop:"30px"}}>    
-                <div className="wrap" style={{width:'1150px'}}>
+                <div className="wrap" style={{width:'1200px'}}>
                     <div className="page_title" >
                         <div> 인기 여행일정</div>
                     </div>
@@ -273,7 +294,7 @@ const Main=(row)=>{
 
                             <Myslide></Myslide>
                 
-                                    <div className="more_btn" style={{marginTop:'50px'}}> 56,065개의 추천일정 모두보기 </div>
+                                     <div className="more_btn" style={{marginTop:'50px'}}> <Link to = {`plan/list`} style={{color:'black'}}> {allUserTrip} 개의 추천일정 모두보기</Link> </div> 
                             
                         </div>
                     </div>  

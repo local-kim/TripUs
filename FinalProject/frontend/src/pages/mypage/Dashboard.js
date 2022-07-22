@@ -51,10 +51,10 @@ const Dashboard = () => {
         <div>
 
 
-            <div className="App" style={{height:'700px'}}>
+            <div className="App">
 
                     
-                    <FullCalendar style={{height:'700px'}} defaultView="dayGridMonth" plugins={[ dayGridPlugin ]}
+                    <FullCalendar  defaultView="dayGridMonth" plugins={[ dayGridPlugin ]}
 
                 
                             
