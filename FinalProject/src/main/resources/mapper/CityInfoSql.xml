@@ -37,6 +37,16 @@
 		city.num=#{citynum},city.name=#{cityname},city.eng_name=#{eng_name},city.country=#{country},city.area_code=#{area_code},city.sigungu_code=#{sigungu_code},city.image=#{image} order by start_date
 	</select> -->
 	
+	<!-- 장소 좋아요 체크현황,추가,삭제 -->
+	<select id="getLike" parameterType="Map" resultType="int">
+    	select count(*) from `like` where `like`.member_num = #{loginNum} and place_id = #{place_id} and `check`=1 
+  	</select>
+	<insert id="insertLike" parameterType="Map">
+		insert into `like`(member_num,place_id,`check`) values (#{member_num},#{place_id},1) 
+    </insert>
+    <delete id="deleteLike" parameterType="Map">
+		delete from `like` where `like`.member_num = #{loginNum} and place_id = #{place_id}
+    </delete>
 	
 	
 	

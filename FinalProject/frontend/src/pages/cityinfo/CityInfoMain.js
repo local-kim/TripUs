@@ -21,23 +21,20 @@ import { height } from '@mui/system';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import ko from 'date-fns/locale/ko';
+import { event } from 'jquery';
 
 const CityInfoMain = () => {
+    // 회원넘버, 로그인중?
     const loginNum = useSelector(state => state.auth.user.num);
-    
+    const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
+
     //관광명소 api contentId 받아오기
-    // const pcontentId = 126078;
-    const [pcontentId,setPcontentId]=useState('126078'); //2360786
-    // const pnavi =useNavigate();
-    // const [pid,setPid]=useState();
-    // setPid(contentId);
+    const [pcontentId,setPcontentId]=useState(126078); //2360786
 
     // redux에서 state 얻기
     // const dispatch = useDispatch(); 
 
-    // 수동 데이타
     const naVi=useNavigate();
-
 
     // MUi 메뉴 탭
     const [value, setValue] = useState('1');
@@ -52,13 +49,11 @@ const CityInfoMain = () => {
         typography:"body1"
     }
 
-    
     // 날씨 데이타 db받는 변수
     const [cityData,setCityData]=useState([]);
     let PlaceUrl;
     const {num}=useParams();   
     const city_num = num;
-    // const [weatherImg,setWeatherImg]=useState('../../../public/WeatherImage/맑음.png');
     
     // 일정 url에 필요한 변수들   
     const [img,setImg]=useState([]);
@@ -70,17 +65,18 @@ const CityInfoMain = () => {
     const slastYear = format(subYears(new Date(start_date), 1), "yyyyMMdd");        // 페이지 로딩후 이걸로 교체
     const elastYear = format(subYears(new Date(end_date), 1), "yyyyMMdd");          // 페이지 로딩후 이걸로 교체
 
+    // 좋아요
+    const [like_btn, setLike_btn] = useState(false)
+    const [checked, setChecked] = useState(false);
+    // const [db_contentid,setDb_contentid] = useState('');
+    // const [con_id, setCon_id] = useState(126078);
     
-    
-    
-
     // 지역 데이타 변수 
     const [areaCode,setAreaCode]=useState('6');
     const [sigunguCode,setSigunguCode]=useState('');
     const [cityname,setCityname]=useState('');
-    const [arrange,setArrange]=useState('R');
-    const [newValue,setNewValue]=useState('R');
-    const [contenttypeid,setContenttypeid]=useState('12');
+    const [keyWord,setKeyWord]=useState('부산');  // 검색 input 관광지 contentid 담는 변수
+    const [page,setPage]=useState(1);   // 관광지 목록 데이타 페이지
     
     const [categoryPlace0,setCategoryPlace0]=useState([]);  // 전체보기
     const [categoryPlace1,setCategoryPlace1]=useState([]);  // 12 명소
@@ -94,66 +90,16 @@ const CityInfoMain = () => {
     // const [keyWordPlace,setKeyWordPlace]=useState('');
     
 
-
     // API
     // 날씨 
     const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
     // const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
     // const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
+    // const API_KEY="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D";  // 웅쓰꺼
     
     // // 일정 계획 데이타
     const [cityPlan,setCityPlan]=useState([]);
     const [cityPlan2,setCityPlan2]=useState([]);
-    
-    // URL
-    // db city테이블 가져오는 거
-    PlaceUrl=process.env.REACT_APP_SPRING_URL+"city/citydata?num="+num;
-    
-    // 날씨 api 받아오는 거   
-    let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=${days}&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${slastYear}&endDt=${elastYear}&stnIds=${num}`;
-    // let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=20&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=20210101&endDt=20210501&stnIds=108`;
-    
-   
-    let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        areaUrl += `&sigunguCode=${sigunguCode}`;
-     }
-
-    let area_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-         area_url += `&sigunguCode=${sigunguCode}`;
-     }
-     // contenttypeid 포함
-    let area_content_type_12_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=12&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_12_url += `&sigunguCode=${sigunguCode}`;
-     }
-
-    let area_content_type_39_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=39&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_39_url += `&sigunguCode=${sigunguCode}`;
-     }
-
-     let area_content_type_38_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=38&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_38_url += `&sigunguCode=${sigunguCode}`;
-     }
-
-     let area_content_type_14_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=14&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_14_url += `&sigunguCode=${sigunguCode}`;
-     }
-
-     let area_content_type_28_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=28&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_28_url += `&sigunguCode=${sigunguCode}`;
-     }
-
-     let area_content_type_15_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&contentTypeId=15&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_15_url += `&sigunguCode=${sigunguCode}`;
-     }
-
 
     // 날씨 데이타 변수
     const [stnId,setStnId]=useState('');         // 지역번호
@@ -167,20 +113,76 @@ const CityInfoMain = () => {
     const [ddMes,setDdMes]=useState('');            // 일 적설량
     
 
-    const [keyWord,setKeyWord]=useState('부산');  // 검색 input 관광지 contentid 담는 변수
-    const [page,setPage]=useState(1);
+    
+    
     const [w_data,setW_data]=useState([]);  // 날씨 데이터 담는 배열 변수
-    const [weatherImg,setWeatherImg]=useState([]);
+    // const [weatherImg,setWeatherImg]=useState([]);
 
+    
+    // URL
+    // db city테이블 가져오는 거
+    PlaceUrl=process.env.REACT_APP_SPRING_URL+"city/citydata?num="+num;
+    
+    // 날씨 api 받아오는 거   
+    let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=${days}&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${slastYear}&endDt=${elastYear}&stnIds=${num}`;
+    // let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=20&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=20210101&endDt=20210501&stnIds=108`;
+    let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+        areaUrl += `&sigunguCode=${sigunguCode}`;
+     }
+     // contenttypeid 포함
+    let area_content_type_12_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=12&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+        area_content_type_12_url += `&sigunguCode=${sigunguCode}`;
+     }
 
- 
+    let area_content_type_39_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=39&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+        area_content_type_39_url += `&sigunguCode=${sigunguCode}`;
+     }
+
+     let area_content_type_38_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=38&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+        area_content_type_38_url += `&sigunguCode=${sigunguCode}`;
+     }
+
+     let area_content_type_14_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=14&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     if(sigunguCode){  // 시군구 코드가 있는 도시이면
+        area_content_type_14_url += `&sigunguCode=${sigunguCode}`;
+     }
+
+     let area_content_type_28_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=28&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+     if(sigunguCode){  // 시군구 코드가 있는 도시이면
+        area_content_type_28_url += `&sigunguCode=${sigunguCode}`;
+     }
+
+     let area_content_type_15_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=15&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+        area_content_type_15_url += `&sigunguCode=${sigunguCode}`;
+    }
+    // 일정
+    let trip_url=`${process.env.REACT_APP_SPRING_URL}city/tripdata?city_num=${city_num}&loginNum=${loginNum}`;     
+    // 좋아요
+    let like_url=process.env.REACT_APP_SPRING_URL+"city/like?place_id="+pcontentId+"&loginNum="+loginNum;        
+    let insert_like_url=process.env.REACT_APP_SPRING_URL+"city/insertlike";
+    let delete_like_url=process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+pcontentId+"&loginNum="+loginNum;
+    // 키워드 검색 url
+    let keyWord_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${API_KEY}&keyword=${keyWord}&areaCode=${areaCode}&numOfRows=2&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+    keyWord_url += `&sigunguCode=${sigunguCode}`;
+    }
+
+    
+
+    
     useEffect(() => {
         place_area_Data();
         trip_weather_Data();
-
+        myLike();
     }, []);
     const place_area_Data = () => {
-        delete axios.defaults.headers.common['Authorization'];
+        // console.log(areaUrl)
+        console.log("axios.place_area_Data");
         axios.get(PlaceUrl)
         .then(response => {
             setCityData(response);
@@ -189,7 +191,6 @@ const CityInfoMain = () => {
             setCityname(response.data.name);
         })
         .then(() => {
-            delete axios.defaults.headers.common['Authorization'];
             axios.get(areaUrl)
             .then((res1) => {
                 setPlaces(res1.data.response.body.items.item);
@@ -201,29 +202,29 @@ const CityInfoMain = () => {
             })
             axios.get(area_content_type_39_url)
             .then((res3) => {
-                setCategoryPlace1(res3.data.response.body.items.item);
+                setCategoryPlace2(res3.data.response.body.items.item);
             })
             axios.get(area_content_type_38_url)
             .then((res4) => {
-                setCategoryPlace1(res4.data.response.body.items.item);
+                setCategoryPlace3(res4.data.response.body.items.item);
             })
             axios.get(area_content_type_14_url)
             .then((res5) => {
-                setCategoryPlace1(res5.data.response.body.items.item);
+                setCategoryPlace4(res5.data.response.body.items.item);
             })
             axios.get(area_content_type_28_url)
             .then((res6) => {
-                setCategoryPlace1(res6.data.response.body.items.item);
+                setCategoryPlace5(res6.data.response.body.items.item);
             })
             axios.get(area_content_type_15_url)
             .then((res7) => {
-                setCategoryPlace1(res7.data.response.body.items.item);
+                setCategoryPlace6(res7.data.response.body.items.item);
             })
         })
         .catch(err => console.log(err))
     }
     const trip_weather_Data = () => {
-        delete axios.defaults.headers.common['Authorization'];
+        console.log("trip_weather_Data");
         axios.get(trip_url)
         .then((res8) => {
             setCityPlan(res8.data);
@@ -232,29 +233,18 @@ const CityInfoMain = () => {
             setEnd_date([res8.data[0].end_date]);  // 잘 들어가짐
             setDays([res8.data[0].days]);  // 잘 들어가짐
         })
-        .then(() => {
-            delete axios.defaults.headers.common['Authorization'];
+        .then(()=>{
             axios.get(weather_url)
             .then((res9) => {
                 setW_data(res9.data.response.body.items.item);
-                setWeatherImg(res9.data.response.body.items.item);
+                // setWeatherImg(res9.data.response.body.items.item);
             })
         })
     }
-   
 
-    let trip_url=`${process.env.REACT_APP_SPRING_URL}city/tripdata?city_num=${city_num}&loginNum=${loginNum}`;     
-    
-
+    // 날씨 API 데이터
     useEffect(()=>{
-        delete axios.defaults.headers.common['Authorization'];
-        axios.get(area_url)
-        .then(res=>{
-            setCategoryPlace0(res.data.response.body.items.item);
-        })
-    },[newValue])
-
-    useEffect(()=>{
+        console.log("weather_url");
         delete axios.defaults.headers.common['Authorization'];
         axios.get(weather_url)
         .then(res=>{
@@ -262,27 +252,99 @@ const CityInfoMain = () => {
         })
     },[start_date,end_date])
 
-    
-
-
-
-    // 키워드 검색 url
-    let keyWord_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${API_KEY}&keyword=${keyWord}&areaCode=${areaCode}&numOfRows=2&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-    keyWord_url += `&sigunguCode=${sigunguCode}`;
+    // // 내 좋아요 현황
+    // useEffect(() => {
+    //     myLike();
+    // },[])
+    // const myLike=()=>{
+    //     if(!isLoggedIn){
+    //         return;
+    //     }
+    //     axios.get(like_url).then(res=>{
+    //         console.log(res.data)
+    //         if(res.data==null||res.data == 0){
+    //             // setLike_btn(res.data);
+    //             setChecked(false);
+    //         }else{
+    //             setLike_btn(res.data);
+    //             setChecked(true);
+    //         }
+    //     }).catch(err => {
+    //         alert(err);
+    //     })
+    // }
+    // 좋아요 ON
+    const insert_btn = (e, contentid) => {
+        if (!isLoggedIn) {
+            alert("로그인 후 이용해주세요")
+        } else {
+            axios.post(insert_like_url,{place_id:String(contentid),loginNum,check:Number(checked)})
+            .then(res=>{
+                alert("좋아요 true:",res.data);
+                setLike_btn(true);
+            })
+        }
+    }
+    // 좋아요 OFF
+    const delete_btn = (e, contentid) => (
+        axios.delete(process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+contentid+"&loginNum="+loginNum,{place_id:String(contentid), loginNum : loginNum})
+        .then(res=>{
+            console.log("delete_like_url : "+ delete_like_url)
+            alert("좋아요 false");
+            setLike_btn(false);
+        })
+    )
+    // DB select
+    const myLike=()=>{
+        if(!isLoggedIn){
+            return;
+        }
+        axios.get(like_url)
+        .then(res=>{
+            if(res.data == 0){
+                setLike_btn(false);
+            }else{
+                setLike_btn(true);
+            }
+        })
     }
 
-    let keyWord_areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=${newValue}&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        keyWord_areaUrl += `&sigunguCode=${sigunguCode}`;
-     }
+    // const likeBtnT = () => {
+    //     setLike_btn(true)
+    // }
+
+    // const likeBtnF = () => {
+    //     setLike_btn(false)
+    // }
+
+
+    // const wantcheck = (contentid) => {
+    //     axios.get(process.env.REACT_APP_SPRING_URL+"city/like?place_id="+contentid+"&loginNum="+loginNum)
+    //     .then(res => {
+            
+    //         if(res.data == 0){
+    //             console.log(contentid, "false?");
+    //             console.log(process.env.REACT_APP_SPRING_URL+"city/like?place_id="+contentid+"&loginNum="+loginNum);
+    //             setTrueFalse(0);
+    //             return false;
+    //         }else{
+    //             setTrueFalse(1);
+    //             return true;
+    //         }
+    //     })
+    //     .catch(err => console.log(err))
+    // }
+    // console.log("wantcheckkkkkkkk : " + wantcheck())
+
+    
 
     // 검색
     useEffect(() => {
+        console.log("keyword");
         // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
         if(keyWord === ''){
           delete axios.defaults.headers.common['Authorization'];
-          axios.get(keyWord_areaUrl)
+          axios.get(areaUrl)
           .then((res) => {
             setPlaces(res.data.response.body.items.item);
             setCategoryPlace0(res.data.response.body.items.item);
@@ -290,8 +352,8 @@ const CityInfoMain = () => {
         }
         // 키워드 검색 장소
         else{
-          console.log("keyword 검색 요청");
-          console.log(keyWord_url);
+        //   console.log("keyword 검색 요청");
+        //   console.log(keyWord_url);
           delete axios.defaults.headers.common['Authorization'];
           axios.get(keyWord_url)
           .then((res) => {
@@ -303,13 +365,14 @@ const CityInfoMain = () => {
 
 
     // 정보 더보기
-    useEffect(() => {
-        moreinfo();
-    },[])
+    // useEffect(() => {
+    //     console.log("moreinfo");
+    //     moreinfo();
+    // },[])
     const moreinfo = () => {
         setPage(page + 1);
         areaUrl += `&pageNo=${page}`;
-        console.log("areaUrl111111111111111111 : " + areaUrl);
+        // console.log("areaUrl111111111111111111 : " + areaUrl);
         axios.get(areaUrl)
         .then((res) => {
             setPlaces([...places, ...res.data.response.body.items.item]);
@@ -321,47 +384,14 @@ const CityInfoMain = () => {
     }
 
 
-    
-    
-    // const [ref, inView] = useInView();
-    // const [page, setPage] = useState(1);
-
-    // useEffect(() => {
-    //     // 사용자가 마지막 요소를 보고 있는 경우
-    //     if(inView){
-    //         setPage(page + 1);
-    //         areaUrl += `&pageNo=${page}`;
-    //         // 처음 렌더링 시
-    //         axios.get(areaUrl)
-    //         .then((res) => {
-    //             console.dir(res.data.response.body.items.item);
-    //             setPlaces([...places, ...res.data.response.body.items.item])
-    //             setCategoryPlace1([...categoryPlace1, ...res.data.response.body.items.item]);
-    //             setCategoryPlace2([...categoryPlace2, ...res.data.response.body.items.item]);
-    //             setCategoryPlace3([...categoryPlace3, ...res.data.response.body.items.item]);
-    //             setCategoryPlace4([...categoryPlace4, ...res.data.response.body.items.item]);
-    //             setCategoryPlace5([...categoryPlace5, ...res.data.response.body.items.item]);
-    //             setCategoryPlace6([...categoryPlace6, ...res.data.response.body.items.item]);
-    //             setCategoryPlace7([...categoryPlace7, ...res.data.response.body.items.item]);
-    //         }).catch((err)=> {
-    //             console.log(err.data)
-    //         })
-    //     }
-    // }, [inView]);
-
-    // 카테고리변수 값 변경
-    // const categoryChg=()=>{
-    //     setCategory(value);
-    //     console.log("category",category);
-    //     console.log("value",value);
-    // }
+    // console.log("categoryPlace1 : ",categoryPlace1);
+    // console.log("weather_url : "+weather_url);
+    console.log("like_url : " + like_url);
 
 
     return (
         <div id='cityinfo' style={muiStyle} >
-        <div>
-            <img alt='' src={weatherImg}></img>
-        </div>
+        
             <div className='title' style={{margin:'20px'}}>
                 <b>
                     {cityname}
@@ -479,19 +509,27 @@ const CityInfoMain = () => {
                                             }
                                         }}/>
                                     </div>
-                                    <div className='more-select' >
-                                        <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
-                                            <option value="R">생성일순</option>
-                                            <option value="D">최신순</option>
-                                            <option value="B">인기순</option>
-                                            <option value="A">이름순</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <div style={{display:'flex'}} className='row'>
                                     {
                                         categoryPlace0 && categoryPlace0.map((item, idx) => (
                                             <div className='col-sm-3'>
+                                                
+                                                    { 
+                                                        like_btn == false ?
+                                                        <button type='button' className='heart_btn'
+                                                        onClick={()=>{insert_btn(event, item.contentid)}}>
+                                                            <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like.png'/>
+                                                        </button>
+                                                        :
+                                                        <button type='button' className='heart_btn'
+                                                        onClick={()=>{delete_btn(event, item.contentid)}}>
+                                                            <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like_on.png'/>
+                                                        </button>
+                                                        
+                                                    }
+                                                <div>
+                                                </div>
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
@@ -526,14 +564,7 @@ const CityInfoMain = () => {
                             </TabPanel>
                             <TabPanel value='12'>
                                 <div style={{display:'flex', marginTop:'20px'}}>
-                                    <div className='more-select' >
-                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
-                                            <option value="R">생성일순</option>
-                                            <option value="D">최신순</option>
-                                            <option value="B">인기순</option>
-                                            <option value="A">이름순</option>
-                                        </select>
-                                    </div>
+                                    
                                 </div>
                                 <div style={{display:'flex'}} className='row'>
                                     {
@@ -571,14 +602,7 @@ const CityInfoMain = () => {
                             </TabPanel>
                             <TabPanel value='39'>
                                 <div style={{display:'flex', marginTop:'20px'}}>
-                                    <div className='more-select' >
-                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
-                                            <option value="R">생성일순</option>
-                                            <option value="D">최신순</option>
-                                            <option value="B">인기순</option>
-                                            <option value="A">이름순</option>
-                                        </select>
-                                    </div>
+                                    
                                 </div>
                                 <div style={{display:'flex'}} className='row'>
                                     {
@@ -616,14 +640,7 @@ const CityInfoMain = () => {
                             </TabPanel>
                             <TabPanel value='38'>
                                 <div style={{display:'flex', marginTop:'20px'}}>
-                                    <div className='more-select' >
-                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
-                                            <option value="R">생성일순</option>
-                                            <option value="D">최신순</option>
-                                            <option value="B">인기순</option>
-                                            <option value="A">이름순</option>
-                                        </select>
-                                    </div>
+                                    
                                 </div>
                                 <div style={{display:'flex'}} className='row'>
                                     {
@@ -661,14 +678,7 @@ const CityInfoMain = () => {
                             </TabPanel>
                             <TabPanel value='14'>
                                 <div style={{display:'flex', marginTop:'20px'}}>
-                                    <div className='more-select' >
-                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
-                                            <option value="R">생성일순</option>
-                                            <option value="D">최신순</option>
-                                            <option value="B">인기순</option>
-                                            <option value="A">이름순</option>
-                                        </select>
-                                    </div>
+                                    
                                 </div>
                                 <div style={{display:'flex'}} className='row'>
                                     {
@@ -706,14 +716,7 @@ const CityInfoMain = () => {
                             </TabPanel>
                             <TabPanel value='28'>
                                 <div style={{display:'flex', marginTop:'20px'}}>
-                                    <div className='more-select' >
-                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
-                                            <option value="R">생성일순</option>
-                                            <option value="D">최신순</option>
-                                            <option value="B">인기순</option>
-                                            <option value="A">이름순</option>
-                                        </select>
-                                    </div>
+                                    
                                 </div>
                                 <div style={{display:'flex'}} className='row'>
                                     {
@@ -751,14 +754,7 @@ const CityInfoMain = () => {
                             </TabPanel>
                             <TabPanel value='15'>
                                 <div style={{display:'flex', marginTop:'20px'}}>
-                                    <div className='more-select' >
-                                    <select onChange={(e)=>{setNewValue(e.target.value)}} defaultValue={value}>
-                                            <option value="R">생성일순</option>
-                                            <option value="D">최신순</option>
-                                            <option value="B">인기순</option>
-                                            <option value="A">이름순</option>
-                                        </select>
-                                    </div>
+                                    
                                 </div>
                                 <div style={{display:'flex'}} className='row'>
                                     {
