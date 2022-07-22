@@ -219,3 +219,24 @@
 #cityinfo .css-1d3jhju-MuiAvatar-root, #cityinfomore .css-wk5mvb-MuiAvatar-root {
     cursor: pointer;
 }
+
+
+#cityinfo .heart-icon {
+    font-size: 30px;
+    cursor: pointer;
+}
+#cityinfo .material-symbols-outlined:hover {
+    font-size: 100px;
+    background-color: red;
+}
+
+#cityinfomore .material-symbols-outlined {
+    font-size: 100px;
+    cursor: pointer;
+}
+
+#cityinfo .heart_btn {
+    background-color: white;
+    border: none;
+    
+}
