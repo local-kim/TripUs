@@ -16,6 +16,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { useSelector } from 'react-redux';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import Component from './Component';
 
 
 
@@ -47,17 +48,16 @@ const PlaceInfo=()=>{
       // const CityInfoMainContendId = location.state.state.pcontentId;
       // console.log("CityInfoMainContendId : "+CityInfoMainContendId);
     
-
-      const [anchorEl, setAnchorEl] = React.useState(null);
-      const editopen = Boolean(anchorEl);
+      const [anchorEl, setAnchorEl] = React.useState(null); //배열...
+      const editopen = Boolean(anchorEl); //배열
       const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
       };
       const editeHandleClose = () => {
         setAnchorEl(null);
       };
-
-
+      
+      
     //mui
     const [value, setValue] = React.useState('1');
     const [starsvalue, setStarsValue] = React.useState('0');
@@ -76,8 +76,9 @@ const PlaceInfo=()=>{
     //const contentId=CityInfoMainContendId; //city페이지에서 contentid받는곳
     const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
     //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
-     const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
-    //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; 일웅님 인증키
+    const placeApikey="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D"; //재호님 인증키
+    // const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
+    //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; // 일웅님 인증키
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
     const [placeImg,setPlaceImg]= useState();
@@ -217,6 +218,8 @@ const PlaceInfo=()=>{
         }) 
     }
 
+  
+
     //PaginationList 호출
     const paginationList=()=>{
       axios.get(paginationlistUrl).then(res=>{
@@ -324,6 +327,7 @@ const PlaceInfo=()=>{
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.delete(onedeleteUrl+review_photo_num).then(res=>{
             console.log("onOneDelete:",res.data);
+            alert("정말 삭제하시겠습니까?")
           }).catch(err=>{
             alert(err);
           })
@@ -384,17 +388,17 @@ const PlaceInfo=()=>{
          const onPrevDetail=(num,idx)=>{
           console.log("detailidx",idx);
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-          axios.get(detailUrl+(num+1)).then(res=>{
+          axios.get(detailUrl + reviewData[idx - 1].num).then(res=>{
                 if(res.data.file_name ===null){
                 setDetailData(res.data.dto);
-                setDetailIdx(idx+1);
+                setDetailIdx(idx-1);
                 console.log("prevdetail->",res.data.dto);
                 console.log("prevdetailfile",res.data.fname);
                 console.log("modalidxidx:",idx);
               }
               else{
               setDetailData(res.data.dto);
-              setDetailIdx(idx+1);
+              setDetailIdx(idx-1);
               setDetailFileData(res.data.fname);
               console.log("prevdetail->",res.data.dto);
               console.log("prevdetailfile",res.data.fname);
@@ -410,7 +414,7 @@ const PlaceInfo=()=>{
             console.log("nextdetailidx",idx);
            
             axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-            axios.get(detailUrl+(num-1)).then(res=>{
+            axios.get(detailUrl + reviewData[idx + 1].num).then(res=>{
                   if(res.data.file_name ===null){
                   setDetailData(res.data.dto);
                   setDetailIdx(idx+1);
@@ -470,6 +474,7 @@ const PlaceInfo=()=>{
 
     useEffect(()=>{
      pageList();
+     //onOneDelete();
      AvgStars();
     },[]);
 
@@ -588,7 +593,6 @@ const PlaceInfo=()=>{
                     {
                       reviewData&&reviewData.map((row,idx)=>(
                         <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}} >
-
                         <div style={{flexDirection:'column',justifyContent:'center'}}>
                           <div>
                          <img src={row.file_name==null?Ayong:profilePhotoUrl+row.file_name} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
@@ -604,7 +608,8 @@ const PlaceInfo=()=>{
                           </div>
                           {isLoggedIn&&loginNum==row.member_num ? 
                           <div style={{flexGrow:'0'}}>
-                            <Button
+                            <Component num={row.num} onEditReviewDetail={onEditReviewDetail} onDelete={onDelete}/>
+                            {/*<Button
                               id="basic-button"
                               aria-controls={editopen ? 'basic-menu' : undefined}
                               aria-haspopup="true"
@@ -621,11 +626,15 @@ const PlaceInfo=()=>{
                               MenuListProps={{
                                 'aria-labelledby': 'basic-button',
                               }}
+                              
                             >
-                              <MenuItem onClick={()=>{onEditReviewDetail(row.num);}}>수정하기</MenuItem>
-                              <MenuItem onClick={()=>{onDelete(row.num);}}>삭제하기</MenuItem>
-                              {/* <MenuItem onClick={handleClose}>Logout</MenuItem> */}
-                            </Menu>
+                              
+                                <div>
+                              <MenuItem onClick={()=>{onEditReviewDetail(row.num)}}>수정하기</MenuItem>
+                              <MenuItem onClick={()=>{onDelete(row.num)}}>삭제하기</MenuItem>
+                              </div>
+                               <MenuItem onClick={handleClose}>Logout</MenuItem> 
+                            </Menu>*/}
                           {/* <span style={{cursor:'pointer'}} onClick={()=>{onEditReviewDetail(row.num);}}>수정</span>
                           &nbsp;&nbsp;|&nbsp;&nbsp;
                           <span className='myreviewDelete' style={{cursor:'pointer'}} onClick={()=>{
@@ -643,7 +652,6 @@ const PlaceInfo=()=>{
                        </div>
                       </div>
                       ))
-
                     }
                   </div>
                 </div> 
@@ -807,7 +815,7 @@ const PlaceInfo=()=>{
                       <Typography id="modal-modal-title" variant="h6" component="h2">
                       <div style={{display:'inline-flex',width:'665px',justifyContent:'left'}}>
                         <div>
-                          <img src={detailData[0].file_name==undefined?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px',objectFit:'cover'}}/>
+                          <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px',objectFit:'cover'}}/>
                       </div>
 
                         <div style={{marginLeft:'10px',fontSize:'16px'}}>
@@ -869,8 +877,8 @@ const PlaceInfo=()=>{
                       </div>
                       </Typography>
                       {/* {detailFileData&&detailFileData.map((row,idx)=>(*/}
-                            {detailidx==0?"":<button  onClick={()=>onPrevDetail(detailData[0].num)}>←</button>} 
-                            {detailidx>=(reviewData.length-1)?"":<button onClick={()=>onNextDetail(detailData[0].num)}>→</button>}
+                            {detailidx==0?"":<button  onClick={()=>onPrevDetail(detailData[0].num, detailidx)}>←</button>} 
+                            {detailidx>=(reviewData.length-1)?"":<button onClick={()=>onNextDetail(detailData[0].num, detailidx)}>→</button>}
                             {console.log("reviewdatalength::::"+(reviewData.length-1))}
                       {/* ))}  */}
                     </Box>

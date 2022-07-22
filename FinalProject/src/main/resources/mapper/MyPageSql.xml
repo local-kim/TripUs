@@ -15,7 +15,7 @@
 		select * from member where num=#{num}
 	</select>
 	
-	  <select id="userTrip" parameterType="int" resultType="int">
+	 <select id="userTrip" parameterType="int" resultType="int">
       select count(*) from trip where member_num=#{member_num}
    </select>
    

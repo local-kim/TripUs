@@ -299,7 +299,7 @@ const Mypage = () => {
                                                 //     name: e.target.value
                                                 // })
                                                 row.tripName = e.target.value;
-                                                
+                                                console.log(e.target.value)
                                                 // setChangeTripName(e.target.value);
                                                 // tripnamesave(row.tripNum, e.target.value);
                                             }}/>
