@@ -230,7 +230,6 @@
 }
 
 
-
         /* bottom-box */
 
 #plan-detail .bottom-box .bottom-head img {
@@ -457,7 +456,7 @@
     width: 730px;
     height: 40px;
     border: 0px solid black;
-    background: #fafafa;
+    background: white;
     z-index: 100;
     margin-top: -27px;
 }
@@ -520,7 +519,7 @@
 }
 #plan-detail .spot-info {
     height: 41px;
-    padding-top: 10px;
+    padding-top: 5px;
 }
 #plan-detail .sinfo-cat2 {
     float: left;
@@ -546,6 +545,8 @@
     /* 좋아요 이미지 url */
     /* background: url(https://www.earthtory.com/res/img/city/spot_rate_icon.png) no-repeat; */
     /* padding-left: 20px; */
+}
+#plan-detail .sinfo-txt span {
 }
 #plan-detail .spot-btn-box {
     width: 109px;

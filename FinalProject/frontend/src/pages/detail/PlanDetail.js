@@ -56,7 +56,7 @@ const PlanDetail = () => {
     const [cat3name,setCat3name] =useState();
     const [placeCategory, setPlaceCategory]=useState();
 
-    console.log("let cat1:",cat1name,"let cat2:",cat2name,"let cat3:",cat3name);
+    // console.log("let cat1:",cat1name,"let cat2:",cat2name,"let cat3:",cat3name);
 
     // 사진이 있는 장소만 받는 url(arrange=P)
     //  let apiUrl=`http://api.visitkorea.or.kr/openapi/service/rest/KorService/detailCommon?ServiceKey=7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D&contentId=${contentId}&defaultYN=Y&mapinfoYN=Y&addrinfoYN=Y&firstImageYN=Y&catcodeYN=Y&MobileOS=ETC&MobileApp=AppTest&_type=json`;
@@ -77,8 +77,8 @@ const PlanDetail = () => {
     // 상단 이미지 내부내용 반복문 없이 0번데이터만 데이터가져올때 입력
     const [placeName, setPlaceName] = useState('');
     const [dimage, setDimage] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState(format(new Date(), "yyyy-MM-dd"));
+    const [endDate, setEndDate] = useState(format(new Date(), "yyyy-MM-dd"));
     const [duringDay, setDuringDay] = useState('');
     const [userName, setUserName] = useState('');
     const [planCount, setPlanCount] = useState('');
@@ -98,6 +98,7 @@ const PlanDetail = () => {
     let totalLikeUrl = SPRING_URL + "plan/totallike?num="+num;
 
     const likeCheck = () => {
+        if(isLoggedIn){
         axios.get(planLikeUrl)
         .then(res => {
             if(res.data == 0){
@@ -105,7 +106,7 @@ const PlanDetail = () => {
             } else {
                 setMemLike(true)
             }
-        })
+        })}
     }
 
     const insertLike = () => {
@@ -120,6 +121,10 @@ const PlanDetail = () => {
     }
 
     const deleteLike = () => {
+        if (!isLoggedIn) {
+            // alert("로그인해라");
+            return;
+        }
         axios.delete(deleteLikeUrl, {num: num, loginNum: loginNum})
         .then(res => {
             likeBtnF();
@@ -164,7 +169,7 @@ const PlanDetail = () => {
             setMapy(res.data[0].mapy);
             setDimage(res.data[0].image);
             setPlanCount(res.data.length);
-            setDdata(res.data);
+            // setDdata(res.data);
         }).catch(err => {
             alert(err.data);
         })
@@ -177,7 +182,7 @@ const PlanDetail = () => {
             setStartDate(res.data[0].start_date);
             setEndDate(res.data[0].end_date);
             setDuringDay(res.data[0].days);
-            setPdata(res.data);
+            // setPdata(res.data);
         }).catch(err => {
             alert(err.data);
         })
@@ -193,25 +198,28 @@ const PlanDetail = () => {
         })
     }
 
-    const planMember = () => {
-        axios.get(nameUrl)
-        .then(res => {
-            setUserName(res.data[0].name);
-        }).catch(err => {
-            alert(err.data);
-        })
-    }
+    // const planMember = () => {
+    //     axios.get(nameUrl)
+    //     .then(res => {
+    //         setUserName(res.data[0].name);
+    //     }).catch(err => {
+    //         alert(err.data);
+    //     })
+    // }
 
     useEffect(() => {
         planGetData();
         planGetNav();
         planDate();
-        planMember();
+        // planMember();
         likeCheck();
         totalLike();
+        heartLogin();
         console.log(mainList);
-        console.log(isLoggedIn);
+        console.log("login?"+isLoggedIn);
+        console.log(memLike);
     },[])
+
     
     // const kakaomapscript2 = (d) => {
     //     axios.get(mapUrl)
@@ -256,9 +264,10 @@ const PlanDetail = () => {
     // }
     
     const trip_date = new Date(startDate);
-    console.log(addDays(trip_date, 1));
+    // console.log(addDays(trip_date, 1));
 
     // 클립보드에 현재 url 복사하기
+    
     const copyUrl = () => {
         navigator.clipboard.writeText(window.location.href);
 
@@ -294,7 +303,7 @@ const PlanDetail = () => {
     }
     
 
-    const [ memLike, setMemLike ] = useState()
+    const [ memLike, setMemLike ] = useState(false)
 
     const likeBtnT = () => {
         setMemLike(true)
@@ -302,6 +311,12 @@ const PlanDetail = () => {
 
     const likeBtnF = () => {
         setMemLike(false)
+    }
+
+    const heartLogin = () => {
+        if(!isLoggedIn){
+            setMemLike(false);
+        }
     }
 
     //별점 이미지 = https://www.earthtory.com/res//img/common/web/hotel_star_?.?.png
@@ -398,9 +413,9 @@ const PlanDetail = () => {
                             [...ndata] && [...ndata].map((nav, index) => (
                                 nav.day == 1 ? 
                                 <div className={`scroll-item-btn on`} id={'nav-list'+index}
-                                 onClick={switchOn}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div> :
+                                 onClick={switchOn} key={index}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div> :
                                   <div className={`scroll-item-btn`} id={'nav-list'+index}
-                                  onClick={switchOn}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div>
+                                  onClick={switchOn} key={index}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div>
                             
                             ))
                 }
@@ -414,7 +429,7 @@ const PlanDetail = () => {
             <div className='main-image'
                 style={{backgroundImage:'url(../../city_detail_image/'+dimage+')'}}>
                 <div className='top-box'>
-                    {/* 좋아요 버튼 on 따라 색 */}
+                    {/* 좋아요 버튼 on/off */}
                     { memLike == false 
                     ? 
                     <div className='like-btn'>
@@ -443,6 +458,8 @@ const PlanDetail = () => {
                                     <img src='../../DetailImage/spot.png' alt='spot' />{planCount}&nbsp;
                                     <img src='../../DetailImage/white-heart2.png' alt='heart' 
                                     style={{width:'17px', height:'16px'}}/> {tLike}&nbsp;
+                                    <img src='../../DetailImage/share.png' alt='share' 
+                                    style={{width:'17px', height:'17px'}}/> 1&nbsp;
                                 </div>
                                 <div className='bottom-price'>
                                     <select>
@@ -472,11 +489,11 @@ const PlanDetail = () => {
                             switchOn();
                         }}>개요</div>
                     <div className='header-menu-line'></div>
-                    <div className='header-menu'
+                    {/* <div className='header-menu'
                         onClick={() => {
                             setMainList(2);
                         }}>일정표</div>
-                    <div className='header-menu-line'></div>
+                    <div className='header-menu-line'></div> */}
                     <div className='header-menu'
                         onClick={() => {
                             setMainList(3);

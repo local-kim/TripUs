@@ -181,15 +181,15 @@ const PlanDetailMain = () => {
 
     //  데이터 가져오기
     const [ddata, setDdata] = useState('');
-    const [ndata, setNdata] = useState('');
+    // const [ndata, setNdata] = useState('');
     const [pdata, setPdata] = useState('');
     const [mdata, setMdata] = useState('');
 
     // 상단 이미지 내부내용 반복문 없이 0번데이터만 데이터가져올때 입력
     const [placeName, setPlaceName] = useState('');
     const [dimage, setDimage] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [startDate, setStartDate] = useState(format(new Date(), "yyyy-MM-dd"));
+    const [endDate, setEndDate] = useState(format(new Date(), "yyyy-MM-dd"));
     const [duringDay, setDuringDay] = useState('');
     const [userName, setUserName] = useState('');
     
@@ -230,14 +230,14 @@ const PlanDetailMain = () => {
     }
 
     // 일자별 데이터
-    const planGetNav = () => {
-        axios.get(navUrl)
-        .then(res => {
-            setNdata(res.data);
-        }).catch(err => {
-            alert(err.data);
-        })
-    }
+    // const planGetNav = () => {
+    //     axios.get(navUrl)
+    //     .then(res => {
+    //         setNdata(res.data);
+    //     }).catch(err => {
+    //         alert(err.data);
+    //     })
+    // }
 
     const planMember = () => {
         axios.get(nameUrl)
@@ -250,13 +250,13 @@ const PlanDetailMain = () => {
 
     useEffect(() => {
         planGetData();
-        planGetNav();
+        // planGetNav();
         planDate();
         planMember();
     },[])
     
     const trip_date = new Date(startDate);
-    console.log(addDays(trip_date, 1));
+    // console.log(addDays(trip_date, 1));
 
     // 클립보드에 현재 url 복사하기
     const copyUrl = () => {
@@ -304,7 +304,7 @@ const PlanDetailMain = () => {
                             // day 만큼 반복문 돌리기
                             [...ddata] && [...ddata].map((day, index) => (
                                 
-                                <div className='day-box'>
+                                <div className='day-box' key={index}>
                                 {/* 상단바 첫스케쥴 기준 반복 */}
                                     {day.order == 1 ? 
                                     <div className='day-box-title'>
@@ -357,20 +357,20 @@ const PlanDetailMain = () => {
                                                     <div className='sinfo-cat2'>{day.cat2_name}</div>
                                                     <div className='sinfo-line' />
                                                     <div className='sinfo-txt'>
-                                                    review&nbsp;<Rating name="read-only" value={day.avg_star} readOnly size="small" precision={0.1} />({day.avg_star == 0 ? `리뷰없음` : day.avg_star})
+                                                    review&nbsp;<Rating name="read-only" style={{position:'relative', top:'5px'}} value={day.avg_star} readOnly size="small" precision={0.1} />({day.avg_star == 0 ? `리뷰없음` : day.avg_star})
                                                     </div>
                                                     <div className='clear' />
                                                 </div>
                                             </div>
                                             <div className='spot-btn-box'>
-                                                <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/map_ico.png' className='spot-btn map_view' 
+                                                <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/map_ico.png' className='spot-btn map_view' 
                                                 onClick={() => {
                                                     // 카카오맵에 사용될 X, Y 좌표 직접 변경 
                                                     setMapx(day.mapx);
                                                     setMapy(day.mapy);
                                                 }}/>
                                                 
-                                                <img alt src='https://www.earthtory.com/res/img/mypage/plan/sub/info_ico.png' className='spot-btn spot-info-btn' 
+                                                <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/info_ico.png' className='spot-btn spot-info-btn' 
                                                 onClick={() => {
                                                     navi('../../../place/placedetail', {state:{place:day.contentid}})
                                                 }}/>
@@ -412,7 +412,7 @@ const PlanDetailMain = () => {
                             // 일정 수 만큼 반복문 돌리기
                             [...ddata] && [...ddata].map((day, index) => (
 
-                                <div className="col-sm-4 rlist">
+                                <div className="col-sm-4 rlist" key={index}>
                                     <div className="spot-number">{index+1}</div>
                                     <div className="spot-title"
                                     onClick={() => {
