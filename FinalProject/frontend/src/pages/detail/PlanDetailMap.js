@@ -164,7 +164,7 @@ const PlanDetailMap = () => {
                 {
                     navData && navData.map((day, index) => (
                         <div className='map-day-list' style={{zIndex:'999'}}
-                            onClick={()=>{changeDay(day.day-1)}}>Day {day.day}</div>
+                            onClick={()=>{changeDay(day.day-1)}} key={index}>Day {day.day}</div>
                     ))
                 }
             </div>

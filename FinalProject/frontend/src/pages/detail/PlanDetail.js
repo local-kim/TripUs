@@ -31,6 +31,8 @@ const PlanDetail = () => {
     const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
     const loginName = useSelector(state => state.auth.user.name);
+
+    // console.log(loginNum);
     
     //mui
     const [value, setValue] = React.useState('1');
@@ -169,7 +171,7 @@ const PlanDetail = () => {
             setMapy(res.data[0].mapy);
             setDimage(res.data[0].image);
             setPlanCount(res.data.length);
-            // setDdata(res.data);
+            setDdata(res.data);
         }).catch(err => {
             alert(err.data);
         })
@@ -178,11 +180,11 @@ const PlanDetail = () => {
     const planDate = () => {
         axios.get(dateUrl)
         .then(res => {
-            // console.log(res.data);
+            console.log(res.data);
             setStartDate(res.data[0].start_date);
             setEndDate(res.data[0].end_date);
             setDuringDay(res.data[0].days);
-            // setPdata(res.data);
+            setPdata(res.data);
         }).catch(err => {
             alert(err.data);
         })
@@ -198,20 +200,20 @@ const PlanDetail = () => {
         })
     }
 
-    // const planMember = () => {
-    //     axios.get(nameUrl)
-    //     .then(res => {
-    //         setUserName(res.data[0].name);
-    //     }).catch(err => {
-    //         alert(err.data);
-    //     })
-    // }
+    const planMember = () => {
+        axios.get(nameUrl)
+        .then(res => {
+            setUserName(res.data[0].name);
+        }).catch(err => {
+            alert(err.data);
+        })
+    }
 
     useEffect(() => {
         planGetData();
         planGetNav();
         planDate();
-        // planMember();
+        planMember();
         likeCheck();
         totalLike();
         heartLogin();
@@ -505,10 +507,13 @@ const PlanDetail = () => {
                         }}>댓글</div>
                     <div className='header-menu-line'></div>
 
+                    {pdata[0].member_num == loginNum
+                    ?
                     <div className='header-menu-right1'
                         onClick={() => (navi(`../../../plan/update/`+num))}>수정하기</div>
+                    : ''}
                     <div className='header-menu-right2'
-                        onClick={copyUrl}>공유하기</div>
+                        onClick={copyUrl}>URL복사</div>
                     <div className='clear' />
                 </div>
                 {/* 메뉴 리스트 */}

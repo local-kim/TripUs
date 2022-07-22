@@ -181,7 +181,7 @@ const PlanDetailMain = () => {
 
     //  데이터 가져오기
     const [ddata, setDdata] = useState('');
-    // const [ndata, setNdata] = useState('');
+    const [ndata, setNdata] = useState('');
     const [pdata, setPdata] = useState('');
     const [mdata, setMdata] = useState('');
 
@@ -230,14 +230,14 @@ const PlanDetailMain = () => {
     }
 
     // 일자별 데이터
-    // const planGetNav = () => {
-    //     axios.get(navUrl)
-    //     .then(res => {
-    //         setNdata(res.data);
-    //     }).catch(err => {
-    //         alert(err.data);
-    //     })
-    // }
+    const planGetNav = () => {
+        axios.get(navUrl)
+        .then(res => {
+            setNdata(res.data);
+        }).catch(err => {
+            alert(err.data);
+        })
+    }
 
     const planMember = () => {
         axios.get(nameUrl)
@@ -250,7 +250,7 @@ const PlanDetailMain = () => {
 
     useEffect(() => {
         planGetData();
-        // planGetNav();
+        planGetNav();
         planDate();
         planMember();
     },[])
