@@ -37,6 +37,10 @@
 		city.num=#{citynum},city.name=#{cityname},city.eng_name=#{eng_name},city.country=#{country},city.area_code=#{area_code},city.sigungu_code=#{sigungu_code},city.image=#{image} order by start_date
 	</select> -->
 	
+	
+	
+	
+	
 	<!-- 현지씌 작품 돈터치!!! -->
 	<select id="getCityList" resultType="city">
 		select * from city

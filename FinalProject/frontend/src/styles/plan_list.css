@@ -1,5 +1,6 @@
 #plan-list{
   padding-top: 100px;
+  padding-bottom: 60px;
 }
 
 #plan-list .title{
@@ -81,4 +82,9 @@
 
 #plan-list a:hover{
   color: black;
+}
+
+/* 계절 토글 버튼 */
+#plan-list .season-btns{
+  text-align: center;
 }
