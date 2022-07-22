@@ -25,6 +25,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
 
 .swiper .swiper-wrapper .swiper-slide{
   margin-right: 30px;
+  box-shadow: 0 5px 15px rgb(0 0 0 / 8%);
 }
 
   
@@ -166,7 +167,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     font-weight: bold;
     width: 100%;
     text-align: center;
-    margin-top: 60px;
+    margin-top: 30px;
     
    
   }
@@ -256,7 +257,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     color: #808080;
     text-align: center;
     padding-top: 13px;
-    margin-bottom: 40px;
+    
   }
   
   
@@ -298,6 +299,8 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     text-align: center;
     background: white;
     margin: 0 auto;
+    margin-left: 430px;
+    border: 1px solid white;
   }
   
   .plan_list .box {
@@ -441,6 +444,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     width: 1112px;
     height: 450px;
     overflow: hidden;
+    
   }
   
   .top_city.w2 {
@@ -612,4 +616,9 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
 
 .latest_search:hover{
   cursor: pointer;
+}
+
+.more_btn:hover{
+
+  color: black;
 }

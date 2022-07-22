@@ -35,6 +35,8 @@ public interface MyPageMapper {
 	//유저 일정 갯수 가져오기
 	public int userTrip(int member_num);
 	
+	
+	
 	//유저 일정 페이징 처리
 	public List<CityTripDto> getPagingList(Map<String, Integer>map);
 	
