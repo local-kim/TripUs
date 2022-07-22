@@ -165,3 +165,6 @@ const Myslide=({row, select, category}) => {
 };
 
 export default Myslide;
+
+
+

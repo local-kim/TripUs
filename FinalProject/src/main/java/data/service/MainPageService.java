@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import data.dto.CityDto;
+import data.dto.TripDto;
 import data.mapper.MainPageMapper;
 
 @Service
@@ -49,4 +50,9 @@ public class MainPageService implements MainPageServiceInter {
 		
 	}
 	
+	@Override
+	public int allUserTrip() {
+		// TODO Auto-generated method stub
+		return mapper.allUserTrip();
+	}
 }

@@ -78,6 +78,9 @@ public class PlanService implements PlanServiceInter {
 	public List<TripRankDto> getTripRank(){
 		return planMapper.getTripRank();
 	}
+	public List<TripRankDto> getTripRank3(){
+		return planMapper.getTripRank3();
+	}
 	
 	//////////////////////////////////////////
 	public List<PlanDto> getNavNum(int num) {

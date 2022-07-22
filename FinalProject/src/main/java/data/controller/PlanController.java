@@ -144,6 +144,11 @@ public class PlanController {
 		return planService.getTripRank();
 	}
 	
+	@GetMapping("/rank3")
+	public List<TripRankDto> getTripRank3(){
+		return planService.getTripRank3();
+	}
+	
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@GetMapping("/nav")

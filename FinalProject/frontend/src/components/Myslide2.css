@@ -20,12 +20,17 @@
     -webkit-transform: scale(1);
     -ms-transform: scale(1);
     width: 100%;
-    box-shadow: 0px 0px 7px rgb(0 0 0 / 50%);
+    border: 1px solid #eee; 
+    box-shadow: 0 5px 15px rgb(0 0 0 / 8%);
 }
+
+
 
 .city-card-contents-div {
     padding: 24px;
     border-radius: 0 0 2px 2px;
+    border: 1px solid #eee; 
+    box-shadow: 0 5px 15px rgb(0 0 0 / 8%);
 
     
 }
@@ -44,12 +49,18 @@
     margin-top: 30px;
     border-color: #f6f6f6;
     
+
+    
 }
 
 .city-card-contents-div {
     padding: 24px;
     border-radius: 0 0 2px 2px;
+    border: 1px solid #eee; 
+    box-shadow: 0 5px 15px rgb(0 0 0 / 8%);
 }
+
+
 
 
 .citynamefont h6 {
@@ -105,7 +116,12 @@ b, strong {
    transition: all 1s;
    -webkit-transition: all 1s;
 }
-   
+
+.card {
+
+    border: 1px solid white; 
+    box-shadow: 0 5px 15px rgb(0 0 0 / 8%);
+}
 
 
 .citynamefont:hover {
@@ -113,4 +129,19 @@ b, strong {
     
     transition: all 1s;
     -webkit-transition: all 1s;
+}
+
+.swiper-horizontal>.swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal, .swiper-pagination-custom, .swiper-pagination-fraction {
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    position: relative;
+    color: black;
+}
+
+
+.swiper-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+    margin: 0 var(--swiper-pagination-bullet-horizontal-gap,4px);
+    color: black;
+    background-color: black;
 }

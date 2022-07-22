@@ -1,10 +1,12 @@
 package data.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import data.dto.CityDto;
+import data.dto.ReviewDto;
 import data.dto.TripDto;
 
 
@@ -20,6 +22,13 @@ public interface CityInfoMapper {
 	
 	// Trip데이타 가져오기
 	public List<TripDto> getTripData(int member_num, int city_num);
+	
+	// 장소 좋아요
+	public int getLike(Map<String ,String> map);
+	// 장소 좋아요 추가
+	public int insertLike(Map<String,Integer> map);
+	// 장소 좋아요 삭제
+	public void deleteLike(Map<String,String> map);
 	
 	// 현지씌 작품 돈터치!!!
 	// 도시 목록 가져오기

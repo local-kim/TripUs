@@ -33,6 +33,7 @@ public interface PlanMapper {
 	
 	// 인기 일정
 	public List<TripRankDto> getTripRank();
+	public List<TripRankDto> getTripRank3();
 	
 	// 일정 상세 페이지
 	public List<PlanDto> getNavNum(int num);
