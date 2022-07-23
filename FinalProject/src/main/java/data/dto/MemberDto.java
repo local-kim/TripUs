@@ -25,5 +25,5 @@ public class MemberDto {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Timestamp registered_at;
 	
-	
+	private String profile;
 }
