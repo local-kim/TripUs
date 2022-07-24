@@ -108,7 +108,7 @@ const CityinfoMore = () => {
                     list && list.map((item,index) => (
                         <div><h1>{index} : TabPanel</h1>
                             <div>
-                                <input type="text" onChange={(e)=>{
+                                <input type="text" value="123456" onChange={(e)=>{
                                     setA1([]);
                                 }}/>    
                             </div>  

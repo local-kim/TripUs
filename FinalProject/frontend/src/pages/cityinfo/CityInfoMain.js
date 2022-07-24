@@ -24,6 +24,183 @@ import ko from 'date-fns/locale/ko';
 import { event } from 'jquery';
 
 const CityInfoMain = () => {
+    const contentTypeId = {
+        A01010100: '국립공원',
+        A01010200: '도립공원',
+        A01010300: '군립공원',
+        A01010400: '산',
+        A01010500: '자연생태관광지',
+        A01010600: '자연휴양림',
+        A01010700: '수목원',
+        A01010800: '폭포',
+        A01010900: '계곡',
+        A01011000: '약수터',
+        A01011100: '해안절경',
+        A01011200: '해수욕장',
+        A01011300: '섬',
+        A01011400: '항구/포구',
+        A01011500: '어촌',
+        A01011600: '등대',
+        A01011700: '호수',
+        A01011800: '강',
+        A01011900: '동굴',
+        A01020100: '희귀동.식물',
+        A01020200: '기암괴석',
+        A02010100: '고궁',
+        A02010200: '성',
+        A02010300: '문',
+        A02010400: '고택',
+        A02010500: '생가',
+        A02010600: '민속마을',
+        A02010700: '유적지/사적지',
+        A02010800: '사찰',
+        A02010900: '종교성지',
+        A02011000: '안보관광',
+        A02020100: '유원지',
+        A02020200: '관광단지',
+        A02020300: '온천/욕장/스파',
+        A02020400: '이색찜질방',
+        A02020500: '헬스투어',
+        A02020600: '테마공원',
+        A02020700: '공원',
+        A02020800: '유람선/잠수함관광',
+        A02030100: '농.산.어촌 체험',
+        A02030200: '전통체험',
+        A02030300: '산사체험',
+        A02030400: '이색체험',
+        A02030500: '관광농원',
+        A02030600: '이색거리',
+        A02040100: '제철소',
+        A02040200: '조선소',
+        A02040300: '공단',
+        A02040400: '발전소',
+        A02040500: '광산',
+        A02040600: '식음료',
+        A02040700: '화학/금속',
+        A02040800: '기타',
+        A02040900: '전자/반도체',
+        A02041000: '자동차',
+        A02050100: '다리/대교',
+        A02050200: '기념탑/기념비/전망대',
+        A02050300: '분수',
+        A02050400: '동상',
+        A02050500: '터널',
+        A02050600: '유명건물',
+        A02060100: '박물관',
+        A02060200: '기념관',
+        A02060300: '전시관',
+        A02060400: '컨벤션센터',
+        A02060500: '미술관/화랑',
+        A02060600: '공연장',
+        A02060700: '문화원',
+        A02060800: '외국문화원',
+        A02060900: '도서관',
+        A02061000: '대형서점',
+        A02061100: '문화전수시설',
+        A02061200: '영화관',
+        A02061300: '어학당',
+        A02061400: '학교',
+        A02070100: '문화관광축제',
+        A02070200: '일반축제',
+        A02080100: '전통공연',
+        A02080200: '연극',
+        A02080300: '뮤지컬',
+        A02080400: '오페라',
+        A02080500: '전시회',
+        A02080600: '박람회',
+        A02080700: '컨벤션',
+        A02080800: '무용',
+        A02080900: '클래식음악회',
+        A02081000: '대중콘서트',
+        A02081100: '영화',
+        A02081200: '스포츠경기',
+        A02081300: '기타행사',
+        A03010100: '육상레포츠',
+        A03010200: '수상레포츠',
+        A03010300: '항공레포츠',
+        A03020100: '스포츠센터',
+        A03020200: '수련시설',
+        A03020300: '경기장',
+        A03020400: '인라인(실내 인라인 포함)',
+        A03020500: '자전거하이킹',
+        A03020600: '카트',
+        A03020700: '골프',
+        A03020800: '경마',
+        A03020900: '경륜',
+        A03021000: '카지노',
+        A03021100: '승마',
+        A03021200: '스키/스노보드',
+        A03021300: '스케이트',
+        A03021400: '썰매장',
+        A03021500: '수렵장',
+        A03021600: '사격장',
+        A03021700: '야영장,오토캠핑장',
+        A03021800: '암벽등반',
+        A03021900: '빙벽등반',
+        A03022000: '서바이벌게임',
+        A03022100: 'ATV',
+        A03022200: 'MTB',
+        A03022300: '오프로드',
+        A03022400: '번지점프',
+        A03022500: '자동차경주',
+        A03022600: '스키(보드) 렌탈샵',
+        A03022700: '트래킹',
+        A03030100: '윈드서핑/제트스키',
+        A03030200: '카약/카누',
+        A03030300: '요트',
+        A03030400: '스노쿨링/스킨스쿠버다이빙',
+        A03030500: '민물낚시',
+        A03030600: '바다낚시',
+        A03030700: '수영',
+        A03030800: '래프팅',
+        A03040100: '스카이다이빙',
+        A03040200: '초경량비행',
+        A03040300: '헹글라이딩/패러글라이딩',
+        A03040400: '열기구',
+        A03050100: '복합 레포츠',
+        A04010100: '5일장',
+        A04010200: '상설시장',
+        A04010300: '백화점',
+        A04010400: '면세점',
+        A04010500: '할인매장',
+        A04010600: '전문상가',
+        A04010700: '공예,공방',
+        A04010800: '관광기념품점',
+        A04010900: '특산물판매점',
+        A05020100: '한식',
+        A05020200: '서양식',
+        A05020300: '일식',
+        A05020400: '중식',
+        A05020500: '아시아식',
+        A05020600: '패밀리레스토랑',
+        A05020700: '이색음식점',
+        A05020800: '채식전문점',
+        A05020900: '바/까페',
+        A05021000: '클럽',
+        B02010100: '관광호텔',
+        B02010200: '수상관광호텔',
+        B02010300: '전통호텔',
+        B02010400: '가족호텔',
+        B02010500: '콘도미니엄',
+        B02010600: '유스호스텔',
+        B02010700: '펜션',
+        B02010800: '여관',
+        B02010900: '모텔',
+        B02011000: '민박',
+        B02011100: '게스트하우스',
+        B02011200: '홈스테이',
+        B02011300: '서비스드레지던스',
+        B02011400: '의료관광호텔',
+        B02011500: '소형호텔',
+        B02011600: '한옥스테이',
+        C01120001: '가족코스',
+        C01130001: '나홀로코스',
+        C01140001: '힐링코스',
+        C01150001: '도보코스',
+        C01160001: '캠핑코스',
+        C01170001: '맛코스',
+      }
+
     // 회원넘버, 로그인중?
     const loginNum = useSelector(state => state.auth.user.num);
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
@@ -249,7 +426,7 @@ const CityInfoMain = () => {
 
     // 날씨 API 데이터
     useEffect(()=>{
-        // console.log("weather_url");
+        console.log("weather_url");
         delete axios.defaults.headers.common['Authorization'];
         axios.get(weather_url)
         .then(res=>{
@@ -407,12 +584,12 @@ const CityInfoMain = () => {
         })
     }
 
-
+    
     // console.log("categoryPlace1 : ",categoryPlace1);
     // console.log("weather_url : "+weather_url);
     // console.log("like_url : " + like_url);
-    console.log("l_T_placeid : "+ l_T_placeid);
-    console.log("like_table_url : " + like_table_url);
+    // console.log("l_T_placeid : "+ l_T_placeid);
+    // console.log("like_table_url : " + like_table_url);
     
 
 
@@ -420,9 +597,7 @@ const CityInfoMain = () => {
         <div id='cityinfo' style={muiStyle} >
         
             <div className='title' style={{margin:'20px'}}>
-                <b>
-                    {cityname}
-                </b>
+                {cityname}
             </div>    
             <div style={{display:'flex'}}>
                 <div>
@@ -432,46 +607,41 @@ const CityInfoMain = () => {
                 <div id='weather-css'>
                     {
                         w_data && w_data.map((item,index) => (
-                            <div style={{marginRight:'5px', border:'1px solid gray'}}>
+                            <div style={{marginRight:'5px'}}>
                                 <div className='ppp' style={{display:'flex'}}>
-                                    <div>
-                                        <div>
-                                            {
-                                                format(new Date(item.tm), "MM/dd (eee)", {locale: ko})
-                                            }
-                                        </div>
-                                        <div>
-                                            {
-                                                (item.iscs == "" || item.iscs != "") && ((item.maxTa > "27" && item.sumRn == "" && item.avgRhm < '55.4') || (item.maxTa > "29" && item.sumRn == "" && item.avgRhm < '55.4')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음.png`}/> : 
+                                    <div className='aaa'>
+                                        {
+                                            format(new Date(item.tm), "MM/dd (eee)", {locale: ko})
+                                        }
+                                    </div>
+                                    <div className='bbb'>
+                                        <span class="material-symbols-outlined weather_span">
+                                            {   
+                                                (item.iscs == "" || item.iscs != "") && ((item.maxTa > "27" && item.sumRn == "" && item.avgRhm < '55.4') || (item.maxTa > "29" && item.sumRn == "" && item.avgRhm < '55.4')) ? 'sunny' : 
                                                 // (item.iscs == "" || item.iscs != "") && (('75.7' < item.avgRhm < '76.0') && ('2' < item.avgWs < '2.2') && ('26.7' < maxTa < '26.9') && ('18.5' < minTa < '18.7')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비온_뒤_맑음.png`}/> : 
                                                 // (item.iscs == "" || item.iscs != "") && ('67' < item.sumRn < '73') && ( '2' < item.avgWs < '3') && (('28' < maxTa && minTa < '22') || ( maxTa < '31' && minTa < '21')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음_뒤_흐림.png`}/> : 
-                                                (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/흐린_뒤_맑음.png`}/> : 
-                                                (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비_번개.png`}/> : 
-                                                (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/눈.png`}/> : 
-                                                (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비.png`}/> : 
-                                                (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/흐림.png`}/> :                                             
-                                                <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음.png`}/> 
+                                                (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? 'partly_cloudy_day' : 
+                                                (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? 'thunderstorm' : 
+                                                (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? 'cloudy_snowing' : 
+                                                (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? 'rainy' : 
+                                                (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? 'cloudy' : 'sunny'
                                             }
-                                        </div>
+                                        </span>
                                     </div>
-                                    &ensp;&ensp;
-                                    &ensp;&ensp;
-                                    <div style={{width:'150px', height:'110px',padding:'10px'}}>
-                                        <div className='max-temp'>
-                                            {item.maxTa}&nbsp;
-                                        </div>
-                                        <img className='slash' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/슬래시.png`}/>
-                                        <div className='min-temp'>
+                                    <div className='ccc'>
+                                            {item.maxTa}℃&nbsp;/&nbsp;{item.minTa}℃
+                                        {/* <img className='slash' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/슬래시.png`}/> */}
+                                        {/* <div className='min-temp'>
                                         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;{item.minTa}&nbsp;
-                                        </div>
+                                        </div> */}
                                     </div>
-                                    <div><br/>
+                                    {/* <div><br/>
                                         <div>&emsp;&emsp;
                                             {
                                                 item.ddMes != '' ? `적설량 : ${item.ddMes}` : (item.ddMes == '' && item.sumRn == '') ? `풍속 : ${item.avgWs}` : `강수량 : ${item.sumRn}`
                                             }
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         ))
@@ -480,23 +650,27 @@ const CityInfoMain = () => {
             </div>
             <hr/>
             <div className='scheduleContainer'>
-                <div className='scheduleBtnBox'>
-                    <button type='button' className='btn scheduleBtn' 
-                        onClick={()=>{
-                            naVi(`../plan/city/${num}`);
-                        }}>내 일정 만들기</button>
-                    <button type='button' className='btn scheduleBtn'>내 일정 더보기</button>
+                <div className='schedule-title-add-box'>
+                    <span className='schedule-title'>다가오는 여행</span><span class="material-symbols-rounded add-date" onClick={()=>{
+                                naVi(`../plan/city/${num}`);
+                            }}>calendar_add_on</span>
                 </div>
-                <b className='schedule-title'>내 여행 일정</b>
-                <div className='schedule-big-box row'>
+                <div className='schedule-big-box'>
                     {
                         cityPlan && cityPlan.map((item, index) => (
-                            <div className='schedule-box col-sm-4'>
-                                <h5>{item.name}&emsp;&emsp;&emsp;{item.days}일</h5>
-                                <b>{
-                                (new Date() > new Date(item.end_date)) ? <b>지난여행</b> : (new Date() < new Date(item.start_date)) ? <b>D - {differenceInDays(new Date(item.start_date) ,new Date())}</b> : <b>여행중</b>
-                                }</b>
-                                &emsp;&nbsp;<b>{item.start_date != "" ? format(new Date(item.start_date), "yyyy-MM-dd") : ''}</b>&emsp;
+                            <div className='schedule-box' style={{display:'flex'}}>
+                                <div className='d-day'>
+                                    {
+                                        (new Date() < new Date(item.start_date)) ? <b>D - {differenceInDays(new Date(item.start_date) ,new Date())}</b> : <b>여행중</b>
+                                    }
+                                </div>
+                                <div className='subject'>
+                                    {item.name}
+                                </div>
+                                <div>
+                                    {format(new Date(item.start_date), "yyyy-MM-dd")} ~ {format(new Date(item.start_date), "yyyy-MM-dd")}({item.days}일)
+                                </div>
+                                &emsp;&nbsp;
                                 <span class="material-symbols-outlined view-weather" style={{fontSize:'15px'}} onClick={(e)=>{
                                     setStart_date(item.start_date); setEnd_date(item.end_date); setDays(item.days);
                                     console.log("item.start_date"+item.start_date);
@@ -509,7 +683,7 @@ const CityInfoMain = () => {
                 </div>
             </div>
             <hr/>
-            <div style={{display:'flex', marginTop:'50px'}}>
+            <div className='place-list-box'>
                 <div>
                     <Box>
                         <TabContext value={value} >
@@ -526,7 +700,7 @@ const CityInfoMain = () => {
                                 </TabList>
                             </Box>
                             <TabPanel value='1'>
-                                <div style={{display:'flex', marginTop:'20px'}}>
+                                <div className='keyword-search'>
                                     <div className='searchCity'>
                                         <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
                                             if(e.key === 'Enter' && e.target.value !== ''){
@@ -537,51 +711,49 @@ const CityInfoMain = () => {
                                         }}/>
                                     </div>
                                 </div>
-                                <div style={{display:'flex'}} className='row'>
+                                <div style={{display:'flex'}} className='place-heart row'>
                                     {
                                         categoryPlace0 && categoryPlace0.map((item, idx) => (
                                             <div className='col-sm-3'>
                                                 { 
                                                     like_list.includes(item.contentid) ?
-                                                    <button type='button' className='heart_btn'
-                                                    onClick={()=>{
-                                                        delete_btn(event, item.contentid)
-                                                        // setL_T_placeid(item.contentid)///
-                                                        }}>
-                                                        <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like_on.png'/>
-                                                    </button>
-                                                    :
-                                                    <button type='button' className='heart_btn_on'
-                                                    onClick={()=>{
-                                                        // setL_T_placeid(item.contentid)
-                                                        insert_btn(event, item.contentid)
-                                                        }}>
-                                                        <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like.png'/>
-                                                    </button>
                                                     
+                                                    <span class="material-icons heart_span" style={{color:'red'}} 
+                                                        onClick={()=>{
+                                                            delete_btn(event, item.contentid)
+                                                            // setL_T_placeid(item.contentid)///
+                                                        }}>favorite</span>
+                                                    :
+                                                    <span class="material-icons heart_span" style={{color:'#ccc'}} 
+                                                        onClick={()=>{
+                                                            // setL_T_placeid(item.contentid)
+                                                            insert_btn(event, item.contentid)
+                                                        }}>favorite_border</span>
                                                 }
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
-                                                            <CardMedia
-                                                            component="img"
-                                                            height="180"
-                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
-                                                            alt=""
-                                                            />
+                                                            {
+                                                                item.firstimage != "" ? <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                :
+                                                                <CardMedia>
+                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                </CardMedia>
+                                                            }
                                                             <CardContent>
                                                                 <Typography gutterBottom variant="h7" component="div">
                                                                     {item.title}
                                                                 </Typography>
-                                                                <Typography variant="h7" color="red">
+                                                                {/* <Typography variant="h7" color="red">
                                                                     {item.tel}
-                                                                </Typography>
+                                                                </Typography> */}
                                                             </CardContent>
                                                         </CardActionArea>
                                                         <CardActions>
-                                                            <Button className='clipBtn' size="small" color="primary">
+                                                            {contentTypeId[item.cat3]}
+                                                            {/* <Button className='clipBtn' size="small" color="primary">
                                                                 {item.addr1}
-                                                            </Button>
+                                                            </Button> */}
                                                         </CardActions>
                                                     </Card>
                                                 </Link>
