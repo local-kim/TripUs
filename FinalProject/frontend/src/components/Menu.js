@@ -20,7 +20,6 @@ import { logout } from '../modules/auth';
 
 const ResponsiveAppBar = () => {
 
-  
 
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -70,7 +69,9 @@ const ResponsiveAppBar = () => {
   // 헤더 숨기기
   if ((window.location.pathname.startsWith('/plan')) && !window.location.pathname.startsWith('/plan/list')) return null;
 
-  if ((window.location.pathname == '/') && (window.scrollY <= 50)) return null;
+  // if ((window.location.pathname == '/') && (window.scrollY <= 50)) return null;
+
+  if ((window.location.pathname == '/')) return null;
 
   return (
     <AppBar position="fixed">

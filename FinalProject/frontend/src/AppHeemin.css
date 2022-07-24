@@ -134,6 +134,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     font-weight: bold;
     text-align: center;
     padding-top: 20px;
+    
   }
   
   .page.white {
@@ -204,7 +205,8 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     padding-right: 5px;
     line-height: 22px;
     width: 348px;
-    height: 67px;
+    height: 100px;
+    display: flex;
   }
   
   
@@ -618,7 +620,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   cursor: pointer;
 }
 
-.more_btn:hover{
+.animated-container{
+  display: inline-flex;
 
-  color: black;
 }
