@@ -20,7 +20,7 @@
 
 #plan-list .trip-wrap{
   display: grid;
-  grid-template-columns: repeat(auto-fit, 280px);
+  grid-template-columns: repeat(auto-fit, 285px);
   column-gap: 30px;
   row-gap: 30px;
   justify-content: center;
@@ -28,7 +28,7 @@
 }
 
 #plan-list .plan-item{
-  width: 280px;
+  width: 285px;
   height: 400px;
   /* border: 1px solid #eee; */
   box-shadow: 0 5px 15px rgb(0 0 0 / 8%);

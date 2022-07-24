@@ -22,7 +22,7 @@ const Mypage = () => {
   const [photo, setPhoto] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
   const [dto, setDto] = useState("");
   const [memberList, setMemberList] = useState([]);
-  const [data2, setCityTrip] = useState("");
+  const [data2, setCityTrip] = useState({});
   const [count, setCount] = React.useState(0);
   const [delay, setDelay] = React.useState(1000);
   const [isRunning, toggleIsRunning] = useBoolean(true);
@@ -55,6 +55,7 @@ const Mypage = () => {
       .get(citytripUrl)
       .then((res) => {
         setCityTrip(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         alert(err.data);
@@ -292,7 +293,7 @@ const Mypage = () => {
                                     small-text
                                   "
                                   type="text"
-                                  defaultValue={row.tripName}
+                                  value={row.tripName}
                                   id="inputTravelName_idx_0"
                                   style={{ width: "150px" }}
                                   onChange={(e) => {
@@ -300,10 +301,21 @@ const Mypage = () => {
                                     //     ...dto,
                                     //     name: e.target.value
                                     // })
-                                    row.tripName = e.target.value;
-                                    console.log(e.target.value);
+                                    // row.tripName = e.target.value;
+                                    // console.log(e.target.value);
                                     // setChangeTripName(e.target.value);
                                     // tripnamesave(row.tripNum, e.target.value);
+                                    setCityTrip({
+                                      ...data2,
+                                      list: [
+                                        ...data2.list.slice(0, index),
+                                        {
+                                          ...row,
+                                          tripName: e.target.value
+                                        },
+                                        ...data2.list.slice(index + 1)
+                                      ]
+                                    })
                                   }}
                                 />
 

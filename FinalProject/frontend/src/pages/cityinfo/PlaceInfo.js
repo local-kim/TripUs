@@ -38,7 +38,7 @@ const style = {
 };
 
 const PlaceInfo=()=>{
-      
+  const {contentId}=useParams();
   const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
     //git error catch
@@ -74,7 +74,7 @@ const PlaceInfo=()=>{
 
     //지도api & 관광지 api 
     //const contentId=CityInfoMainContendId; //city페이지에서 contentid받는곳
-    const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
+    // const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
     //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
     const placeApikey="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D"; //재호님 인증키
     // const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
@@ -118,12 +118,11 @@ const PlaceInfo=()=>{
     // const [sta,setContent]=useState('');
     const [reviewData,setReviewData]=useState([]); //data 받아오기
     //현재 페이지 번호
-    const {currentPage}=useParams();
     const [multijson,setMultiJson]=useState([]);
 
     //Spring url선언
-    let pagelistUrl=process.env.REACT_APP_SPRING_URL+`review/allreview?place_id=${contentId}&currentPag=${currentPage}`;
-    let paginationlistUrl=process.env.REACT_APP_SPRING_URL+`review/pagelist?place_id=${contentId}&currentPage=${currentPage}`;
+    let pagelistUrl=process.env.REACT_APP_SPRING_URL+`review/allreview?place_id=${contentId}`;
+    //let paginationlistUrl=process.env.REACT_APP_SPRING_URL+`review/pagelist?place_id=${contentId}`;
     let placeStarsAvgUrl=process.env.REACT_APP_SPRING_URL+"review/avgstars?place_id="+contentId;
     let placeLikesSumUrl=process.env.REACT_APP_SPRING_URL+"review/sumlikes?place_id="+contentId;
     let insertUrl=process.env.REACT_APP_SPRING_URL+"review/insert";
@@ -221,15 +220,17 @@ const PlaceInfo=()=>{
   
 
     //PaginationList 호출
-    const paginationList=()=>{
-      axios.get(paginationlistUrl).then(res=>{
-          setReviewData(res.data);
-            console.log("pagination:",res.data);
-        })
-        .catch(err => {
-            alert(err);
-        }) 
-      }
+    // const paginationList=()=>{
+    //   axios.get(paginationlistUrl).then(res=>{
+    //       setReviewData(res.data);
+    //         console.log("pagination:",res.data);
+    //     })
+    //     .catch(err => {
+    //         alert(err);
+    //     }) 
+    //   }
+
+
         //Review insert
         const writeReview=(e)=>{
           //e.preventDefault();
@@ -526,7 +527,7 @@ const PlaceInfo=()=>{
             center: new kakao.maps.LatLng(placey, placex),
             //center: new kakao.maps.LatLng(35.1591243474,129.1603078991),
             //new kakao.maps.LatLng(y좌표,x좌표)
-            level: 2
+            level: 6
         };
         
         const map = new kakao.maps.Map(container, options);
@@ -567,9 +568,10 @@ const PlaceInfo=()=>{
     };
     
     return (
+        <div id='place'>
         <div className='place_info'>
 
-            <Box sx={{ width: 'inherit', typography: 'body1' }}>
+            {/* <Box sx={{ width: 'inherit', typography: 'body1' }}>
             <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 
@@ -578,118 +580,16 @@ const PlaceInfo=()=>{
             <Tab label="Review" value="2" />
             {/* <Tab label="Item Three" value="3" /> */}
 
-            </TabList>
+           {/*</TabList>
             </Box>
         
             <TabPanel value="1">
-                <div id='place_map'>
-                </div>
-            </TabPanel>
-            <TabPanel value="2" sx={{overflow:'scroll',overflowX:'hidden',padding:'0'}}>
-                 <div style={{width:'700px',height:'500px',display:'flex'}}>
-                  <div>
-                    {/* <p>{reviewData}</p> */}
-                    {reviewData.length == 0 ? <p style={{color:'gray'}}>후기글을 없습니다</p>: ""}
-                    {
-                      reviewData&&reviewData.map((row,idx)=>(
-                        <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}} >
-                        <div style={{flexDirection:'column',justifyContent:'center'}}>
-                          <div>
-                         <img src={row.file_name==null?Ayong:profilePhotoUrl+row.file_name} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
-                          </div>
-                          <div style={{marginTop:'5px',textAlign:'center'}}>
-                          {row.name}
-                          </div>
-                          </div>  
-                          <div style={{display:'flex',flexDirection:'column',marginLeft:'15px'}}>
-                          <div style={{display:'flex',flexDirection:'row'}}>
-                          <div style={{backgroundColor:'white',height:'50px',width:'550px',padding:'5px 0px 0px 5px'}} onClick={()=>{onDetail(row.num,idx);}}>
-                          {row.content}
-                          </div>
-                          {isLoggedIn&&loginNum==row.member_num ? 
-                          <div style={{flexGrow:'0'}}>
-                            <Component num={row.num} onEditReviewDetail={onEditReviewDetail} onDelete={onDelete}/>
-                            {/*<Button
-                              id="basic-button"
-                              aria-controls={editopen ? 'basic-menu' : undefined}
-                              aria-haspopup="true"
-                              aria-expanded={editopen ? 'true' : undefined}
-                              onClick={handleClick}
-                            >
-                              ⋮
-                            </Button>
-                            <Menu
-                              id="basic-menu"
-                              anchorEl={anchorEl}
-                              open={editopen}
-                              onClose={editeHandleClose}
-                              MenuListProps={{
-                                'aria-labelledby': 'basic-button',
-                              }}
-                              
-                            >
-                              
-                                <div>
-                              <MenuItem onClick={()=>{onEditReviewDetail(row.num)}}>수정하기</MenuItem>
-                              <MenuItem onClick={()=>{onDelete(row.num)}}>삭제하기</MenuItem>
-                              </div>
-                               <MenuItem onClick={handleClose}>Logout</MenuItem> 
-                            </Menu>*/}
-                          {/* <span style={{cursor:'pointer'}} onClick={()=>{onEditReviewDetail(row.num);}}>수정</span>
-                          &nbsp;&nbsp;|&nbsp;&nbsp;
-                          <span className='myreviewDelete' style={{cursor:'pointer'}} onClick={()=>{
-                            onDelete(row.num);
-                          }}>삭제</span> */}
-                       </div> : ""
-                      }
-                          </div>
-                       <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
-                        <div style={{flexGrow:'3'}}>
-                        {row.created_at}&nbsp;&nbsp;&nbsp;
-                       <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
-                       </div>
-                       </div>
-                       </div>
-                      </div>
-                      ))
-                    }
-                  </div>
-                </div> 
-                  {/*페이징 */}
-
-                  {/* <Pagination count={10} color="primary" />
-                  
-                <div style={{width:'700px',textAlign:'center'}}>
-                    <ul className='pagination'>
-                        {
-                        (reviewData.startPage>1?<li>
-                            <Link to={`/place/pagelist/${reviewData.startPage-1}`}>이전</Link>
-                        </li>:'')
-                        }
-
-                        {
-                            
-                            reviewData.parr&&reviewData.parr.map(n=>{
-                                const url="/place/pagelist/"+n;
-                                return(
-
-                                    <li className={n == currentPage ? 'active' : ''}>
-                                        <Link to={url}>{n}</Link>
-                                    </li>
-                                )
-                            })
-                        }
-                        {
-                        (reviewData.endPage<reviewData.totalPage?
-                        <li>
-                            <Link to={`/place/pagelist/${reviewData.endPage+1}`}>다음</Link>
-                        </li>:'')
-                    }
-                    </ul>
-                </div> */}
-            </TabPanel>
+               
+            </TabPanel> */}
+            {/* <TabPanel value="2" sx={{overflow:'scroll',overflowX:'hidden',padding:'0'}}> */}
+            {/* </TabPanel>
             </TabContext>
-            </Box>
+            </Box> */}
         
             <div className='place_all_data'>
             <div className='place_sub_data'>
@@ -697,7 +597,7 @@ const PlaceInfo=()=>{
         
                 <div className='place_img_name_type'>
 
-                    <div style={{display:'inline-flex',marginBottom:'13px'}}>
+                    <div style={{display:'inline-flex',marginBottom:'5px',marginLeft:'-3px'}}>
                     <span style={{fontSize:'30px',fontWeight:'bold'}}>{placeTitle}</span>
                     
                     <div id="main-content">
@@ -744,7 +644,7 @@ const PlaceInfo=()=>{
                           <circle id="oval1" fill="#9FC7FA" cx="2.5" cy="3" r="2"/>
                           <circle id="oval2" fill="#9FC7FA" cx="7.5" cy="2" r="2"/>
                         </g>
-                      </g>
+                      </g>  
                     </svg>
                   </label>
                   </div>
@@ -752,55 +652,15 @@ const PlaceInfo=()=>{
                   </div>
 
                     <p style={{fontSize:'14px',margin:'0 auto'}}>{cattypename}</p>
+                  <div style={{marginTop: '19px'}}>
                     <i className="fa-solid fa-map-location-dot" style={{color:'#3a6670'}}></i>&nbsp;&nbsp;{placeAddr}<br/>
                     {/*별점 좋아요수 */}
                     {/* <Rating name="half-rating-read" defaultValue={avgStars} precision={0.1} readOnly/>{avgStars} */}
                     <i className="fa-solid fa-star" style={{color:'#faaf00'}}></i>&nbsp;&nbsp;{avgStars===0?0:avgStars}<br/>
                     <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{sumLikes}
+                  </div>
                 </div>
             </div>
-            <br/>
-
-            <div className='stars'>
-            <Box sx={{'& > legend': { mt: 2 },}}>
-
-              <Typography component="legend">{member_num}</Typography> 
-              
-              <Rating
-                name="half-rating" className='mystar'
-                value={starsvalue} precision={0.5}
-                onChange={(event, newValue) => {
-                  setStarsValue(newValue);
-                  setStars(newValue);
-                }}/> 
-                
-                {/*imgfile */}
-                <label for="file">
-                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
-                  </label>
-                  
-                  <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} onClick={()=>console.log("그냥")}  id="file" />
-                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
-                  <p>{filename}</p>
-                  {/*map돌릴예정*/}
-                  {
-                      filename&&filename.map((row,idx)=>(
-                        <div>
-                     <img src={photoUrl+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
-                     <button type="button" onClick={()=>{
-                      // onOneDelete(editDetailData[idx].review_photo_num);
-                      deleteFileImage(idx);
-                     }}>삭제</button>
-                     </div>
-                      ))}
-          </Box> 
-             </div> 
-            <div className='place_review_write'>
-            
-                <textarea placeholder='50글자내로 작성해주세요🥕' className='review' value={refreshReview} onChange={(e)=>{setContent(e.target.value);}}></textarea>
-                <button type='button' className='btn_review_write' onClick={writeReview}>글쓰기</button>
-            </div>
-
 
              {/* 상세보기 */}
 
@@ -813,7 +673,7 @@ const PlaceInfo=()=>{
                   >
                     <Box sx={style}>
                       <Typography id="modal-modal-title" variant="h6" component="h2">
-                      <div style={{display:'inline-flex',width:'665px',justifyContent:'left'}}>
+                      <div style={{display:'inline-flex',width:'665px'}}>
                         <div>
                           <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px',objectFit:'cover'}}/>
                       </div>
@@ -826,10 +686,9 @@ const PlaceInfo=()=>{
                           <div style={{display:'inline-flex'}}>
                         <label>{placeTitle}</label>&nbsp;/&nbsp;
                         <label>{detailData[0].created_at}</label>&nbsp;/&nbsp;
+                        <Rating name="read-only" ref={reviewstarsRef} value={detailData[0].stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/>
                         {/* <label>{detailData.created_at}</label>&nbsp;/&nbsp; */}
                         </div>
-                       {/* <Rating name="read-only" ref={reviewstarsRef} value={detailData[0].stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/> */}
-                       <Rating name="read-only" ref={reviewstarsRef} value={detailData[0].stars} readOnly size="small" precision={0.5} style={{marginTop:'5px'}}/>
                         </div>
                       </div>
 
@@ -841,6 +700,7 @@ const PlaceInfo=()=>{
                           aria-haspopup="true"
                           aria-expanded={editopen ? 'true' : undefined}
                           onClick={handleClick}
+                          sx={{color:'gray'}}
                         >
                           ⋮
                         </Button>
@@ -864,6 +724,11 @@ const PlaceInfo=()=>{
                       </div>:""}
                       </Typography>
 
+                       <div style={{display:'flex',flexDirection:'row',justifyContent:'center'}}>
+                        <div>
+                      {detailidx==0?"":<button className='ReviewPrev' onClick={()=>onPrevDetail(detailData[0].num, detailidx)}>←</button>} 
+                       </div>
+                       <div>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       <div style={{justifyContent:'center',display:'flex'}}>
                       {
@@ -873,14 +738,14 @@ const PlaceInfo=()=>{
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
                          {/* <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre> */}
-                         <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre>
+                         <pre style={{width:'550px',height:'250px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre>
                       </div>
                       </Typography>
-                      {/* {detailFileData&&detailFileData.map((row,idx)=>(*/}
-                            {detailidx==0?"":<button  onClick={()=>onPrevDetail(detailData[0].num, detailidx)}>←</button>} 
-                            {detailidx>=(reviewData.length-1)?"":<button onClick={()=>onNextDetail(detailData[0].num, detailidx)}>→</button>}
-                            {console.log("reviewdatalength::::"+(reviewData.length-1))}
-                      {/* ))}  */}
+                      </div>
+                      <div>
+                        {detailidx>=(reviewData.length-1)?"":<button className='ReviewNext' onClick={()=>onNextDetail(detailData[0].num, detailidx)}>→</button>}
+                      </div>
+                        </div>
                     </Box>
                   </Modal>
                 </div>
@@ -899,7 +764,8 @@ const PlaceInfo=()=>{
                       <Typography id="modal-modal-title" variant="h6" component="h2">
                       <div style={{display:'inline-flex',width:'450px',justifyContent:'left'}}>
                         <div>
-                          <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                          <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px',objectFit:'cover'}}/>
+                          {/* <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/> */}
                       </div>
 
                         <div style={{marginLeft:'10px',fontSize:'16px'}}>
@@ -910,12 +776,12 @@ const PlaceInfo=()=>{
                           <div style={{display:'inline-flex'}}>
                         <label>{placeTitle}</label>&nbsp;/&nbsp;
                         <label>{editDetailData[0].created_at}</label>&nbsp;/&nbsp;
-                        </div>
-                       {/* <Rating name="read-only" defaultValue={editDetailData.stars}  size="small" precision={0.5} style={{marginTop:'5px'}}/> */}
-                       <Rating name="half-rating" className='updatestar' defaultValue={editDetailData[0].stars} precision={0.5}
+                        <Rating name="half-rating" className='updatestar' defaultValue={editDetailData[0].stars} precision={0.5} size="small" style={{marginTop:'5px'}}
                           onChange={(event, newValue) => {
                             setStars(newValue);
-                          }}/> 
+                          }}/>
+                        </div>
+
                         </div>
                       </div>
                       </Typography>
@@ -965,6 +831,102 @@ const PlaceInfo=()=>{
                   </Modal>
                 </div>
         </div>
+        <div id='place_map'></div>
+        </div>
+          <div className='place_review_write'>
+            <div style={{width: '1090px'}}>
+
+              <div style={{display:'inline-flex'}}>
+            {/* <Box sx={{'& > legend': { mt: 2 },}}> */}
+              <Typography component="legend">{member_num}</Typography> 
+              <Rating
+                name="half-rating" className='mystar'
+                value={starsvalue} precision={0.5}
+                onChange={(event, newValue) => {
+                  setStarsValue(newValue);
+                  setStars(newValue);
+                }}/> 
+
+                  {/*map돌릴예정*/}
+
+                  {
+                      filename&&filename.map((row,idx)=>(
+                        <div>
+                     <img src={photoUrl+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
+                     <button type="button" onClick={()=>{
+                      // onOneDelete(editDetailData[idx].review_photo_num);
+                      deleteFileImage(idx);
+                     }}>삭제</button>
+                     </div>
+                      ))
+                  }
+
+                     {/* </Box>  */}
+                     <div style={{display:'inline-flex',justifyContent:'right',marginLeft:'10px;'}}>
+
+                     <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} onClick={()=>console.log("그냥")}  id="file" />
+                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
+                  <p>{filename}</p>
+
+                    {/*imgfile */}
+                    <label for="file">
+                    <div class="btn-upload"><i class="fa fa-upload"></i>
+                        &nbsp;upload
+                    </div>
+                   </label>
+
+                <button type='button' className='btn_review_write' onClick={writeReview}>Review</button>
+                
+                </div>
+
+                </div>
+                <div style={{display:'inline-flex'}}>
+                <textarea placeholder='50글자내로 작성해주세요🥕' className='review' value={refreshReview} onChange={(e)=>{setContent(e.target.value);}}></textarea>
+                </div>
+                </div>
+            </div> 
+            
+                   {/* 리뷰들*/}
+                    <div style={{justifyContent:'center',display:'flex',marginTop:'10px'}}>
+                  <div style={{width:'1090px',height:'500px',display:'flex',overflow:'scroll',overflowX:'hidden'}}>
+                  <div>
+                    {/* <p>{reviewData}</p> */}
+                    {reviewData.length == 0 ? <p style={{color:'gray'}}>후기글을 없습니다</p>: ""}
+                    {
+                      reviewData&&reviewData.map((row,idx)=>(
+                        <div style={{display:'flex',borderBottom:'1px solid #a3a3a3',margin:'10px',width:'1072px'}} >
+                        <div style={{flexDirection:'column',justifyContent:'center'}}>
+                          <div>
+                         <img src={row.file_name==null?Ayong:profilePhotoUrl+row.file_name} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                          </div>
+                          <div style={{marginTop:'5px',textAlign:'center'}}>
+                          {row.name}
+                          </div>
+                          </div>  
+                          <div style={{display:'flex',flexDirection:'column',marginLeft:'15px'}}>
+                          <div style={{display:'flex',flexDirection:'row'}}>
+                          <div style={{backgroundColor:'white',height:'50px',width:'750px',padding:'5px 0px 0px 5px'}} onClick={()=>{onDetail(row.num,idx);}}>
+                          {row.content}
+                          </div>
+                          {isLoggedIn&&loginNum==row.member_num ? 
+                          <div style={{flexGrow:'0'}}>
+                            <Component num={row.num} onEditReviewDetail={onEditReviewDetail} onDelete={onDelete}/>
+                       </div> : ""
+                      }
+                          </div>
+                       <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
+                        <div style={{flexGrow:'3'}}>
+                        {row.created_at}&nbsp;&nbsp;&nbsp;
+                       <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
+                       </div>
+                       </div>
+                       </div>
+                      </div>
+                      ))
+                    }
+                  </div>
+                </div> 
+                </div>
         </div>
     );
 }
