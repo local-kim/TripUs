@@ -1,12 +1,20 @@
+div#place{
+  width: 900px;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 100px;
+  margin: 0 auto;
+}
+
 div.place_info{
     display:flex;
     margin:0 auto;
-    justify-content:center;
+    justify-content: space-between;
     margin-top: 6%;
 }
 
 div#place_map{
-    width: 704px;
+    width: 400px;
     height: 245px;
 }
 
@@ -64,6 +72,7 @@ div.place_review_write button.btn_review_write{
     height: 23px;
     background: #98dde3;
     /* border: 1px solid #4d4d4d; */
+    margin-left:10px;
     border-radius: 3px;
     font-weight: 500;
     cursor: pointer;
@@ -94,11 +103,17 @@ label.css-dqr9h-MuiRating-label{
 }
 
 div.place_review_write textarea.review{
-  width:1080px;
+  width:900px;
   height:122px;
   border:1px solid #a3a3a3;
 }
 
+btn.ReviewPrev{
+}
+
+btn.ReviewNext{
+  
+}
 
 /*좋아요 test*/
 #main-content {
