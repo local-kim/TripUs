@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import data.dto.CityDto;
+import data.dto.LikeDto;
 import data.dto.ReviewDto;
 import data.dto.TripDto;
 import data.mapper.CityInfoMapper;
@@ -68,6 +69,14 @@ public class CityInfoService implements CityInfoServiceInter {
 		map.put("place_id", place_id);
 		map.put("loginNum", Integer.toString(loginNum));
 		cimapper.deleteLike(map);
+	}
+	
+	
+	// like table의 place_id, member_num 가져오기
+	@Override
+	public List<Integer> getLikeTable(int loginNum) {
+		// TODO Auto-generated method stub
+		return cimapper.getLikeTable(loginNum);
 	}
 	
 	// 현지씌 작품 돈터치!!!

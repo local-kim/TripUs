@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import data.dto.CityDto;
+import data.dto.LikeDto;
 import data.dto.ReviewDto;
 import data.dto.TripDto;
 
@@ -29,6 +30,8 @@ public interface CityInfoMapper {
 	public int insertLike(Map<String,Integer> map);
 	// 장소 좋아요 삭제
 	public void deleteLike(Map<String,String> map);
+	// like table의 place_id, member_num 가져오기
+	public List<Integer> getLikeTable(int loginNum);
 	
 	// 현지씌 작품 돈터치!!!
 	// 도시 목록 가져오기

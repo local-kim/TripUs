@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import data.dto.CityDto;
+import data.dto.LikeDto;
 import data.dto.ReviewDto;
 import data.dto.TripDto;
 import data.dto.WeatherDto;
@@ -69,6 +70,10 @@ public class CityInfoController {
 	@DeleteMapping("/deletelike")
 	public void deleteLike(@RequestParam String place_id,@RequestParam int loginNum) {
 		ciservice.deleteLike(place_id, loginNum);
+	}
+	@GetMapping("/liketable")
+	public List<Integer> getLikeTable(@RequestParam int loginNum) {
+		return ciservice.getLikeTable(loginNum);
 	}
 	
 	// 현지씌 작품 돈터치!!!

@@ -47,6 +47,10 @@
     <delete id="deleteLike" parameterType="Map">
 		delete from `like` where `like`.member_num = #{loginNum} and place_id = #{place_id}
     </delete>
+    <!-- like 테이블 데이터 가져오기  -->
+    <select id="getLikeTable" parameterType="int" resultType="int">
+    	select place_id from `like` where member_num = #{loginNum}; 
+    </select>
 	
 	
 	
