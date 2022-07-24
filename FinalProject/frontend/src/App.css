@@ -1,12 +1,9 @@
-/* #main{
-  padding-top: 89px;
-} */
-
 /* 스크롤바 숨기기 */
-body{
-  scrollbar-width:none
+*{
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-body::-webkit-scrollbar{
-  display:none;
+*::-webkit-scrollbar{
+  display: none;  /* Chrome, Safari, Opera */
 }

@@ -9,13 +9,10 @@ import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import rootReducer from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension'; // 리덕스 개발자 도구
-import setAuthorizationToken from './utils/setAuthorizationToken';
-// import KakaoShareButton from '../KakaoShareButton';
+
 // 생성한 store안에 모든 전역 state를 넣어 관리
 const store = createStore(rootReducer, composeWithDevTools());
 const persistor = persistStore(store);
-
-// setAuthorizationToken(localStorage.getItem('jwtToken'));
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

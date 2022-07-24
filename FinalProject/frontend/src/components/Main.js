@@ -483,8 +483,8 @@ const Main=(row)=>{
                             <div className='main_top_desc' >쉽고 빠르게 여행을 계획하세요.</div>
                             <div className='search_area' >
                                 <div className='city_autocomplete' style={{display:'block'}}></div>
-                                <input className='search_input' placeholder='국가명,도시명으로 검색' autocomplete="off" onKeyUp={Search} ></input>
-                                <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(<li onClick={()=>{navi(`/city/${data.num}`)}} >{data.name} <span class="h_search_cicu">대한민국</span></li> ))}</ul>
+                                <input className='search_input' placeholder='국가명,도시명으로 검색' autoComplete="off" onKeyUp={Search} ></input>
+                                <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(<li onClick={()=>{navi(`/city/${data.num}`)}} >{data.name} <span className="h_search_cicu">대한민국</span></li> ))}</ul>
                                     <div className='latest_search'><Link to={`city/list`} style={{color:'white'}}>추천도시</Link>:  <Link to={`city/108`} style={{color:'white'}}>서울</Link> <Link to={`city/159`} style={{color:'white'}}>부산</Link> <Link to={`city/184`} style={{color:'white'}}>제주</Link> <Link to={`city/136`} style={{color:'white'}}>안동</Link> <Link to={`city/105`} style={{color:'white'}}>강릉</Link> </div>
                             </div>
                             
@@ -502,7 +502,7 @@ const Main=(row)=>{
                             <div className='page_title' style={{marginTop:'150px'}}>Trip:Us에서 여행을 시작하세요!</div>
                             <div className='clear'></div>
                             <div className="intro_list">
-                                <div className="intro_box" onclick="location.href='/ko/area';">
+                                <div className="intro_box" onClick={() => navi('/ko/area')}>
                                     <img src="https://www.earthtory.com/res/img/main/intro_img/intro_1.jpg" alt=""/>
                                 <div className="intro_title">여행정보</div>
                                 <div className="intro_desc"> 대한민국 
@@ -547,14 +547,14 @@ const Main=(row)=>{
                                             </div>
                             </div>
                                         
-                            <div class="intro_box">
+                            <div className="intro_box">
                                 <img src="https://www.earthtory.com/res/img/main/intro_img/intro_3.jpg" alt=""/>
-                                <div class="intro_title">커뮤니티</div>
-                                <div class="intro_desc" style={{marginLeft:'5px'}}>여행자들과 정보를 공유하고, 궁금한 것은 언제든 물어보세요.</div>
+                                <div className="intro_title">커뮤니티</div>
+                                <div className="intro_desc" style={{marginLeft:'5px'}}>여행자들과 정보를 공유하고, 궁금한 것은 언제든 물어보세요.</div>
                             </div>
 
-                            <div class="clear"></div>
-                            <a href="/ko/intro" class="intro_link"> 사용방법이 궁금하신가요?</a>
+                            <div className="clear"></div>
+                            <a href="/ko/intro" className="intro_link"> 사용방법이 궁금하신가요?</a>
                         </div>
                     </div>
                 </div>

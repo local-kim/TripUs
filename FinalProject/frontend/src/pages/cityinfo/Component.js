@@ -22,6 +22,7 @@ const Component = ({num, onEditReviewDetail, onDelete}) => {
                               aria-haspopup="true"
                               aria-expanded={editopen ? 'true' : undefined}
                               onClick={handleClick}
+                              sx={{color:'gray'}}
                             >
                               ⋮
                             </Button>

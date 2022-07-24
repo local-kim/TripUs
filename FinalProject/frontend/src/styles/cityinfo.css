@@ -219,3 +219,9 @@
 #cityinfo .css-1d3jhju-MuiAvatar-root, #cityinfomore .css-wk5mvb-MuiAvatar-root {
     cursor: pointer;
 }
+
+#cityinfo .heart_btn {
+    background-color: white;
+    border: none;
+    
+}

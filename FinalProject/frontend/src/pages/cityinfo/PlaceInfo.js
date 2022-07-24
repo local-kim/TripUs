@@ -388,17 +388,17 @@ const PlaceInfo=()=>{
          const onPrevDetail=(num,idx)=>{
           console.log("detailidx",idx);
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-          axios.get(detailUrl+(num+1)).then(res=>{
+          axios.get(detailUrl + reviewData[idx - 1].num).then(res=>{
                 if(res.data.file_name ===null){
                 setDetailData(res.data.dto);
-                setDetailIdx(idx+1);
+                setDetailIdx(idx-1);
                 console.log("prevdetail->",res.data.dto);
                 console.log("prevdetailfile",res.data.fname);
                 console.log("modalidxidx:",idx);
               }
               else{
               setDetailData(res.data.dto);
-              setDetailIdx(idx+1);
+              setDetailIdx(idx-1);
               setDetailFileData(res.data.fname);
               console.log("prevdetail->",res.data.dto);
               console.log("prevdetailfile",res.data.fname);
@@ -414,7 +414,7 @@ const PlaceInfo=()=>{
             console.log("nextdetailidx",idx);
            
             axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-            axios.get(detailUrl+(num-1)).then(res=>{
+            axios.get(detailUrl + reviewData[idx + 1].num).then(res=>{
                   if(res.data.file_name ===null){
                   setDetailData(res.data.dto);
                   setDetailIdx(idx+1);
@@ -437,7 +437,6 @@ const PlaceInfo=()=>{
 
          //수정상세보기 호출함수
          const onEditReviewDetail=(num)=>{
-          console.log("tq:",num);
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.get(detailUrl+num).then(res=>{
             setEditDetailData(res.data.dto);
@@ -878,8 +877,8 @@ const PlaceInfo=()=>{
                       </div>
                       </Typography>
                       {/* {detailFileData&&detailFileData.map((row,idx)=>(*/}
-                            {detailidx==0?"":<button  onClick={()=>onPrevDetail(detailData[0].num)}>←</button>} 
-                            {detailidx>=(reviewData.length-1)?"":<button onClick={()=>onNextDetail(detailData[0].num)}>→</button>}
+                            {detailidx==0?"":<button  onClick={()=>onPrevDetail(detailData[0].num, detailidx)}>←</button>} 
+                            {detailidx>=(reviewData.length-1)?"":<button onClick={()=>onNextDetail(detailData[0].num, detailidx)}>→</button>}
                             {console.log("reviewdatalength::::"+(reviewData.length-1))}
                       {/* ))}  */}
                     </Box>
