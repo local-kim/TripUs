@@ -768,7 +768,7 @@ const PlaceInfo=()=>{
                         <label>{placeTitle}</label>&nbsp;/&nbsp;
                         <label>{editDetailData[0].created_at}</label>&nbsp;/&nbsp;
                         </div>
-                       {/* <Rating name="read-only" defaultValue={editDetailData.stars}  size="small" precision={0.5} style={{marginTop:'5px'}}/> */}
+
                        <Rating name="half-rating" className='updatestar' defaultValue={editDetailData[0].stars} precision={0.5}
                           onChange={(event, newValue) => {
                             setStars(newValue);
@@ -826,9 +826,10 @@ const PlaceInfo=()=>{
         </div>
           <div className='place_review_write'>
             <div style={{width: '1090px'}}>
-            <Box sx={{'& > legend': { mt: 2 },}}>
+
+              <div style={{display:'inline-flex'}}>
+            {/* <Box sx={{'& > legend': { mt: 2 },}}> */}
               <Typography component="legend">{member_num}</Typography> 
-              
               <Rating
                 name="half-rating" className='mystar'
                 value={starsvalue} precision={0.5}
@@ -836,16 +837,9 @@ const PlaceInfo=()=>{
                   setStarsValue(newValue);
                   setStars(newValue);
                 }}/> 
-                
-                {/*imgfile */}
-                <label for="file">
-                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
-                  </label>
-                  
-                  <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} onClick={()=>console.log("그냥")}  id="file" />
-                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
-                  <p>{filename}</p>
+
                   {/*map돌릴예정*/}
+
                   {
                       filename&&filename.map((row,idx)=>(
                         <div>
@@ -855,12 +849,30 @@ const PlaceInfo=()=>{
                       deleteFileImage(idx);
                      }}>삭제</button>
                      </div>
-                      ))}
-              </Box> 
+                      ))
+                  }
 
+                     {/* </Box>  */}
+                     <div style={{display:'inline-flex',justifyContent:'right',marginLeft:'15%;'}}>
+
+                     <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} onClick={()=>console.log("그냥")}  id="file" />
+                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
+                  <p>{filename}</p>
+
+                    {/*imgfile */}
+                    <label for="file">
+                    <div class="btn-upload"><i class="fa fa-upload"></i>
+                        &nbsp;upload
+                    </div>
+                   </label>
+
+                <button type='button' className='btn_review_write' onClick={writeReview}>Review</button>
+                
+                </div>
+
+                </div>
                 <div style={{display:'inline-flex'}}>
                 <textarea placeholder='50글자내로 작성해주세요🥕' className='review' value={refreshReview} onChange={(e)=>{setContent(e.target.value);}}></textarea>
-                <button type='button' className='btn_review_write' onClick={writeReview}>글쓰기</button>
                 </div>
                 </div>
             </div> 
