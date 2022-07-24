@@ -5,26 +5,43 @@ import { ReactDOM } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-
+import '../AppHeemin.css';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import MenuItem from '@mui/material/MenuItem';
+import AdbIcon from '@mui/icons-material/Adb';
+import MainLogo from '../assets/images/MainLogo.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../modules/auth';
+import AnimatedNumber from "react-animated-numbers"
 
 import Fullpage,{FullPageSections,FullpageSection,FullpageNavigation} from '@ap.cx/react-fullpage';
 import Myslide from './Myslide';
 import Myslide2 from './Myslide2';
-import Menu from './Menu';
+
 import '../AppHeemin.css';
 import axios from 'axios';
 import jQuery from 'jquery';
 import { NavLink } from 'react-router-dom';
 import { setDate } from 'date-fns';
-import Button from '@mui/material/Button';
+
 import ButtonGroup from '@mui/material/ButtonGroup';
-import Box from '@mui/material/Box';
+
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
-import MenuItem from '@mui/material/MenuItem';
+
 import MenuList from '@mui/material/MenuList';
 import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import FormatAlignCenterIcon from '@mui/icons-material/FormatAlignCenter';
@@ -56,7 +73,74 @@ const options = ['인기순','오름차순' ,'내림차순'];
 
 const Main=(row)=>{
 
+  
+  const [number, setNumber] = React.useState(162)
+  const [number2, setNumber2] = React.useState(30000)
+  const [number3, setNumber3] = React.useState(3000)
+
+  const [diff, setDiff] = React.useState(0)
+
+  // const easeOutExpo = (t = 3000) => {
+
+  //  return  t === 1 ? 1 : 1 - Math.pow(2, -10 * t)
+  // }
+  
     
+  // const useCountUp  = (end = 3000, start = 0, duration = 2000) => {  
+    
+  //   const [count, setCount] = useState(start)
+  //   const frameRate = 1000 / 60
+  //   const totalFrame = Math.round(duration / frameRate)
+
+    
+  
+  //   useEffect(() => {
+  //     let currentNumber = start
+  //     const counter = setInterval(() => {
+  //       const progress = easeOutExpo(++currentNumber / totalFrame)
+  //       setCount(Math.round(end * progress))
+  
+  //       if (progress === 1) {
+  //         clearInterval(counter)
+  //       }
+  //     }, frameRate)
+  //   }, [end, frameRate, start, totalFrame])
+  // }
+     // redux에서 변수 얻기
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+  const loginNum = useSelector(state => state.auth.user.num);
+  const loginName = useSelector(state => state.auth.user.name);
+  const loginProfile = useSelector(state => state.auth.user.profile);
+
+  const pages = ['여행지', '일정 만들기', '일정 보기', '인기 일정', 'About'];
+  const pageLinks = ['city/list', 'plan/city/108', 'plan/detail/1', 'plan/list', ''];
+
+  const loginSettings = ['Mypage', 'Dashboard','Logout'];
+  const loginLinks = ['mypage/1', 'dashboard','logout'];
+
+  const logoutSettings = ['Login', 'Join'];
+  const logoutLinks = ['login', 'join'];
+
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
+
 
 
     let cityDataUrl = process.env.REACT_APP_SPRING_URL + "cityData/";
@@ -221,10 +305,170 @@ const Main=(row)=>{
     return(
  
         <Fullpage>
+           <AppBar position="fixed" style={{ backgroundColor:'rgba( 0,0,0,0.0 )'}}>
+      <Container maxWidth="xl" style={{ backgroundColor:'rgba( 0,0,0,0.0 )'}}>
+        <Toolbar disableGutters style={{ backgroundColor:'rgba( 0,0,0,0.0 )'}}>
+          
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+              backgroundColor:' none;'
+            }}
+          >
+            <img src={MainLogo} alt='' style={{width:'60px'}}/>
+          </Typography>
+
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+              
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+                backgroundColor:'0D9DE6'
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                backgroundColor:'0D9DE6',
+                horizontal: 'left',
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', md: 'none' ,backgroundColor:'0D9DE6' },
+              }}
+            >
+              {pages.map((page, index) => (
+                <Link to={`/${pageLinks[index]}`} key={index}>
+                  <MenuItem onClick={handleCloseNavMenu}>
+                    <Typography textAlign="center">{page}</Typography>
+                  </MenuItem>
+                </Link>
+              ))}
+            </Menu>
+          </Box>
+          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href=""
+            sx={{
+              mr: 2,
+              display: { xs: 'flex', md: 'none' },
+              flexGrow: 1,
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+              backgroundColor:' none;'
+              
+            }}
+          >
+            
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {pages.map((page, index) => (
+              <Link to={`/${pageLinks[index]}`} key={index}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: 'black', display: 'block' }}
+                >
+                  {page}
+                </Button>
+              </Link>
+            ))}
+          </Box>
+
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                {
+                  isLoggedIn && <Avatar alt={loginName} src={`${process.env.REACT_APP_SPRING_URL}save/${loginProfile}`} />
+                }
+                {
+                  !isLoggedIn && <Avatar src="/static/images/avatar/2.jpg" />
+                }
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {
+                // 로그인 상태의 메뉴
+                isLoggedIn && loginSettings.map((setting,index) => (
+                  <MenuItem key={setting} onClick={() => {
+                    handleCloseUserMenu();
+
+                    if(index === loginSettings.length - 1){ // 마지막 메뉴(로그아웃)를 클릭했을 때
+                      localStorage.removeItem('jwtToken');
+                      dispatch(logout());
+                    }
+                    else{
+                      navi(loginLinks[index]);
+                    }
+                  }}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))
+              }
+              {
+                // 로그아웃 상태의 메뉴
+                !isLoggedIn && logoutSettings.map((setting,index) => (
+                  <MenuItem key={setting} onClick={() => {
+                    handleCloseUserMenu();
+                    navi(logoutLinks[index]);
+                  }}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))
+              }
+            </Menu>
+          </Box>
+        </Toolbar>
+      </Container>
+    </AppBar>
           <FullpageNavigation/>
             <FullPageSections>
                 
                 <FullpageSection style={sectionStyle3}>
+   
 
                    
                      <div className='main_top'>
@@ -239,8 +483,8 @@ const Main=(row)=>{
                             <div className='main_top_desc' >쉽고 빠르게 여행을 계획하세요.</div>
                             <div className='search_area' >
                                 <div className='city_autocomplete' style={{display:'block'}}></div>
-                                <input className='search_input' placeholder='국가명,도시명으로 검색' autocomplete="off" onKeyUp={Search} ></input>
-                                <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(<li onClick={()=>{navi(`/city/${data.num}`)}} >{data.name} <span class="h_search_cicu">대한민국</span></li> ))}</ul>
+                                <input className='search_input' placeholder='국가명,도시명으로 검색' autoComplete="off" onKeyUp={Search} ></input>
+                                <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(<li onClick={()=>{navi(`/city/${data.num}`)}} >{data.name} <span className="h_search_cicu">대한민국</span></li> ))}</ul>
                                     <div className='latest_search'><Link to={`city/list`} style={{color:'white'}}>추천도시</Link>:  <Link to={`city/108`} style={{color:'white'}}>서울</Link> <Link to={`city/159`} style={{color:'white'}}>부산</Link> <Link to={`city/184`} style={{color:'white'}}>제주</Link> <Link to={`city/136`} style={{color:'white'}}>안동</Link> <Link to={`city/105`} style={{color:'white'}}>강릉</Link> </div>
                             </div>
                             
@@ -253,31 +497,64 @@ const Main=(row)=>{
                 <FullpageSection style={sectionStyle}>                
                     
                     <div className='page white'>
-                    {/* <Menu></Menu> */}
                         <div className='wrap'>
+                          
                             <div className='page_title' style={{marginTop:'150px'}}>Trip:Us에서 여행을 시작하세요!</div>
                             <div className='clear'></div>
                             <div className="intro_list">
-                                <div className="intro_box" onclick="location.href='/ko/area';">
+                                <div className="intro_box" onClick={() => navi('/ko/area')}>
                                     <img src="https://www.earthtory.com/res/img/main/intro_img/intro_1.jpg" alt=""/>
                                 <div className="intro_title">여행정보</div>
-                                <div className="intro_desc"> 대한민국  162개의도시, 3만개의 관광명소, 음식점<br/> 쇼핑 정보를 확인하세요.	</div>
+                                <div className="intro_desc"> 대한민국 
+                                            <AnimatedNumber style={{display:'inline-block'}}
+                                              fontStyle={{ fontFamily: "Nunito", fontSize: 25 }}
+                                              animateToNumber={number}
+                                              includeComma
+                                              config={{ tension: 89, friction: 40 }}
+                                              onStart={() => console.log("onStart")}
+                                              onFinish={() => console.log("onFinish")}
+                                              animationType={"calm"}
+                                            /> 개의도시, 
+                                            <br></br>
+                                            <br/>
+                                            <AnimatedNumber style={{display:'inline-block'}}
+                                              fontStyle={{ fontFamily: "Nunito", fontSize: 25 }}
+                                              animateToNumber={number2}
+                                              includeComma
+                                              config={{ tension: 89, friction: 40 }}
+                                              onStart={() => console.log("onStart")}
+                                              onFinish={() => console.log("onFinish")}
+                                              animationType={"calm"}
+                                            /> 
+                                            개의 관광명소, 음식점<br/> 쇼핑 정보를 확인하세요.	</div>
                             </div>
 
                             <div className="intro_box">
                                 <img src="https://www.earthtory.com/res/img/main/intro_img/intro_2.jpg" alt=""/>
                                 <div class="intro_title"> 여행일정	</div>
-                                <div class="intro_desc" style={{marginLeft:'5px'}}>대한민국 3000개 이상의 여행일정을 확인하고 <br/> 나만의 일정을 계획해 보세요.</div>
+                                <div class="intro_desc" style={{marginLeft:'5px'}}>대한민국       
+                                            <span>
+                                             <AnimatedNumber style={{display:'inline-block'}}
+                                              fontStyle={{ fontFamily: "Nunito", fontSize: 25 }}
+                                              animateToNumber={number3}
+                                              includeComma
+                                              config={{ tension: 89, friction: 40 }}
+                                              onStart={() => console.log("onStart")}
+                                              onFinish={() => console.log("onFinish")}
+                                              animationType={"calm"}
+                                            /> 개 이상의 여행일정을 확인하고 <br/> 나만의 일정을 계획해 보세요.
+                                            </span>
+                                            </div>
                             </div>
                                         
-                            <div class="intro_box">
+                            <div className="intro_box">
                                 <img src="https://www.earthtory.com/res/img/main/intro_img/intro_3.jpg" alt=""/>
-                                <div class="intro_title">커뮤니티</div>
-                                <div class="intro_desc" style={{marginLeft:'5px'}}>여행자들과 정보를 공유하고, 궁금한 것은 언제든 물어보세요.</div>
+                                <div className="intro_title">커뮤니티</div>
+                                <div className="intro_desc" style={{marginLeft:'5px'}}>여행자들과 정보를 공유하고, 궁금한 것은 언제든 물어보세요.</div>
                             </div>
 
-                            <div class="clear"></div>
-                            <a href="/ko/intro" class="intro_link"> 사용방법이 궁금하신가요?</a>
+                            <div className="clear"></div>
+                            <a href="/ko/intro" className="intro_link"> 사용방법이 궁금하신가요?</a>
                         </div>
                     </div>
                 </div>
