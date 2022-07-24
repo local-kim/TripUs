@@ -126,7 +126,7 @@ btn.ReviewNext{
    /* margin: 0 auto; */
   }
 
-  a {
+  #main-content a {
     font-size: 12px;
     font-weight: bold;
     margin-top: 10px;
@@ -135,21 +135,21 @@ btn.ReviewNext{
     color: #008A68;
   }
   
-  svg {
+  #main-content svg {
     cursor: pointer;
     overflow: visible;
     width: 40px;
   }
-  svg #heart {
+  #main-content svg #heart {
     width: 40px;
     transform-origin: center;
     animation: animateHeartOut 0.3s linear forwards;
   }
-  svg #main-circ {
+  #main-content svg #main-circ {
     transform-origin: 29.5px 29.5px;
   }
-  
-  #checkbox {
+   
+  #main-content #checkbox {
     display: none;
   }
   
