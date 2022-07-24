@@ -28,90 +28,73 @@ const CityinfoMore = () => {
     //     width:"1092px",
     //     typography:"body1"
     // }
-    const [like_btn, setLike_btn] = useState(0)
-    const [checked, setChecked] = useState(false);
-    const [pcontentId, setPcontentId] = useState(126078); 
-    const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
-    const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
-
-     
 
 
+    // const [like_btn, setLike_btn] = useState(0)
+    // const [checked, setChecked] = useState(false);
+    // const [pcontentId, setPcontentId] = useState(126078); 
+    // const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
+    // const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
 
-    let like_url=process.env.REACT_APP_SPRING_URL+"city/like?place_id="+pcontentId+"&loginNum="+loginNum;        
-    let insert_like_url=process.env.REACT_APP_SPRING_URL+"city/insertlike";
-    let delete_like_url=process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+pcontentId+"&loginNum="+loginNum;
-    console.log("like_url : " + like_url);
-    console.log("insert_like_url : " + insert_like_url);
-    console.log("delete_like_url : " + delete_like_url);
 
-    // // 좋아요 체크 전,후
-    // const like_checked = (event) => {
+    // let like_url=process.env.REACT_APP_SPRING_URL+"city/like?place_id="+pcontentId+"&loginNum="+loginNum;        
+    // let insert_like_url=process.env.REACT_APP_SPRING_URL+"city/insertlike";
+    // let delete_like_url=process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+pcontentId+"&loginNum="+loginNum;
+
+
+
+    // // 내 좋아요 현황
+    // useEffect(() => {
+    //     myLike();
+    // },[])
+    // const myLike=()=>{
     //     if(!isLoggedIn){
-    //     alert("먼저 로그인해주세요");
-    //     }else{
-    //     console.log("firtsconsole:",event.target.checked);
-    //     setChecked(event.target.checked);
-    //     console.log("number",Number(checked));
-
-    //     if(!checked){
-    //     // axios.post(insert_like_url,{place_id:String(pcontentId),loginNum,check:Number(checked)}).then(res=>{
-    //     // //alert("좋아요 true:",res.data);
-    //     // setLike_btn(res.data.check);
-    //     // })}
-    //     else{
-    //     // axios.delete(delete_like_url).then(res=>{
-    //     // // alert("좋아요-1");
-    //     // setLiked_btn(0); 
-    //     // setChecked(false);
-    //     //console.log("-liked value:",liked);
+    //         return;
+    //     }
+    //     axios.get(like_url).then(res=>{
+    //         console.log(res.data)
+    //         if(res.data==null||res.data == 0){
+    //             // setLike_btn(res.data);
+    //             setChecked(false);
+    //         }else{
+    //             setLike_btn(res.data);
+    //             setChecked(true);
+    //         }
+    //     }).catch(err => {
+    //         alert(err);
     //     })
     // }
 
-    // 내 좋아요 현황
-    useEffect(() => {
-        myLike();
-    },[])
-    const myLike=()=>{
-        if(!isLoggedIn){
-            return;
-        }
-        axios.get(like_url).then(res=>{
-            console.log(res.data)
-            if(res.data==null||res.data == 0){
-                // setLike_btn(res.data);
-                setChecked(false);
-            }else{
-                setLike_btn(res.data);
-                setChecked(true);
-            }
-        }).catch(err => {
-            alert(err);
-        })
-    }
 
 
-
-    const insert_btn = (e) => (
-        axios.post(insert_like_url,{place_id:String(pcontentId),loginNum,check:Number(checked)})
-        .then(res=>{
-            alert("좋아요 true:",res.data);
-            // setLike_btn(res.data.check);
-            // setLike_btn(checked)
-            setChecked(true);
-        })
-    )
+    // const insert_btn = (e) => (
+    //     axios.post(insert_like_url,{place_id:String(pcontentId),loginNum,check:Number(checked)})
+    //     .then(res=>{
+    //         alert("좋아요 true:",res.data);
+    //         // setLike_btn(res.data.check);
+    //         // setLike_btn(checked)
+    //         setChecked(true);
+    //     })
+    // )
     
-    const delete_btn = (e) => (
-        axios.delete(delete_like_url).then(res=>{
-            alert("좋아요 false");
-            // setLike_btn(e.target.value)
-            setChecked(false);
-        })
-    )
+    // const delete_btn = (e) => (
+    //     axios.delete(delete_like_url).then(res=>{
+    //         alert("좋아요 false");
+    //         // setLike_btn(e.target.value)
+    //         setChecked(false);
+    //     })
+    // )
 
-    console.log("checked : "+checked);
-    console.log("like_btn : "+like_btn);
+    // console.log("checked : "+checked);
+    // console.log("like_btn : "+like_btn);
+
+    const [a1,setA1] = useState([{AAA : 1, BBB : 11},{AAA : 2, BBB : 22},{AAA : 3, BBB : 33}]);
+    const [a2,setA2] = useState([{AAA : 4, BBB : 44},{AAA : 5, BBB : 55},{AAA : 6, BBB : 66}]);
+    const [a3,setA3] = useState([{AAA : 7, BBB : 77},{AAA : 8, BBB : 88},{AAA : 9, BBB : 99}]);
+
+    const list = [a1,a2,a3];
+
+
     return (
         <div id='cityinfomore' >
             <div>1</div>
@@ -119,7 +102,31 @@ const CityinfoMore = () => {
             <div>1</div>
             <div>1</div>
             <div>1</div>
-            { (!isLoggedIn) ? alert("로그인 후 클릭해주세요") : !checked ?
+
+            <div>1111
+                {
+                    list && list.map((item,index) => (
+                        <div><h1>{index} : TabPanel</h1>
+                            <div>
+                                <input type="text" onChange={(e)=>{
+                                    setA1([]);
+                                }}/>    
+                            </div>  
+                            {
+                                item && item.map((data,idx) => (
+                                    <div>{data.AAA} &emsp;&emsp;&emsp;{data.BBB}</div>
+
+                                ))
+                            }
+                        </div>
+                    ))
+                }
+            </div>
+
+
+
+
+            {/* { (!isLoggedIn) ? alert("로그인 후 클릭해주세요") : !checked ?
                 <button type='button' className='heart_btn'
                 onClick={insert_btn} value={false}>
                     <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like.png'/>
@@ -129,7 +136,7 @@ const CityinfoMore = () => {
                 onClick={delete_btn} value={true}>
                     <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like_on.png'/>
                 </button>
-            }
+            } */}
         </div>
         // <div id='cityinfomore' style={muiStyle}>
         //     <Box className='infobox'>

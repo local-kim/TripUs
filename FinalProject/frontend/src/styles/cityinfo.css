@@ -3,6 +3,11 @@
     height: 300px;
 }
 
+/* #cityinfo .slick-slide img {
+    width: 500px;
+    height: 300px;
+} */
+
 #cityinfo .title {
     font-weight: bold;
     color: skyblue;
@@ -221,6 +226,11 @@
 }
 
 #cityinfo .heart_btn {
+    background-color: white;
+    border: none;
+    
+}
+#cityinfo .heart_btn_on {
     background-color: white;
     border: none;
     

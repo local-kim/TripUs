@@ -70,6 +70,8 @@ const CityInfoMain = () => {
     const [checked, setChecked] = useState(false);
     // const [db_contentid,setDb_contentid] = useState('');
     // const [con_id, setCon_id] = useState(126078);
+    const [l_T_placeid,setL_T_placeid] = useState('');
+    const [like_list,setLike_list] = useState([]);
     
     // 지역 데이타 변수 
     const [areaCode,setAreaCode]=useState('6');
@@ -166,6 +168,8 @@ const CityInfoMain = () => {
     let like_url=process.env.REACT_APP_SPRING_URL+"city/like?place_id="+pcontentId+"&loginNum="+loginNum;        
     let insert_like_url=process.env.REACT_APP_SPRING_URL+"city/insertlike";
     let delete_like_url=process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+pcontentId+"&loginNum="+loginNum;
+    let like_table_url=process.env.REACT_APP_SPRING_URL+"city/liketable?loginNum="+loginNum;
+    // let like_table_url=process.env.REACT_APP_SPRING_URL+"city/liketable?&place_id="+l_T_placeid+"loginNum="+loginNum;
     // 키워드 검색 url
     let keyWord_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${API_KEY}&keyword=${keyWord}&areaCode=${areaCode}&numOfRows=2&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
@@ -178,11 +182,12 @@ const CityInfoMain = () => {
     useEffect(() => {
         place_area_Data();
         trip_weather_Data();
-        myLike();
+        // myLike();
+        like_table();
     }, []);
     const place_area_Data = () => {
         // console.log(areaUrl)
-        console.log("axios.place_area_Data");
+        // console.log("axios.place_area_Data");
         axios.get(PlaceUrl)
         .then(response => {
             setCityData(response);
@@ -224,7 +229,7 @@ const CityInfoMain = () => {
         .catch(err => console.log(err))
     }
     const trip_weather_Data = () => {
-        console.log("trip_weather_Data");
+        // console.log("trip_weather_Data");
         axios.get(trip_url)
         .then((res8) => {
             setCityPlan(res8.data);
@@ -244,7 +249,7 @@ const CityInfoMain = () => {
 
     // 날씨 API 데이터
     useEffect(()=>{
-        console.log("weather_url");
+        // console.log("weather_url");
         delete axios.defaults.headers.common['Authorization'];
         axios.get(weather_url)
         .then(res=>{
@@ -277,35 +282,54 @@ const CityInfoMain = () => {
     const insert_btn = (e, contentid) => {
         if (!isLoggedIn) {
             alert("로그인 후 이용해주세요")
-        } else {
+        }
             axios.post(insert_like_url,{place_id:String(contentid),loginNum,check:Number(checked)})
             .then(res=>{
                 alert("좋아요 true:",res.data);
-                setLike_btn(true);
+                // setLike_btn(true);
+                like_table();
             })
-        }
     }
     // 좋아요 OFF
-    const delete_btn = (e, contentid) => (
-        axios.delete(process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+contentid+"&loginNum="+loginNum,{place_id:String(contentid), loginNum : loginNum})
-        .then(res=>{
-            console.log("delete_like_url : "+ delete_like_url)
-            alert("좋아요 false");
-            setLike_btn(false);
-        })
-    )
+    const delete_btn = (e, contentid) => {
+            axios.delete(process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+contentid+"&loginNum="+loginNum,{place_id:String(contentid), loginNum : loginNum})
+            .then(res=>{
+                console.log("delete_like_url : "+ delete_like_url)
+                alert("좋아요 false");
+                like_table();
+                // setLike_btn(false);
+            })
+    }
+
+    // const on_off_btn = () => {
+    //     if (!isLoggedIn) {
+    //         alert("로그인 후 이용해주세요")
+    //     } else {
+    //         if ()
+    //     }
+    // }
+
+
     // DB select
-    const myLike=()=>{
-        if(!isLoggedIn){
-            return;
-        }
-        axios.get(like_url)
-        .then(res=>{
-            if(res.data == 0){
-                setLike_btn(false);
-            }else{
-                setLike_btn(true);
-            }
+    // const myLike=()=>{
+    //     if(!isLoggedIn){
+    //         return;
+    //     }
+    //     axios.get(like_url)
+    //     .then(res=>{
+    //         if(res.data == 0){
+    //             setLike_btn(false);
+    //         }else{
+    //             setLike_btn(true);
+    //         }
+    //     })
+    // }
+    // like table에서 place_id랑 loginNum 가져와서 클릭한 카드의 contentid 비교해서 insert,delete 버튼 실행하기
+    const like_table = () => {
+        axios.get(like_table_url)
+        .then(res => {
+            setLike_list(res.data);  // like 테이블에 있는 place_id 여기에 member_num(loginNum)만 +해서 비교하면 될 듯?
+            console.log(res.data)
         })
     }
 
@@ -386,7 +410,10 @@ const CityInfoMain = () => {
 
     // console.log("categoryPlace1 : ",categoryPlace1);
     // console.log("weather_url : "+weather_url);
-    console.log("like_url : " + like_url);
+    // console.log("like_url : " + like_url);
+    console.log("l_T_placeid : "+ l_T_placeid);
+    console.log("like_table_url : " + like_table_url);
+    
 
 
     return (
@@ -514,22 +541,25 @@ const CityInfoMain = () => {
                                     {
                                         categoryPlace0 && categoryPlace0.map((item, idx) => (
                                             <div className='col-sm-3'>
-                                                
-                                                    { 
-                                                        like_btn == false ?
-                                                        <button type='button' className='heart_btn'
-                                                        onClick={()=>{insert_btn(event, item.contentid)}}>
-                                                            <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like.png'/>
-                                                        </button>
-                                                        :
-                                                        <button type='button' className='heart_btn'
-                                                        onClick={()=>{delete_btn(event, item.contentid)}}>
-                                                            <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like_on.png'/>
-                                                        </button>
-                                                        
-                                                    }
-                                                <div>
-                                                </div>
+                                                { 
+                                                    like_list.includes(item.contentid) ?
+                                                    <button type='button' className='heart_btn'
+                                                    onClick={()=>{
+                                                        delete_btn(event, item.contentid)
+                                                        // setL_T_placeid(item.contentid)///
+                                                        }}>
+                                                        <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like_on.png'/>
+                                                    </button>
+                                                    :
+                                                    <button type='button' className='heart_btn_on'
+                                                    onClick={()=>{
+                                                        // setL_T_placeid(item.contentid)
+                                                        insert_btn(event, item.contentid)
+                                                        }}>
+                                                        <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like.png'/>
+                                                    </button>
+                                                    
+                                                }
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
@@ -570,6 +600,25 @@ const CityInfoMain = () => {
                                     {
                                         categoryPlace1 && categoryPlace1.map((item, idx) => (
                                             <div className='col-sm-3'>
+                                                { 
+                                                    like_list.includes(item.contentid) ?
+                                                    <button type='button' className='heart_btn'
+                                                    onClick={()=>{
+                                                        // setL_T_placeid(item.contentid)
+                                                        delete_btn(event, item.contentid)
+                                                        }}>
+                                                        <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like_on.png'/>
+                                                    </button>
+                                                    :
+                                                    <button type='button' className='heart_btn_on'
+                                                    onClick={()=>{
+                                                        // setL_T_placeid(item.contentid)
+                                                        insert_btn(event, item.contentid)
+                                                        }}>
+                                                        <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like.png'/>
+                                                    </button>
+                                                    
+                                                }
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
