@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import { FinalHead, Footer, Header, Main, Menu } from "./components";
 import './App.css';
-import './AppHeemin.css';
+import './main.css';
 import { CityInfoMain, CityinfoMore, PlaceInfo } from "./pages/cityinfo";
 import { PlanMain } from "./pages/plan";
 import { UpdatePlanMain } from "./pages/update_plan";
