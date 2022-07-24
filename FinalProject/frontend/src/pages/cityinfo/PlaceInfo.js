@@ -567,9 +567,10 @@ const PlaceInfo=()=>{
     };
     
     return (
+        <div style={{justifyContent:'center',flexDirection:'column'}}>
         <div className='place_info'>
 
-            <Box sx={{ width: 'inherit', typography: 'body1' }}>
+            {/* <Box sx={{ width: 'inherit', typography: 'body1' }}>
             <TabContext value={value}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 
@@ -578,118 +579,16 @@ const PlaceInfo=()=>{
             <Tab label="Review" value="2" />
             {/* <Tab label="Item Three" value="3" /> */}
 
-            </TabList>
+           {/*</TabList>
             </Box>
         
             <TabPanel value="1">
-                <div id='place_map'>
-                </div>
-            </TabPanel>
-            <TabPanel value="2" sx={{overflow:'scroll',overflowX:'hidden',padding:'0'}}>
-                 <div style={{width:'700px',height:'500px',display:'flex'}}>
-                  <div>
-                    {/* <p>{reviewData}</p> */}
-                    {reviewData.length == 0 ? <p style={{color:'gray'}}>후기글을 없습니다</p>: ""}
-                    {
-                      reviewData&&reviewData.map((row,idx)=>(
-                        <div style={{display:'flex',borderBottom:'1px solid gray',margin:'10px'}} >
-                        <div style={{flexDirection:'column',justifyContent:'center'}}>
-                          <div>
-                         <img src={row.file_name==null?Ayong:profilePhotoUrl+row.file_name} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
-                          </div>
-                          <div style={{marginTop:'5px',textAlign:'center'}}>
-                          {row.name}
-                          </div>
-                          </div>  
-                          <div style={{display:'flex',flexDirection:'column',marginLeft:'15px'}}>
-                          <div style={{display:'flex',flexDirection:'row'}}>
-                          <div style={{backgroundColor:'white',height:'50px',width:'550px',padding:'5px 0px 0px 5px'}} onClick={()=>{onDetail(row.num,idx);}}>
-                          {row.content}
-                          </div>
-                          {isLoggedIn&&loginNum==row.member_num ? 
-                          <div style={{flexGrow:'0'}}>
-                            <Component num={row.num} onEditReviewDetail={onEditReviewDetail} onDelete={onDelete}/>
-                            {/*<Button
-                              id="basic-button"
-                              aria-controls={editopen ? 'basic-menu' : undefined}
-                              aria-haspopup="true"
-                              aria-expanded={editopen ? 'true' : undefined}
-                              onClick={handleClick}
-                            >
-                              ⋮
-                            </Button>
-                            <Menu
-                              id="basic-menu"
-                              anchorEl={anchorEl}
-                              open={editopen}
-                              onClose={editeHandleClose}
-                              MenuListProps={{
-                                'aria-labelledby': 'basic-button',
-                              }}
-                              
-                            >
-                              
-                                <div>
-                              <MenuItem onClick={()=>{onEditReviewDetail(row.num)}}>수정하기</MenuItem>
-                              <MenuItem onClick={()=>{onDelete(row.num)}}>삭제하기</MenuItem>
-                              </div>
-                               <MenuItem onClick={handleClose}>Logout</MenuItem> 
-                            </Menu>*/}
-                          {/* <span style={{cursor:'pointer'}} onClick={()=>{onEditReviewDetail(row.num);}}>수정</span>
-                          &nbsp;&nbsp;|&nbsp;&nbsp;
-                          <span className='myreviewDelete' style={{cursor:'pointer'}} onClick={()=>{
-                            onDelete(row.num);
-                          }}>삭제</span> */}
-                       </div> : ""
-                      }
-                          </div>
-                       <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
-                        <div style={{flexGrow:'3'}}>
-                        {row.created_at}&nbsp;&nbsp;&nbsp;
-                       <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
-                       </div>
-                       </div>
-                       </div>
-                      </div>
-                      ))
-                    }
-                  </div>
-                </div> 
-                  {/*페이징 */}
-
-                  {/* <Pagination count={10} color="primary" />
-                  
-                <div style={{width:'700px',textAlign:'center'}}>
-                    <ul className='pagination'>
-                        {
-                        (reviewData.startPage>1?<li>
-                            <Link to={`/place/pagelist/${reviewData.startPage-1}`}>이전</Link>
-                        </li>:'')
-                        }
-
-                        {
-                            
-                            reviewData.parr&&reviewData.parr.map(n=>{
-                                const url="/place/pagelist/"+n;
-                                return(
-
-                                    <li className={n == currentPage ? 'active' : ''}>
-                                        <Link to={url}>{n}</Link>
-                                    </li>
-                                )
-                            })
-                        }
-                        {
-                        (reviewData.endPage<reviewData.totalPage?
-                        <li>
-                            <Link to={`/place/pagelist/${reviewData.endPage+1}`}>다음</Link>
-                        </li>:'')
-                    }
-                    </ul>
-                </div> */}
-            </TabPanel>
+               
+            </TabPanel> */}
+            {/* <TabPanel value="2" sx={{overflow:'scroll',overflowX:'hidden',padding:'0'}}> */}
+            {/* </TabPanel>
             </TabContext>
-            </Box>
+            </Box> */}
         
             <div className='place_all_data'>
             <div className='place_sub_data'>
@@ -759,48 +658,6 @@ const PlaceInfo=()=>{
                     <i className="fa-solid fa-heart" style={{color:'#E2264D'}}></i>&nbsp;&nbsp;{sumLikes}
                 </div>
             </div>
-            <br/>
-
-            <div className='stars'>
-            <Box sx={{'& > legend': { mt: 2 },}}>
-
-              <Typography component="legend">{member_num}</Typography> 
-              
-              <Rating
-                name="half-rating" className='mystar'
-                value={starsvalue} precision={0.5}
-                onChange={(event, newValue) => {
-                  setStarsValue(newValue);
-                  setStars(newValue);
-                }}/> 
-                
-                {/*imgfile */}
-                <label for="file">
-                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
-                  </label>
-                  
-                  <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} onClick={()=>console.log("그냥")}  id="file" />
-                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
-                  <p>{filename}</p>
-                  {/*map돌릴예정*/}
-                  {
-                      filename&&filename.map((row,idx)=>(
-                        <div>
-                     <img src={photoUrl+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
-                     <button type="button" onClick={()=>{
-                      // onOneDelete(editDetailData[idx].review_photo_num);
-                      deleteFileImage(idx);
-                     }}>삭제</button>
-                     </div>
-                      ))}
-          </Box> 
-             </div> 
-            <div className='place_review_write'>
-            
-                <textarea placeholder='50글자내로 작성해주세요🥕' className='review' value={refreshReview} onChange={(e)=>{setContent(e.target.value);}}></textarea>
-                <button type='button' className='btn_review_write' onClick={writeReview}>글쓰기</button>
-            </div>
-
 
              {/* 상세보기 */}
 
@@ -965,6 +822,90 @@ const PlaceInfo=()=>{
                   </Modal>
                 </div>
         </div>
+        <div id='place_map'></div>
+        </div>
+          <div className='place_review_write'>
+            <div style={{width: '1090px'}}>
+            <Box sx={{'& > legend': { mt: 2 },}}>
+              <Typography component="legend">{member_num}</Typography> 
+              
+              <Rating
+                name="half-rating" className='mystar'
+                value={starsvalue} precision={0.5}
+                onChange={(event, newValue) => {
+                  setStarsValue(newValue);
+                  setStars(newValue);
+                }}/> 
+                
+                {/*imgfile */}
+                <label for="file">
+                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
+                  </label>
+                  
+                  <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} onClick={()=>console.log("그냥")}  id="file" />
+                  {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
+                  <p>{filename}</p>
+                  {/*map돌릴예정*/}
+                  {
+                      filename&&filename.map((row,idx)=>(
+                        <div>
+                     <img src={photoUrl+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
+                     <button type="button" onClick={()=>{
+                      // onOneDelete(editDetailData[idx].review_photo_num);
+                      deleteFileImage(idx);
+                     }}>삭제</button>
+                     </div>
+                      ))}
+              </Box> 
+
+                <div style={{display:'inline-flex'}}>
+                <textarea placeholder='50글자내로 작성해주세요🥕' className='review' value={refreshReview} onChange={(e)=>{setContent(e.target.value);}}></textarea>
+                <button type='button' className='btn_review_write' onClick={writeReview}>글쓰기</button>
+                </div>
+                </div>
+            </div> 
+            
+                   {/* 리뷰들*/}
+                    <div style={{justifyContent:'center',display:'flex',marginTop:'10px'}}>
+                  <div style={{width:'1090px',height:'500px',display:'flex',overflow:'scroll',overflowX:'hidden'}}>
+                  <div>
+                    {/* <p>{reviewData}</p> */}
+                    {reviewData.length == 0 ? <p style={{color:'gray'}}>후기글을 없습니다</p>: ""}
+                    {
+                      reviewData&&reviewData.map((row,idx)=>(
+                        <div style={{display:'flex',borderBottom:'1px solid #a3a3a3',margin:'10px',width:'1072px'}} >
+                        <div style={{flexDirection:'column',justifyContent:'center'}}>
+                          <div>
+                         <img src={row.file_name==null?Ayong:profilePhotoUrl+row.file_name} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                          </div>
+                          <div style={{marginTop:'5px',textAlign:'center'}}>
+                          {row.name}
+                          </div>
+                          </div>  
+                          <div style={{display:'flex',flexDirection:'column',marginLeft:'15px'}}>
+                          <div style={{display:'flex',flexDirection:'row'}}>
+                          <div style={{backgroundColor:'white',height:'50px',width:'550px',padding:'5px 0px 0px 5px'}} onClick={()=>{onDetail(row.num,idx);}}>
+                          {row.content}
+                          </div>
+                          {isLoggedIn&&loginNum==row.member_num ? 
+                          <div style={{flexGrow:'0'}}>
+                            <Component num={row.num} onEditReviewDetail={onEditReviewDetail} onDelete={onDelete}/>
+                       </div> : ""
+                      }
+                          </div>
+                       <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
+                        <div style={{flexGrow:'3'}}>
+                        {row.created_at}&nbsp;&nbsp;&nbsp;
+                       <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
+                       </div>
+                       </div>
+                       </div>
+                      </div>
+                      ))
+                    }
+                  </div>
+                </div> 
+                </div>
         </div>
     );
 }
