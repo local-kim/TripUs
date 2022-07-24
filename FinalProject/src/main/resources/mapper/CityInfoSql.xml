@@ -28,7 +28,7 @@
 	</select> -->
 	
 	<select id="getTripData" parameterType="int" resultType="tripdata">
-		select * from trip where city_num=#{city_num} and member_num=#{member_num} order by start_date
+		select * from trip where end_date > now() and city_num=#{city_num} and member_num=#{member_num} order by start_date
 	</select>
 	<!-- <select id="getTripData" parameterType="int" resultType="tripdata">
 		select (tripnum,tripname,memeber_num,city_num,start_date,end_date,days,citynum,cityname,eng_name,country,image,area_code,sigungu_code) 
