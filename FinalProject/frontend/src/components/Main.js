@@ -5,7 +5,7 @@ import { ReactDOM } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import '../AppHeemin.css';
+import '../main.css';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -23,12 +23,13 @@ import MainLogo from '../assets/images/MainLogo.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../modules/auth';
 import AnimatedNumber from "react-animated-numbers"
+import page2img from '../assets/images/busan1.jpg';
 
 import Fullpage,{FullPageSections,FullpageSection,FullpageNavigation} from '@ap.cx/react-fullpage';
 import Myslide from './Myslide';
 import Myslide2 from './Myslide2';
 
-import '../AppHeemin.css';
+import '../main.css';
 import axios from 'axios';
 import jQuery from 'jquery';
 import { NavLink } from 'react-router-dom';
@@ -262,6 +263,18 @@ const Main=(row)=>{
 
     }
 
+
+    const sectionStyle5 = {
+      
+      height:'100vh',
+      width: '100%',
+    
+      justifyContent: 'center',
+      alignItems:'center',
+      
+
+  }
+
     const Search=(e)=>{
 
 
@@ -464,13 +477,11 @@ const Main=(row)=>{
         </Toolbar>
       </Container>
     </AppBar>
+
+
           <FullpageNavigation/>
             <FullPageSections>
-                
-                <FullpageSection style={sectionStyle3}>
-   
-
-                   
+                <FullpageSection style={sectionStyle3}>      
                      <div className='main_top'>
                              <div style={{zIndex:'-9999'}}>
                             <video muted autoPlay loop style={{width:'100%', height:'100vh', objectFit:'cover',position:'absolute'}}>
@@ -493,8 +504,258 @@ const Main=(row)=>{
                     </div>  
               
                 </FullpageSection>
-                
                 <FullpageSection style={sectionStyle}>                
+                    
+                <div className="page2Wrap" >
+                    <div className='page2img' style={{       
+                            color:'white',
+                            height: '100vh',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width:'60vh',
+                            fontWeight:'bold'
+                            
+                            }}>
+                   
+                        <h7 style={{marginBottom:'350px', fontSize:'px'}}>
+                            여행 일자, 숙소, 가고 싶은 장소만
+                            <br/>
+                            선택하면 일정이 자동으로 완성되는
+                            <br/>
+                            쉽고 간편한 여행 일정 플래너</h7>
+                            
+
+                        <div style={{marginTop:'720px',marginLeft:'30px', color:'white' , fontSize:'25px'}}>
+                            <AnimatedNumber style={{display:'inline-block'}}
+                                              fontStyle={{ fontFamily: "Nunito" , fontWeight:'bold', color:'white' , fontSize:'25px' }}
+                                              animateToNumber={number}
+                                              includeComma
+                                              config={{ tension: 89, friction: 40 }}
+                                              onStart={() => console.log("onStart")}
+                                              onFinish={() => console.log("onFinish")}
+                                              animationType={"calm"}
+                                            />유저수
+                        </div>
+
+                               <div style={{marginTop:'720px' , marginLeft:'60px',color:'white', fontSize:'25px'}}>
+                            <AnimatedNumber style={{display:'inline-block'}}
+                                              fontStyle={{ fontFamily: "Nunito", fontSize:'25px', fontWeight:'bold' ,color:'white' }}
+                                              animateToNumber={number2}
+                                              includeComma
+                                              config={{ tension: 89, friction: 40 }}
+                                              onStart={() => console.log("onStart")}
+                                              onFinish={() => console.log("onFinish")}
+                                              animationType={"calm"}
+                                            />일정수
+                        </div>                           
+                    </div>
+                </div>
+
+                <div style={{margin: '0' , padding: '0'}} className="uk-width-3-5@m">
+                    <div>
+                        <div className="row" style={{height: '300px'}}>
+                            <div style={{
+                                    margin: '0',
+                                    padding: '0',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    msFlexDirection: 'column',
+                                    backgroundColor: '#fff',
+                                    height: '100%',
+                                    marginLeft:'20px'}}
+                                   className = "col s12 m4">
+
+                                <h4 style={{fontFamily: 'Montserrat !important', textAlign:'center'}}>
+                                    <b>STEP 1</b>
+                                    <br/>
+                                    <br/>
+                                <div>여행지선택</div>
+                                </h4>
+                            
+                              </div>
+
+                                                
+                                <div style={{
+                                    margin: '0',
+                                    padding: '0',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    msFlexDirection: 'column',
+                                    backgroundColor: '#fff',
+                                    height: '100%'}}
+                                   className = "col s12 m4">
+
+                                <h4 style={{fontFamily: 'Montserrat !important'}}>
+                                    <b>STEP 2</b>
+                                    <br/>
+                                    <br/>
+                                <div>장소선택</div>
+                                </h4>
+                               
+
+                                </div>
+
+                                <div style={{
+                                    margin: '0',
+                                    padding: '0',
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    msFlexDirection: 'column',
+                                    backgroundColor: '#fff',
+                                    height: '100%'}}
+                                   className = "col s12 m4">
+
+                                <h4 style={{fontFamily: 'Montserrat !important'}}>
+                                    <b>STEP 3</b>
+                                    <br/>
+                                    <br/>
+                                <div>일정생성</div>
+                                </h4>
+
+
+                                  </div>
+                                
+                          </div>
+       
+                   
+                            </div>
+                        </div>
+                    
+             </FullpageSection>
+
+
+             <FullpageSection style={sectionStyle5}>                
+                    
+             <div className="page2Wrap" >
+                      <div style={{margin: '0' , padding: '0' ,alignSelf:'center'}} className="uk-width-3-5@m">                      
+                            <div className="row" style={{height:'150px'}}>
+                                <div style={{
+                                        margin: '0',
+                                        padding: '0',
+                                        display: 'flex',
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        msFlexDirection: 'column',
+                                        backgroundColor: '#fff',
+                                        height: '100%',
+                                        marginLeft:'20px',
+                                        }}
+                                       className = "col s12 m4">
+    
+                                    <h4 style={{fontFamily: 'Montserrat !important', textAlign:'center'}}>
+                                        <b>STEP 1</b>
+                                        <br/>
+                                        <br/>
+                                    <div>여행지선택</div>
+                                    </h4>
+                                
+                                  </div>
+    
+                                                          
+                                          <div style={{
+                                              margin: '0',
+                                              padding: '0',
+                                              display: 'flex',
+                                              justifyContent: 'center',
+                                              alignItems: 'center',
+                                              msFlexDirection: 'column',
+                                              backgroundColor: '#fff',
+                                              height: '100%'}}
+                                            className = "col s12 m4">
+          
+                                          <h4 style={{fontFamily: 'Montserrat !important'}}>
+                                              <b>STEP 2</b>
+                                              <br/>
+                                              <br/>
+                                          <div>장소선택</div>
+                                          </h4>
+                                        
+    
+                                    </div>
+    
+                                    <div style={{
+                                            margin: '0',
+                                            padding: '0',
+                                            display: 'flex',
+                                            justifyContent: 'center',
+                                            alignItems: 'center',
+                                            msFlexDirection: 'column',
+                                            backgroundColor: '#fff',
+                                            height: '100%'}}
+                                          className = "col s12 m4">
+        
+                                        <h4 style={{fontFamily: 'Montserrat !important'}}>
+                                            <b>STEP 3</b>
+                                            <br/>
+                                            <br/>
+                                        <div>일정생성</div>
+                                        </h4>
+                                    </div>  
+                                  </div>
+                                </div>
+                                 
+
+                                    <div className='page2img' style={{       
+                                      color:'white',
+                                      height: '100vh',
+                                      display: 'flex',
+                                      justifyContent: 'center',
+                                      alignItems: 'center',
+                                      width:'90vh',
+                                      fontWeight:'bold'
+                                      
+                                      }}>
+                       
+                                <h7 style={{marginBottom:'350px', fontSize:'px'}}>
+                                    여행 일자, 숙소, 가고 싶은 장소만
+                                    <br/>
+                                    선택하면 일정이 자동으로 완성되는
+                                    <br/>
+                                    쉽고 간편한 여행 일정 플래너</h7>
+                                    
+                               
+        
+                                  <div style={{marginTop:'720px',marginLeft:'30px', color:'white' , fontSize:'25px'}}>
+                                      <AnimatedNumber style={{display:'inline-block'}}
+                                                        fontStyle={{ fontFamily: "Nunito" , fontWeight:'bold', color:'white' , fontSize:'25px' }}
+                                                        animateToNumber={number}
+                                                        includeComma
+                                                        config={{ tension: 89, friction: 40 }}
+                                                        onStart={() => console.log("onStart")}
+                                                        onFinish={() => console.log("onFinish")}
+                                                        animationType={"calm"}
+                                                      />유저수
+                                    </div>
+    
+                                   <div style={{marginTop:'720px' , marginLeft:'60px',color:'white', fontSize:'25px'}}>
+                                <AnimatedNumber style={{display:'inline-block'}}
+                                                  fontStyle={{ fontFamily: "Nunito", fontSize:'25px', fontWeight:'bold' ,color:'white' }}
+                                                  animateToNumber={number2}
+                                                  includeComma
+                                                  config={{ tension: 89, friction: 40 }}
+                                                  onStart={() => console.log("onStart")}
+                                                  onFinish={() => console.log("onFinish")}
+                                                  animationType={"calm"}
+                                                />일정수
+                                                                    
+                                        </div>
+                                      </div>
+                                    </div>
+                                            
+                                          
+                                
+                        
+                        
+                 </FullpageSection>
+                
+
+
+                
+                {/* <FullpageSection style={sectionStyle}>                
                     
                     <div className='page white'>
                         <div className='wrap'>
@@ -558,7 +819,7 @@ const Main=(row)=>{
                         </div>
                     </div>
                 </div>
-             </FullpageSection>
+             </FullpageSection> */}
                 
             <FullpageSection style={sectionStyle}>
                 <div className="page silver" style={{paddingTop:"30px"}}>    

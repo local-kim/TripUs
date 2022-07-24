@@ -116,9 +116,9 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   }  */
   
   
-  div, input, label, a, select, ul, li { 
+  /* div, input, label, a, select, ul, li { 
      box-sizing: border-box;
-  }
+  } */
   
   .main_top_title{
     color: white;
@@ -173,9 +173,6 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
    
   }
   
-  .clear{
-    clear: both;
-  }
   
   .intro_box:hover img {
     box-shadow: 0px 0px 7px rgb(0 0 0 / 50%);
@@ -275,10 +272,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   }
   
 
-  
-  a:hover{
-    color:blue;
-  }
+
   
   .intro_box {
     width: 348px;
@@ -622,5 +616,67 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
 
 .animated-container{
   display: inline-flex;
+
+}
+
+.uk-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+.uk-grid-match > * > :not([class*='uk-width']) {
+  box-sizing: border-box;
+  width: 100%;
+  flex: auto;
+}
+
+
+.row .col.m4 {
+    width: 33.3333333333%;
+    margin-left: auto;
+    left: auto;
+    right: auto;
+}
+
+
+.uk-width-3-5\@m {
+    width: 60%;
+}
+
+[class*='uk-width'] {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+.uk-grid-item-match, .uk-grid-match > * {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.uk-grid > * > :last-child {
+  margin-bottom: 0;
+}
+
+.uk-grid-match > * > :not([class*='uk-width']) {
+  box-sizing: border-box;
+  width: 100%;
+  flex: auto;
+}
+
+
+
+.page2Wrap{
+  display: flex;
+}
+
+.page2img{
+  background-image:url(./assets/images/busan1.jpg);  
+  background-position: center;
+  background-size: cover;
 
 }
