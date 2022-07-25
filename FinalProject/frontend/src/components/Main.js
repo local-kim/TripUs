@@ -24,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../modules/auth';
 import AnimatedNumber from "react-animated-numbers"
 import page2img from '../assets/images/busan1.jpg';
+import page3img from '../assets/images/junjoo1.jpg';
 
 import Fullpage,{FullPageSections,FullpageSection,FullpageNavigation} from '@ap.cx/react-fullpage';
 import Myslide from './Myslide';
@@ -496,7 +497,7 @@ const Main=(row)=>{
                                 <div className='city_autocomplete' style={{display:'block'}}></div>
                                 <input className='search_input' placeholder='국가명,도시명으로 검색' autoComplete="off" onKeyUp={Search} ></input>
                                 <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(<li onClick={()=>{navi(`/city/${data.num}`)}} >{data.name} <span className="h_search_cicu">대한민국</span></li> ))}</ul>
-                                    <div className='latest_search'><Link to={`city/list`} style={{color:'white'}}>추천도시</Link>:  <Link to={`city/108`} style={{color:'white'}}>서울</Link> <Link to={`city/159`} style={{color:'white'}}>부산</Link> <Link to={`city/184`} style={{color:'white'}}>제주</Link> <Link to={`city/136`} style={{color:'white'}}>안동</Link> <Link to={`city/105`} style={{color:'white'}}>강릉</Link> </div>
+                                    <div className='latest_search'><Link to={`city/list`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>추천도시</Link>:  <Link to={`city/108`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>서울</Link> <Link to={`city/159`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>부산</Link> <Link to={`city/184`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>제주</Link> <Link to={`city/136`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>안동</Link> <Link to={`city/105`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>강릉</Link> </div>
                             </div>
                             
                         </div>
@@ -506,7 +507,7 @@ const Main=(row)=>{
                 </FullpageSection>
                 <FullpageSection style={sectionStyle}>                
                     
-                <div className="page2Wrap" >
+                <div className="page2Wrap" style={{fontFamily:'Montserrat'}} >
                     <div className='page2img' style={{       
                             color:'white',
                             height: '100vh',
@@ -514,21 +515,22 @@ const Main=(row)=>{
                             justifyContent: 'center',
                             alignItems: 'center',
                             width:'60vh',
-                            fontWeight:'bold'
+                            fontWeight:'bold',
+                            fontFamily: 'Montserrat'
                             
                             }}>
                    
-                        <h7 style={{marginBottom:'350px', fontSize:'px'}}>
-                            여행 일자, 숙소, 가고 싶은 장소만
+                        <h7 style={{marginBottom:'350px', fontSize:'px',fontFamily:'Montserrat'}}>
+                            여행 일자,가고 싶은 장소만
                             <br/>
                             선택하면 일정이 자동으로 완성되는
                             <br/>
                             쉽고 간편한 여행 일정 플래너</h7>
                             
 
-                        <div style={{marginTop:'720px',marginLeft:'30px', color:'white' , fontSize:'25px'}}>
+                        <div style={{marginTop:'720px',marginLeft:'30px', color:'white' , fontSize:'25px',fontFamily:'Montserrat'}}>
                             <AnimatedNumber style={{display:'inline-block'}}
-                                              fontStyle={{ fontFamily: "Nunito" , fontWeight:'bold', color:'white' , fontSize:'25px' }}
+                                              fontStyle={{ fontFamily: ",fontFamily:'Montserrat'" , fontWeight:'bold', color:'white' , fontSize:'25px' }}
                                               animateToNumber={number}
                                               includeComma
                                               config={{ tension: 89, friction: 40 }}
@@ -538,16 +540,16 @@ const Main=(row)=>{
                                             />유저수
                         </div>
 
-                               <div style={{marginTop:'720px' , marginLeft:'60px',color:'white', fontSize:'25px'}}>
+                               <div style={{marginTop:'720px' , marginLeft:'60px',color:'white', fontSize:'25px',fontFamily:'Montserrat'}}>
                             <AnimatedNumber style={{display:'inline-block'}}
-                                              fontStyle={{ fontFamily: "Nunito", fontSize:'25px', fontWeight:'bold' ,color:'white' }}
+                                              fontStyle={{ fontFamily: ",fontFamily:'Montserrat'", fontSize:'25px', fontWeight:'bold' ,color:'white'  }}
                                               animateToNumber={number2}
                                               includeComma
                                               config={{ tension: 89, friction: 40 }}
                                               onStart={() => console.log("onStart")}
                                               onFinish={() => console.log("onFinish")}
                                               animationType={"calm"}
-                                            />일정수
+                                            />여행지
                         </div>                           
                     </div>
                 </div>
@@ -568,10 +570,10 @@ const Main=(row)=>{
                                    className = "col s12 m4">
 
                                 <h4 style={{fontFamily: 'Montserrat !important', textAlign:'center'}}>
-                                    <b>STEP 1</b>
+                                    <b style={{fontSize:'35px' ,fontFamily:'Montserrat'}}>STEP 1</b>
                                     <br/>
                                     <br/>
-                                <div>여행지선택</div>
+                                <div style={{color: 'gray' , fontSize:'25px' , textAlign:'center',fontFamily:'Montserrat'}}>여행지선택</div>
                                 </h4>
                             
                               </div>
@@ -589,10 +591,12 @@ const Main=(row)=>{
                                    className = "col s12 m4">
 
                                 <h4 style={{fontFamily: 'Montserrat !important'}}>
-                                    <b>STEP 2</b>
+                                    <b style={{fontSize:'35px',fontFamily:'Montserrat'}}>STEP 2</b>
                                     <br/>
                                     <br/>
-                                <div>장소선택</div>
+                                <div style={{color: 'gray' , fontSize:'25px' , textAlign:'center',fontFamily:'Montserrat'}}>장소선택</div>
+                               
+                                
                                 </h4>
                                
 
@@ -610,18 +614,16 @@ const Main=(row)=>{
                                    className = "col s12 m4">
 
                                 <h4 style={{fontFamily: 'Montserrat !important'}}>
-                                    <b>STEP 3</b>
+                                    <b style={{fontSize:'35px',fontFamily:'Montserrat'}}>STEP 3</b>
                                     <br/>
                                     <br/>
-                                <div>일정생성</div>
+                                <div style={{color: 'gray' , fontSize:'25px' , textAlign:'center',fontFamily:'Montserrat'}}>일정생성</div>
                                 </h4>
 
 
                                   </div>
-                                
-                          </div>
-       
-                   
+                                  <button style={{fontSize:'20px', display:'flex' , justifyContent:'center',marginLeft:'15px' , marginTop:'70px'}}>지금 일정 만들기</button>
+                               </div>                   
                             </div>
                         </div>
                     
@@ -643,14 +645,15 @@ const Main=(row)=>{
                                         backgroundColor: '#fff',
                                         height: '100%',
                                         marginLeft:'20px',
+                                        
                                         }}
                                        className = "col s12 m4">
     
                                     <h4 style={{fontFamily: 'Montserrat !important', textAlign:'center'}}>
-                                        <b>STEP 1</b>
+                                    <b style={{fontSize:'35px' ,fontFamily:'Montserrat'}}>STEP 4</b>
                                         <br/>
                                         <br/>
-                                    <div>여행지선택</div>
+                                        <div style={{color: 'gray' , fontSize:'25px' , textAlign:'center',fontFamily:'Montserrat'}}>일정공유</div>
                                     </h4>
                                 
                                   </div>
@@ -668,10 +671,10 @@ const Main=(row)=>{
                                             className = "col s12 m4">
           
                                           <h4 style={{fontFamily: 'Montserrat !important'}}>
-                                              <b>STEP 2</b>
+                                          <b style={{fontSize:'35px' ,fontFamily:'Montserrat'}}>STEP 5</b>
                                               <br/>
                                               <br/>
-                                          <div>장소선택</div>
+                                              <div style={{color: 'gray' , fontSize:'25px' , textAlign:'center',fontFamily:'Montserrat'}}>리뷰작성</div>
                                           </h4>
                                         
     
@@ -689,33 +692,38 @@ const Main=(row)=>{
                                           className = "col s12 m4">
         
                                         <h4 style={{fontFamily: 'Montserrat !important'}}>
-                                            <b>STEP 3</b>
+                                        <b style={{fontSize:'35px' ,fontFamily:'Montserrat'}}>STEP 6</b>
                                             <br/>
                                             <br/>
-                                        <div>일정생성</div>
+                                            <div style={{color: 'gray' , fontSize:'25px' , textAlign:'center',fontFamily:'Montserrat'}}>추천하기</div>
                                         </h4>
-                                    </div>  
-                                  </div>
+                                    </div>
+                                    <button style={{fontSize:'20px', display:'flex' , justifyContent:'center',marginLeft:'15px' , marginTop:'130px'}}>지금 일정 만들기</button>  
+                                  </div>                                 
                                 </div>
+
+                                
                                  
 
-                                    <div className='page2img' style={{       
+                                    <div className='page3img' style={{       
                                       color:'white',
                                       height: '100vh',
                                       display: 'flex',
                                       justifyContent: 'center',
                                       alignItems: 'center',
                                       width:'90vh',
-                                      fontWeight:'bold'
+                                      fontWeight:'bold',
+                                      // background: 'linear-gradient(to left, rgb(113,113,255),rgb(138,255,146))'
                                       
                                       }}>
-                       
-                                <h7 style={{marginBottom:'350px', fontSize:'px'}}>
-                                    여행 일자, 숙소, 가고 싶은 장소만
+
+      
+                              <h7 style={{marginBottom:'350px', fontSize:'px'}}>
+                                    여행 공유, 지역추천
                                     <br/>
-                                    선택하면 일정이 자동으로 완성되는
+                                    모든 사람들과 일정 공유를
                                     <br/>
-                                    쉽고 간편한 여행 일정 플래너</h7>
+                                    쉽고 간편한 여행 일정 플래너</h7> 
                                     
                                
         
@@ -728,7 +736,7 @@ const Main=(row)=>{
                                                         onStart={() => console.log("onStart")}
                                                         onFinish={() => console.log("onFinish")}
                                                         animationType={"calm"}
-                                                      />유저수
+                                                      />일정수
                                     </div>
     
                                    <div style={{marginTop:'720px' , marginLeft:'60px',color:'white', fontSize:'25px'}}>
@@ -740,17 +748,12 @@ const Main=(row)=>{
                                                   onStart={() => console.log("onStart")}
                                                   onFinish={() => console.log("onFinish")}
                                                   animationType={"calm"}
-                                                />일정수
+                                                />리뷰댓글
                                                                     
                                         </div>
-                                      </div>
-                                    </div>
-                                            
-                                          
-                                
-                        
-                        
-                 </FullpageSection>
+                                      </div>                                  
+                                    </div>                                                                                                                                                              
+                      </FullpageSection>
                 
 
 
