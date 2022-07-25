@@ -262,11 +262,10 @@ const CityInfoMain = () => {
     const [categoryPlace2,setCategoryPlace2]=useState([]);  // 39 음식점
     const [categoryPlace3,setCategoryPlace3]=useState([]);  // 38 쇼핑
     const [categoryPlace4,setCategoryPlace4]=useState([]);  // 15 행사/공연/축제
-    const [categoryPlace5,setCategoryPlace5]=useState([]);  // 25 여행코스
-    const [categoryPlace6,setCategoryPlace6]=useState([]);  // 28 레포츠
-    const [categoryPlace7,setCategoryPlace7]=useState([]);  // 32 숙박  
+    const [categoryPlace5,setCategoryPlace5]=useState([]);  // 28 레포츠
+    const [categoryPlace6,setCategoryPlace6]=useState([]);  // 32 숙박  
     const [places, setPlaces] = useState([]);
-    // const [keyWordPlace,setKeyWordPlace]=useState('');
+    const [keyWordPlace,setKeyWordPlace]=useState([]);
     
 
     // API
@@ -314,31 +313,30 @@ const CityInfoMain = () => {
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
         area_content_type_12_url += `&sigunguCode=${sigunguCode}`;
      }
-
     let area_content_type_39_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=39&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
         area_content_type_39_url += `&sigunguCode=${sigunguCode}`;
      }
-
-     let area_content_type_38_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=38&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    let area_content_type_38_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=38&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
         area_content_type_38_url += `&sigunguCode=${sigunguCode}`;
      }
-
-     let area_content_type_14_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=14&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_14_url += `&sigunguCode=${sigunguCode}`;
-     }
-
-     let area_content_type_28_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=28&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_28_url += `&sigunguCode=${sigunguCode}`;
-     }
-
-     let area_content_type_15_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=15&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    let area_content_type_15_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=15&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_15_url += `&sigunguCode=${sigunguCode}`;
+         area_content_type_15_url += `&sigunguCode=${sigunguCode}`;
     }
+    let area_content_type_28_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=28&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+        area_content_type_28_url += `&sigunguCode=${sigunguCode}`;
+    }
+    let area_content_type_32_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=32&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    if(sigunguCode){  // 시군구 코드가 있는 도시이면
+        area_content_type_32_url += `&sigunguCode=${sigunguCode}`;
+    }
+    // let area_content_type_14_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=14&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    // if(sigunguCode){  // 시군구 코드가 있는 도시이면
+    //     area_content_type_14_url += `&sigunguCode=${sigunguCode}`;
+    //  }
     // 일정
     let trip_url=`${process.env.REACT_APP_SPRING_URL}city/tripdata?city_num=${city_num}&loginNum=${loginNum}`;     
     // 좋아요
@@ -390,7 +388,7 @@ const CityInfoMain = () => {
             .then((res4) => {
                 setCategoryPlace3(res4.data.response.body.items.item);
             })
-            axios.get(area_content_type_14_url)
+            axios.get(area_content_type_15_url)
             .then((res5) => {
                 setCategoryPlace4(res5.data.response.body.items.item);
             })
@@ -398,7 +396,7 @@ const CityInfoMain = () => {
             .then((res6) => {
                 setCategoryPlace5(res6.data.response.body.items.item);
             })
-            axios.get(area_content_type_15_url)
+            axios.get(area_content_type_32_url)
             .then((res7) => {
                 setCategoryPlace6(res7.data.response.body.items.item);
             })
@@ -629,19 +627,8 @@ const CityInfoMain = () => {
                                         </span>
                                     </div>
                                     <div className='ccc'>
-                                            {item.maxTa}℃&nbsp;/&nbsp;{item.minTa}℃
-                                        {/* <img className='slash' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/슬래시.png`}/> */}
-                                        {/* <div className='min-temp'>
-                                        &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;{item.minTa}&nbsp;
-                                        </div> */}
+                                        {item.maxTa}℃&nbsp;/&nbsp;{item.minTa}℃
                                     </div>
-                                    {/* <div><br/>
-                                        <div>&emsp;&emsp;
-                                            {
-                                                item.ddMes != '' ? `적설량 : ${item.ddMes}` : (item.ddMes == '' && item.sumRn == '') ? `풍속 : ${item.avgWs}` : `강수량 : ${item.sumRn}`
-                                            }
-                                        </div>
-                                    </div> */}
                                 </div>
                             </div>
                         ))
@@ -668,7 +655,7 @@ const CityInfoMain = () => {
                                     {item.name}
                                 </div>
                                 <div>
-                                    {format(new Date(item.start_date), "yyyy-MM-dd")} ~ {format(new Date(item.start_date), "yyyy-MM-dd")}({item.days}일)
+                                    {format(new Date(item.start_date), "yyyy-MM-dd")} ~ {format(new Date(item.end_date), "yyyy-MM-dd")}({item.days}일)
                                 </div>
                                 &emsp;&nbsp;
                                 <span class="material-symbols-outlined view-weather" style={{fontSize:'15px'}} onClick={(e)=>{
@@ -693,9 +680,8 @@ const CityInfoMain = () => {
                                     <Tab label="관광명소12" value="12" />
                                     <Tab label="음식점39" value="39" />
                                     <Tab label="쇼 핑38" value="38" />
-                                    <Tab label="문화시설 14" value="14"/>
-                                    <Tab label="레포츠 28" value="28" />
                                     <Tab label="행사/공연/축제 15" value="15" />
+                                    <Tab label="레포츠 28" value="28" />
                                     <Tab label="숙 박 32" value="32" />
                                 </TabList>
                             </Box>
@@ -717,16 +703,13 @@ const CityInfoMain = () => {
                                             <div className='col-sm-3'>
                                                 { 
                                                     like_list.includes(item.contentid) ?
-                                                    
                                                     <span class="material-icons heart_span" style={{color:'red'}} 
                                                         onClick={()=>{
                                                             delete_btn(event, item.contentid)
-                                                            // setL_T_placeid(item.contentid)///
                                                         }}>favorite</span>
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            // setL_T_placeid(item.contentid)
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
@@ -734,7 +717,8 @@ const CityInfoMain = () => {
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
-                                                                item.firstimage != "" ? <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                item.firstimage != "" ? 
+                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
                                                                 :
                                                                 <CardMedia>
                                                                     <span class="material-symbols-outlined">image_not_supported</span>
@@ -744,16 +728,10 @@ const CityInfoMain = () => {
                                                                 <Typography gutterBottom variant="h7" component="div">
                                                                     {item.title}
                                                                 </Typography>
-                                                                {/* <Typography variant="h7" color="red">
-                                                                    {item.tel}
-                                                                </Typography> */}
                                                             </CardContent>
                                                         </CardActionArea>
                                                         <CardActions>
                                                             {contentTypeId[item.cat3]}
-                                                            {/* <Button className='clipBtn' size="small" color="primary">
-                                                                {item.addr1}
-                                                            </Button> */}
                                                         </CardActions>
                                                     </Card>
                                                 </Link>
@@ -765,54 +743,109 @@ const CityInfoMain = () => {
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='12'>
-                                <div style={{display:'flex', marginTop:'20px'}}>
-                                    
+                                <div className='keyword-search'>
+                                    <div className='searchCity'>
+                                        <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
+                                            if(e.key === 'Enter' && e.target.value !== ''){
+                                            setKeyWord(e.target.value);
+                                            e.target.value = '';
+                                            setCategoryPlace0([]);
+                                            }
+                                        }}/>
+                                    </div>
                                 </div>
-                                <div style={{display:'flex'}} className='row'>
+                                <div style={{display:'flex'}} className='place-heart row'>
+                                    {
+                                        categoryPlace0 && categoryPlace0.map((item, idx) => (
+                                            <div className='col-sm-3'>
+                                                { 
+                                                    like_list.includes(item.contentid) ?
+                                                    <span class="material-icons heart_span" style={{color:'red'}} 
+                                                        onClick={()=>{
+                                                            delete_btn(event, item.contentid)
+                                                        }}>favorite</span>
+                                                    :
+                                                    <span class="material-icons heart_span" style={{color:'#ccc'}} 
+                                                        onClick={()=>{
+                                                            insert_btn(event, item.contentid)
+                                                        }}>favorite_border</span>
+                                                }
+                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                        <CardActionArea>
+                                                            {
+                                                                item.firstimage != "" ? 
+                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                :
+                                                                <CardMedia>
+                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                </CardMedia>
+                                                            }
+                                                            <CardContent>
+                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                    {item.title}
+                                                                </Typography>
+                                                            </CardContent>
+                                                        </CardActionArea>
+                                                        <CardActions>
+                                                            {contentTypeId[item.cat3]}
+                                                        </CardActions>
+                                                    </Card>
+                                                </Link>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                {/* </div> 서브카테고리 div 닫는거 */}
+                            </TabPanel>
+                            <TabPanel value='39'>
+                                <div className='keyword-search'>
+                                    <div className='searchCity'>
+                                        <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
+                                            if(e.key === 'Enter' && e.target.value !== ''){
+                                            setKeyWord(e.target.value);
+                                            e.target.value = '';
+                                            setCategoryPlace1([]);
+                                            }
+                                        }}/>
+                                    </div>
+                                </div>
+                                <div style={{display:'flex'}} className='place-heart row'>
                                     {
                                         categoryPlace1 && categoryPlace1.map((item, idx) => (
                                             <div className='col-sm-3'>
                                                 { 
                                                     like_list.includes(item.contentid) ?
-                                                    <button type='button' className='heart_btn'
-                                                    onClick={()=>{
-                                                        // setL_T_placeid(item.contentid)
-                                                        delete_btn(event, item.contentid)
-                                                        }}>
-                                                        <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like_on.png'/>
-                                                    </button>
+                                                    <span class="material-icons heart_span" style={{color:'red'}} 
+                                                        onClick={()=>{
+                                                            delete_btn(event, item.contentid)
+                                                        }}>favorite</span>
                                                     :
-                                                    <button type='button' className='heart_btn_on'
-                                                    onClick={()=>{
-                                                        // setL_T_placeid(item.contentid)
-                                                        insert_btn(event, item.contentid)
-                                                        }}>
-                                                        <img alt='' src='https://www.earthtory.com/res/img/mypage/plan/sub/btn_like.png'/>
-                                                    </button>
-                                                    
+                                                    <span class="material-icons heart_span" style={{color:'#ccc'}} 
+                                                        onClick={()=>{
+                                                            insert_btn(event, item.contentid)
+                                                        }}>favorite_border</span>
                                                 }
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
-                                                            <CardMedia
-                                                            component="img"
-                                                            height="180"
-                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
-                                                            alt=""
-                                                            />
+                                                            {
+                                                                item.firstimage != "" ? 
+                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                :
+                                                                <CardMedia>
+                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                </CardMedia>
+                                                            }
                                                             <CardContent>
                                                                 <Typography gutterBottom variant="h7" component="div">
                                                                     {item.title}
                                                                 </Typography>
-                                                                <Typography variant="h7" color="red">
-                                                                    {item.tel}
-                                                                </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
                                                         <CardActions>
-                                                            <Button className='clipBtn' size="small" color="primary">
-                                                                {item.addr1}
-                                                            </Button>
+                                                            {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
                                                 </Link>
@@ -820,37 +853,56 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
+                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
-                            <TabPanel value='39'>
-                                <div style={{display:'flex', marginTop:'20px'}}>
-                                    
+                            <TabPanel value='38'>
+                                <div className='keyword-search'>
+                                    <div className='searchCity'>
+                                        <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
+                                            if(e.key === 'Enter' && e.target.value !== ''){
+                                            setKeyWord(e.target.value);
+                                            e.target.value = '';
+                                            setCategoryPlace2([]);
+                                            }
+                                        }}/>
+                                    </div>
                                 </div>
-                                <div style={{display:'flex'}} className='row'>
+                                <div style={{display:'flex'}} className='place-heart row'>
                                     {
                                         categoryPlace2 && categoryPlace2.map((item, idx) => (
                                             <div className='col-sm-3'>
+                                                { 
+                                                    like_list.includes(item.contentid) ?
+                                                    <span class="material-icons heart_span" style={{color:'red'}} 
+                                                        onClick={()=>{
+                                                            delete_btn(event, item.contentid)
+                                                        }}>favorite</span>
+                                                    :
+                                                    <span class="material-icons heart_span" style={{color:'#ccc'}} 
+                                                        onClick={()=>{
+                                                            insert_btn(event, item.contentid)
+                                                        }}>favorite_border</span>
+                                                }
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
-                                                            <CardMedia
-                                                            component="img"
-                                                            height="180"
-                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
-                                                            alt=""
-                                                            />
+                                                            {
+                                                                item.firstimage != "" ? 
+                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                :
+                                                                <CardMedia>
+                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                </CardMedia>
+                                                            }
                                                             <CardContent>
                                                                 <Typography gutterBottom variant="h7" component="div">
                                                                     {item.title}
                                                                 </Typography>
-                                                                <Typography variant="h7" color="red">
-                                                                    {item.tel}
-                                                                </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
                                                         <CardActions>
-                                                            <Button className='clipBtn' size="small" color="primary">
-                                                                {item.addr1}
-                                                            </Button>
+                                                            {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
                                                 </Link>
@@ -858,37 +910,56 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
+                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
-                            <TabPanel value='38'>
-                                <div style={{display:'flex', marginTop:'20px'}}>
-                                    
+                            <TabPanel value='15'>
+                                <div className='keyword-search'>
+                                    <div className='searchCity'>
+                                        <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
+                                            if(e.key === 'Enter' && e.target.value !== ''){
+                                            setKeyWord(e.target.value);
+                                            e.target.value = '';
+                                            setCategoryPlace3([]);
+                                            }
+                                        }}/>
+                                    </div>
                                 </div>
-                                <div style={{display:'flex'}} className='row'>
+                                <div style={{display:'flex'}} className='place-heart row'>
                                     {
                                         categoryPlace3 && categoryPlace3.map((item, idx) => (
                                             <div className='col-sm-3'>
+                                                { 
+                                                    like_list.includes(item.contentid) ?
+                                                    <span class="material-icons heart_span" style={{color:'red'}} 
+                                                        onClick={()=>{
+                                                            delete_btn(event, item.contentid)
+                                                        }}>favorite</span>
+                                                    :
+                                                    <span class="material-icons heart_span" style={{color:'#ccc'}} 
+                                                        onClick={()=>{
+                                                            insert_btn(event, item.contentid)
+                                                        }}>favorite_border</span>
+                                                }
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
-                                                            <CardMedia
-                                                            component="img"
-                                                            height="180"
-                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
-                                                            alt=""
-                                                            />
+                                                            {
+                                                                item.firstimage != "" ? 
+                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                :
+                                                                <CardMedia>
+                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                </CardMedia>
+                                                            }
                                                             <CardContent>
                                                                 <Typography gutterBottom variant="h7" component="div">
                                                                     {item.title}
                                                                 </Typography>
-                                                                <Typography variant="h7" color="red">
-                                                                    {item.tel}
-                                                                </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
                                                         <CardActions>
-                                                            <Button className='clipBtn' size="small" color="primary">
-                                                                {item.addr1}
-                                                            </Button>
+                                                            {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
                                                 </Link>
@@ -896,37 +967,56 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
+                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
-                            <TabPanel value='14'>
-                                <div style={{display:'flex', marginTop:'20px'}}>
-                                    
+                            <TabPanel value='28'>
+                                <div className='keyword-search'>
+                                    <div className='searchCity'>
+                                        <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
+                                            if(e.key === 'Enter' && e.target.value !== ''){
+                                            setKeyWord(e.target.value);
+                                            e.target.value = '';
+                                            setCategoryPlace4([]);
+                                            }
+                                        }}/>
+                                    </div>
                                 </div>
-                                <div style={{display:'flex'}} className='row'>
+                                <div style={{display:'flex'}} className='place-heart row'>
                                     {
                                         categoryPlace4 && categoryPlace4.map((item, idx) => (
                                             <div className='col-sm-3'>
+                                                { 
+                                                    like_list.includes(item.contentid) ?
+                                                    <span class="material-icons heart_span" style={{color:'red'}} 
+                                                        onClick={()=>{
+                                                            delete_btn(event, item.contentid)
+                                                        }}>favorite</span>
+                                                    :
+                                                    <span class="material-icons heart_span" style={{color:'#ccc'}} 
+                                                        onClick={()=>{
+                                                            insert_btn(event, item.contentid)
+                                                        }}>favorite_border</span>
+                                                }
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
-                                                            <CardMedia
-                                                            component="img"
-                                                            height="180"
-                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
-                                                            alt=""
-                                                            />
+                                                            {
+                                                                item.firstimage != "" ? 
+                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                :
+                                                                <CardMedia>
+                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                </CardMedia>
+                                                            }
                                                             <CardContent>
                                                                 <Typography gutterBottom variant="h7" component="div">
                                                                     {item.title}
                                                                 </Typography>
-                                                                <Typography variant="h7" color="red">
-                                                                    {item.tel}
-                                                                </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
                                                         <CardActions>
-                                                            <Button className='clipBtn' size="small" color="primary">
-                                                                {item.addr1}
-                                                            </Button>
+                                                            {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
                                                 </Link>
@@ -934,37 +1024,56 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
+                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
-                            <TabPanel value='28'>
-                                <div style={{display:'flex', marginTop:'20px'}}>
-                                    
+                            <TabPanel value='32'>
+                                <div className='keyword-search'>
+                                    <div className='searchCity'>
+                                        <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
+                                            if(e.key === 'Enter' && e.target.value !== ''){
+                                            setKeyWord(e.target.value);
+                                            e.target.value = '';
+                                            setCategoryPlace5([]);
+                                            }
+                                        }}/>
+                                    </div>
                                 </div>
-                                <div style={{display:'flex'}} className='row'>
+                                <div style={{display:'flex'}} className='place-heart row'>
                                     {
                                         categoryPlace5 && categoryPlace5.map((item, idx) => (
                                             <div className='col-sm-3'>
+                                                { 
+                                                    like_list.includes(item.contentid) ?
+                                                    <span class="material-icons heart_span" style={{color:'red'}} 
+                                                        onClick={()=>{
+                                                            delete_btn(event, item.contentid)
+                                                        }}>favorite</span>
+                                                    :
+                                                    <span class="material-icons heart_span" style={{color:'#ccc'}} 
+                                                        onClick={()=>{
+                                                            insert_btn(event, item.contentid)
+                                                        }}>favorite_border</span>
+                                                }
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
-                                                            <CardMedia
-                                                            component="img"
-                                                            height="180"
-                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
-                                                            alt=""
-                                                            />
+                                                            {
+                                                                item.firstimage != "" ? 
+                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                :
+                                                                <CardMedia>
+                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                </CardMedia>
+                                                            }
                                                             <CardContent>
                                                                 <Typography gutterBottom variant="h7" component="div">
                                                                     {item.title}
                                                                 </Typography>
-                                                                <Typography variant="h7" color="red">
-                                                                    {item.tel}
-                                                                </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
                                                         <CardActions>
-                                                            <Button className='clipBtn' size="small" color="primary">
-                                                                {item.addr1}
-                                                            </Button>
+                                                            {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
                                                 </Link>
@@ -972,37 +1081,56 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
+                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
-                            <TabPanel value='15'>
-                                <div style={{display:'flex', marginTop:'20px'}}>
-                                    
+                            <TabPanel value='32'>
+                                <div className='keyword-search'>
+                                    <div className='searchCity'>
+                                        <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
+                                            if(e.key === 'Enter' && e.target.value !== ''){
+                                            setKeyWord(e.target.value);
+                                            e.target.value = '';
+                                            setCategoryPlace6([]);
+                                            }
+                                        }}/>
+                                    </div>
                                 </div>
-                                <div style={{display:'flex'}} className='row'>
+                                <div style={{display:'flex'}} className='place-heart row'>
                                     {
                                         categoryPlace6 && categoryPlace6.map((item, idx) => (
                                             <div className='col-sm-3'>
+                                                { 
+                                                    like_list.includes(item.contentid) ?
+                                                    <span class="material-icons heart_span" style={{color:'red'}} 
+                                                        onClick={()=>{
+                                                            delete_btn(event, item.contentid)
+                                                        }}>favorite</span>
+                                                    :
+                                                    <span class="material-icons heart_span" style={{color:'#ccc'}} 
+                                                        onClick={()=>{
+                                                            insert_btn(event, item.contentid)
+                                                        }}>favorite_border</span>
+                                                }
                                                 <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
-                                                            <CardMedia
-                                                            component="img"
-                                                            height="180"
-                                                            image={item.firstimage != "" ? item.firstimage : process.env.PUBLIC_URL+"/logo192.png"}
-                                                            alt=""
-                                                            />
+                                                            {
+                                                                item.firstimage != "" ? 
+                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                :
+                                                                <CardMedia>
+                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                </CardMedia>
+                                                            }
                                                             <CardContent>
                                                                 <Typography gutterBottom variant="h7" component="div">
                                                                     {item.title}
                                                                 </Typography>
-                                                                <Typography variant="h7" color="red">
-                                                                    {item.tel}
-                                                                </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
                                                         <CardActions>
-                                                            <Button className='clipBtn' size="small" color="primary">
-                                                                {item.addr1}
-                                                            </Button>
+                                                            {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
                                                 </Link>
@@ -1010,6 +1138,8 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
+                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                         </TabContext>
                         
