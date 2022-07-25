@@ -41,7 +41,9 @@ const PlanDetailMap = () => {
     let markerList = [];
 
     for(let i in dayPlan[cDay]){
+      if (dayPlan[cDay][i].mapy !== 0 && dayPlan[cDay][i].mapx !== 0){
       markerList.push({latlng: new kakao.maps.LatLng(dayPlan[cDay][i].mapy, dayPlan[cDay][i].mapx), title: dayPlan[cDay][i].title});
+      } 
     }
     // 커스텀 오버레이
     for (let i in markerList) {
@@ -69,8 +71,11 @@ const PlanDetailMap = () => {
     // 선을 구성하는 좌표 배열
     let linePath = [];
 
+    
     for(let j in dayPlan[cDay]){
+      if (dayPlan[cDay][j].mapy !== 0 && dayPlan[cDay][j].mapx !== 0){
       linePath.push(new kakao.maps.LatLng(dayPlan[cDay][j].mapy, dayPlan[cDay][j].mapx));
+      }
     }
 
     // 지도에 표시할 선을 생성
@@ -115,13 +120,14 @@ const PlanDetailMap = () => {
     axios.get(mapUrl)
     .then(res => {
         setMapData(res.data)
-        // console.log(res.data);
+        console.log(res.data);
         // console.log(res.data[0].days);
 
-        for(let i = 0; i < 10; i++){
-            // console.log(i);
+        // for(let i = 0; i < navData[navData.length-1].day; i++){
+        for(let i = 0; i < res.data[res.data.length-1].day; i++){
+            console.log(i);
             dayPlan.push(res.data.filter(data => data.day == i + 1));
-            // console.log(res.data.filter(data => data.day == i + 1));
+            console.log(res.data.filter(data => data.day == i + 1));
         }
     }).catch(err => {
         alert(err.data)
@@ -135,7 +141,6 @@ const PlanDetailMap = () => {
     axios.get(navUrl)
     .then(res => {
       setNavData(res.data)
-
       // for(let i = 0; i < res.data.length; i++){
       //   navPlan.push(res.data.filter(data => data.day == i + 1));
       //   // console.log(i)

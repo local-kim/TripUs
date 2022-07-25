@@ -344,13 +344,15 @@ const PlanDetail = () => {
                     <div className='header-list' onClick={() => (navi('../../../city/list'))}>
                         <div className='txt'>여행지</div>
                     </div>
-                    <div className='header-list' onClick={() => (navi('../../../plan/calendar/159'))}>
+                    {/* <div className='header-list' onClick={() => (navi('../../../plan/calendar/159'))}>
                         <div className='txt'>일정 만들기</div>
                     </div>
                     <div className='header-list' onClick={() => (navi('../../../plan/detail/1'))}>
                         <div className='txt'>일정 보기</div>
+                    </div> */}
+                    <div className='header-list' onClick={() => (navi(`../../../plan/list`))}>
+                        <div className='txt'>인기 일정</div>
                     </div>
-                    {/* <div className='header-list' onClick={() => (navi(`../../../plan/update/`+num))}>일정 수정</div> */}
                     <div className='header-list' onClick={() => (navi('../../../'))}>
                         <div className='txt'>ABOUT</div>
                     </div>
