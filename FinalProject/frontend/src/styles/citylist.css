@@ -2,9 +2,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 #city-list{
+  max-width: 1100px;
   text-align: center;
-  /* padding-top: 100px; */
-  margin: 100px;
+  margin: 100px auto;
 }
 
 #city-list .title{
@@ -14,13 +14,12 @@
 }
 
 #city-list .city-item-wrap{
-  /* display: flex;
-  justify-content: center;
-  flex-wrap: wrap; */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
+  grid-template-columns: repeat(auto-fit, 220px);
   justify-content: center;
+  justify-items: center;
   row-gap: 30px;
+  column-gap: 70px;
 }
 
 #city-list .city-item{
