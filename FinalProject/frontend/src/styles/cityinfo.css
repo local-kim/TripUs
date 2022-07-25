@@ -118,6 +118,7 @@
 #cityinfo .material-symbols-rounded.add-date {
     font-size: 30px;
     margin-top: 3px;
+    cursor: pointer;
 }
 
 #cityinfo .aa h5 {

@@ -648,7 +648,7 @@ const CityInfoMain = () => {
                             <div className='schedule-box' style={{display:'flex'}}>
                                 <div className='d-day'>
                                     {
-                                        (new Date() < new Date(item.start_date)) ? <b>D - {differenceInDays(new Date(item.start_date) ,new Date())}</b> : <b>여행중</b>
+                                        (new Date() < new Date(item.start_date)) ? <b>D - {differenceInDays(new Date(item.start_date) ,new Date())+1}</b> : <b>여행중</b>
                                     }
                                 </div>
                                 <div className='subject'>
@@ -713,7 +713,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -770,7 +770,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -827,7 +827,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -884,7 +884,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -941,7 +941,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -998,7 +998,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1055,7 +1055,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1112,7 +1112,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={'/place/placedetail'} state={{state:{pcontentId : item.contentid}}} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
+                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
                                                     <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
