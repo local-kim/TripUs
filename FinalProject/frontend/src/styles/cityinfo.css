@@ -123,6 +123,27 @@
 #cityinfo .aa h5 {
     font-weight: bold;
 }
+/* 키워드 입력칸 클릭했을 때 border 색 */
+#cityinfo .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    color: #75b4bd;
+}
+/* input칸 클릭했을 때 키워드를 입력하세요 상단으로 이동되는거 글자 색 */
+#cityinfo .css-1sumxir-MuiFormLabel-root-MuiInputLabel-root.Mui-focused {
+    color: #75b4bd;
+}
+/* input 입력할 때 글자 색 */
+#cityinfo .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
+    color: #75b4bd;
+}
+/* 검색할 키워드를 입력하세요 글자 색 */
+#cityinfo .css-1pysi21-MuiFormLabel-root-MuiInputLabel-root {
+    color: #75b4bd;
+}
+/* 키워드 입력 input border 색 */
+#cityinfo .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+    border-color: #75b4bd;
+}
+
 
 #cityinfo .place-list-box {
     display: flex;
@@ -132,6 +153,15 @@
     display: flex;
     margin-top: 20px;
     margin-left: 700px;
+}
+
+/* mui 탭태그 언더color 파란색 뜨는거 */
+#cityinfo .css-1aquho2-MuiTabs-indicator {
+    background-color: #75b4bd;
+}
+/* 탭태그 전체보기, 음식점 글씨 색 */
+#cityinfo .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+    color: #75b4bd;
 }
 
 /* 날씨 데이터 */
@@ -227,7 +257,7 @@
 
 #cityinfo .css-1h9z7r5-MuiButtonBase-root-MuiTab-root{
     font-size: 20px;
-    margin-right: 20px;
+    margin-right: 30px;
 }
 
 #cityinfo .qqq{
@@ -265,7 +295,6 @@
 }
 #cityinfo .more-content {
     font-size: 12px;
-
 }
 
 #cityinfo .css-1d3jhju-MuiAvatar-root, #cityinfomore .css-wk5mvb-MuiAvatar-root {
