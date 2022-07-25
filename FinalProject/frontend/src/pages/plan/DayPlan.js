@@ -14,7 +14,7 @@ import { usePrompt } from '../../utils/Blocker';
 
 const { kakao } = window;
 
-const DayPlan = ({view, setView, day, setDay}) => {
+const DayPlan = ({view, setView, day, setDay, focus, setFocus}) => {
   const navigate = useNavigate();
   // const {day} = useParams();
 
@@ -137,6 +137,7 @@ const DayPlan = ({view, setView, day, setDay}) => {
     // navigate(`/plan/${Number(day) - 1}`);
 
     setDay(day - 1);
+    setFocus(day - 2);
   }
 
   const nextDay = () => {
@@ -145,6 +146,7 @@ const DayPlan = ({view, setView, day, setDay}) => {
     // navigate(`/plan/${Number(day) + 1}`);
 
     setDay(day + 1);
+    setFocus(day);
   }
 
   // 선택한 장소를 dayPlan에 추가
@@ -201,7 +203,7 @@ const DayPlan = ({view, setView, day, setDay}) => {
     const options = {
       // 도시마다 중심 좌표 다르게(DB에 넣어놓기)
       center: new kakao.maps.LatLng(trip.y, trip.x), // 지도의 중심좌표
-      level: 8  // 지도의 확대 레벨
+      level: 9  // 지도의 확대 레벨
     };
     
     const map = new kakao.maps.Map(container, options); // 지도를 생성합니다
@@ -210,17 +212,20 @@ const DayPlan = ({view, setView, day, setDay}) => {
     let markerList = [];
 
     for(let i in dayPlan){
-      markerList.push({
-        latlng: new kakao.maps.LatLng(dayPlan[i].mapy, dayPlan[i].mapx),
-        title: dayPlan[i].title
-      });
+      if(dayPlan[i].mapx && dayPlan[i].mapy){
+        markerList.push({
+          latlng: new kakao.maps.LatLng(dayPlan[i].mapy, dayPlan[i].mapx),
+          title: dayPlan[i].title,
+          num: Number(i) + 1
+        });
+      }
     }
 
     // 커스텀 오버레이
     for (let i in markerList) {
       // 커스텀 오버레이에 표시할 내용
       // HTML 문자열 또는 Dom Element
-      let content = `<div class ="label">${Number(i) + 1}</div>`;
+      let content = `<div class ="label">${markerList[i].num}</div>`;
 
       // 커스텀 오버레이가 표시될 위치
       let position = markerList[i].latlng;

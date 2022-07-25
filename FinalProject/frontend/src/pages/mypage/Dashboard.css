@@ -1,19 +1,22 @@
-element.style {
-    height: 500px;
+.fc .fc-toolbar-title {
+    font-size: 1.75em;
+    margin: 0;
+    
 }
 
 .fc .fc-scrollgrid-liquid {
     
     margin-top: 20px;
-    height: 600px;
+    height: 660px;
+    
 }
 
 
 .fc .fc-toolbar.fc-header-toolbar {
-    margin-bottom: 1.5em;
-    margin-top: 100px;
-    margin-right: 200px;
-    margin-left: 200px;
+
+    margin-top: 150px;
+    margin-right: 450px;
+    margin-left: 450px;
 
 }
 
@@ -28,12 +31,32 @@ element.style {
 
 .fc .fc-view-harness-active > .fc-view {
     position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    margin-right: 200px;
-    margin-left: 200px;
+    margin-right: 400px;
+    margin-left: 400px;
+    margin-bottom: 400px;
     
 
+}
+
+.fc, .fc *, .fc *:before, .fc *:after {
+    box-sizing: border-box;
+    
+}
+
+.fc-direction-ltr .fc-daygrid-event .fc-event-time {
+    margin-right: 3px;
+    color: rgba(0, 0, 0, 0);
+    opacity: 100%;
+}
+
+
+
+div.app .fc-view-harness.fc-view-harness-active{
+    height: 700px;
+}
+
+
+
+.fc.fc-media-screen.fc-direction-ltr.fc-theme-standard{
+    height: 700px;
 }

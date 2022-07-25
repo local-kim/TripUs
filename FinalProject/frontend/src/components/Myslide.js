@@ -1,237 +1,122 @@
-import { useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
+
+import { useState,useEffect } from 'react';
 import 'swiper/css';
 import '../App.css';
 import axios from 'axios';
+import './Myslide.css'
+import { Link } from 'react-router-dom';
+import styled from '@emotion/styled';
+import rankLogo from '../assets/images/rank.png';
+
+const Heemin1 = styled.div`
 
 
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper';
 
+.plan-item
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
+{
+  
+  margin-Top: ${props=>(props.idx==1?'10px':props.idx==0?'40px':'40px')};
+ 
+  height: ${props=>(props.idx==1?'430px':props.idx==0?'370px':'370px')};
+  width: ${props=>(props.idx==1?'350px':props.idx==0?'300px':'300px')};
+  
+  
 
-const Myslide=() => {
+}
 
-    let cityDataUrl = process.env.REACT_APP_SPRING_URL + "/cityData";
+  .city-img
+ {
 
-    const [citydata,setCityData] = useState('');
+         height: ${props=>(props.idx==1?'260px':props.idx==0?'220px':'220px')};
+        //  marginTop: ${props=>(props.idx==1?'5px':props.idx==0?'30px':'30px')};
+  }
 
-    const cityData=()=>{
-        axios.get(cityDataUrl)
-        .then(res=>{
-            setCityData(res.data);
-            console.log(res.data);      
-        })
-        .catch(err => {
-            alert(err);
-        })
-      }
+  .rankCircle{
+    margin-Left: ${props=>(props.idx==1?'115px':'0px')};
+   font-size: ${props=>(props.idx==1?'20px':props.idx==0?'14px':'14px')};
+   font-weight:  ${props=>(props.idx==1?'bold':props.idx==0?'normal':'normal')};
+   margin-bottom: ${props=>(props.idx==1?'90px':'0px')};
+   margin-Top: ${props=>(props.idx==1?'15px':'0px')};
+   
+  }
+
+`
+
+const Myslide = () => {
+  let planUrl = `${process.env.REACT_APP_SPRING_URL}plan/rank3`;
+
+  const [tripList, setTripList] = useState([]);
+  const [rank, setRank] = useState(['2등','1등','3등']);
+
+  useEffect(() => {
+    axios.get(planUrl)
+    .then(res => {
+      console.log(res.data);
+      setTripList([res.data[1], res.data[0], res.data[2]]);
+
+    })
+    .catch(err => console.log(err));
+  }, []);
 
   return (
-    <Swiper
-      // install Swiper modules
-      modules={[Navigation, Pagination, Scrollbar, A11y]}
-      spaceBetween={50}
-      slidesPerView={3}
-      navigation
-      pagination={{ clickable: true }}
+    <div id='plan-list2'>
+        <div className='trip-wrap'>
+          {
+            tripList && tripList.map((trip, idx) => (
+              <Link to={`/plan/detail/${trip.tripNum}`}>
+                <Heemin1 idx={idx}>
       
-    //   onSwiper={(swiper) => console.log(swiper)}
-    //   onSlideChange={() => console.log('slide change')} 
-    >
+                {/* <img src={rankLogo} alt='' style={{width:'60px'}}/> */}
+                <div className='plan-item'>
 
+                  <div className='city-img' style={{backgroundImage:`url(../../city_image/${trip.image})`}}>
+                  </div>
+                  <div className='info-wrap'>
+                    <div style={{display:'flex',justifyContent:'space-between'}}>
+                      <div className='trip-name'>{trip.tripName}</div>
+                      
+                      <div className='likes'>
+                        <i className="fa-solid fa-heart"></i>
+                        &nbsp;{trip.count}
+                      </div>
+                    </div>
+                    <div className='date'>{trip.start_date} ~ {trip.end_date} ({trip.days}일)</div>
+                    <div className='member-name'>{trip.memberName}님</div>
 
-       <SwiperSlide>
-
-      <div className="plan_list" style={{width:'1150px'}}> 
-                     
-
-              
-                           
-
-                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
-                            <div className="plan_bg">
-                                <div className="plan_bg_inner">
-                                    <span>2015-07-29</span>
-                                    <span className="tour_day">5DAYS</span>
-                                    <br/>제주!!!</div>
-                                </div>
+                    <div className='rankCircle' style={{
                                 
-                                <div className="plan_img_box">	
-                                    <img src="https://img.earthtory.com/img/city_images/243/singapore_1425521362.jpg" alt="" className="plan_img"/>
-                                </div>
-                                
-                                <div className="plan_bg_inner2">
-                                    <span>친구와 함께</span>
-                                    <div className="fr pn_list_copy_icon">0</div>
-                                    <div className="fr pn_list_view_icon">148</div>
-                                    <div className="fr pn_list_spot_icon">30</div>
-                                    <div className="clear"></div>
-                                    <div className="pn_list_city">제주</div>
-                                    <div className="clear"></div>
-                                    <div className="pn_list_user">윤지은</div>
-                                </div>
-                            </a>
-                     
-                                            
-                                <div className='clear'></div>
-                            
-                        
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems:"center",
+                                width:"70px",
+                                height:"70px",
+                                borderRadius:"50%",
+                                backgroundColor: "#f6f6f6",
+                                color: "black",
+                                fontWeight: "700",
+                              
+                              }}
+  
+                                 
+                                >
+  
+                          {rank[idx]}
+                                   
+                      
+                             
                         </div>
-      </SwiperSlide>
+                  
+                  </div>
+                </div>
 
-      <SwiperSlide>
+                </Heemin1>
 
-      <div className="plan_list" style={{width:'1150px'}}> 
-               
-
-                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
-                            <div className="plan_bg">
-                                <div className="plan_bg_inner">
-                                    <span>2015-07-29</span>
-                                    <span className="tour_day">5DAYS</span>
-                                    <br/>제주!!!</div>
-                                </div>
-                                
-                                <div className="plan_img_box">	
-                                    <img src="https://img.earthtory.com/img/city_images/243/singapore_1425521362.jpg" alt="" className="plan_img"/>
-                                </div>
-                                
-                                <div className="plan_bg_inner2">
-                                    <span>친구와 함께</span>
-                                    <div className="fr pn_list_copy_icon">0</div>
-                                    <div className="fr pn_list_view_icon">148</div>
-                                    <div className="fr pn_list_spot_icon">30</div>
-                                    <div className="clear"></div>
-                                    <div className="pn_list_city">제주</div>
-                                    <div className="clear"></div>
-                                    <div className="pn_list_user">윤지은</div>
-                                </div>
-                            </a>
-                           
-
-                     
-                                            
-                                <div className='clear'></div>
-                            
-                        
-                        </div>
-
-        
-      </SwiperSlide>
-      
-      <SwiperSlide>
-
-            <div className="plan_list" style={{width:'1150px'}}> 
-    
-
-                            <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
-                            <div className="plan_bg">
-                                <div className="plan_bg_inner">
-                                    <span>2015-07-29</span>
-                                    <span className="tour_day">5DAYS</span>
-                                    <br/>제주!!!</div>
-                                </div>
-                                
-                                <div className="plan_img_box">	
-                                    <img src="https://img.earthtory.com/img/city_images/243/singapore_1425521362.jpg" alt="" className="plan_img"/>
-                                </div>
-                                
-                                <div className="plan_bg_inner2">
-                                    <span>친구와 함께</span>
-                                    <div className="fr pn_list_copy_icon">0</div>
-                                    <div className="fr pn_list_view_icon">148</div>
-                                    <div className="fr pn_list_spot_icon">30</div>
-                                    <div className="clear"></div>
-                                    <div className="pn_list_city">제주</div>
-                                    <div className="clear"></div>
-                                    <div className="pn_list_user">윤지은</div>
-                                </div>
-                            </a>
-                     
-                                            
-                                <div className='clear'></div>
-                            
-                        
-                        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-
-      <div className="plan_list" style={{width:'1150px'}}> 
-    
-
-    <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
-    <div className="plan_bg">
-        <div className="plan_bg_inner">
-            <span>2015-07-29</span>
-            <span className="tour_day">5DAYS</span>
-            <br/>제주!!!</div>
+              </Link>
+            ))
+          }
         </div>
-        
-        <div className="plan_img_box">	
-            <img src="https://img.earthtory.com/img/city_images/243/singapore_1425521362.jpg" alt="" className="plan_img"/>
-        </div>
-        
-        <div className="plan_bg_inner2">
-            <span>친구와 함께</span>
-            <div className="fr pn_list_copy_icon">0</div>
-            <div className="fr pn_list_view_icon">148</div>
-            <div className="fr pn_list_spot_icon">30</div>
-            <div className="clear"></div>
-            <div className="pn_list_city">제주</div>
-            <div className="clear"></div>
-            <div className="pn_list_user">윤지은</div>
-        </div>
-    </a>
-
-                    
-        <div className='clear'></div>
-    
-
-</div>
-      </SwiperSlide>
-
-      <SwiperSlide>
-      <div className="plan_list" style={{width:'1150px'}}> 
-    
-
-    <a href="/mypage/et_1506250714200238856001435227260?type=plan_sub&amp;gdb_srl=54114" target="_blank" className="box">
-    <div className="plan_bg">
-        <div className="plan_bg_inner">
-            <span>2015-07-29</span>
-            <span className="tour_day">5DAYS</span>
-            <br/>제주!!!</div>
-        </div>
-        
-        <div className="plan_img_box">	
-            <img src="https://img.earthtory.com/img/city_images/243/singapore_1425521362.jpg" alt="" className="plan_img"/>
-        </div>
-        
-        <div className="plan_bg_inner2">
-            <span>친구와 함께</span>
-            <div className="fr pn_list_copy_icon">0</div>
-            <div className="fr pn_list_view_icon">148</div>
-            <div className="fr pn_list_spot_icon">30</div>
-            <div className="clear"></div>
-            <div className="pn_list_city">제주</div>
-            <div className="clear"></div>
-            <div className="pn_list_user">윤지은</div>
-        </div>
-    </a>
-
-                    
-        <div className='clear'></div>
-    
-
-</div>
-      </SwiperSlide>
-
-
-
-    </Swiper>
+    </div>
   );
 };
 

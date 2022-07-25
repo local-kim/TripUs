@@ -171,8 +171,8 @@ const RecommendCorp = () => {
                 {images.map((v, i) => {
                     return (
                         
-                        <SlickItems key={`${v.title}_${i}`}>
-                            <img alt='' src={v.src} />
+                        <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                            <img alt='' className='slick-image' src={v.src} />
                         </SlickItems>
                     )
                 })}

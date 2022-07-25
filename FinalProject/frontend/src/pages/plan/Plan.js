@@ -10,7 +10,7 @@ import { usePrompt } from '../../utils/Blocker';
 
 const { kakao } = window;
 
-const Plan = ({view, setView, day, setDay, setIsBlocking}) => {
+const Plan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}) => {
   const loginNum = useSelector(state => state.auth.user.num);
 
   // redux에서 변수 얻기
@@ -38,7 +38,7 @@ const Plan = ({view, setView, day, setDay, setIsBlocking}) => {
     .catch(err => console.log(err));
   }
 
-  const [focus, setFocus] = useState(0);
+  // const [focus, setFocus] = useState(0);
 
   // kakao map
   const kakaoMapScript = () => {
@@ -56,14 +56,19 @@ const Plan = ({view, setView, day, setDay, setIsBlocking}) => {
     let markerList = [];
 
     for(let i in plan[focus]){
-      markerList.push({latlng: new kakao.maps.LatLng(plan[focus][i].mapy, plan[focus][i].mapx), title: plan[focus][i].title});
+      if(plan[focus][i].mapx && plan[focus][i].mapy)
+        markerList.push({
+          latlng: new kakao.maps.LatLng(plan[focus][i].mapy, plan[focus][i].mapx), 
+          title: plan[focus][i].title,
+          num: Number(i) + 1
+        });
     }
 
     // 커스텀 오버레이
     for (let i in markerList) {
       // 커스텀 오버레이에 표시할 내용
       // HTML 문자열 또는 Dom Element
-      let content = `<div class ="label">${Number(i) + 1}</div>`;
+      let content = `<div class ="label">${markerList[i].num}</div>`;
 
       // 커스텀 오버레이가 표시될 위치
       let position = markerList[i].latlng;
@@ -82,8 +87,10 @@ const Plan = ({view, setView, day, setDay, setIsBlocking}) => {
     // 선을 구성하는 좌표 배열
     let linePath = [];
 
-    for(let j in plan[focus]){
-      linePath.push(new kakao.maps.LatLng(plan[focus][j].mapy, plan[focus][j].mapx));
+    // for(let j in plan[focus]){
+    for(let j in markerList){
+      // linePath.push(new kakao.maps.LatLng(plan[focus][j].mapy, plan[focus][j].mapx));
+      linePath.push(markerList[j].latlng);
     }
 
     // 지도에 표시할 선을 생성
@@ -149,6 +156,7 @@ const Plan = ({view, setView, day, setDay, setIsBlocking}) => {
                 // navigate(`/plan/${index + 1}`);
                 setView(2);
                 setDay(index + 1);
+                setFocus(index);
               }}>장소 추가</button>
               <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
             </div>

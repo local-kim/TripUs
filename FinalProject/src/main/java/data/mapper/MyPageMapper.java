@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import data.dto.CityTripDto;
 import data.dto.MemberDto;
+import data.dto.PlaceDto;
 import data.dto.ProfileDto;
 
 import data.dto.TripDto;
@@ -33,6 +34,8 @@ public interface MyPageMapper {
 	
 	//유저 일정 갯수 가져오기
 	public int userTrip(int member_num);
+	
+	
 	
 	//유저 일정 페이징 처리
 	public List<CityTripDto> getPagingList(Map<String, Integer>map);
@@ -59,11 +62,14 @@ public interface MyPageMapper {
 	public List<CityTripDto> getAllDates2(int member_num);
 	
 	// 일정 지우기
-	public void tripDelete(int num);
+	public void tripDelete(int tripNum);
 	
 	//일정 이름 업데이트
 	public void updateTripName(Map<String, String> map);
 	
 	//캘린
 	public List<TripDto> getAllDates3(int memberNum);
+	
+	//사진 추가하기
+	public void profilePhotoInsert(ProfileDto dto);
 }

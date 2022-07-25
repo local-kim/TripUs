@@ -16,6 +16,7 @@ import data.dto.PlanDto;
 import data.dto.PlanMapDto;
 import data.dto.PlanPlaceDto;
 import data.dto.TripDto;
+import data.dto.TripRankDto;
 import data.mapper.PlanMapper;
 
 @Service
@@ -73,6 +74,14 @@ public class PlanService implements PlanServiceInter {
 		planMapper.deleteAllItinerary(tripNum);
 	}
 	
+	// 인기 일정
+	public List<TripRankDto> getTripRank(){
+		return planMapper.getTripRank();
+	}
+	public List<TripRankDto> getTripRank3(){
+		return planMapper.getTripRank3();
+	}
+	
 	//////////////////////////////////////////
 	public List<PlanDto> getNavNum(int num) {
 		return planMapper.getNavNum(num);
@@ -92,5 +101,38 @@ public class PlanService implements PlanServiceInter {
 	
 	public List<PlanMapDto> mapKakao (int num) {
 		return planMapper.mapKakao(num);
+	}
+	
+//	PlanLike 좋아요 
+	@Override
+	public int getPlanLike(int num, int loginNum) {
+		// TODO Auto-generated method stub
+		Map<String, Integer> map = new HashMap<>();
+	    map.put("num", num);
+	    map.put("loginNum", loginNum);
+	    return planMapper.getPlanLike(map);
+	}
+	
+	@Override
+	public int insertPlanLike(int num,int loginNum) {
+		// TODO Auto-generated method stub
+	    Map<String, Integer> map = new HashMap<>();
+	    map.put("num", num);
+	    map.put("loginNum",loginNum);
+	    return planMapper.insertPlanLike(map);
+	}
+	
+	@Override
+	public int deletePlanLike(int num, int loginNum) {
+	   // TODO Auto-generated method stub
+	   Map<String, Integer> map = new HashMap<>();
+	   map.put("num", num);
+	   map.put("loginNum", loginNum);
+	   return planMapper.deletePlanLike(map);
+	}
+	
+	@Override
+	public int getTotalLike(int num) {
+		return planMapper.getTotalLike(num);
 	}
 }

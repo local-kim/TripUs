@@ -5,6 +5,8 @@ import DaumPostcode from "react-daum-postcode";
 import './profile.css';
 import Avatar from 'react-avatar';
 import { set } from 'date-fns';
+import { useSelector } from 'react-redux';
+
 
 
 
@@ -12,13 +14,13 @@ import { set } from 'date-fns';
 const Profile = () => {
     
  
-
+    const loginNum = useSelector(state => state.auth.user.num);
     const {num,Currentpage}=useParams();
     const [dto,setDto] =useState('');
     //url
-    let deleteUrl = process.env.REACT_APP_SPRING_URL + "mypage/delete";
-    let profileUrl = process.env.REACT_APP_SPRING_URL + "mypage/profile";
-    let photonameUrl =  process.env.REACT_APP_SPRING_URL + "mypage/photo";
+    let deleteUrl = process.env.REACT_APP_SPRING_URL + "mypage/delete?loginNum="+loginNum;
+    let profileUrl = process.env.REACT_APP_SPRING_URL + "mypage/profile?loginNum="+loginNum;
+    let photonameUrl =  process.env.REACT_APP_SPRING_URL + "mypage/photo?loginNum="+loginNum;
     const navi=useNavigate();
     const [data, setData] = useState({}); //데이터 한번에 받을때 쓰는법 
     const [photo,setPhoto] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
@@ -27,9 +29,9 @@ const Profile = () => {
 
     
     
-    let pagelistUrl = process.env.REACT_APP_SPRING_URL + "mypage/pagelist" //?currentPage=" + currentPage;
+    let pagelistUrl = process.env.REACT_APP_SPRING_URL + "mypage/pagelist?loginNum="+loginNum; //?currentPage=" + currentPage;
     let photoUrl = process.env.REACT_APP_SPRING_URL + "save/";
-    let uploadUrl=process.env.REACT_APP_SPRING_URL+"mypage/upload";
+    let uploadUrl=process.env.REACT_APP_SPRING_URL+"mypage/upload?loginNum="+loginNum;
 
     const getData=useCallback(()=>{
         axios.get(profileUrl)
@@ -49,9 +51,9 @@ const Profile = () => {
  
     }, [profileUrl, photoUrl])
 
-        useEffect(()=>{
-            getData();
-        },[getData]);
+    useEffect(()=>{
+        getData();
+    },[getData]);
 
 
 
@@ -59,27 +61,25 @@ const Profile = () => {
   
 
         const deleteUser=()=>{
-            axios.get(deleteUrl)
-            .then(res=>{
-                
-                setDto(res.data);
-
-                if (window.confirm("정말 삭제합니까?")) {
-        
+            if (window.confirm("정말 삭제합니까?")) {
+                axios.get(deleteUrl)
+                .then(res=>{
+                    
+                    // setDto(res.data);
                     alert("삭제되었습니다.");
+                
+                    window.location.replace("/");
                     
-                    window.location.replace("/")
-                    
-              
-                  } else {
-              
-                    alert("취소합니다.");
-              
-                  }
-            })
-            .catch(err => {
-                alert(err);
-            })
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            } else {
+          
+                alert("취소합니다.");
+          
+              }
+            
         }
 
         
@@ -100,6 +100,7 @@ const Profile = () => {
                 headers:{'Content-Type':'multipart/form-data'}
             }).then(response=>{
                 setPhoto(response.data); //백엔드에서 보내는 변경된 이미지명을 photo변수에 넣는다
+                // console.log()
             }).catch(err=>{
                 alert(err);
             })
@@ -142,21 +143,23 @@ const Profile = () => {
 
 
     
-     let updateUrl = process.env.REACT_APP_SPRING_URL + "mypage/update";
-     let updateUrl2 = process.env.REACT_APP_SPRING_URL + "mypage/update2";
+     let updateUrl = process.env.REACT_APP_SPRING_URL + "mypage/update?loginNum="+loginNum
+     let updateUrl2 = process.env.REACT_APP_SPRING_URL + "mypage/update2?loginNum="+loginNum
      const save=()=>{
         console.log(photo);
         // setDto({
         //     ...dto,
         //     file_name: photo
         // });
-        axios.post(updateUrl,{photo}).then(res=>{});
+        axios.post(updateUrl,{photo}).then(res=>{})
+        .catch(err => console.log(err));
 
         // axios.post(updateUrl2,{tel:dto.tel, email:dto.email, address1:dto.address1, address2:dto.address2}).then(res=>{window.location.reload();});
         axios.post(updateUrl2,{
             ...dto,
             registered_at: null
-        }).then(res=>{window.location.reload();});
+        }).then(res=>{window.location.reload();})
+        .catch(err => console.log(err));
         
     }
 
@@ -174,7 +177,7 @@ const Profile = () => {
 
                         <Avatar 
                         src={Image} 
-                        style={{margin:'20px',borderRadius:'10px'}} 
+                        style={{marginTop:'150px',borderRadius:'10px'}} 
                         size={200} 
                         onClick={()=>{fileInput.current.click()}}>
 
@@ -193,7 +196,7 @@ const Profile = () => {
                         
                         </div>
                     </div>
-                    <div className="text" style={{marginTop:'50px'}}><span id="userNickNameTop">{dto.id}</span></div>
+                    <div className="text" style={{marginTop:'150px'}}><span id="userNickNameTop">{dto.id}</span></div>
                     <div className="small-text">님의 프로필</div>
                 </div>
                 <div className="flex-container">

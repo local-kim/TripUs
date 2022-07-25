@@ -41,20 +41,25 @@ const PlanDetailMap = () => {
     let markerList = [];
 
     for(let i in dayPlan[cDay]){
+      if (dayPlan[cDay][i].mapy !== 0 && dayPlan[cDay][i].mapx !== 0){
       markerList.push({latlng: new kakao.maps.LatLng(dayPlan[cDay][i].mapy, dayPlan[cDay][i].mapx), title: dayPlan[cDay][i].title});
+      } 
     }
     // 커스텀 오버레이
     for (let i in markerList) {
       // 커스텀 오버레이에 표시할 내용
       // HTML 문자열 또는 Dom Element
-      let content = `<div class ="label">${Number(i)+1}</div>`;
+      let content = `<div class ="label">
+                      <div class="label-title">${markerList[i].title}</div>
+                      <div class="label-num">${Number(i)+1}</div>
+                    </div>`;
 
       // 커스텀 오버레이가 표시될 위치
       let position = markerList[i].latlng;
 
       // 커스텀 오버레이를 생성
       let customOverlay = new kakao.maps.CustomOverlay({
-          position: markerList[i].latlng,
+          position: position,
           content: content
       });
 
@@ -66,8 +71,11 @@ const PlanDetailMap = () => {
     // 선을 구성하는 좌표 배열
     let linePath = [];
 
+    
     for(let j in dayPlan[cDay]){
+      if (dayPlan[cDay][j].mapy !== 0 && dayPlan[cDay][j].mapx !== 0){
       linePath.push(new kakao.maps.LatLng(dayPlan[cDay][j].mapy, dayPlan[cDay][j].mapx));
+      }
     }
 
     // 지도에 표시할 선을 생성
@@ -105,32 +113,34 @@ const PlanDetailMap = () => {
     kakaoMapScript();
   }, [mapData, cDay]);
 
+  // dayPlan 에 mapData 배열로 집어넣기
   const [dayPlan, setDayPlan] = useState([]);
 
   useEffect(() => {
     axios.get(mapUrl)
     .then(res => {
         setMapData(res.data)
-        // console.log(res.data);
+        console.log(res.data);
         // console.log(res.data[0].days);
 
-        for(let i = 0; i < 10; i++){
-            // console.log(i);
+        // for(let i = 0; i < navData[navData.length-1].day; i++){
+        for(let i = 0; i < res.data[res.data.length-1].day; i++){
+            console.log(i);
             dayPlan.push(res.data.filter(data => data.day == i + 1));
-            // console.log(res.data.filter(data => data.day == i + 1));
+            console.log(res.data.filter(data => data.day == i + 1));
         }
     }).catch(err => {
         alert(err.data)
     });
   }, []);
 
+  // navData (Day별) 없는날짜 치우고 여행 있는날짜만 추가
   const [navPlan, setNavPlan] = useState([]);
   
   useEffect(() => {
     axios.get(navUrl)
     .then(res => {
       setNavData(res.data)
-
       // for(let i = 0; i < res.data.length; i++){
       //   navPlan.push(res.data.filter(data => data.day == i + 1));
       //   // console.log(i)
@@ -155,10 +165,11 @@ const PlanDetailMap = () => {
         <div className='wrap-list'>
             <div id='detail-map'>
             <div className='map-day-box'>
+                {/* navData 별로 리모컨 만들어주기 */}
                 {
                     navData && navData.map((day, index) => (
                         <div className='map-day-list' style={{zIndex:'999'}}
-                            onClick={()=>{changeDay(day.day-1)}}>Day {day.day}</div>
+                            onClick={()=>{changeDay(day.day-1)}} key={index}>Day {day.day}</div>
                     ))
                 }
             </div>

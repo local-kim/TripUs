@@ -42,6 +42,7 @@ div {
   font-size: 1.4rem;
   color: #fff;
   font-family: 'Montserrat';
+  background-color: white;
 }
 
 .index-section {
@@ -200,16 +201,16 @@ audio, canvas, iframe, img, svg, video {
   font-weight: 700;
 }
 
-.uk-width-1-2 {
+#mypage .uk-width-1-2 {
   width: 50%;
 }
 
-.uk-width-1-3\@m {
+#mypage .uk-width-1-3\@m {
     width: calc(100% * 1 / 3.001);
 }
 
 
-.uk-width-2-3\@m {
+#mypage .uk-width-2-3\@m {
     width: calc(100% * 2 / 3.001);
 }
 
@@ -427,4 +428,10 @@ svg:not(:root) {
   margin:0;
   padding:0;
   z-index: -999;
+}
+
+.imgclass:hover{
+  transform: scale(1.1);
+  cursor: pointer;
+  
 }

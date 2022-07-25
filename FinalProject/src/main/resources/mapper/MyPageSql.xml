@@ -15,7 +15,7 @@
 		select * from member where num=#{num}
 	</select>
 	
-	  <select id="userTrip" parameterType="int" resultType="int">
+	 <select id="userTrip" parameterType="int" resultType="int">
       select count(*) from trip where member_num=#{member_num}
    </select>
    
@@ -54,7 +54,7 @@
 	</select>
 	
 	<delete id="tripDelete" parameterType="int">
-		delete from trip where num=#{num}
+		delete from trip where num=#{tripNum}
 	</delete>
 	
 	<update id="updateTripName" parameterType="map">
@@ -67,8 +67,13 @@
 	    SELECT num, name, member_num as memberNum, start_date as startDate, end_date as endDate, days  FROM trip where  member_num=#{memberNum} 
 	    
 	</select>
-	   
-   
+	
+	<insert id="profilePhotoInsert" parameterType="profile">
+			insert into profile_photo (num, member_num, file_name) values (#{num}, #{member_num}, #{file_name})
+					
+	</insert>
+
+	      
 </mapper>
 
 	
