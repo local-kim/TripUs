@@ -672,10 +672,19 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
 
 .page2Wrap{
   display: flex;
+  
 }
 
 .page2img{
   background-image:url(./assets/images/busan1.jpg);  
+  background-position: center;
+  background-size: cover;
+ 
+
+}
+
+.page3img{
+  background-image:url(./assets/images/junjoo1.jpg);  
   background-position: center;
   background-size: cover;
 
