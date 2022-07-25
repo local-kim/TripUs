@@ -427,13 +427,13 @@ const PlanDetail = () => {
                             [...ndata] && [...ndata].map((nav, index) => (
                                 nav.day == 1 ? 
                                 <div className={`scroll-item-btn on`} id={'nav-list'+index}
-                                 onClick={switchOn} key={index}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div> :
+                                 onClick={switchOn} key={index}><a id='nav-hard-css' href = {'#page-'+nav.day}>D{nav.day} Place</a></div> :
                                   <div className={`scroll-item-btn`} id={'nav-list'+index}
-                                  onClick={switchOn} key={index}><a href = {'#page-'+nav.day}>D{nav.day} Place</a></div>
+                                  onClick={switchOn} key={index}><a id='nav-hard-css' href = {'#page-'+nav.day}>D{nav.day} Place</a></div>
                             
                             ))
                 }
-                {/* <div className='scoroll-item-btn last' /> */}
+                <div className='scoroll-item-btn last' />
 
                 </div>
                 <div className='scroll-item-next'></div>
