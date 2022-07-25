@@ -261,7 +261,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   
   
   
-  a {
+  /* .main_top_title .a{
     color:black;
     margin: 10px;
     font-size: 20px;
@@ -269,8 +269,8 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     text-decoration-line: none;
     font-weight: bolder;
  
-  }
-  
+  } 
+   */
 
 
   
@@ -688,4 +688,24 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   background-position: center;
   background-size: cover;
 
+}
+
+.MuiToolbar-root .MuiToolbar-regular .css-r6ewbb-MuiToolbar-root .a{
+  
+  text-decoration: none;
+
+}
+
+.css-1e4e1qc-MuiButtonBase-root-MuiButton-root .a{
+  text-decoration: none;
+
+} 
+
+.MuiBox-root .css-1t6c9ts .a{
+
+  text-decoration: none;
+}
+
+a {
+  text-decoration: none;
 }
