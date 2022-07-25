@@ -1,14 +1,13 @@
 import React from 'react';
-import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 import Rating from '@mui/material/Rating';
 import StarIcon from '@mui/icons-material/Star';
-import { useNavigate } from 'react-router-dom';
 
-const ReviewList = ({reviewList}) => {
+const MyReviews = ({reviewList}) => {
   const navigate = useNavigate();
 
   return (
-    <div id='review-list'>
+    <div>
       {
         reviewList.length === 0 ? (
           <div style={{textAlign:'center', color: 'gray', marginTop:'100px'}}>작성한 후기가 없습니다.</div>
@@ -47,4 +46,4 @@ const ReviewList = ({reviewList}) => {
   );
 };
 
-export default ReviewList;
+export default MyReviews;

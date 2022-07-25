@@ -146,7 +146,7 @@ const Mypage = () => {
   };
 
   return (
-    <div>
+    <div id="mypage">
       <div style={{ margin: "0", padding: "0", outline: "0", boxSizing: "border-box" }}>
         <div className="wrapper">
           <div className="container">
