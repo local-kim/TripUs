@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -101,5 +102,41 @@ public class MemberController {
 			session.removeAttribute("loggedIn");
 			session.invalidate();
 		}
+	//   이메일 (ID 중복확인 및 이메일 인증번호 보내기)
+		   @PostMapping("/duplicateCheck")
+		   public ResponseEntity<String> duplicateCheck(@RequestBody Map<String, String> map ) throws Exception {
+		      String email = map.get("email");
+		      Integer confirmCheck = memberService.emailcheck(email);
+		      if(email == "") { //이메일 null 값이면  인증번호 생성 x
+		         return ResponseEntity.badRequest().body("email empty");
+		      } else if(confirmCheck == 1) { // 이메일이 중복이면  인증번호 생성 x
+		         return ResponseEntity.ok("cofirm");
+		      } else { // 이메일이 신규이면 해당 이메일로 인증번호 생성 및 전달
+		         Boolean authenticationCreate = memberService.authenticationCreate(map);
+		         return ResponseEntity.ok("pass");   
+		      }
+		   }
+		   
+		   //인증번호 확인하기 
+		   @PostMapping("/emailConfirm")
+		   public ResponseEntity<String> emailConfirm(@RequestBody Map<String, String> map ) throws Exception {
+		      System.out.println(map);
+		      
+		      String email = map.get("email");
+		      System.out.println(email);
+		      String authentication_key = map.get("authentication_key");
+		      System.out.println(authentication_key);
+		      
+		      String keyConfrim = memberService.authenticationKeySelect(email); //해당 이메일 인증번호 확인
+		      System.out.println(keyConfrim);
+		      
+		      
+		      if(authentication_key.equals(keyConfrim)) { // 해당 인증번호 이메일 일치하면 enabled true
+		         memberService.authenticationSucces(email);
+		         return ResponseEntity.ok("true");
+		      } else {
+		         return ResponseEntity.ok("false");
+		      }
+		   }
 
 }

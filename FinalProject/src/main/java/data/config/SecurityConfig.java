@@ -1,5 +1,6 @@
 package data.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,10 +18,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import auth.OAuth2AuthenticationSuccessHandler;
 import data.jwt.JwtAccessDeniedHandler;
 import data.jwt.JwtAuthenticationEntryPoint;
 import data.jwt.JwtSecurityConfig;
 import data.jwt.TokenProvider;
+import data.service.UserOAuth2Service;
 import io.jsonwebtoken.lang.Arrays;
 
 @Configuration
@@ -32,6 +35,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    
+    @Autowired
+    private UserOAuth2Service userOAuth2Service;
+
+    @Autowired
+    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     public SecurityConfig(
             TokenProvider tokenProvider,
@@ -112,7 +121,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 	.anyRequest().permitAll()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+                .apply(new JwtSecurityConfig(tokenProvider))
+                
+                .and()
+                .oauth2Login().defaultSuccessUrl("/login-success").successHandler(oAuth2AuthenticationSuccessHandler).userInfoEndpoint().userService(userOAuth2Service);
         
         httpSecurity.cors();
     }
