@@ -98,7 +98,7 @@ const PlanList = () => {
                     </div>
                     <div className='date'>{trip.start_date} ~ {trip.end_date} ({trip.days}일)</div>
                     {/* <div>{getMonth(new Date(trip.start_date))}</div> */}
-                    <div className='member-name' onClick={() => navigate(`/user/${trip.memberNum}`)}>{trip.memberName}님</div>
+                    <div className='member-name' onClick={() => navigate(`/user/${trip.memberNum}`)}>by {trip.memberName}</div>
                   </div>
                 </div>
               // </Link>
