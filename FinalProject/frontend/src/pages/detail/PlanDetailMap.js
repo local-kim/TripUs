@@ -42,7 +42,7 @@ const PlanDetailMap = () => {
 
     for(let i in dayPlan[cDay]){
       if (dayPlan[cDay][i].mapy !== 0 && dayPlan[cDay][i].mapx !== 0){
-      markerList.push({latlng: new kakao.maps.LatLng(dayPlan[cDay][i].mapy, dayPlan[cDay][i].mapx), title: dayPlan[cDay][i].title});
+      markerList.push({latlng: new kakao.maps.LatLng(dayPlan[cDay][i].mapy, dayPlan[cDay][i].mapx), title: dayPlan[cDay][i].title,});
       } 
     }
     // 커스텀 오버레이
@@ -50,7 +50,7 @@ const PlanDetailMap = () => {
       // 커스텀 오버레이에 표시할 내용
       // HTML 문자열 또는 Dom Element
       let content = `<div class ="label">
-                      <div class="label-title">${markerList[i].title}</div>
+                      <div class="label-title">${Number(i)+1}. ${markerList[i].title}</div>
                       <div class="label-num">${Number(i)+1}</div>
                     </div>`;
 
