@@ -470,13 +470,14 @@ const PlaceInfo=()=>{
        kakaomapscript();
        myLike();
        GetSumLikes();
+       AvgStars();
       //uploadImage();
     });
 
     useEffect(()=>{
      pageList();
      //onOneDelete();
-     AvgStars();
+     
     },[]);
 
     //modal
