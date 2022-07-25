@@ -126,7 +126,7 @@ btn.ReviewNext{
    /* margin: 0 auto; */
   }
 
-  #main-content a {
+  div.place_img_name_type div#main-content a {
     font-size: 12px;
     font-weight: bold;
     margin-top: 10px;
@@ -135,21 +135,21 @@ btn.ReviewNext{
     color: #008A68;
   }
   
-  #main-content svg {
+  div.place_img_name_type div#main-content svg {
     cursor: pointer;
     overflow: visible;
     width: 40px;
   }
-  #main-content svg #heart {
+  div.place_img_name_type div#main-content svg #heart {
     width: 40px;
     transform-origin: center;
     animation: animateHeartOut 0.3s linear forwards;
   }
-  #main-content svg #main-circ {
+  div.place_img_name_type div#main-content svg #main-circ {
     transform-origin: 29.5px 29.5px;
   }
    
-  #main-content #checkbox {
+  div.place_img_name_type div#main-content #checkbox {
     display: none;
   }
   
