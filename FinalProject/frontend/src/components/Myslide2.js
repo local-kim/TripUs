@@ -142,13 +142,13 @@ const Myslide=({row, select, category}) => {
 
 
     {togleButton && togleButton.map((row, index)=>(
-       <SwiperSlide>
+       <SwiperSlide key={index}>
         <Link to={`/city/${row.num}`} style={{color:'black', overflow:'hidden', }}>
-        <div className="card city-card-style hoverable z-depth-2" style={{margin:'0'}}>
+        <div className="card city-card-style hoverable z-depth-2" id='card2' style={{margin:'0'}}>
             <div className="card-image imgbox">
                 <img src={`../city_image/${row.image}`} alt="city" loading="lazy"/>
             </div>
-                <div clasName="city-card-contents-div">
+                <div className="city-card-contents-div">
                     <li className="city-card-contents-title">
                         <div className="citynamefont" style={{textAlign:'center'}}>
                             <b> {row.eng_name}</b><br/>
@@ -165,3 +165,6 @@ const Myslide=({row, select, category}) => {
 };
 
 export default Myslide;
+
+
+

@@ -25,6 +25,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
 
 .swiper .swiper-wrapper .swiper-slide{
   margin-right: 30px;
+  box-shadow: 0 5px 15px rgb(0 0 0 / 8%);
 }
 
   
@@ -115,9 +116,9 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   }  */
   
   
-  div, input, label, a, select, ul, li { 
+  /* div, input, label, a, select, ul, li { 
      box-sizing: border-box;
-  }
+  } */
   
   .main_top_title{
     color: white;
@@ -133,6 +134,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     font-weight: bold;
     text-align: center;
     padding-top: 20px;
+    
   }
   
   .page.white {
@@ -166,14 +168,11 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     font-weight: bold;
     width: 100%;
     text-align: center;
-    margin-top: 60px;
+    margin-top: 30px;
     
    
   }
   
-  .clear{
-    clear: both;
-  }
   
   .intro_box:hover img {
     box-shadow: 0px 0px 7px rgb(0 0 0 / 50%);
@@ -203,7 +202,8 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     padding-right: 5px;
     line-height: 22px;
     width: 348px;
-    height: 67px;
+    height: 100px;
+    display: flex;
   }
   
   
@@ -256,7 +256,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     color: #808080;
     text-align: center;
     padding-top: 13px;
-    margin-bottom: 40px;
+    
   }
   
   
@@ -272,10 +272,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   }
   
 
-  
-  a:hover{
-    color:blue;
-  }
+
   
   .intro_box {
     width: 348px;
@@ -298,6 +295,8 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     text-align: center;
     background: white;
     margin: 0 auto;
+    margin-left: 430px;
+    border: 1px solid white;
   }
   
   .plan_list .box {
@@ -441,6 +440,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
     width: 1112px;
     height: 450px;
     overflow: hidden;
+    
   }
   
   .top_city.w2 {
@@ -612,4 +612,71 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
 
 .latest_search:hover{
   cursor: pointer;
+}
+
+.animated-container{
+  display: inline-flex;
+
+}
+
+.uk-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+.uk-grid-match > * > :not([class*='uk-width']) {
+  box-sizing: border-box;
+  width: 100%;
+  flex: auto;
+}
+
+
+.row .col.m4 {
+    width: 33.3333333333%;
+    margin-left: auto;
+    left: auto;
+    right: auto;
+}
+
+
+.uk-width-3-5\@m {
+    width: 60%;
+}
+
+[class*='uk-width'] {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+.uk-grid-item-match, .uk-grid-match > * {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.uk-grid > * > :last-child {
+  margin-bottom: 0;
+}
+
+.uk-grid-match > * > :not([class*='uk-width']) {
+  box-sizing: border-box;
+  width: 100%;
+  flex: auto;
+}
+
+
+
+.page2Wrap{
+  display: flex;
+}
+
+.page2img{
+  background-image:url(./assets/images/seoul2.jpg);  
+  background-position: center;
+  background-size: cover;
+
 }

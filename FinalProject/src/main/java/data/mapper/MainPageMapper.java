@@ -26,6 +26,7 @@ public interface MainPageMapper {
 	public List<CityDto> getData2();
 	public List<CityDto> getData3();
 	public List<CityDto> getData4();
-	
+	//모든 유저 일정 개수
+	public int allUserTrip();
 	
 }

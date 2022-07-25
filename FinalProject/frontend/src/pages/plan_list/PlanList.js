@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/plan_list.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getMonth } from 'date-fns'
 import { SeasonButton, CitySelect } from '.';
 
 const PlanList = () => {
+  const navigate = useNavigate();
+
   const [season, setSeason] = useState(() => []);
 
   const handleSeason = (event, newSeason) => {
@@ -77,18 +79,17 @@ const PlanList = () => {
       <div className='sub-title'>다른 여행자들의 일정을 참고해 나만의 여행을 계획해보세요!</div>
 
       <SeasonButton season={season} setSeason={setSeason} handleSeason={handleSeason}/>
-      <CitySelect city={city} setCity={setCity} handleCity={handleCity}/>
+      {/* <CitySelect city={city} setCity={setCity} handleCity={handleCity}/> */}
       
         <div className='trip-wrap'>
           {
             filteredList && filteredList.map((trip, idx) => (
-              <Link to={`/plan/detail/${trip.tripNum}`}>
-                <div className='plan-item'>
-                  <div className='city-img' style={{backgroundImage:`url(../../city_image/${trip.image})`}}>
-                  </div>
+              // <Link to={`/plan/detail/${trip.tripNum}`}>
+                <div className='plan-item' key={idx}>
+                  <div className='city-img' style={{backgroundImage:`url(../../city_image/${trip.image})`}} onClick={() => navigate(`/plan/detail/${trip.tripNum}`)}></div>
                   <div className='info-wrap'>
                     <div style={{display:'flex',justifyContent:'space-between'}}>
-                      <div className='trip-name'>{trip.tripName}</div>
+                      <div className='trip-name' onClick={() => navigate(`/plan/detail/${trip.tripNum}`)}>{trip.tripName}</div>
                       
                       <div className='likes'>
                         <i className="fa-solid fa-heart"></i>
@@ -97,10 +98,10 @@ const PlanList = () => {
                     </div>
                     <div className='date'>{trip.start_date} ~ {trip.end_date} ({trip.days}일)</div>
                     {/* <div>{getMonth(new Date(trip.start_date))}</div> */}
-                    <div className='member-name'>{trip.memberName}님</div>
+                    <div className='member-name' onClick={() => navigate(`/user/${trip.memberNum}`)}>by {trip.memberName}</div>
                   </div>
                 </div>
-              </Link>
+              // </Link>
             ))
           }
         </div>

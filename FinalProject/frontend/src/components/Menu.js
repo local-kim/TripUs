@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import '../AppHeemin.css';
+import '../main.css';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -20,7 +20,6 @@ import { logout } from '../modules/auth';
 
 const ResponsiveAppBar = () => {
 
-  
 
   const [scrollPosition, setScrollPosition] = useState(0);
 
@@ -39,13 +38,13 @@ const ResponsiveAppBar = () => {
   const loginName = useSelector(state => state.auth.user.name);
   const loginProfile = useSelector(state => state.auth.user.profile);
 
-  const pages = ['여행지', '일정 만들기', '일정 보기', '인기 일정', 'About'];
-  const pageLinks = ['city/list', 'plan/city/108', 'plan/detail/1', 'plan/list', ''];
+  const pages = ['여행지', '인기 일정', 'About'];
+  const pageLinks = ['city/list', 'plan/list', ''];
 
-  const loginSettings = ['Mypage', 'Dashboard','Logout'];
+  const loginSettings = ['마이페이지', '내 여행','로그아웃'];
   const loginLinks = ['mypage/1', 'dashboard','logout'];
 
-  const logoutSettings = ['Login', 'Join'];
+  const logoutSettings = ['로그인', '회원가입'];
   const logoutLinks = ['login', 'join'];
 
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -70,7 +69,9 @@ const ResponsiveAppBar = () => {
   // 헤더 숨기기
   if ((window.location.pathname.startsWith('/plan')) && !window.location.pathname.startsWith('/plan/list')) return null;
 
-  if ((window.location.pathname == '/') && (window.scrollY <= 50)) return null;
+  // if ((window.location.pathname == '/') && (window.scrollY <= 50)) return null;
+
+  if ((window.location.pathname == '/')) return null;
 
   return (
     <AppBar position="fixed">

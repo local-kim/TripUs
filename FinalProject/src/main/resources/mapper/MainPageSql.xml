@@ -18,6 +18,10 @@
    <select id="getData4" resultType="city">
       select * from city order by name desc
  	</select>  
+ 	
+ 	 <select id="allUserTrip" resultType="int">
+      select count(*) from trip
+   </select>
  
 </mapper>
 

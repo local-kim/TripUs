@@ -1,20 +1,28 @@
+div#place{
+  width: 900px;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 100px;
+  margin: 0 auto;
+}
+
 div.place_info{
     display:flex;
     margin:0 auto;
-    justify-content:center;
+    justify-content: space-between;
     margin-top: 6%;
 }
 
 div#place_map{
-    width: 700px;
-    height: 500px;
+    width: 400px;
+    height: 245px;
 }
 
 div.place_all_data{
-    display:flex;
-    flex-direction:column;
-    margin-left:10px;
-    margin-top:80px;
+  margin-right:2.1%;
+    /* display:flex;
+    flex-direction:column; */
+    /* margin-left:25px; */
 }
 
 /* img.place_img{
@@ -32,28 +40,80 @@ div.place_img_name_type{
 }
 
 div.place_review_write{
-    display:inline-flex;
-    margin-top:13px;
-    text-align:left;
+  justify-content: center;
+  display: flex; 
+  text-align:left;
+  /* flex-direction: column; */
 }
-div.place_review_write textarea.review{
-    width:400px;
-    height:100px;
+
+div.stars{
+  text-align:left;
+
 }
 
 div.place_review_write button.btn_review_write{
-    margin-left:10px;
-    background-color: #1976d2;
+    background-color: #98dde3;
     color:white;
     border:none;
-    border-radius: 5px;
+    height:23px;
+    width:100px;
+    border-radius: 3px;
+    justify-content: center;
+    line-height: 11.5px;
+    align-items: center;
+    font-weight: 500;
+    margin-left:10px;
 }
+
+  /*input type file css*/
+
+  .btn-upload {
+    width: 100px;
+    height: 23px;
+    background: #98dde3;
+    /* border: 1px solid #4d4d4d; */
+    margin-left:10px;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:white;
+  }
+
+  .btn-upload:hover {
+    background: #75b4bd;
+    color: #fff;
+    border:0;
+  }
+  
+  #file {
+    display: none;
+  }
+
+    
+  #file2 {
+    display: none;
+  }
+
 label.css-dqr9h-MuiRating-label{
   
     display: unset;
 }
 
+div.place_review_write textarea.review{
+  width:900px;
+  height:122px;
+  border:1px solid #a3a3a3;
+}
 
+btn.ReviewPrev{
+}
+
+btn.ReviewNext{
+  
+}
 
 /*좋아요 test*/
 #main-content {
@@ -66,7 +126,7 @@ label.css-dqr9h-MuiRating-label{
    /* margin: 0 auto; */
   }
 
-  a {
+  #main-content a {
     font-size: 12px;
     font-weight: bold;
     margin-top: 10px;
@@ -75,21 +135,21 @@ label.css-dqr9h-MuiRating-label{
     color: #008A68;
   }
   
-  svg {
+  #main-content svg {
     cursor: pointer;
     overflow: visible;
     width: 40px;
   }
-  svg #heart {
+  #main-content svg #heart {
     width: 40px;
     transform-origin: center;
     animation: animateHeartOut 0.3s linear forwards;
   }
-  svg #main-circ {
+  #main-content svg #main-circ {
     transform-origin: 29.5px 29.5px;
   }
-  
-  #checkbox {
+   
+  #main-content #checkbox {
     display: none;
   }
   
@@ -289,34 +349,6 @@ label.css-dqr9h-MuiRating-label{
     100% {
       transform: scale(1);
     }
-  }
-
-  /*input type file css*/
-
-  .btn-upload {
-    width: 30px;
-    height: 30px;
-    background: #fff;
-    border: 1px solid #4d4d4d;
-    border-radius: 10px;
-    font-weight: 500;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .btn-upload:hover {
-    background: #4d4d4d;
-    color: #fff;
-  }
-  
-  #file {
-    display: none;
-  }
-
-    
-  #file2 {
-    display: none;
   }
   
  /* .css-13xfq8m-MuiTabPanel-root  div#mui-p-11655-P-2{

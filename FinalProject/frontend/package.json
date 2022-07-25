@@ -23,6 +23,7 @@
     "jquery": "^3.6.0",
     "moment": "^2.29.4",
     "react": "^18.2.0",
+    "react-animated-numbers": "^0.13.0",
     "react-avatar": "^5.0.1",
     "react-beautiful-dnd": "^13.1.0",
     "react-bootstrap": "^2.4.0",
@@ -48,6 +49,7 @@
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",
     "slick-carousel": "^1.8.1",
+    "styled-components": "^5.3.5",
     "swiper": "^8.2.5",
     "web-vitals": "^2.1.4"
   },
