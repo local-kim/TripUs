@@ -598,7 +598,34 @@ const PlaceInfo=()=>{
     
     });
 
-    
+    //   // 파일 삭제
+    // const deleteFileImage = (idx) => {
+    //   URL.revokeObjectURL(filename);
+    //   // URL.revokeObjectURL(modalfilename);
+    //   setFileName(filename.filter((file, i) => i != idx));
+    //   // setModalFileName(modalfilename.filter((file, i) => i != idx));
+
+    //   axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
+    //   .then(res => {
+    //     alert("하나 삭제 성공");
+    //   })
+    //   .catch(err => console.log(err));
+    // };
+
+    //   // 파일 삭제
+    //   const deleteModalFileImage = (idx) => {
+    //     // URL.revokeObjectURL(filename);
+    //     URL.revokeObjectURL(modalfilename);
+    //     // setFileName(filename.filter((file, i) => i != idx));
+    //     setModalFileName(modalfilename.filter((file, i) => i != idx));
+  
+    //     axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
+    //     .then(res => {
+    //       alert("하나 삭제 성공");
+    //     })
+    //     .catch(err => console.log(err));
+    //   };
+
     return (
         <div id='place'>
         <div className='place_info'>
@@ -874,6 +901,13 @@ const PlaceInfo=()=>{
                             </div>
                           </div>
                         </div>
+// =======
+//                       <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} />
+//                            <button type="button" onClick={()=>{
+//                             onOneDelete(editDetailData[idx].review_photo_num, idx);
+//                            }}>삭제</button>
+//                            </div>
+// >>>>>>> branch 'master' of https://github.com/local-kim/FinalProject.git
                            ))}  
                       
 
@@ -916,7 +950,17 @@ const PlaceInfo=()=>{
                     </div>
                   </label>
                   <input type='file' name='modal-upload' accept='image/*' multiple onChange={modaluploadImage} onClick={()=>console.log("modal")} id="file2" />
-                  
+                    {/*map돌릴예정*/}
+                    {
+                      modalfilename&&modalfilename.map((row,idx)=>(
+                        <div>
+                     <img src={photoUrl2+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
+                     <button type="button" onClick={()=>{
+                      // onOneDelete(editDetailData[idx].review_photo_num);
+                      deleteModalFileImage(idx);
+                     }}>삭제</button>
+                     </div>
+                      ))}
                       </div>
                       </Typography>
                     </Box>

@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 // TokenProvider를 주입받아 JwtFilter를 통해 Security 로직에 필터를 등록
 public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-
     private TokenProvider tokenProvider;
 
     public JwtSecurityConfig(TokenProvider tokenProvider) {

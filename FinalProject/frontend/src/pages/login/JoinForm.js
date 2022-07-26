@@ -39,10 +39,16 @@ const JoinForm = (props) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [modalTitle, setModalTitle] = useState();
+    const [modalContent, setModalContent] = useState();
+    ///이메일 중복확인
+    const [emailCheck, setEmailCheck] = useState(null);
     const {
         register,
         watch,
         handleSubmit,
+        getValues,
+        trigger,
         formState: { errors },
       } = useForm();
     
@@ -154,6 +160,87 @@ const JoinForm = (props) => {
             }
         });
     }
+  const comfrimUrl = "http://localhost:9001/" + "api/emailConfirm";
+  //이메일 인증번호
+  const [emailAuth, setEmailAuth] = useState(false);
+  //입력된 이메일
+  const data_email = getValues("email");
+  const [disable, setDisable] = React.useState(false);
+
+  const email_confirm = document.getElementById("email_confirm");
+  
+  //중복이메일 체크 및 이메일 인증 메세지 보내기
+  const email_check_button = (e) => {
+    //이메일 유효성 체크
+    const emailExp =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+   
+    //인증번호 전송
+
+    if (data_email === "") {
+      handleOpen();
+      setModalTitle("이메일 정보입력 오류");
+      setModalContent("이메일을 입력해주세요");
+    } else if (!emailExp.test(data_email)) {
+      handleOpen();
+      setModalTitle("이메일 정보입력 오류");
+      setModalContent("이메일을 형식에 맞추어 입력해주세요");
+    } else {
+      axios
+        .post("http://localhost:9150/api/duplicateCheck", {
+          email: data_email,
+        })
+        .then((res) => {
+          console.log(res);
+          if (res.data === "cofirm") {
+
+            handleOpen();
+            setModalTitle("이메일 오류");
+            setModalContent("이미 가입된 이메일입니다.");
+          } else if (res.data === "") {
+            handleOpen();
+            setModalTitle("이메일 오류");
+            setModalContent("이메일을 입력해주세요.");
+          } else if (res.data === "pass") {
+            handleOpen();
+            setModalTitle("이메일 인증확인");
+            setModalContent("이메일을 인증번호를 확인해주세요 .");
+          } else {
+            handleOpen();
+            setModalTitle("이메일 인증확인");
+            setModalContent("이메일 인증번호를 확인해주세요.");
+          }
+          if (emailCheck === true) {
+            email_confirm.focus();
+          }
+        });
+    }
+  };
+
+  //인증완료 버튼
+  const authCofirm = (e) => {
+    const data_key = getValues("email_confirm");
+    axios
+      .post(comfrimUrl, {
+        user_email: data_email,
+        authentication_key: data_key,
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data === true) {
+          setDisable(true);
+          handleOpen();
+          setModalTitle("이메일 인증");
+          setModalContent("인증 완료");
+        } else {
+          setDisable(false);
+          handleOpen();
+          setModalTitle("이메일 인증");
+          setModalContent("인증번호를 다시 확인해주세요.");
+        }
+      });
+  };
+
 
     // 우편번호 검색 후 주소 클릭 시 실행될 함수, data callback 용
     const handlePostCode = (kakaoData) => {
@@ -180,6 +267,7 @@ const JoinForm = (props) => {
         // setZonecode(data.zonecode);
         // console.log(address1)
         handleClose()
+        
     }
     
     // const postCodeStyle = {
@@ -190,6 +278,8 @@ const JoinForm = (props) => {
     //     height: "600px",
     //     padding: "7px",
     //   };
+    
+    
 
     return (
         <div className='member_join'>
@@ -299,8 +389,69 @@ const JoinForm = (props) => {
                             })}/>
                             <button type='button' className='btn'
                              onClick={onEmailCheck}>중복확인</button>
+                            
                              {errors.email && <p style={{color:'#1e87f0'}}>{errors.email?.message}</p>}
-                            </td>
+                             <button
+                                disabled={disable}
+                                type="button"
+                                onClick={() => {
+                                  email_check_button();
+                                }}
+                                onBlur={() => {
+                                  trigger("email");
+                                }}
+                                >
+                                인증하기
+                                </button>
+                                
+                                {(errors.email && errors.email.message) ||
+                                (emailCheck && (
+                                <p style={{ color: "green" }}>
+                                  사용 가능한 이메일입니다. 인증번호를 입력해주세요
+                                </p>
+                                ))}
+                                {emailCheck && (
+                                <div style={{ display: { emailAuth } }}>
+                                <label
+                                  className="accountLabel"
+                                  style={{ display: "flex", marginTop: "15px" }}
+                                >
+                                  이메일 인증번호 입력
+                                </label>
+                                <div
+                                  className="user_email_box"
+                                  style={{ width: "98%", display: "flex" }}
+                                  disabled={disable}
+                                >
+                                  <input
+                                    disabled={disable}
+                                    id="email_confirm"
+                                    className="email_confirm"
+                                    style={{ maxWidth: "75%" }}
+                                    placeholder="인증번호를 입력해주세요"
+                                    required
+                                    {...register("email_confirm", {
+                                      required: <p>이메일 인증번호를 입력해주세요.</p>,
+                                    })}
+                                  />
+                                  <button
+                                    disabled={disable}
+                                    type="button"
+                                    onClick={() => {
+                                      trigger("email_confirm");
+                                      authCofirm();
+                                    }}
+                                    onBlur={() => {
+                                      trigger("email_confirm");
+                                    }}
+                                  >
+                                    <b>인증확인</b>
+                                  </button>
+                                </div>
+                                  {errors.email_confirm && errors.email_confirm.message}
+                                  </div>
+                                  )}
+                                </td>
                         </tr>
                         <tr>
                             <th>연락처<span class="ico">*</span></th>

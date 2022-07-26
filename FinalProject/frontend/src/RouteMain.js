@@ -4,9 +4,10 @@ import { FinalHead, Footer, Header, Main, Menu } from "./components";
 import './App.css';
 import './main.css';
 import { CityInfoMain, CityinfoMore, PlaceInfo } from "./pages/cityinfo";
+import { Calendar, Plan, DayPlan, UpdatePlan, UpdateDayPlan, PlannerMain } from "./pages/plan";
+import { JoinForm, Auth, LoginForm, LoginFormTest, KakaoLogin, GoogleLogin, FindPassword, ChangePassword,KakaoLoginRedirect } from "./pages/login";
 import { PlanMain } from "./pages/plan";
 import { UpdatePlanMain } from "./pages/update_plan";
-import { JoinForm, Auth, LoginForm, LoginFormTest, KakaoLogin, GoogleLogin, FindPassword, ChangePassword } from "./pages/login";
 import { PlanDetail } from "./pages/detail";
 import { Mypage, Dashboard, Profile } from "./pages/mypage";
 import { CityList } from './pages/citylist';
@@ -37,11 +38,14 @@ const RouteMain = () => {
         <Route path="/loginTest" element={<LoginFormTest/>} />
         {/* <Route path="/login" element={<SecurityLogin/>} /> */}
         <Route path="/oauth/kakao/callback"  element={<Auth/>} />
-        <Route path="/kakao"  element={<KakaoLogin/>} />
-        <Route path="/google" element={<GoogleLogin/>} />
+        <Route
+          path="/oauth2/redirect/:token"
+          element={<KakaoLoginRedirect />}
+        />
+        <Route path="/google" element={<GoogleLogin/>}/>
         <Route path="/find" element={<FindPassword/>} />
         <Route path="/change" element={<ChangePassword/>} />
-
+        
         {/* Planning */}
         {/* <Route path="/plan/calendar/:cityNum" element={<Calendar/>} />
         <Route path="/plan" element={<Plan/>} />

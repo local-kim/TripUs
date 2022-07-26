@@ -1,5 +1,7 @@
 package data.config;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,9 +25,11 @@ import data.jwt.JwtSecurityConfig;
 import data.jwt.TokenProvider;
 import io.jsonwebtoken.lang.Arrays;
 
+@SpringBootApplication
 @Configuration
 // 프로젝트의 모든 보안 구성을 포함하는 클래스
 @EnableWebSecurity
+@EnableAutoConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)	// @PreAuthorize 어노테이션을 메서드 단위로 추가하기 위함
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
