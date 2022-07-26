@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Modal } from '@mui/material';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import '../../styles/join.css';
-import { GoogleLogin } from 'react-google-login';
-import { KakaoLogin } from 'react-kakao-login';
+// import GoogleLogin from 'react-google-login';
+import KakaoLogin from 'react-kakao-login';
 import { SearchId, SearchPass } from './index.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../modules/auth';
@@ -19,6 +19,9 @@ const LoginForm = () => {
    const [password,setPassword] = useState('')
    const [SearchId_modal,setSearchId_modal] = useState(false);
    const [SeachPass_modal,setSearchPass_modal] = useState(false);
+   const [open, setOpen] = React.useState(false);
+   const handleOpen = () => setOpen(true);
+   const handleClose = () => setOpen(false);
 
 
 
@@ -85,6 +88,8 @@ const LoginForm = () => {
           setInputPw('');
         })
     }
+  
+    
     const onGoogleSignInSuccess = (res) => {
  
         const params = new URLSearchParams();
@@ -113,13 +118,13 @@ const LoginForm = () => {
     const failGoogle = (response) => {
         console.log(response);
     }
-    <GoogleLogin
-    clientId="362168925347-7h80oeftm2cub12235gac45dvhjo9fce.apps.googleusercontent.com"
-    buttonText="Login"
-    onSuccess={successGoogle}
-    onFailure={failGoogle}
-    cookiePolicy={'single_host_origin'}
-    />
+    // <GoogleLogin
+    // clientId="362168925347-7h80oeftm2cub12235gac45dvhjo9fce.apps.googleusercontent.com"
+    // buttonText="Login"
+    // onSuccess={successGoogle}
+    // onFailure={failGoogle}
+    // cookiePolicy={'single_host_origin'}
+    // />
     // const [id, setId] = useState("");
     // const [isRemember, setIsRemember] = useState(false);
   
@@ -212,19 +217,14 @@ const LoginForm = () => {
       <div className='sns_text'>SNS 간편 로그인</div>
       <div className='socialBtn-container'>
         <div className='socialBtn'>
-            <a href={KAKAO_AUTH_URL}>
-          
-            <img src={kakao_icon} alt='카카오'/></a>
-         
-          
         
-        
-          
-           
-        
-           
+        <button type='button'
+
+                // jsKey={'e836ea2cbc2eeba0ece8371ed77a25e0'}
+   
+              >kakao</button>
         </div>
-        <div className='socialBtn'>
+        {/* <div className='socialBtn'>
           <img src={naver_icon} alt='네이버'></img>
         </div>
         <div className='socialBtn'>
@@ -238,7 +238,7 @@ const LoginForm = () => {
                     cookiePolicy={'single_host_origin'}
                 />
 
-        </div>
+        </div> */}
       </div>
       </form>
     </div>
@@ -246,6 +246,7 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
 
 // <div className="section_login">
         //     <form onSubmit={onClickLogin}>

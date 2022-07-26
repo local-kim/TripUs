@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import data.dto.MemberSecurityDto;
-import data.mapper.MemberMapper;
 import data.mapper.MemberSecurityMapper;
 
 @Service
@@ -81,15 +80,5 @@ public class CustomMemberDetailsService implements UserDetailsService {
 		member.setAuthorities(grantedAuthorities);
         
         return member;
-	}
-
-	public void createMemberKakao(String email, String nickname) {
-		// TODO Auto-generated method stub
-		Map<String, String> map =new HashMap<>();
-		map.put("email", email);
-		map.put("nickname", nickname);
-		mapper.createMemberKakao(map);
-		
-				
 	}
 }

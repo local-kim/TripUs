@@ -29,5 +29,4 @@ public interface MemberSecurityMapper {
     int checkId(String id);
 	int checkEmail(String email);
 	void changePassword(Map<String, String> map);
-	void createMemberKakao(Map<String, String>map);
 }

@@ -1,6 +1,7 @@
 package data.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -18,29 +19,23 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
-import auth.OAuth2AuthenticationSuccessHandler;
 import data.jwt.JwtAccessDeniedHandler;
 import data.jwt.JwtAuthenticationEntryPoint;
 import data.jwt.JwtSecurityConfig;
 import data.jwt.TokenProvider;
-import data.service.UserOAuth2Service;
 import io.jsonwebtoken.lang.Arrays;
 
+@SpringBootApplication
 @Configuration
 // 프로젝트의 모든 보안 구성을 포함하는 클래스
 @EnableWebSecurity
+@EnableAutoConfiguration
 @EnableGlobalMethodSecurity(prePostEnabled = true)	// @PreAuthorize 어노테이션을 메서드 단위로 추가하기 위함
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-    
-    @Autowired
-    private UserOAuth2Service userOAuth2Service;
-
-    @Autowired
-    private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     public SecurityConfig(
             TokenProvider tokenProvider,
@@ -121,10 +116,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 	.anyRequest().permitAll()
 
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider))
-                
-                .and()
-                .oauth2Login().defaultSuccessUrl("/login-success").successHandler(oAuth2AuthenticationSuccessHandler).userInfoEndpoint().userService(userOAuth2Service);
+                .apply(new JwtSecurityConfig(tokenProvider));
         
         httpSecurity.cors();
     }
