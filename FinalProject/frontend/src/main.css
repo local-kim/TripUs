@@ -1,3 +1,7 @@
+.swiper{
+  overflow: initial !important;
+}
+
 .css-19r6kue-MuiContainer-root {
   width: 100%;
   margin-left: auto;
@@ -438,7 +442,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   .top_city_list {
     padding-top: 40px;
     width: 1112px;
-    height: 450px;
+    height: 550px;
     overflow: hidden;
     
   }

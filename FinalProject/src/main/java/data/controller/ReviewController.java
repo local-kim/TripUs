@@ -38,6 +38,14 @@ public class ReviewController {
 //   @Autowired
 //   private MemerService memberService;
    
+   @GetMapping("/deleteUploadPhoto")
+   public void deleteUploadPhoto(@RequestParam int idx) {
+	   System.out.println(photoName);
+	   System.out.println(idx);
+	   photoName.remove(idx);
+	   System.out.println(photoName);
+   }
+   
    @PostMapping("/upload")   //onchange에 넣는거...인데...
       public List<String> fileUpload(
             HttpServletRequest request,@RequestParam List<MultipartFile> imagefile) {
@@ -75,9 +83,9 @@ public class ReviewController {
             e.printStackTrace();
          }
       }
-            return photoName;
+        return photoName;
             
-         }
+   }
    
    @PostMapping("/insert")
    public void insert(@RequestBody ReviewDto dto) {
@@ -92,7 +100,7 @@ public class ReviewController {
          }
          
       }
-      
+      photoName.clear();
    }
    
    @PostMapping("/update")
@@ -111,6 +119,7 @@ public class ReviewController {
          }
       }
       reviewService.updateReview(dto);
+      photoName.clear();
    }
    
    @DeleteMapping("/delete")
@@ -130,7 +139,7 @@ public class ReviewController {
       
       //db delete
       reviewService.deleteReview(num);
-      
+      photoName.clear();
    }
    
    @DeleteMapping("/onedelete")

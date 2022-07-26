@@ -324,11 +324,12 @@ const PlaceInfo=()=>{
 
 
         //사진 하나 삭제 11
-        const onOneDelete=(review_photo_num)=>{
+        const onOneDelete=(review_photo_num, idx)=>{
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.delete(onedeleteUrl+review_photo_num).then(res=>{
             console.log("onOneDelete:",res.data);
-            alert("정말 삭제하시겠습니까?")
+            alert("정말 삭제하시겠습니까?");
+            setDetailFileData(detailFileData.filter((file, i) => i != idx));
           }).catch(err=>{
             alert(err);
           })
@@ -563,10 +564,30 @@ const PlaceInfo=()=>{
       // 파일 삭제
     const deleteFileImage = (idx) => {
       URL.revokeObjectURL(filename);
-      URL.revokeObjectURL(modalfilename);
+      // URL.revokeObjectURL(modalfilename);
       setFileName(filename.filter((file, i) => i != idx));
-      setModalFileName(modalfilename.filter((file, i) => i != idx));
+      // setModalFileName(modalfilename.filter((file, i) => i != idx));
+
+      axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
+      .then(res => {
+        alert("하나 삭제 성공");
+      })
+      .catch(err => console.log(err));
     };
+
+      // 파일 삭제
+      const deleteModalFileImage = (idx) => {
+        // URL.revokeObjectURL(filename);
+        URL.revokeObjectURL(modalfilename);
+        // setFileName(filename.filter((file, i) => i != idx));
+        setModalFileName(modalfilename.filter((file, i) => i != idx));
+  
+        axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
+        .then(res => {
+          alert("하나 삭제 성공");
+        })
+        .catch(err => console.log(err));
+      };
     
     return (
         <div id='place'>
@@ -794,7 +815,7 @@ const PlaceInfo=()=>{
                         <div>
                       <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} />
                            <button type="button" onClick={()=>{
-                            onOneDelete(editDetailData[idx].review_photo_num);
+                            onOneDelete(editDetailData[idx].review_photo_num, idx);
                            }}>삭제</button>
                            </div>
                            ))}  
@@ -822,7 +843,7 @@ const PlaceInfo=()=>{
                      <img src={photoUrl2+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
                      <button type="button" onClick={()=>{
                       // onOneDelete(editDetailData[idx].review_photo_num);
-                      deleteFileImage(idx);
+                      deleteModalFileImage(idx);
                      }}>삭제</button>
                      </div>
                       ))}
