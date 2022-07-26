@@ -11,6 +11,8 @@ import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions, TextField } from '@mui/material';
 import axios from "axios";
 import '../../styles/cityinfo.css';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CityInfoImage from './CityInfoImage';
 import CityInfoMore from './CityInfoMore';
@@ -231,6 +233,7 @@ const CityInfoMain = () => {
     let PlaceUrl;
     const {num}=useParams();   
     const city_num = num;
+    const [border,setBorder] = useState(0);
     
     // 일정 url에 필요한 변수들   
     const [img,setImg]=useState([]);
@@ -251,27 +254,31 @@ const CityInfoMain = () => {
     const [like_list,setLike_list] = useState([]);
     
     // 지역 데이타 변수 
-    const [areaCode,setAreaCode]=useState('6');
+    const [areaCode,setAreaCode]=useState('');
     const [sigunguCode,setSigunguCode]=useState('');
     const [cityname,setCityname]=useState('');
-    const [keyWord,setKeyWord]=useState('부산');  // 검색 input 관광지 contentid 담는 변수
-    const [page,setPage]=useState(1);   // 관광지 목록 데이타 페이지
+    const [keyWord,setKeyWord]=useState('');  // 검색 input 관광지 contentid 담는 변수
+    const [page,setPage]=useState(2);   // 관광지 목록 데이타 페이지
+    const [keyword_contenttypeid, setKeyword_contenttypeid] = useState('');
     
-    const [categoryPlace0,setCategoryPlace0]=useState([]);  // 전체보기
-    const [categoryPlace1,setCategoryPlace1]=useState([]);  // 12 명소
-    const [categoryPlace2,setCategoryPlace2]=useState([]);  // 39 음식점
-    const [categoryPlace3,setCategoryPlace3]=useState([]);  // 38 쇼핑
-    const [categoryPlace4,setCategoryPlace4]=useState([]);  // 15 행사/공연/축제
-    const [categoryPlace5,setCategoryPlace5]=useState([]);  // 28 레포츠
-    const [categoryPlace6,setCategoryPlace6]=useState([]);  // 32 숙박  
-    const [places, setPlaces] = useState([]);
-    const [keyWordPlace,setKeyWordPlace]=useState([]);
+    const [categoryPlace0,setCategoryPlace0] = useState([]);  // 전체보기
+    const [categoryPlace1,setCategoryPlace1] = useState([]);  // 12 명소
+    const [categoryPlace2,setCategoryPlace2] = useState([]);  // 39 음식점
+    const [categoryPlace3,setCategoryPlace3] = useState([]);  // 38 쇼핑
+    const [categoryPlace4,setCategoryPlace4] = useState([]);  // 15 행사/공연/축제
+    const [categoryPlace5,setCategoryPlace5] = useState([]);  // 28 레포츠
+    const [categoryPlace6,setCategoryPlace6] = useState([]);  // 32 숙박  
+    const [places,setPlaces] = useState([]);
+    // const [keyWordPlace,setKeyWordPlace] = useState([]);
+    const [place12,setPlace12] = useState([]);
+    const [place14,setPlace14] = useState([]);
+    
     
 
     // API
     // 날씨 
-    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
-    // const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
+    // const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
+    const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
     // const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
     // const API_KEY="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D";  // 웅쓰꺼
     
@@ -304,39 +311,27 @@ const CityInfoMain = () => {
     // 날씨 api 받아오는 거   
     let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=${days}&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${slastYear}&endDt=${elastYear}&stnIds=${num}`;
     // let weather_url=`https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${API_KEY}&numOfRows=20&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=20210101&endDt=20210501&stnIds=108`;
-    let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        areaUrl += `&sigunguCode=${sigunguCode}`;
-     }
-     // contenttypeid 포함
-    let area_content_type_12_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=12&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_12_url += `&sigunguCode=${sigunguCode}`;
-     }
-    let area_content_type_39_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=39&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_39_url += `&sigunguCode=${sigunguCode}`;
-     }
-    let area_content_type_38_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=38&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_38_url += `&sigunguCode=${sigunguCode}`;
-     }
-    let area_content_type_15_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=15&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-         area_content_type_15_url += `&sigunguCode=${sigunguCode}`;
-    }
-    let area_content_type_28_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=28&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_28_url += `&sigunguCode=${sigunguCode}`;
-    }
-    let area_content_type_32_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=32&MobileOS=ETC&MobileApp=AppTest&_type=json`;
-    if(sigunguCode){  // 시군구 코드가 있는 도시이면
-        area_content_type_32_url += `&sigunguCode=${sigunguCode}`;
-    }
-    // let area_content_type_14_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${areaCode}&numOfRows=2&arrange=R&contentTypeId=14&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+    let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&numOfRows=2&arrange=R&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=`;
     // if(sigunguCode){  // 시군구 코드가 있는 도시이면
-    //     area_content_type_14_url += `&sigunguCode=${sigunguCode}`;
-    //  }
+    //     areaUrl += `&sigunguCode=${sigunguCode}`;
+    // }
+    
+     // contenttypeid 포함
+    let area_content_type_12_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&numOfRows=2&arrange=R&contentTypeId=12&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=`;
+    
+    let area_content_type_14_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&numOfRows=2&arrange=R&contentTypeId=14&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=`;
+    
+    let area_content_type_39_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&numOfRows=2&arrange=R&contentTypeId=39&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=`;
+    
+    let area_content_type_38_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&numOfRows=2&arrange=R&contentTypeId=38&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=`;
+    
+    let area_content_type_15_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&numOfRows=2&arrange=R&contentTypeId=15&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=`;
+    
+    let area_content_type_28_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&numOfRows=2&arrange=R&contentTypeId=28&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=`;
+    
+    let area_content_type_32_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&numOfRows=2&arrange=R&contentTypeId=32&MobileOS=ETC&MobileApp=AppTest&_type=json&areaCode=`;
+    
+
     // 일정
     let trip_url=`${process.env.REACT_APP_SPRING_URL}city/tripdata?city_num=${city_num}&loginNum=${loginNum}`;     
     // 좋아요
@@ -348,7 +343,10 @@ const CityInfoMain = () => {
     // 키워드 검색 url
     let keyWord_url = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${API_KEY}&keyword=${keyWord}&areaCode=${areaCode}&numOfRows=2&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
     if(sigunguCode){  // 시군구 코드가 있는 도시이면
-    keyWord_url += `&sigunguCode=${sigunguCode}`;
+        keyWord_url += `&sigunguCode=${sigunguCode}`;
+    }
+    if(keyword_contenttypeid) {
+        keyWord_url += `&contentTypeId=${keyword_contenttypeid}`;
     }
 
     
@@ -357,110 +355,140 @@ const CityInfoMain = () => {
     useEffect(() => {
         place_area_Data();
         trip_weather_Data();
-        // myLike();
         like_table();
+        place_12_14();
     }, []);
     const place_area_Data = () => {
-        // console.log(areaUrl)
         // console.log("axios.place_area_Data");
         axios.get(PlaceUrl)
         .then(response => {
+            console.log(PlaceUrl);
             setCityData(response);
             setAreaCode(response.data.area_code);
             setSigunguCode(response.data.sigungu_code);
             setCityname(response.data.name);
-        })
-        .then(() => {
-            axios.get(areaUrl)
-            .then((res1) => {
-                setPlaces(res1.data.response.body.items.item);
-                setCategoryPlace0(res1.data.response.body.items.item);
-            })
-            axios.get(area_content_type_12_url)
-            .then((res2) => {
-                setCategoryPlace1(res2.data.response.body.items.item);
-            })
-            axios.get(area_content_type_39_url)
-            .then((res3) => {
-                setCategoryPlace2(res3.data.response.body.items.item);
-            })
-            axios.get(area_content_type_38_url)
-            .then((res4) => {
-                setCategoryPlace3(res4.data.response.body.items.item);
-            })
-            axios.get(area_content_type_15_url)
-            .then((res5) => {
-                setCategoryPlace4(res5.data.response.body.items.item);
-            })
-            axios.get(area_content_type_28_url)
-            .then((res6) => {
-                setCategoryPlace5(res6.data.response.body.items.item);
-            })
-            axios.get(area_content_type_32_url)
-            .then((res7) => {
-                setCategoryPlace6(res7.data.response.body.items.item);
-            })
+            console.log(response.data.area_code);
+            
+            // console.log(areaUrl + response.data.area_code + response.data.sigungu_code);
+
+            if(response.data.sigungu_code == 0 || !response.data.sigungu_code){
+                console.log(area_content_type_39_url + response.data.area_code);
+                axios.get(areaUrl + response.data.area_code)
+                .then((res1) => {
+                    setPlaces(res1.data.response.body.items.item);
+                    setCategoryPlace0(res1.data.response.body.items.item);
+                    console.log(res1.data);
+                })
+                axios.get(area_content_type_39_url + response.data.area_code)
+                .then((res3) => {
+                    setCategoryPlace2(res3.data.response.body.items.item);
+                })
+                axios.get(area_content_type_38_url + response.data.area_code)
+                .then((res4) => {
+                    setCategoryPlace3(res4.data.response.body.items.item);
+                })
+                axios.get(area_content_type_15_url + response.data.area_code)
+                .then((res5) => {
+                    setCategoryPlace4(res5.data.response.body.items.item);
+                })
+                axios.get(area_content_type_28_url + response.data.area_code)
+                .then((res6) => {
+                    setCategoryPlace5(res6.data.response.body.items.item);
+                })
+                axios.get(area_content_type_32_url + response.data.area_code)
+                .then((res7) => {
+                    setCategoryPlace6(res7.data.response.body.items.item);
+                })
+                axios.get(area_content_type_12_url + response.data.area_code)
+                .then((res2) => {
+                    setPlace12(res2.data.response.body.items.item);
+                })
+                axios.get(area_content_type_14_url + response.data.area_code)
+                .then((res8) => {
+                    setPlace14(res8.data.response.body.items.item);
+                })
+
+                
+                // areaUrl = areaUrl + response.data.area_code;
+                // console.log(areaUrl);
+            } else {
+                console.log(areaUrl + response.data.area_code + "&sigunguCode=" + response.data.sigungu_code);
+                axios.get(areaUrl + response.data.area_code + "&sigunguCode=" + response.data.sigungu_code)
+                .then((res1) => {
+                    setPlaces(res1.data.response.body.items.item);
+                    setCategoryPlace0(res1.data.response.body.items.item);
+                    console.log(res1.data);
+                })
+                axios.get(area_content_type_39_url + response.data.area_code + "&sigunguCode=" + response.data.sigungu_code)
+                .then((res3) => {
+                    setCategoryPlace2(res3.data.response.body.items.item);
+                })
+                axios.get(area_content_type_38_url + response.data.area_code + "&sigunguCode=" + response.data.sigungu_code)
+                .then((res4) => {
+                    setCategoryPlace3(res4.data.response.body.items.item);
+                })
+                axios.get(area_content_type_15_url + response.data.area_code + "&sigunguCode=" + response.data.sigungu_code)
+                .then((res5) => {
+                    setCategoryPlace4(res5.data.response.body.items.item);
+                })
+                axios.get(area_content_type_28_url + response.data.area_code + "&sigunguCode=" + response.data.sigungu_code)
+                .then((res6) => {
+                    setCategoryPlace5(res6.data.response.body.items.item);
+                })
+                axios.get(area_content_type_32_url + response.data.area_code + "&sigunguCode=" + response.data.sigungu_code)
+                .then((res7) => {
+                    setCategoryPlace6(res7.data.response.body.items.item);
+                })
+                axios.get(area_content_type_12_url + response.data.area_code + "&sigunguCode=" + response.data.sigungu_code)
+                .then((res2) => {
+                    setPlace12(res2.data.response.body.items.item);
+                })
+                axios.get(area_content_type_14_url + response.data.area_code + "&sigunguCode=" + response.data.sigungu_code)
+                .then((res8) => {
+                    setPlace14(res8.data.response.body.items.item);
+                })
+            }
         })
         .catch(err => console.log(err))
     }
     const trip_weather_Data = () => {
-        // console.log("trip_weather_Data");
         axios.get(trip_url)
-        .then((res8) => {
-            setCityPlan(res8.data);
-            setCityPlan2(res8.data[0]);
-            setStart_date([res8.data[0].start_date]);  // 잘 들어가짐
-            setEnd_date([res8.data[0].end_date]);  // 잘 들어가짐
-            setDays([res8.data[0].days]);  // 잘 들어가짐
+        .then((res9) => {
+            setCityPlan(res9.data);
+            setCityPlan2(res9.data[0]);
+            setStart_date([res9.data[0].start_date]);  // 잘 들어가짐
+            setEnd_date([res9.data[0].end_date]);  // 잘 들어가짐
+            setDays([res9.data[0].days]);  // 잘 들어가짐
         })
         .then(()=>{
             axios.get(weather_url)
-            .then((res9) => {
-                setW_data(res9.data.response.body.items.item);
-                // setWeatherImg(res9.data.response.body.items.item);
+            .then((res10) => {
+                setW_data(res10.data.response.body.items.item);
+                // setWeatherImg(res10.data.response.body.items.item);
             })
         })
     }
 
     // 날씨 API 데이터
     useEffect(()=>{
-        console.log("weather_url");
-        delete axios.defaults.headers.common['Authorization'];
         axios.get(weather_url)
         .then(res=>{
             setW_data(res.data.response.body.items.item);
         })
     },[start_date,end_date])
 
-    // // 내 좋아요 현황
-    // useEffect(() => {
-    //     myLike();
-    // },[])
-    // const myLike=()=>{
-    //     if(!isLoggedIn){
-    //         return;
-    //     }
-    //     axios.get(like_url).then(res=>{
-    //         console.log(res.data)
-    //         if(res.data==null||res.data == 0){
-    //             // setLike_btn(res.data);
-    //             setChecked(false);
-    //         }else{
-    //             setLike_btn(res.data);
-    //             setChecked(true);
-    //         }
-    //     }).catch(err => {
-    //         alert(err);
-    //     })
-    // }
-    // 좋아요 ON
+    // contenttype 12 + 14
+    const place_12_14 = () => {
+        setCategoryPlace1([...place12, ...place14]);
+    }
+
     const insert_btn = (e, contentid) => {
         if (!isLoggedIn) {
             alert("로그인 후 이용해주세요")
         }
             axios.post(insert_like_url,{place_id:String(contentid),loginNum,check:Number(checked)})
             .then(res=>{
-                alert("좋아요 true:",res.data);
+                // alert("좋아요 true:",res.data);
                 // setLike_btn(true);
                 like_table();
             })
@@ -470,116 +498,151 @@ const CityInfoMain = () => {
             axios.delete(process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+contentid+"&loginNum="+loginNum,{place_id:String(contentid), loginNum : loginNum})
             .then(res=>{
                 console.log("delete_like_url : "+ delete_like_url)
-                alert("좋아요 false");
+                // alert("좋아요 false");
                 like_table();
                 // setLike_btn(false);
             })
     }
 
-    // const on_off_btn = () => {
-    //     if (!isLoggedIn) {
-    //         alert("로그인 후 이용해주세요")
-    //     } else {
-    //         if ()
-    //     }
-    // }
-
-
-    // DB select
-    // const myLike=()=>{
-    //     if(!isLoggedIn){
-    //         return;
-    //     }
-    //     axios.get(like_url)
-    //     .then(res=>{
-    //         if(res.data == 0){
-    //             setLike_btn(false);
-    //         }else{
-    //             setLike_btn(true);
-    //         }
-    //     })
-    // }
     // like table에서 place_id랑 loginNum 가져와서 클릭한 카드의 contentid 비교해서 insert,delete 버튼 실행하기
     const like_table = () => {
         axios.get(like_table_url)
         .then(res => {
             setLike_list(res.data);  // like 테이블에 있는 place_id 여기에 member_num(loginNum)만 +해서 비교하면 될 듯?
-            console.log(res.data)
+            // console.log(res.data)
         })
     }
 
-    // const likeBtnT = () => {
-    //     setLike_btn(true)
-    // }
-
-    // const likeBtnF = () => {
-    //     setLike_btn(false)
-    // }
-
-
-    // const wantcheck = (contentid) => {
-    //     axios.get(process.env.REACT_APP_SPRING_URL+"city/like?place_id="+contentid+"&loginNum="+loginNum)
-    //     .then(res => {
-            
-    //         if(res.data == 0){
-    //             console.log(contentid, "false?");
-    //             console.log(process.env.REACT_APP_SPRING_URL+"city/like?place_id="+contentid+"&loginNum="+loginNum);
-    //             setTrueFalse(0);
-    //             return false;
-    //         }else{
-    //             setTrueFalse(1);
-    //             return true;
-    //         }
-    //     })
-    //     .catch(err => console.log(err))
-    // }
-    // console.log("wantcheckkkkkkkk : " + wantcheck())
-
-    
 
     // 검색
     useEffect(() => {
-        console.log("keyword");
+        // console.log("keyword");
         // 추천 장소(keyword 값이 아직 없을 때) : 처음 렌더링 시
-        if(keyWord === ''){
-          delete axios.defaults.headers.common['Authorization'];
-          axios.get(areaUrl)
-          .then((res) => {
-            setPlaces(res.data.response.body.items.item);
-            setCategoryPlace0(res.data.response.body.items.item);
-          }).catch((err) => console.log(err.data));
+        if(keyWord == ''){
+            axios.get(areaUrl)
+            .then((res) => {
+                setPlaces(res.data.response.body.items.item);
+                setCategoryPlace0(res.data.response.body.items.item);
+            }).catch((err) => console.log(err.data));
         }
         // 키워드 검색 장소
         else{
         //   console.log("keyword 검색 요청");
         //   console.log(keyWord_url);
-          delete axios.defaults.headers.common['Authorization'];
-          axios.get(keyWord_url)
-          .then((res) => {
-            setPlaces(res.data.response.body.items.item);
-            setCategoryPlace0(res.data.response.body.items.item);
-          }).catch((err) => console.log(err.data));
+            axios.get(keyWord_url)
+            .then((res) => {
+                console.log(keyWord_url);
+                setPlaces(res.data.response.body.items.item);
+                setCategoryPlace0(res.data.response.body.items.item);
+            }).catch((err) => console.log(err.data));
         }
     }, [keyWord]);
 
 
-    // 정보 더보기
-    // useEffect(() => {
-    //     console.log("moreinfo");
-    //     moreinfo();
-    // },[])
-    const moreinfo = () => {
-        setPage(page + 1);
-        areaUrl += `&pageNo=${page}`;
-        // console.log("areaUrl111111111111111111 : " + areaUrl);
-        axios.get(areaUrl)
-        .then((res) => {
-            setPlaces([...places, ...res.data.response.body.items.item]);
-            setCategoryPlace0([...categoryPlace0, ...res.data.response.body.items.item]);
-    })
-    .catch((err)=>{
-            console.log(err.data)
-        })
+    const moreinfo = (value,keyWord) => {
+        if(sigunguCode == 0 || !sigunguCode){
+            if (value == 1){
+                setPage(page + 1);
+                // areaUrl += `&pageNo=${page}`;
+                console.log(area_content_type_12_url + areaCode + `&pageNo=${page}`);
+                axios.get(areaUrl + areaCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setPlaces([...places, ...res.data.response.body.items.item]);
+                    setCategoryPlace0([...categoryPlace0, ...res.data.response.body.items.item]);
+                })
+            } else if (value == 1214){
+                setPage(page + 1);
+
+                axios.get(area_content_type_12_url + areaCode + `&pageNo=${page}`)
+                .then((res1) => {
+                    axios.get(area_content_type_14_url + areaCode + `&pageNo=${page}`)
+                    .then((res2) => {
+                        setCategoryPlace1([...categoryPlace1, ...res1.data.response.body.items.item, ...res2.data.response.body.items.item]);
+                    })
+                })
+            } else if (value == 39){
+                setPage(page + 1);
+                axios.get(area_content_type_39_url + areaCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setCategoryPlace2([...categoryPlace2, ...res.data.response.body.items.item]);
+                })
+            } else if (value == 38){
+                setPage(page + 1);
+                axios.get(area_content_type_38_url + areaCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setCategoryPlace3([...categoryPlace3, ...res.data.response.body.items.item]);
+                })
+            } else if (value == 15){
+                setPage(page + 1);
+                axios.get(area_content_type_15_url + areaCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setCategoryPlace4([...categoryPlace4, ...res.data.response.body.items.item]);
+                })
+            } else if (value == 28){
+                setPage(page + 1);
+                axios.get(area_content_type_28_url + areaCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setCategoryPlace5([...categoryPlace5, ...res.data.response.body.items.item]);
+                })
+            } else {
+                setPage(page + 1);
+                axios.get(area_content_type_32_url + areaCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setCategoryPlace6([...categoryPlace6, ...res.data.response.body.items.item]);
+                })
+            }
+        } else {
+            if (value == 1){
+                setPage(page + 1);
+                // areaUrl += `&pageNo=${page}`;
+                console.log(area_content_type_12_url + areaCode + "&sigunguCode=" + sigunguCode + `&pageNo=${page}`);
+                axios.get(areaUrl + areaCode + "&sigunguCode=" + sigunguCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setPlaces([...places, ...res.data.response.body.items.item]);
+                    setCategoryPlace0([...categoryPlace0, ...res.data.response.body.items.item]);
+                })
+            } else if (value == 1214){
+                setPage(page + 1);
+
+                axios.get(area_content_type_12_url + areaCode + "&sigunguCode=" + sigunguCode + `&pageNo=${page}`)
+                .then((res1) => {
+                    axios.get(area_content_type_14_url + areaCode + "&sigunguCode=" + sigunguCode + `&pageNo=${page}`)
+                    .then((res2) => {
+                        setCategoryPlace1([...categoryPlace1, ...res1.data.response.body.items.item, ...res2.data.response.body.items.item]);
+                    })
+                })
+            } else if (value == 39){
+                setPage(page + 1);
+                axios.get(area_content_type_39_url + areaCode + "&sigunguCode=" + sigunguCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setCategoryPlace2([...categoryPlace2, ...res.data.response.body.items.item]);
+                })
+            } else if (value == 38){
+                setPage(page + 1);
+                axios.get(area_content_type_38_url + areaCode + "&sigunguCode=" + sigunguCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setCategoryPlace3([...categoryPlace3, ...res.data.response.body.items.item]);
+                })
+            } else if (value == 15){
+                setPage(page + 1);
+                axios.get(area_content_type_15_url + areaCode + "&sigunguCode=" + sigunguCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setCategoryPlace4([...categoryPlace4, ...res.data.response.body.items.item]);
+                })
+            } else if (value == 28){
+                setPage(page + 1);
+                axios.get(area_content_type_28_url + areaCode + "&sigunguCode=" + sigunguCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setCategoryPlace5([...categoryPlace5, ...res.data.response.body.items.item]);
+                })
+            } else {
+                setPage(page + 1);
+                axios.get(area_content_type_32_url + areaCode + "&sigunguCode=" + sigunguCode + `&pageNo=${page}`)
+                .then((res) => {
+                    setCategoryPlace6([...categoryPlace6, ...res.data.response.body.items.item]);
+                })
+            }
+        }
     }
 
     
@@ -594,82 +657,135 @@ const CityInfoMain = () => {
     return (
         <div id='cityinfo' style={muiStyle} >
         
-            <div className='title' style={{margin:'20px'}}>
+            <div className='title-city'>
                 {cityname}
             </div>    
+            <div>
+                <CityInfoImage num={city_num}/>
+            </div>
             <div style={{display:'flex'}}>
-                <div>
-                   <CityInfoImage/>
-                </div>
-                {/* 날씨 */}
-                <div id='weather-css'>
-                    {
-                        w_data && w_data.map((item,index) => (
-                            <div style={{marginRight:'5px'}}>
-                                <div className='ppp' style={{display:'flex'}}>
-                                    <div className='aaa'>
+                <div className='scheduleContainer'>
+                    <div style={{display:'flex'}}>
+                        <div className='schedule-title-add-box'>
+                            <span className='schedule-title'>다가오는 여행</span><span class="material-symbols-rounded add-date" onClick={()=>{
+                                        naVi(`../plan/city/${num}`);
+                                    }}>calendar_add_on</span>
+                        </div>
+                        {
+                            cityPlan.length === 0 ?
+                            <div className='weather-title'>
+                                오늘의 날씨
+                            </div>
+                            :
+                            <div className='weather-title'>
+                                예상되는 날씨
+                            </div>
+                        }
+                    </div>
+                    <div style={{display:'flex'}}>
+                        <div className='schedule-big-box'>
+                            {
+                                cityPlan.length === 0 ?
+                                <div className='no-schedule-box'>
+                                    <span class="material-symbols-outlined no-schedule">event_busy</span><br/>
+                                    <span>일정을 등록해주세요</span>
+                                </div>
+                                :
+                                ''
+                            }
+                            {
+                                cityPlan && cityPlan.map((item, index) => (
+                                    <div className={border == index ? 'schedule-box-border' : 'schedule-box'} style={{display:'flex'}}>
                                         {
-                                            format(new Date(item.tm), "MM/dd (eee)", {locale: ko})
+                                            (new Date() < new Date(item.start_date)) ? 
+                                            <div className='d-day'>
+                                                <span>D - {differenceInDays(new Date(item.start_date) ,new Date())+1}</span>
+                                            </div> 
+                                            : 
+                                            <div className='d-day' style={{backgroundColor:'lightpink'}}>
+                                                <span>여행중</span>
+                                            </div>
                                         }
+                                        <div className='subject'>
+                                            {item.name}
+                                        </div>
+                                        <div className='start-end-date'>
+                                            {format(new Date(item.start_date), "yyyy-MM-dd")} ~ {format(new Date(item.end_date), "yyyy-MM-dd")}({item.days}일)
+                                        </div>
+                                        &emsp;&nbsp;
+                                        <span class="material-symbols-outlined view-weather" onClick={(e)=>{
+                                            setStart_date(item.start_date); setEnd_date(item.end_date); setDays(item.days); setBorder(index);
+                                        }}>sunny</span>
                                     </div>
-                                    <div className='bbb'>
-                                        <span class="material-symbols-outlined weather_span">
-                                            {   
-                                                (item.iscs == "" || item.iscs != "") && ((item.maxTa > "27" && item.sumRn == "" && item.avgRhm < '55.4') || (item.maxTa > "29" && item.sumRn == "" && item.avgRhm < '55.4')) ? 'sunny' : 
-                                                // (item.iscs == "" || item.iscs != "") && (('75.7' < item.avgRhm < '76.0') && ('2' < item.avgWs < '2.2') && ('26.7' < maxTa < '26.9') && ('18.5' < minTa < '18.7')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비온_뒤_맑음.png`}/> : 
-                                                // (item.iscs == "" || item.iscs != "") && ('67' < item.sumRn < '73') && ( '2' < item.avgWs < '3') && (('28' < maxTa && minTa < '22') || ( maxTa < '31' && minTa < '21')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음_뒤_흐림.png`}/> : 
-                                                (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? 'partly_cloudy_day' : 
-                                                (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? 'thunderstorm' : 
-                                                (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? 'cloudy_snowing' : 
-                                                (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? 'rainy' : 
-                                                (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? 'cloudy' : 'sunny'
-                                            }
-                                        </span>
+                                ))
+                            }
+                        </div>
+                        {/* 날씨 */}
+                        <div id='weather-css'>
+                            {
+                                cityPlan.length === 0 ?
+                                w_data && w_data.map((item,index) => (
+                                    <div style={{marginRight:'5px'}}>
+                                        <div className='no-schedule-weather-info-box'>
+                                            <div className='no-schedule-weather-day'>
+                                                {
+                                                    format(new Date(item.tm), "MM/dd (eee)", {locale: ko})
+                                                }
+                                            </div>
+                                            <div className='no-schedule-weater-image'>
+                                                <span class="material-symbols-outlined no-schedule-weather_span">
+                                                    {   
+                                                        (item.iscs == "" || item.iscs != "") && ((item.maxTa > "27" && item.sumRn == "" && item.avgRhm < '55.4') || (item.maxTa > "29" && item.sumRn == "" && item.avgRhm < '55.4')) ? 'sunny' : 
+                                                        // (item.iscs == "" || item.iscs != "") && (('75.7' < item.avgRhm < '76.0') && ('2' < item.avgWs < '2.2') && ('26.7' < maxTa < '26.9') && ('18.5' < minTa < '18.7')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비온_뒤_맑음.png`}/> : 
+                                                        // (item.iscs == "" || item.iscs != "") && ('67' < item.sumRn < '73') && ( '2' < item.avgWs < '3') && (('28' < maxTa && minTa < '22') || ( maxTa < '31' && minTa < '21')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음_뒤_흐림.png`}/> : 
+                                                        (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? 'partly_cloudy_day' : 
+                                                        (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? 'thunderstorm' : 
+                                                        (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? 'cloudy_snowing' : 
+                                                        (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? 'rainy' : 
+                                                        (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? 'cloudy' : 'sunny'
+                                                    }
+                                                </span>
+                                            </div>
+                                            <div className='no-schedule-weather-temp'>
+                                                {item.maxTa}℃&nbsp;/&nbsp;{item.minTa}℃
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className='ccc'>
-                                        {item.maxTa}℃&nbsp;/&nbsp;{item.minTa}℃
+                                ))
+                                :
+                                w_data && w_data.map((item,index) => (
+                                    <div style={{marginRight:'5px'}}>
+                                        <div className='weather-info-box' style={{display:'flex'}}>
+                                            <div className='weather-day'>
+                                                {
+                                                    format(new Date(item.tm), "MM/dd (eee)", {locale: ko})
+                                                }
+                                            </div>
+                                            <div className='weater-image'>
+                                                <span class="material-symbols-outlined weather_span">
+                                                    {   
+                                                        (item.iscs == "" || item.iscs != "") && ((item.maxTa > "27" && item.sumRn == "" && item.avgRhm < '55.4') || (item.maxTa > "29" && item.sumRn == "" && item.avgRhm < '55.4')) ? 'sunny' : 
+                                                        // (item.iscs == "" || item.iscs != "") && (('75.7' < item.avgRhm < '76.0') && ('2' < item.avgWs < '2.2') && ('26.7' < maxTa < '26.9') && ('18.5' < minTa < '18.7')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/비온_뒤_맑음.png`}/> : 
+                                                        // (item.iscs == "" || item.iscs != "") && ('67' < item.sumRn < '73') && ( '2' < item.avgWs < '3') && (('28' < maxTa && minTa < '22') || ( maxTa < '31' && minTa < '21')) ? <img className='wimg' alt='' src={`${process.env.PUBLIC_URL}/WeatherImage/맑음_뒤_흐림.png`}/> : 
+                                                        (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? 'partly_cloudy_day' : 
+                                                        (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? 'thunderstorm' : 
+                                                        (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? 'cloudy_snowing' : 
+                                                        (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? 'rainy' : 
+                                                        (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? 'cloudy' : 'sunny'
+                                                    }
+                                                </span>
+                                            </div>
+                                            <div className='weather-temp'>
+                                                {item.maxTa}℃&nbsp;/&nbsp;{item.minTa}℃
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        ))
-                    }
-                </div>                
-            </div>
-            <hr/>
-            <div className='scheduleContainer'>
-                <div className='schedule-title-add-box'>
-                    <span className='schedule-title'>다가오는 여행</span><span class="material-symbols-rounded add-date" onClick={()=>{
-                                naVi(`../plan/city/${num}`);
-                            }}>calendar_add_on</span>
+                                ))
+                            }
+                        </div>
+                    </div>                
                 </div>
-                <div className='schedule-big-box'>
-                    {
-                        cityPlan && cityPlan.map((item, index) => (
-                            <div className='schedule-box' style={{display:'flex'}}>
-                                <div className='d-day'>
-                                    {
-                                        (new Date() < new Date(item.start_date)) ? <b>D - {differenceInDays(new Date(item.start_date) ,new Date())+1}</b> : <b>여행중</b>
-                                    }
-                                </div>
-                                <div className='subject'>
-                                    {item.name}
-                                </div>
-                                <div>
-                                    {format(new Date(item.start_date), "yyyy-MM-dd")} ~ {format(new Date(item.end_date), "yyyy-MM-dd")}({item.days}일)
-                                </div>
-                                &emsp;&nbsp;
-                                <span class="material-symbols-outlined view-weather" style={{fontSize:'15px'}} onClick={(e)=>{
-                                    setStart_date(item.start_date); setEnd_date(item.end_date); setDays(item.days);
-                                    console.log("item.start_date"+item.start_date);
-                                    console.log("item.end_date"+item.end_date);
-                                    console.log("days"+days);
-                                }}>sunny</span>
-                            </div>
-                        ))
-                    }
-                </div>
             </div>
-            <hr/>
             <div className='place-list-box'>
                 <div>
                     <Box>
@@ -677,12 +793,12 @@ const CityInfoMain = () => {
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                 <TabList onChange={handleChange} aria-label="lab API tabs example">
                                     <Tab label="전체보기" value="1" />
-                                    <Tab label="관광명소12" value="12" />
-                                    <Tab label="음식점39" value="39" />
-                                    <Tab label="쇼 핑38" value="38" />
-                                    <Tab label="행사/공연/축제 15" value="15" />
-                                    <Tab label="레포츠 28" value="28" />
-                                    <Tab label="숙 박 32" value="32" />
+                                    <Tab label="관광명소" value="1214" />
+                                    <Tab label="음식점" value="39" />
+                                    <Tab label="쇼 핑" value="38" />
+                                    <Tab label="행사/공연/축제" value="15" />
+                                    <Tab label="레포츠" value="28" />
+                                    <Tab label="숙 박" value="32" />
                                 </TabList>
                             </Box>
                             <TabPanel value='1'>
@@ -713,19 +829,19 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
-                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                <Link to={`/place/${item.contentid}`}>
+                                                    <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
-                                                                item.firstimage != "" ? 
-                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                item.firstimage ? 
+                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
-                                                                <CardMedia>
-                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                <CardMedia width="250" height="200" alt="">
+                                                                    <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                <Typography gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
@@ -739,67 +855,10 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                <span className='more-city-info' value='1' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
-                            <TabPanel value='12'>
-                                <div className='keyword-search'>
-                                    <div className='searchCity'>
-                                        <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
-                                            if(e.key === 'Enter' && e.target.value !== ''){
-                                            setKeyWord(e.target.value);
-                                            e.target.value = '';
-                                            setCategoryPlace0([]);
-                                            }
-                                        }}/>
-                                    </div>
-                                </div>
-                                <div style={{display:'flex'}} className='place-heart row'>
-                                    {
-                                        categoryPlace0 && categoryPlace0.map((item, idx) => (
-                                            <div className='col-sm-3'>
-                                                { 
-                                                    like_list.includes(item.contentid) ?
-                                                    <span class="material-icons heart_span" style={{color:'red'}} 
-                                                        onClick={()=>{
-                                                            delete_btn(event, item.contentid)
-                                                        }}>favorite</span>
-                                                    :
-                                                    <span class="material-icons heart_span" style={{color:'#ccc'}} 
-                                                        onClick={()=>{
-                                                            insert_btn(event, item.contentid)
-                                                        }}>favorite_border</span>
-                                                }
-                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
-                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
-                                                        <CardActionArea>
-                                                            {
-                                                                item.firstimage != "" ? 
-                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
-                                                                :
-                                                                <CardMedia>
-                                                                    <span class="material-symbols-outlined">image_not_supported</span>
-                                                                </CardMedia>
-                                                            }
-                                                            <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
-                                                                    {item.title}
-                                                                </Typography>
-                                                            </CardContent>
-                                                        </CardActionArea>
-                                                        <CardActions>
-                                                            {contentTypeId[item.cat3]}
-                                                        </CardActions>
-                                                    </Card>
-                                                </Link>
-                                            </div>
-                                        ))
-                                    }
-                                </div>
-                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
-                                {/* </div> 서브카테고리 div 닫는거 */}
-                            </TabPanel>
-                            <TabPanel value='39'>
+                            <TabPanel value='1214'>
                                 <div className='keyword-search'>
                                     <div className='searchCity'>
                                         <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
@@ -827,15 +886,15 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
-                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                <Link to={`/place/${item.contentid}`}>
+                                                    <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
-                                                                item.firstimage != "" ? 
-                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                item.firstimage ? 
+                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
-                                                                <CardMedia>
-                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                <CardMedia width="250" height="200" alt="">
+                                                                    <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
@@ -853,10 +912,10 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                <span className='more-city-info' value='1214' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
-                            <TabPanel value='38'>
+                            <TabPanel value='39'>
                                 <div className='keyword-search'>
                                     <div className='searchCity'>
                                         <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
@@ -884,15 +943,15 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
-                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                <Link to={`/place/${item.contentid}`}>
+                                                    <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
-                                                                item.firstimage != "" ? 
-                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                item.firstimage ? 
+                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
-                                                                <CardMedia>
-                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                <CardMedia width="250" height="200" alt="">
+                                                                    <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
@@ -910,10 +969,10 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                <span className='more-city-info' value='39' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
-                            <TabPanel value='15'>
+                            <TabPanel value='38'>
                                 <div className='keyword-search'>
                                     <div className='searchCity'>
                                         <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
@@ -941,15 +1000,15 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
-                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                <Link to={`/place/${item.contentid}`}>
+                                                    <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
-                                                                item.firstimage != "" ? 
-                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                item.firstimage ? 
+                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
-                                                                <CardMedia>
-                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                <CardMedia width="250" height="200" alt="">
+                                                                    <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
@@ -967,10 +1026,10 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                <span className='more-city-info' value='38' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
-                            <TabPanel value='28'>
+                            <TabPanel value='15'>
                                 <div className='keyword-search'>
                                     <div className='searchCity'>
                                         <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
@@ -998,15 +1057,15 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
-                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                <Link to={`/place/${item.contentid}`}>
+                                                    <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
-                                                                item.firstimage != "" ? 
-                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                item.firstimage ? 
+                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
-                                                                <CardMedia>
-                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                <CardMedia width="250" height="200" alt="">
+                                                                    <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
@@ -1024,10 +1083,10 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                <span className='more-city-info' value='15' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
-                            <TabPanel value='32'>
+                            <TabPanel value='28'>
                                 <div className='keyword-search'>
                                     <div className='searchCity'>
                                         <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
@@ -1055,15 +1114,15 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
-                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                <Link to={`/place/${item.contentid}`}>
+                                                    <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
-                                                                item.firstimage != "" ? 
-                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                item.firstimage ? 
+                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
-                                                                <CardMedia>
-                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                <CardMedia width="250" height="200" alt="">
+                                                                    <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
@@ -1081,7 +1140,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                <span className='more-city-info' value='28' onClick={()=>{moreinfo(value,keyWord,keyWord)}}>+더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='32'>
@@ -1112,15 +1171,15 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
-                                                    <Card value={item} sx={{width: 220, height: 300, marginRight: 12}}>
+                                                <Link to={`/place/${item.contentid}`}>
+                                                    <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
-                                                                item.firstimage != "" ? 
-                                                                <CardMedia component="img" height="180" image = {item.firstimage} alt=""/>
+                                                                item.firstimage ? 
+                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
-                                                                <CardMedia>
-                                                                    <span class="material-symbols-outlined">image_not_supported</span>
+                                                                <CardMedia width="250" height="200" alt="">
+                                                                    <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
@@ -1138,7 +1197,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <button type='button' onClick={()=>{moreinfo()}}>+더보기</button>
+                                <span className='more-city-info' value='32' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                         </TabContext>

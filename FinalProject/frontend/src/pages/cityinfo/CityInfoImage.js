@@ -2,8 +2,8 @@ import React,{useRef, useCallback} from 'react';
 import Slick from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import '../../styles/cityinfo.css';
 import styled, { css } from 'styled-components';
-import cityinfoImg from '../../assets/images/IMG_1503.JPG';
 
 const Wrap = styled.div`
     position: relative;
@@ -40,12 +40,12 @@ const Wrap = styled.div`
 
 const SlickItems = styled.div`
     width: 550px;    
-    height: 350px;
+    height: 360px;
     text-align: center;
 
     img {
-        width: 500px;
-        height: 400px;
+        width: 100%;
+        height: 100%;
         vertical-align: top;
     }
 `;
@@ -88,6 +88,7 @@ const PagingAnchor = styled.a`
     display: block;
     width: 50px;
     height: 50px;
+    
 
     img {
         width: 100%;
@@ -109,28 +110,298 @@ const Paging = styled.span`
 `;
 
 // 4. 샘플이미지
-const images = [
+const images_andong = [
     {
-        src: '../../../city_image/busan.jpg',
+        src: '../../../panorama_image/Andong1.jpg',
         title: "1"
     },
     {
-        src: '../../../city_image/seoul.jpg',
+        src: '../../../panorama_image/Andong2.jpg',
         title: "2"
     },
     {
-        src: '../../../city_image/jeju.jpg',
+        src: '../../../panorama_image/Andong3.jpg',
         title: "3"
     },
     {
-        src: '../../../city_image/incheon.jpg',
+        src: '../../../panorama_image/Andong4.jpg',
         title: "4"
     },
-    
+];
+const images_busan = [
+    {
+        src: '../../../panorama_image/Busan1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Busan2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Busan3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../panorama_image/Busan4.jpg',
+        title: "4"
+    },
+];
+const images_chuncheon = [
+    {
+        src: '../../../panorama_image/Chuncheon1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Chuncheon2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Chuncheon3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../panorama_image/Chuncheon4.jpg',
+        title: "4"
+    },
+];
+const images_daejeon = [
+    {
+        src: '../../../panorama_image/Daejeon1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Daejeon2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../city_image/daejeon.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../city_image/daejeon.jpg',
+        title: "4"
+    },
+];
+const images_gangneung = [
+    {
+        src: '../../../panorama_image/Gangneung1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Gangneung2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Gangneung3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../panorama_image/Gangneung4.jpg',
+        title: "4"
+    },
+];
+const images_gunsan = [
+    {
+        src: '../../../panorama_image/Gunsan1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Gunsan2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Deogynsan.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../city_image/gunsan.jpg',
+        title: "4"
+    },
+];
+const images_gyeongju = [
+    {
+        src: '../../../panorama_image/Gyeongju1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Gyeongju2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Gyeongju3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../panorama_image/Gyeongju4.jpg',
+        title: "4"
+    },
+];
+const images_incheon = [
+    {
+        src: '../../../panorama_image/Incheon1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Incheon2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Incheon3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../panorama_image/Incheon4.jpg',
+        title: "4"
+    },
+];
+const images_jecheon = [
+    {
+        src: '../../../panorama_image/Jecheon1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Jecheon2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Jecheon3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../city_image/jecheon.jpg',
+        title: "4"
+    },
+];
+const images_jeju = [
+    {
+        src: '../../../panorama_image/Jeju1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Jeju2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Jeju3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../panorama_image/Jeju4.jpg',
+        title: "4"
+    },
+];
+const images_jeonju = [
+    {
+        src: '../../../panorama_image/Jeonju1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Jeonju2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Jeonju3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../panorama_image/Jeonju4.jpg',
+        title: "4"
+    },
+];
+const images_namwon = [
+    {
+        src: '../../../panorama_image/Namwon1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Namwon2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../city_image/namwon.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../city_image/namwon.jpg',
+        title: "4"
+    },
+];
+const images_seoul = [
+    {
+        src: '../../../panorama_image/Seoul1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Seoul2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Seoul3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../panorama_image/Seoul4.jpg',
+        title: "4"
+    },
+];
+const images_suwon = [
+    {
+        src: '../../../panorama_image/Suwon1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Suwon2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Suwon3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../city_image/suwon.jpg',
+        title: "4"
+    },
+];
+const images_ulleung = [
+    {
+        src: '../../../panorama_image/Ulleung1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Ulleung2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../panorama_image/Ulleung3.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../panorama_image/Ulleung4.jpg',
+        title: "4"
+    },
+];
+const images_yeosu = [
+    {
+        src: '../../../panorama_image/Yeosu1.jpg',
+        title: "1"
+    },
+    {
+        src: '../../../panorama_image/Yeosu2.jpg',
+        title: "2"
+    },
+    {
+        src: '../../../city_image/yeosu.jpg',
+        title: "3"
+    },
+    {
+        src: '../../../city_image/yeosu.jpg',
+        title: "4"
+    },
 ];
 
 
-const RecommendCorp = () => {
+const RecommendCorp = ({num}) => {
+    console.log("num : "+num);
     // 5. custom arrows를 만들어 ref를 통해 제어합니다.
     const slickRef = useRef(null);
 
@@ -145,14 +416,14 @@ const RecommendCorp = () => {
         
         // 2. custom pagination을 만듭니다.
         // i(index)를 통해 샘플이미지에서 동일한 이미지를 가져옵니다.
-        customPaging: function(i) {
-            const imgSrc = images[i].src;
-            return (
-                <PagingAnchor className='slick-active'>
-                        <button type='button'>::before i</button>
-                </PagingAnchor>
-            );
-        },
+        // customPaging: function(i) {
+        //     const imgSrc = images[i].src;
+        //     return (
+        //         <PagingAnchor className='slick-active'>
+        //                 <button type='button'>::before i</button>
+        //         </PagingAnchor>
+        //     );
+        // },
     };
     
    // 5. custom arrows 동작 함수를 만듭니다.
@@ -164,18 +435,154 @@ const RecommendCorp = () => {
             <Wrap>
          
 
-         <Slick 
+         <Slick className='cityinfo-mainimage'
             ref={slickRef} {...settings}>
             
 
-                {images.map((v, i) => {
-                    return (
-                        
-                        <SlickItems key={`${v.title}_${i}`} id="slick-box">
-                            <img alt='' className='slick-image' src={v.src} />
-                        </SlickItems>
-                    )
-                })}
+                {
+                    num == 136 ? 
+                    images_andong.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 159 ?
+                    images_busan.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 101 ?
+                    images_chuncheon.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 133 ?
+                    images_daejeon.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 105 ?
+                    images_gangneung.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 140 ?
+                    images_gunsan.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 283 ?
+                    images_gyeongju.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 201 ?
+                    images_incheon.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 221 ?
+                    images_jecheon.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 184 ?
+                    images_jeju.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 146 ?
+                    images_jeonju.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 247 ?
+                    images_namwon.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 108 ?
+                    images_seoul.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 119 ?
+                    images_suwon.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    num == 115 ?
+                    images_ulleung.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                    :
+                    images_yeosu.map((v, i) => {
+                        return (
+                            <SlickItems key={`${v.title}_${i}`} id="slick-box">
+                                <img alt='' className='slick-image' src={v.src} />
+                            </SlickItems>
+                        )
+                    })
+                }
             </Slick>
             <>
                 <PrevButton onClick={previous}>
