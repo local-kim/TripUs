@@ -57,6 +57,25 @@ public class Maincontroller {
 		return service.allUserTrip();
 	}
 	
+	@GetMapping("/allUser")
+	public int allUser()
+	{
+		return service.allUser();
+	}
+	
+	@GetMapping("/allReview")
+	public int allReview()
+	{
+		return service.allReview();
+	}
+	
+	
+	@GetMapping("/allPlace")
+	public int allPlace()
+	{
+		return service.allPlace();
+	}
+	
 	
 }
 

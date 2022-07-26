@@ -55,4 +55,23 @@ public class MainPageService implements MainPageServiceInter {
 		// TODO Auto-generated method stub
 		return mapper.allUserTrip();
 	}
+	
+	@Override
+	public int allReview() {
+		// TODO Auto-generated method stub
+		return mapper.allReview();
+	}
+	
+	@Override
+	public int allPlace() {
+		// TODO Auto-generated method stub
+		return mapper.allPlace();
+	}
+	
+	@Override
+	public int allUser() {
+		// TODO Auto-generated method stub
+		return mapper.allUser();
+	}
+	
 }

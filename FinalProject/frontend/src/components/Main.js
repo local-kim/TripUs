@@ -3,6 +3,7 @@ import { height, textAlign } from '@mui/system';
 import React ,{useState} from 'react';
 import { ReactDOM } from 'react';
 import { useEffect } from 'react';
+import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import '../main.css';
@@ -23,8 +24,7 @@ import MainLogo from '../assets/images/MainLogo.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../modules/auth';
 import AnimatedNumber from "react-animated-numbers"
-import page2img from '../assets/images/busan1.jpg';
-import page3img from '../assets/images/junjoo1.jpg';
+import { Carousel } from 'reactjs-infinite-carousel';
 
 import Fullpage,{FullPageSections,FullpageSection,FullpageNavigation} from '@ap.cx/react-fullpage';
 import Myslide from './Myslide';
@@ -57,6 +57,17 @@ import Beach from './Beach.mp4';
 import Islands from './Islands.mp4';
 import Cliff from './Cliff.mp4';
 import Wave from './Waves.mp4';
+import zIndex from '@mui/material/styles/zIndex';
+
+import page2img from '../assets/images/busan1.jpg';
+import page3img from '../assets/images/junjoo1.jpg';
+import page4img from '../assets/images/seoul1.jpg';
+import page5img from '../assets/images/seoul2.jpg';
+
+import page6img from '../assets/images/seoul4.jpg';
+import page7img from '../assets/images/seoul5.jpg';
+import page8img from '../assets/images/seoul6.jpg';
+
 
 
 //ㅡㅡㅡㅡㅡㅡㅡ배경 랜덤 
@@ -73,14 +84,19 @@ const options = ['인기순','오름차순' ,'내림차순'];
 
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 
+
 const Main=(row)=>{
 
   
-  const [number, setNumber] = React.useState(162)
+  const [number, setNumber] = React.useState(32838)
   const [number2, setNumber2] = React.useState(30000)
   const [number3, setNumber3] = React.useState(3000)
+  const [number4, setNumber4] = React.useState(3000)
 
   const [diff, setDiff] = React.useState(0)
+
+
+  //숫자 애니메이션 
 
   // const easeOutExpo = (t = 3000) => {
 
@@ -108,6 +124,9 @@ const Main=(row)=>{
   //     }, frameRate)
   //   }, [end, frameRate, start, totalFrame])
   // }
+
+
+
      // redux에서 변수 얻기
   const dispatch = useDispatch();
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
@@ -115,8 +134,8 @@ const Main=(row)=>{
   const loginName = useSelector(state => state.auth.user.name);
   const loginProfile = useSelector(state => state.auth.user.profile);
 
-  const pages = ['여행지', '일정 만들기', '일정 보기', '인기 일정', 'About'];
-  const pageLinks = ['city/list', 'plan/city/108', 'plan/detail/1', 'plan/list', ''];
+  const pages = ['여행지', '일정 보기', '인기 일정', 'About']; //일정 만들기
+  const pageLinks = ['city/list', 'plan/detail/1', 'plan/list', '']; //, 'plan/city/108'
 
   const loginSettings = ['Mypage', 'Dashboard','Logout'];
   const loginLinks = ['mypage/1', 'dashboard','logout'];
@@ -152,7 +171,12 @@ const Main=(row)=>{
     const [citydata4,setCityData4] = useState([]);
 
     const [citydata,setCityData] = useState('');
+
     const [allUserTrip,setAllUserTrip] = useState('');
+    const [allUser,setAllUser] = useState('');
+    const [allReview,setAllReview] = useState('');
+    const [allPlace,setAllPlace] = useState('');
+
 
 
 
@@ -172,23 +196,55 @@ const Main=(row)=>{
         })
       }
 
-    // const cityData=()=>{
-    //     axios.get(cityDataUrl)
-    //     .then(res=>{
-    //         // setCityData(res.data);
-    //         // console.log(res.data.getData2
-    //         setTogleButton(res.data.getData2);
-    //         setCityData2(res.data.getData2);
-    //         setCityData3(res.data.getData3);
-    //         setCityData4(res.data.getData4);
-    //     })
-    //     .catch(err => {
-    //         alert(err);
-    //     })
-    //   }
 
+      let allUserUrl = process.env.REACT_APP_SPRING_URL + "allUser";
     
-    // const [select, setSelect] = useState(''); // set 하라길래 그냥 하나 만들어뒀슴다
+
+      const allUserCount=()=>{
+          axios.get(allUserUrl)
+          .then(res=>{
+      
+              setAllUser(res.data);
+              console.log(res.data);
+     
+          })
+          .catch(err => {
+              alert(err);
+          })
+        }
+
+        let allReviewUrl = process.env.REACT_APP_SPRING_URL + "allReview";
+    
+
+        const allReviewCount=()=>{
+            axios.get(allReviewUrl)
+            .then(res=>{
+        
+                setAllReview(res.data);
+                console.log(res.data);
+       
+            })
+            .catch(err => {
+                alert(err);
+            })
+          }
+
+          let allPlaceUrl = process.env.REACT_APP_SPRING_URL + "allPlace";
+    
+
+          const allPlaceCount=()=>{
+              axios.get(allPlaceUrl)
+              .then(res=>{
+          
+                  setAllPlace(res.data);
+                  console.log(res.data);
+         
+              })
+              .catch(err => {
+                  alert(err);
+              })
+            }
+
 
     const [alignment, setAlignment] = React.useState('web');
 
@@ -311,8 +367,62 @@ const Main=(row)=>{
       useEffect(() => {
 
         allTrip();
+        allUserCount();
+        allReviewCount();
+        allPlaceCount();
+      
 
       }, []);
+
+      // const page2Image = [page2img ,page3img, page4img, page5img]
+      // const page3Image = [page6img ,page7img, page8img]
+      
+       
+      
+      //   useEffect(() => {
+      //     const interval = setInterval(() => {
+      //       page2Image();
+      //       page3Image();
+
+      //     }, 1000);
+      //     return () => clearInterval(interval);
+      //   }, []);
+
+      const list= [
+        {
+          image_url : `${page2img}` , 
+        },
+        
+        {
+          image_url : `${page3img}` ,
+        },
+
+        {
+          image_url : `${page4img}` ,
+        },
+
+        {
+          image_url : `${page5img}` ,
+        },
+      
+      ];
+
+
+
+      const list2= [
+        {
+          image_url : `${page6img}` , 
+        },
+        
+        {
+          image_url : `${page6img}` ,
+        },
+
+        {
+          image_url : `${page8img}` ,
+        },
+      
+      ];
 
     const [category, setCategory] = useState(0); //카테고리 숫자 저장 하는 변수 
 
@@ -484,7 +594,7 @@ const Main=(row)=>{
             <FullPageSections>
                 <FullpageSection style={sectionStyle3}>      
                      <div className='main_top'>
-                             <div style={{zIndex:'-9999'}}>
+                             <div style={{zIndex:'1000'}}>
                             <video muted autoPlay loop style={{width:'100%', height:'100vh', objectFit:'cover',position:'absolute'}}>
                                 <source src={video[getRandom()]} type="video/mp4"/>
                             </video>
@@ -495,7 +605,7 @@ const Main=(row)=>{
                             <div className='main_top_desc' >쉽고 빠르게 여행을 계획하세요.</div>
                             <div className='search_area' >
                                 <div className='city_autocomplete' style={{display:'block'}}></div>
-                                <input className='search_input' placeholder='국가명,도시명으로 검색' autoComplete="off" onKeyUp={Search} ></input>
+                                <input className='search_input' placeholder='도시명으로 검색' autoComplete="off" onKeyUp={Search} ></input>
                                 <ul  style={{display:'block'}} id="searchAuto">{city && city.map((data, index)=>(<li onClick={()=>{navi(`/city/${data.num}`)}} >{data.name} <span className="h_search_cicu">대한민국</span></li> ))}</ul>
                                     <div className='latest_search'><Link to={`city/list`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>추천도시</Link>:  <Link to={`city/108`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>서울</Link> <Link to={`city/159`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>부산</Link> <Link to={`city/184`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>제주</Link> <Link to={`city/136`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>안동</Link> <Link to={`city/105`} style={{color:'white', margin: '10px' ,fontSize: '15px' , textDecorationLine: 'none', fontWeight: 'bolder'}}>강릉</Link> </div>
                             </div>
@@ -516,42 +626,71 @@ const Main=(row)=>{
                             alignItems: 'center',
                             width:'60vh',
                             fontWeight:'bold',
-                            fontFamily: 'Montserrat'
+                            fontFamily: 'Montserrat',
+                            background: `url(${list})`
                             
                             }}>
+                             
+
+                
                    
-                        <h7 style={{marginBottom:'350px', fontSize:'px',fontFamily:'Montserrat'}}>
+                        {/* <h5 style={{marginBottom:'350px', fontSize:'px',fontFamily:'Montserrat'}}>
                             여행 일자,가고 싶은 장소만
                             <br/>
                             선택하면 일정이 자동으로 완성되는
                             <br/>
-                            쉽고 간편한 여행 일정 플래너</h7>
+                            쉽고 간편한 여행 일정 플래너</h5> */}
                             
 
-                        <div style={{marginTop:'720px',marginLeft:'30px', color:'white' , fontSize:'25px',fontFamily:'Montserrat'}}>
+                        <div style={{marginTop:'680px',marginLeft:'30px', color:'white' , fontSize:'20px',fontFamily:'Montserrat'}}>
                             <AnimatedNumber style={{display:'inline-block'}}
-                                              fontStyle={{ fontFamily: ",fontFamily:'Montserrat'" , fontWeight:'bold', color:'white' , fontSize:'25px' }}
+                                              fontStyle={{ fontFamily: ",fontFamily:'Montserrat'" , fontWeight:'bold', color:'white' , fontSize:'20px' ,animationDuration: 90}}
+                                              animateToNumber={allUser}
+                                              includeComma
+                                              config={{ tension: 89, friction: 40  }}
+                                              onStart={() => console.log("onStart")}
+                                              onFinish={() => console.log("onFinish")}
+                
+                                              animationType={"calm"}
+                                             
+                                            />유저수
+                        </div>
+
+                               <div style={{marginTop:'680px' , marginLeft:'60px',color:'white', fontSize:'20px',fontFamily:'Montserrat'}}>
+                            <AnimatedNumber style={{display:'inline-block'}}
+                                              fontStyle={{ fontFamily: ",fontFamily:'Montserrat'", fontSize:'20px', fontWeight:'bold' ,color:'white'  }}
+                                              animateToNumber={allPlace}
+                                              includeComma
+                                              config={{ tension: 89, friction: 40 ,duration: 800 }}
+                                              onStart={() => console.log("onStart")}
+                                              onFinish={() => console.log("onFinish")}
+                                              animationType={"calm"}
+                                            />여행지
+                        </div>      
+
+                                                       <div style={{marginTop:'680px' , marginLeft:'60px',color:'white', fontSize:'20px',fontFamily:'Montserrat',marginRight:'20px'}}>
+                            <AnimatedNumber style={{display:'inline-block'}}
+                                              fontStyle={{ fontFamily: ",fontFamily:'Montserrat'", fontSize:'20px', fontWeight:'bold' ,color:'white'  }}
                                               animateToNumber={number}
                                               includeComma
                                               config={{ tension: 89, friction: 40 }}
                                               onStart={() => console.log("onStart")}
                                               onFinish={() => console.log("onFinish")}
                                               animationType={"calm"}
-                                            />유저수
-                        </div>
+                                            />관광지
+                        </div>                      
 
-                               <div style={{marginTop:'720px' , marginLeft:'60px',color:'white', fontSize:'25px',fontFamily:'Montserrat'}}>
-                            <AnimatedNumber style={{display:'inline-block'}}
-                                              fontStyle={{ fontFamily: ",fontFamily:'Montserrat'", fontSize:'25px', fontWeight:'bold' ,color:'white'  }}
-                                              animateToNumber={number2}
-                                              includeComma
-                                              config={{ tension: 89, friction: 40 }}
-                                              onStart={() => console.log("onStart")}
-                                              onFinish={() => console.log("onFinish")}
-                                              animationType={"calm"}
-                                            />여행지
-                        </div>                           
-                    </div>
+                      <div style={{
+                          
+                          backgroundColor: 'black',
+                          zIndex:'-10',
+                          height: '130px',
+                          opacity: '0.4',
+                          marginRight: '200px',
+                          position: 'absolute',
+                          width: '677px',
+                          marginTop: '666px'}}></div>    
+                    </div>                    
                 </div>
 
                 <div style={{margin: '0' , padding: '0'}} className="uk-width-3-5@m">
@@ -614,7 +753,7 @@ const Main=(row)=>{
                                    className = "col s12 m4">
 
                                 <h4 style={{fontFamily: 'Montserrat !important'}}>
-                                    <b style={{fontSize:'35px',fontFamily:'Montserrat'}}>STEP 3</b>
+                                    <b style={{fontSize:'35px',fontFamily:'Montserrat', fontWeight:''}}>STEP 3</b>
                                     <br/>
                                     <br/>
                                 <div style={{color: 'gray' , fontSize:'25px' , textAlign:'center',fontFamily:'Montserrat'}}>일정생성</div>
@@ -622,7 +761,7 @@ const Main=(row)=>{
 
 
                                   </div>
-                                  <button style={{fontSize:'20px', display:'flex' , justifyContent:'center',marginLeft:'15px' , marginTop:'70px'}}>지금 일정 만들기</button>
+                                  <div style={{fontSize:'20px', display:'flex' , justifyContent:'center',marginLeft:'15px' , marginTop:'70px'}}>지금 일정 만들기</div>                                                              
                                </div>                   
                             </div>
                         </div>
@@ -645,6 +784,7 @@ const Main=(row)=>{
                                         backgroundColor: '#fff',
                                         height: '100%',
                                         marginLeft:'20px',
+                                        textAlign:'center'
                                         
                                         }}
                                        className = "col s12 m4">
@@ -698,7 +838,7 @@ const Main=(row)=>{
                                             <div style={{color: 'gray' , fontSize:'25px' , textAlign:'center',fontFamily:'Montserrat'}}>추천하기</div>
                                         </h4>
                                     </div>
-                                    <button style={{fontSize:'20px', display:'flex' , justifyContent:'center',marginLeft:'15px' , marginTop:'130px'}}>지금 일정 만들기</button>  
+                                    <div style={{fontSize:'20px', display:'flex' , justifyContent:'center',marginLeft:'15px' , marginTop:'130px'}}>지금 일정 공유하기</div>  
                                   </div>                                 
                                 </div>
 
@@ -713,24 +853,27 @@ const Main=(row)=>{
                                       alignItems: 'center',
                                       width:'90vh',
                                       fontWeight:'bold',
+                                      textAlign:'center',
+                                      justifyContent:'center',
+                                      zIndex:1000
                                       // background: 'linear-gradient(to left, rgb(113,113,255),rgb(138,255,146))'
                                       
                                       }}>
-
+{/* 
       
                               <h7 style={{marginBottom:'350px', fontSize:'px'}}>
                                     여행 공유, 지역추천
                                     <br/>
                                     모든 사람들과 일정 공유를
                                     <br/>
-                                    쉽고 간편한 여행 일정 플래너</h7> 
+                                    쉽고 간편한 여행 일정 플래너</h7>  */}
                                     
                                
         
-                                  <div style={{marginTop:'720px',marginLeft:'30px', color:'white' , fontSize:'25px'}}>
-                                      <AnimatedNumber style={{display:'inline-block'}}
-                                                        fontStyle={{ fontFamily: "Nunito" , fontWeight:'bold', color:'white' , fontSize:'25px' }}
-                                                        animateToNumber={number}
+                                  <div style={{marginTop:'680px',marginLeft:'30px', color:'white' , fontSize:'20px',justifyContent:'center'}}>
+                                      <AnimatedNumber style={{display:'inline-block',justifyContent:'center'}}
+                                                        fontStyle={{ fontFamily: "Nunito" , fontWeight:'bold', color:'white' , fontSize:'20px',justifyContent:'center' }}
+                                                        animateToNumber={allUserTrip}
                                                         includeComma
                                                         config={{ tension: 89, friction: 40 }}
                                                         onStart={() => console.log("onStart")}
@@ -739,18 +882,32 @@ const Main=(row)=>{
                                                       />일정수
                                     </div>
     
-                                   <div style={{marginTop:'720px' , marginLeft:'60px',color:'white', fontSize:'25px'}}>
-                                <AnimatedNumber style={{display:'inline-block'}}
-                                                  fontStyle={{ fontFamily: "Nunito", fontSize:'25px', fontWeight:'bold' ,color:'white' }}
-                                                  animateToNumber={number2}
+                                   <div style={{marginTop:'680px' , marginLeft:'60px',color:'white', fontSize:'20px',justifyContent:'center'}}>
+                                <AnimatedNumber style={{display:'inline-block', justifyContent:'center'}}
+                                                  fontStyle={{ fontFamily: "Nunito", fontSize:'20px', fontWeight:'bold' ,color:'white',justifyContent:'center' }}
+                                                  animateToNumber={allReview}
                                                   includeComma
                                                   config={{ tension: 89, friction: 40 }}
                                                   onStart={() => console.log("onStart")}
                                                   onFinish={() => console.log("onFinish")}
                                                   animationType={"calm"}
                                                 />리뷰댓글
-                                                                    
+                                                                                                                    
                                         </div>
+
+                                        <div style={{
+                             
+                             backgroundColor: 'black',
+                             
+                             height: '130px',
+                             opacity: '0.4',
+                             zIndex:'-10',
+                             position: 'absolute',
+                             width: '495px',
+                             marginTop: '666px',}}
+                              ></div>    
+                       
+                                        
                                       </div>                                  
                                     </div>                                                                                                                                                              
                       </FullpageSection>
@@ -949,6 +1106,10 @@ const Main=(row)=>{
                             </div>
                         </div>
                 </FullpageSection>
+
+                        {/* <FullpageSection style={sectionStyle}>
+                                <Carousel images={list} autoPlay={2} />;
+                      </FullpageSection>             */}
             </FullPageSections>
         </Fullpage>
 
