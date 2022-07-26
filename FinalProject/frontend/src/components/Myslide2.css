@@ -102,7 +102,7 @@ b, strong {
 .swiper-button-next:after, .swiper-rtl .swiper-button-prev:after {
     content: 'next';
     color: white;
-    margin-right: 15px;
+    
 }
 .swiper-button-prev:after, .swiper-rtl .swiper-button-next:after {
     content: 'prev';
@@ -151,3 +151,4 @@ b, strong {
 .swiper-horizontal>.swiper-pagination-bullets, .swiper-pagination-bullets.swiper-pagination-horizontal, .swiper-pagination-custom, .swiper-pagination-fraction {
 position: fixed;
 }
+

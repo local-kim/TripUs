@@ -25,5 +25,4 @@
 	<select id="getLoginInfo" parameterType="String" resultType="Map">
 		select num, name, type from member where id=#{id}
 	</select>
-	
 </mapper>

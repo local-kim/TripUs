@@ -19,10 +19,23 @@
       select * from city order by name desc
  	</select>  
  	
- 	 <select id="allUserTrip" resultType="int">
+ 	<select id="allUserTrip" resultType="int">
       select count(*) from trip
    </select>
+
+ 	<select id="allUser" resultType="int">
+      select count(*) from member
+   </select>
+   
+    	<select id="allReview" resultType="int">
+      select count(*) from review
+   	</select>
+   
+    	<select id="allPlace" resultType="int">
+      select count(*) from city
+ 	  </select>
  
+ 		
 </mapper>
 
 	
