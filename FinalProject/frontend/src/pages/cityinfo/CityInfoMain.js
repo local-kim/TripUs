@@ -454,11 +454,11 @@ const CityInfoMain = () => {
     //     })
     // }
     // 좋아요 ON
-    const insert_btn = (e, contentid) => {
+    const insert_btn = (e, item) => {
         if (!isLoggedIn) {
             alert("로그인 후 이용해주세요")
         }
-            axios.post(insert_like_url,{place_id:String(contentid),loginNum,check:Number(checked)})
+            axios.post(insert_like_url,{place: item, loginNum, cityNum: city_num, check:Number(checked)})
             .then(res=>{
                 alert("좋아요 true:",res.data);
                 // setLike_btn(true);
@@ -710,7 +710,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item);
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${item.contentid}`} onClick={()=>{console.log("pcontentId : "+pcontentId)}}>
