@@ -10,8 +10,9 @@
     margin-top: 20px;
     height: 520px;
     border: 1px solid white;
-    border-right: 1px solid white;
-    border-left: 1px solid white;
+
+    border-right: none;
+    border-left: none;
     
 }
 
@@ -38,6 +39,8 @@
     margin-right: 300px;
     margin-left: 300px;
     margin-bottom: 430px;
+    border-right: none;
+    border-left: none;
     
 
 }
@@ -51,6 +54,8 @@
     margin-right: 3px;
     color: rgba(0, 0, 0, 0);
     opacity: 100%;
+    border-right: none;
+    border-left: none;
 }
 
 
@@ -70,6 +75,8 @@ div.app .fc-view-harness.fc-view-harness-active{
     padding: 2px 4px;
     color: black;
     font-family: monospace;
+    border-right: none;
+    border-left: none;
 }
 
 .fc .fc-daygrid-day-number {
@@ -96,12 +103,35 @@ div.app .fc-view-harness.fc-view-harness-active{
     display: table-caption;
 }
 
-.fc .fc-scrollgrid-section-liquid > td {
+.fc .fc-scrollgrid-section-liquid >td {
     height: 100%;
-    border: 1px solid white;
+    /* border: 1px solid white; */
+    border-right: none;
+    border-left: none;
 }
 
 .fc .fc-scrollgrid-section-liquid {
     height: 100%;
     border: 1px solid white;
+    border-right: none;
+    border-left: none;
 }
+
+.fc-scroller-harness{
+    border-right: none;
+    border-left: none;
+}
+
+
+
+
+.fc-scrollgrid-liquid th{
+    
+    border-right: none;
+    border-left: none;  
+}
+ 
+.fc td{
+    border-right: none;
+    border-left: none;  
+} 

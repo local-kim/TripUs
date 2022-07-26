@@ -96,6 +96,7 @@ b, strong {
   outline: none;
   cursor: pointer;
   background-color: #fff;
+  margin-left: 20px;
 }
 
 .container .text {
@@ -347,6 +348,7 @@ audio, canvas, iframe, img, svg, video {
   text-transform: uppercase;
   transition: 0.1s ease-in-out;
   transition-property: color, background-color, border-color;
+  margin-left: 25px;
 }
 
 .uk-width-1-4 {
@@ -520,4 +522,8 @@ svg:not(:root) {
   margin: 10px 0 0 2px;
   font-family: inherit;
   font-size: inherit;
+}
+
+.pagination li{
+  padding-left: 15px;
 }
