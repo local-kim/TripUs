@@ -693,3 +693,8 @@
     width: 54px;
     overflow: hidden;
 }
+
+#plan-detail .swal-button {
+    background-color: #98DDE3;
+    color: white;
+}

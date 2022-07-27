@@ -1,4 +1,4 @@
-import React,{useRef, useCallback} from 'react';
+import React,{useRef, useCallback, useEffect} from 'react';
 import Slick from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -112,11 +112,11 @@ const Paging = styled.span`
 // 4. 샘플이미지
 const images_andong = [
     {
-        src: '../../../panorama_image/Andong1.jpg',
+        src: '../../../panorama_image/Andong2.jpg',
         title: "1"
     },
     {
-        src: '../../../panorama_image/Andong2.jpg',
+        src: '../../../panorama_image/Andong1.jpg',
         title: "2"
     },
     {
@@ -130,7 +130,7 @@ const images_andong = [
 ];
 const images_busan = [
     {
-        src: '../../../panorama_image/Busan1.jpg',
+        src: '../../../panorama_image/Busan4.jpg',
         title: "1"
     },
     {
@@ -142,13 +142,13 @@ const images_busan = [
         title: "3"
     },
     {
-        src: '../../../panorama_image/Busan4.jpg',
+        src: '../../../panorama_image/Busan1.jpg',
         title: "4"
     },
 ];
 const images_chuncheon = [
     {
-        src: '../../../panorama_image/Chuncheon1.jpg',
+        src: '../../../panorama_image/Chuncheon3.jpg',
         title: "1"
     },
     {
@@ -156,7 +156,7 @@ const images_chuncheon = [
         title: "2"
     },
     {
-        src: '../../../panorama_image/Chuncheon3.jpg',
+        src: '../../../panorama_image/Chuncheon1.jpg',
         title: "3"
     },
     {
@@ -166,25 +166,25 @@ const images_chuncheon = [
 ];
 const images_daejeon = [
     {
-        src: '../../../panorama_image/Daejeon1.jpg',
+        src: '../../../panorama_image/Daejeon2.jpg',
         title: "1"
     },
     {
-        src: '../../../panorama_image/Daejeon2.jpg',
+        src: '../../../panorama_image/Daejeon1.jpg',
         title: "2"
     },
     {
-        src: '../../../city_image/daejeon.jpg',
+        src: '../../../panorama_image/Daejeon3.jpg',
         title: "3"
     },
     {
-        src: '../../../city_image/daejeon.jpg',
+        src: '../../../panorama_image/Daejeon4.jpg',
         title: "4"
     },
 ];
 const images_gangneung = [
     {
-        src: '../../../panorama_image/Gangneung1.jpg',
+        src: '../../../panorama_image/Gangneung3.jpg',
         title: "1"
     },
     {
@@ -192,7 +192,7 @@ const images_gangneung = [
         title: "2"
     },
     {
-        src: '../../../panorama_image/Gangneung3.jpg',
+        src: '../../../panorama_image/Gangneung1.jpg',
         title: "3"
     },
     {
@@ -210,17 +210,17 @@ const images_gunsan = [
         title: "2"
     },
     {
-        src: '../../../panorama_image/Deogynsan.jpg',
+        src: '../../../panorama_image/Gunsan4.jpg',
         title: "3"
     },
     {
-        src: '../../../city_image/gunsan.jpg',
+        src: '../../../panorama_image/Gunsan3.jpg',
         title: "4"
     },
 ];
 const images_gyeongju = [
     {
-        src: '../../../panorama_image/Gyeongju1.jpg',
+        src: '../../../panorama_image/Gyeongju4.jpg',
         title: "1"
     },
     {
@@ -232,17 +232,17 @@ const images_gyeongju = [
         title: "3"
     },
     {
-        src: '../../../panorama_image/Gyeongju4.jpg',
+        src: '../../../panorama_image/Gyeongju1.jpg',
         title: "4"
     },
 ];
 const images_incheon = [
     {
-        src: '../../../panorama_image/Incheon1.jpg',
+        src: '../../../panorama_image/Incheon2.jpg',
         title: "1"
     },
     {
-        src: '../../../panorama_image/Incheon2.jpg',
+        src: '../../../panorama_image/Incheon1.jpg',
         title: "2"
     },
     {
@@ -268,17 +268,17 @@ const images_jecheon = [
         title: "3"
     },
     {
-        src: '../../../city_image/jecheon.jpg',
+        src: '../../../city_image/.jpg',
         title: "4"
     },
 ];
 const images_jeju = [
     {
-        src: '../../../panorama_image/Jeju1.jpg',
+        src: '../../../panorama_image/Jeju2.jpg',
         title: "1"
     },
     {
-        src: '../../../panorama_image/Jeju2.jpg',
+        src: '../../../panorama_image/Jeju1.jpg',
         title: "2"
     },
     {
@@ -292,11 +292,11 @@ const images_jeju = [
 ];
 const images_jeonju = [
     {
-        src: '../../../panorama_image/Jeonju1.jpg',
+        src: '../../../panorama_image/Jeonju2.jpg',
         title: "1"
     },
     {
-        src: '../../../panorama_image/Jeonju2.jpg',
+        src: '../../../panorama_image/Jeonju1.jpg',
         title: "2"
     },
     {
@@ -310,19 +310,19 @@ const images_jeonju = [
 ];
 const images_namwon = [
     {
-        src: '../../../panorama_image/Namwon1.jpg',
+        src: '../../../panorama_image/Namwon4.jpg',
         title: "1"
     },
     {
-        src: '../../../panorama_image/Namwon2.jpg',
+        src: '../../../panorama_image/Namwon3.jpg',
         title: "2"
     },
     {
-        src: '../../../city_image/namwon.jpg',
+        src: '../../../panorama_image/Namwon2.jpg',
         title: "3"
     },
     {
-        src: '../../../city_image/namwon.jpg',
+        src: '../../../panorama_image/Namwon1.jpg',
         title: "4"
     },
 ];
@@ -358,17 +358,17 @@ const images_suwon = [
         title: "3"
     },
     {
-        src: '../../../city_image/suwon.jpg',
+        src: '../../../panorama_image/suwon5.jpg',
         title: "4"
     },
 ];
 const images_ulleung = [
     {
-        src: '../../../panorama_image/Ulleung1.jpg',
+        src: '../../../panorama_image/Ulleung2.jpg',
         title: "1"
     },
     {
-        src: '../../../panorama_image/Ulleung2.jpg',
+        src: '../../../panorama_image/Ulleung1.jpg',
         title: "2"
     },
     {
@@ -382,7 +382,7 @@ const images_ulleung = [
 ];
 const images_yeosu = [
     {
-        src: '../../../panorama_image/Yeosu1.jpg',
+        src: '../../../panorama_image/Yeosu3.jpg',
         title: "1"
     },
     {
@@ -390,11 +390,11 @@ const images_yeosu = [
         title: "2"
     },
     {
-        src: '../../../city_image/yeosu.jpg',
+        src: '../../../panorama_image/Yeosu1.jpg',
         title: "3"
     },
     {
-        src: '../../../city_image/yeosu.jpg',
+        src: '../../../city_image/.jpg',
         title: "4"
     },
 ];
@@ -430,6 +430,10 @@ const RecommendCorp = ({num}) => {
     const previous = useCallback(() => slickRef.current.slickPrev(), []);
     const next = useCallback(() => slickRef.current.slickNext(), []);
 
+    useEffect(() => {
+        window.scrollTo(0,0);
+    },[])
+    
     return (
         <div className='container'>
             <Wrap>

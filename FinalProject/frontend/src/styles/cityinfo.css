@@ -1,21 +1,29 @@
 #cityinfo {
-    padding-top: 100px;
+    padding-top: 80px;
 }
-
-#cityinfo .regionImg {
+#cityinfo .title-city {
+    margin-bottom: 10px;
+}
+#cityinfo .kor-name{
+    font-size: 40px;
+    font-weight: 500;
+    margin-right: 5px;
+    margin-left: 5px;
+    color: #838383;
+}
+#cityinfo .eng-name{
+    font-family: 'Montserrat';
+    font-size: 30px;
+    font-weight: 500;
+    color: #ccc;
+}
+/* #cityinfo .regionImg {
     width: 500px;
     height: 300px;
-}
+} */
 
 #cityinfo .fMXoGi {
     border-radius: 20px;
-}
-
-#cityinfo .title-city {
-    font-size: 40px;
-    font-weight: bold;
-    margin: 20px;
-    font-family: 'Montserrat';
 }
 
 #cityinfo .css-13xfq8m-MuiTabPanel-root {
@@ -241,11 +249,11 @@
 }
 /* input 입력할 때 글자 색 */
 #cityinfo .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
-    color: #black;
+    color: #c4c4c4;
 }
 /* 검색할 키워드를 입력하세요 글자 색 */
 #cityinfo .css-1pysi21-MuiFormLabel-root-MuiInputLabel-root {
-    color: #black;
+    color: #c4c4c4;
 }
 /* 키워드 입력 input border 색 */
 #cityinfo .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
@@ -267,10 +275,8 @@
     color: #75b4bd;
 }
 #cityinfo .css-1gsv261 {
-    margin: 0 auto;    
-}
-#cityinfo .css-1gsv261 {
-    border: none;
+    margin: 0 auto;   
+    border: none; 
 }
 #cityinfo .css-heg063-MuiTabs-flexContainer {
     justify-content: center;

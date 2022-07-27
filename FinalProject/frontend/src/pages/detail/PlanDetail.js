@@ -21,6 +21,8 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { logout } from '../../modules/auth';
 
+import swal from 'sweetalert';
+
 
 const PlanDetail = () => {
 
@@ -114,7 +116,7 @@ const PlanDetail = () => {
 
     const insertLike = () => {
         if (!isLoggedIn) {
-            alert("로그인 후 이용해주세요")
+            swal("","로그인 후 이용해주세요","error")
         } else {
             axios.post(insertLikeUrl, {num: num, loginNum: loginNum})
             .then(res => {
@@ -211,7 +213,7 @@ const PlanDetail = () => {
             setUserName(res.data[0].name);
         }).catch(err => {
             // alert(err.data);
-            alert('존재하지 않는 일정');
+            swal("","존재하지 않는 일정","warning");
             navi('../../../');
         })
     }
@@ -280,7 +282,7 @@ const PlanDetail = () => {
     const copyUrl = () => {
         navigator.clipboard.writeText(window.location.href);
 
-        alert("클립보드에 복사되었습니다")
+        swal("","클립보드에 복사되었습니다","info")
     }
     
     
@@ -398,6 +400,7 @@ const PlanDetail = () => {
                             if(index === loginSettings.length - 1){ // 마지막 메뉴(로그아웃)를 클릭했을 때
                                 localStorage.removeItem('jwtToken');
                                 dispatch(logout());
+                                swal("","로그아웃 되었습니다","success");
                             }
                             else{
                                 navi(loginLinks[index]);
@@ -455,16 +458,16 @@ const PlanDetail = () => {
                 style={{backgroundImage:'url(../../city_detail_image/'+dimage+')'}}>
                 <div className='top-box'>
                     {/* 좋아요 버튼 on/off */}
-                    { memLike == false 
+                    { memLike == true && isLoggedIn
                     ? 
-                    <div className='like-btn'>
-                        <div className='ico'
-                        onClick={insertLike}></div>
-                    </div>
-                    :     
                     <div className='like-btn on'>
                         <div className='ico'
                         onClick={deleteLike}></div>
+                    </div>
+                    :     
+                    <div className='like-btn'>
+                        <div className='ico'
+                        onClick={insertLike}></div>
                     </div>
                     }
                     <div className='clear' />
@@ -532,7 +535,7 @@ const PlanDetail = () => {
                         }}>댓글</div>
                     <div className='header-menu-line'></div>
 
-                    {myLogin == loginNum
+                    {myLogin == loginNum && isLoggedIn
                     ?
                     <div className='header-menu-right1'
                         onClick={() => (navi(`../../../plan/update/`+num))}>수정하기</div>
