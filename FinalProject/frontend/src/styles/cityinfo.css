@@ -6,6 +6,7 @@
 }
 #cityinfo .kor-name{
     font-size: 40px;
+    font-family: 'inherit';
     font-weight: 500;
     margin-right: 5px;
     margin-left: 5px;
@@ -40,18 +41,29 @@
     margin: 0px;
 }
 #cityinfo .css-1t6e9jv-MuiCardActions-root {
-    margin-left: 8px;
-    padding: 0px;
+    margin-left: 20px;
+    padding: 1px;
+    font-size: 15px;
+    background-color: rgb(240 240 245);
+    border-radius: 20px;
+    text-align: center;
+    justify-content: center;
+    width: 70px;
+
 
 }
 
 #cityinfo .css-46bh2p-MuiCardContent-root {
-    padding: 0px 8px 0px 8px;
+    padding: 10px 8px 3px 20px;
 }
 
 #cityinfo .css-d3wcwz-MuiTypography-root {
-    font-size: 13px;
+    font-size: 18px;
+    font-family: 'Montserrat';
     font-weight: 400;
+    max-height: 48px;
+    height: 48px;
+    overflow: hidden;
 }
 
 #cityinfo .css-o69gx8-MuiCardMedia-root {
@@ -333,12 +345,13 @@
     font-weight: bold;
     scrollbar-width:none;
     margin-left: 10px;
+    /* background-color: #c4c4c4; */
     /* background-color: #75b4bd; */
-    /* background-color: #98dde3; */
+    background-color: #98dde3;
     /* background-color: rgb(151, 210, 234); */
     /* background-color: #c7eef0; */
     /* background-image: url('../../public/WeatherImage/weather_back4.png'); */
-    background-image: url('../../public/WeatherImage/weather_back6.jpg');
+    /* background-image: url('../../public/WeatherImage/weather_back10.jpg'); */
     background-size: cover;
     border-radius: 8px;
 }
@@ -351,7 +364,7 @@
     justify-content: space-around;
     align-items: center;
     display: flex;
-    padding: 7px;
+    padding: 4.5px;
 }
 
 #cityinfo .no-schedule-weather-day {
@@ -374,16 +387,16 @@
 }
 
 #cityinfo .weather-info-box .weather-day{
-    font-size: 22px;
+    font-size: 20px;
 }
-#cityinfo .weather-info-box .weater-image{
+/* #cityinfo .weather-info-box .weater-image{
 
-}
+} */
 #cityinfo .weather-info-box .weather-temp{
-    font-size: 25px;
+    font-size: 20px;
 }
 #cityinfo span.material-symbols-outlined.weather_span{
-    font-size: 70px;
+    font-size: 50px;
     cursor:default;
 }
 
