@@ -120,7 +120,7 @@ const MyTrips = ({data2, setCityTrip, loginNum, currentPage}) => {
                             style={{
                               backgroundColor:
                                 calculateDday(row.startDate) < 0 && calculateDday(row.endDate) > 0
-                                  ? "red"
+                                  ? "#ffd467"
                                   : calculateDday(row.startDate) === 0
                                   ? "orange"
                                   : calculateDday(row.startDate) < 0
@@ -133,7 +133,7 @@ const MyTrips = ({data2, setCityTrip, loginNum, currentPage}) => {
                             ) : calculateDday(row.startDate) > 0 ? (
                               `D-${calculateDday(row.startDate)}`
                             ) : calculateDday(row.endDate) > 0 ? (
-                              <div style={{ backgroundColor: "red" }}>여행중</div>
+                              <div>여행중</div>
                             ) : (
                               "지난일정"
                             )}
@@ -250,6 +250,10 @@ const MyTrips = ({data2, setCityTrip, loginNum, currentPage}) => {
                                         uk-card-default
                                     "
                                   id="modifySavedRoute_idx_0"
+                                  onClick={() => {
+                                    navi(`/plan/update/${row.tripNum}`);
+                                  }}
+                                
                                 >
                                   일정 수정
                                 </button>

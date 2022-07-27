@@ -52,7 +52,20 @@
 
 #user-page .trip-wrap-1 .trip-img{
   width: 140px;
+  overflow: hidden;
+  
 }
+
+#user-page .trip-wrap-1 .trip-img:hover{
+
+
+  transition: 4s;
+ transform: scale(1.2);
+ box-shadow: 0px 0px 7px rgb(0 0 0 / 50%);
+ transition: all 0.2s linear;
+ overflow: hidden;
+}
+
 
 #user-page .trip-wrap-1 .trip-info-wrap{
   font-family: 'Montserrat';
@@ -97,6 +110,10 @@
   font-size: 20px;
   font-weight: 500;
   font-family: 'Montserrat';
+}
+
+#user-page .trip-wrap-2 .trip-name:hover{
+cursor: pointer;
 }
 
 /* #user-page .trip-wrap-2 .trip-name .material-icons{
