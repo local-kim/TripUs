@@ -901,7 +901,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item);
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -958,7 +958,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1015,7 +1015,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1072,7 +1072,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1129,7 +1129,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1186,7 +1186,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1243,7 +1243,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {

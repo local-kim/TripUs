@@ -8,7 +8,7 @@ import KakaoLogin from 'react-kakao-login';
 import { SearchId, SearchPass } from './index.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../modules/auth';
-import kakao_icon from '../../assets/images/kakao_icon.png';
+import kakao_icon from '../../assets/images/icon_login_kakao.png';
 import naver_icon from '../../assets/images/naver_icon.png';
 import google_icon from '../../assets/images/google_icon.png';
 
@@ -342,7 +342,6 @@ const LoginForm = () => {
         <div className='divider'></div>
         <span>or</span>
       </div>
-      <div className='sns_text'>SNS 간편 로그인</div>
       <div className='socialBtn-container'>
         <div className='socialBtn'>
         
