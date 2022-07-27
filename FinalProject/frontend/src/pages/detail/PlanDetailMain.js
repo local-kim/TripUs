@@ -10,6 +10,7 @@ import { addDays } from 'date-fns';
 import { useDispatch } from 'react-redux';
 import { savePlan } from '../../modules/planner';
 import Rating from '@mui/material/Rating';
+import swal from 'sweetalert';
 
 // 카카오맵
 
@@ -138,9 +139,10 @@ const PlanDetailMain = () => {
         axios.get(mapUrl)
         .then(res => {
             setMdata(res.data)
-        }).catch(err => {
-            alert(err.data);
         })
+        // .catch(err => {
+        //     alert(err.data);
+        // })
 
         // for (var i = 0; i < mdata.length; i ++ )
         var positions = [
@@ -211,9 +213,10 @@ const PlanDetailMain = () => {
             setMapy(res.data[0].mapy);
             setDimage(res.data[0].image);
             setDdata(res.data);
-        }).catch(err => {
-            alert(err.data);
         })
+        // .catch(err => {
+        //     alert(err.data);
+        // })
     }
     // 여행 날짜 및 기간 
     const planDate = () => {
@@ -224,9 +227,10 @@ const PlanDetailMain = () => {
             setEndDate(res.data[0].end_date);
             setDuringDay(res.data[0].days);
             setPdata(res.data);
-        }).catch(err => {
-            alert(err.data);
         })
+        // .catch(err => {
+        //     alert(err.data);
+        // })
     }
 
     // 일자별 데이터
@@ -234,18 +238,20 @@ const PlanDetailMain = () => {
         axios.get(navUrl)
         .then(res => {
             setNdata(res.data);
-        }).catch(err => {
-            alert(err.data);
         })
+        // .catch(err => {
+        //     alert(err.data);
+        // })
     }
 
     const planMember = () => {
         axios.get(nameUrl)
         .then(res => {
             setUserName(res.data[0].name);
-        }).catch(err => {
-            alert(err.data);
         })
+        // .catch(err => {
+        //     alert(err.data);
+        // })
     }
 
     useEffect(() => {
@@ -262,7 +268,7 @@ const PlanDetailMain = () => {
     const copyUrl = () => {
         navigator.clipboard.writeText(window.location.href);
 
-        alert("클립보드에 복사되었습니다")
+        swal("","클립보드에 복사되었습니다","info")
     }
     
     
