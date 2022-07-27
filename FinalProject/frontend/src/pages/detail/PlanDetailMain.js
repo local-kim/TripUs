@@ -357,7 +357,7 @@ const PlanDetailMain = () => {
                                                     <div className='sinfo-cat2'>{day.cat2_name}</div>
                                                     <div className='sinfo-line' />
                                                     <div className='sinfo-txt'>
-                                                    review&nbsp;<Rating name="read-only" style={{position:'relative', top:'5px'}} value={day.avg_star} readOnly size="small" precision={0.1} />({day.avg_star == 0 ? `리뷰없음` : day.avg_star})
+                                                    review&nbsp;<Rating name="read-only" style={{position:'relative', top:'5px', zIndex:'10'}} value={day.avg_star} readOnly size="small" precision={0.1} />({day.avg_star == 0 ? `리뷰없음` : day.avg_star})
                                                     </div>
                                                     <div className='clear' />
                                                 </div>
