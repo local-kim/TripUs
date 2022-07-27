@@ -69,7 +69,11 @@ public class AuthController {
     	service.join(member, "ROLE_USER");	// 일반회원 가입시 ROLE_USER로 권한 설정
     	return ResponseEntity.ok("Sign up success");
     }
-    
+    @PostMapping("/kakaojoin")
+    public ResponseEntity<String> kakaoJoin(@RequestBody MemberSecurityDto member){
+    	service.kakaoJoin(member, "ROLE_USER");	// 일반회원 가입시 ROLE_USER로 권한 설정
+    	return ResponseEntity.ok("Sign up success");
+    }
     @PostMapping("/findPw")
     public ResponseEntity<String> findPassword(@RequestBody HashMap<String, Object> request) {
 //    	System.out.println(request.get("id"));

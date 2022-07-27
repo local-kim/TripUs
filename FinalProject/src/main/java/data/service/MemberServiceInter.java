@@ -14,6 +14,6 @@ public interface MemberServiceInter {
 	public int emailcheck(String email);
 	public boolean login(String id, String password);
 	public List<Map<String, Object>> getLoginInfo(String id);
-	public int checkKakaoMember(String id);
+	public int checkKakaoMember(MemberDto dto);
 
 }
