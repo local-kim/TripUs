@@ -1,20 +1,29 @@
 #cityinfo {
-    padding-top: 100px;
+    padding-top: 80px;
 }
-
-#cityinfo .regionImg {
+#cityinfo .title-city {
+    margin-bottom: 10px;
+}
+#cityinfo .kor-name{
+    font-size: 40px;
+    font-weight: 500;
+    margin-right: 5px;
+    margin-left: 5px;
+    color: #838383;
+}
+#cityinfo .eng-name{
+    font-family: 'Montserrat';
+    font-size: 30px;
+    font-weight: 500;
+    color: #ccc;
+}
+/* #cityinfo .regionImg {
     width: 500px;
     height: 300px;
-}
+} */
 
 #cityinfo .fMXoGi {
     border-radius: 20px;
-}
-
-#cityinfo .title-city {
-    font-size: 40px;
-    font-weight: bold;
-    margin: 20px;
 }
 
 #cityinfo .css-13xfq8m-MuiTabPanel-root {
@@ -24,10 +33,6 @@
 /* #cityinfo .row>* {
     margin-top: 15px;
 } */
-
-#cityinfo .css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
-    font-size: 1.6em;
-}
 
 #cityinfo .css-anmq6p-MuiTypography-root {
     font-size: 20px;
@@ -43,13 +48,10 @@
 #cityinfo .css-46bh2p-MuiCardContent-root {
     padding: 0px 8px 0px 8px;
 }
-#cityinfo .css-d3wcwz-MuiTypography-root {
-    margin-bottom: 0px;
-}
 
 #cityinfo .css-d3wcwz-MuiTypography-root {
-    font-size: 24px;
-    font-weight: bold;
+    font-size: 13px;
+    font-weight: 400;
 }
 
 #cityinfo .css-o69gx8-MuiCardMedia-root {
@@ -57,9 +59,16 @@
     height: 200px;
     border-radius: 0px 0px 8px 8px;
 }
+#cityinfo .css-o69gx8-MuiCardMedia-root:hover {
+    width: 250px;
+    height: 200px;
+    border-radius: 0px 0px 8px 8px;
+    opacity: 0.8;
+}
+
 
 #cityinfo .scheduleContainer {
-    margin-left: 20px;
+    /* margin-left: 20px; */
 }
 #cityinfo .schedule-title-add-box {
     display: flex;
@@ -86,7 +95,8 @@
     width: 580px;
     height: 360px;
     overflow: scroll;
-    box-shadow: 0px 1px 0px 0px rgb(0 0 0 / 10%);
+    box-shadow: 0px 1px 0px 1px rgb(0 0 0 / 5%);
+    border-radius: 8px;
 }
 
 #cityinfo .schedule-big-box .schedule-box {
@@ -113,7 +123,9 @@
     display: flex;
     align-items: center;
     font-family: 'Montserrat';
-    border: 1px solid black;
+    /* border: 1px solid black; */
+    box-shadow: 0 5px 15px rgb(0 0 0 / 16%);
+    border-radius: 8px;
 }
 #cityinfo .no-schedule-box {
     width: 580px;
@@ -141,6 +153,8 @@
     align-items: center;
     margin-right: 30px;
     font-size: 16px;
+    color: white;
+    font-weight: 400;
 }
 #cityinfo .subject {
     width: 90px;
@@ -155,18 +169,59 @@
     cursor: pointer;
     color: black;
 }
+#cityinfo span.material-symbols-outlined.view-weather:hover {
+    font-size: 20px;
+    cursor: pointer;
+    color: lightsalmon;
+}
 
 #cityinfo .schedule-title {
+    width: 580px;
     font-size: 23px;
-    color: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ccc;
     margin-right: 10px;
-
+    font-family: 'Montserrat';
+    font-weight: 600;
+    text-align: center;    
 }
-#cityinfo .material-symbols-rounded.add-date {
-    font-size: 30px;
-    margin-top: 3px;
+#cityinfo .add-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 23px;
+    border-radius: 20px;
+    font-size: 18px;
+    font-family: 'Montserrat';
+    font-weight: 600;
     cursor: pointer;
-    margin-right: 410px;
+    color: white;
+    background-color: #98dde3;
+}
+#cityinfo .no-schedule-add-date-box {
+    width: 580px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-top: 20px;
+}
+#cityinfo .no-schedule-add-date {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 23px;
+    border-radius: 20px;
+    font-size: 18px;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    background-color: #98dde3;
 }
 
 #cityinfo .aa h5 {
@@ -182,6 +237,7 @@
     display: flex;
     margin-top: 20px;
     margin-left: 800px;
+    font-family: 'Montserrat';
 }
 /* 키워드 입력칸 클릭했을 때 border 색 */
 #cityinfo .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
@@ -193,15 +249,15 @@
 }
 /* input 입력할 때 글자 색 */
 #cityinfo .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
-    color: #75b4bd;
+    color: #c4c4c4;
 }
 /* 검색할 키워드를 입력하세요 글자 색 */
 #cityinfo .css-1pysi21-MuiFormLabel-root-MuiInputLabel-root {
-    color: #75b4bd;
+    color: #c4c4c4;
 }
 /* 키워드 입력 input border 색 */
 #cityinfo .css-1d3z3hw-MuiOutlinedInput-notchedOutline {
-    border-color: #98dde3;
+    border-color: black;
 }
 
 
@@ -219,20 +275,21 @@
     color: #75b4bd;
 }
 #cityinfo .css-1gsv261 {
-    margin: 0 auto;    
-}
-#cityinfo .css-1gsv261 {
-    border: none;
+    margin: 0 auto;   
+    border: none; 
 }
 #cityinfo .css-heg063-MuiTabs-flexContainer {
-    margin: 0px 0px 0px 30px;
+    justify-content: center;
+    /* margin: 0px 0px 0px 95px; */
     /* border-bottom: 1px solid rgb(240, 240, 240); */
 }
 #cityinfo .css-1h9z7r5-MuiButtonBase-root-MuiTab-root{
     font-size: 20px;
+    font-weight: bold;
     margin-left: 10px;
     margin-right: 10px;
-    border-right: 1px solid rgb(240, 240, 240);
+    /* border-right: 1px solid rgb(240, 240, 240); */
+    border-bottom: 1px solid rgb(240, 240, 240);
 }
 #cityinfo .css-jpu672-MuiPaper-root-MuiCard-root {
     border-radius: 8px 8px 0px 0px;
@@ -241,6 +298,7 @@
 #cityinfo .place-list-box {
     display: flex;
     margin-top: 20px;
+    justify-content: center;
 }
 #cityinfo span.material-symbols-outlined.span-no-image {
     width: 250px;
@@ -256,7 +314,12 @@
 
 /* 날씨 데이터 */
 #cityinfo .weather-title {
+    width: 500px;
     font-size: 23px;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    color: #ccc;
+    text-align: center;
 }
 
 #cityinfo #weather-css {
@@ -267,10 +330,17 @@
     overflow: scroll;
     /* background-color: gray; */
     color: white;
+    font-weight: bold;
     scrollbar-width:none;
     margin-left: 10px;
-    background-image: url('../../public/WeatherImage/weather_back4.png');
+    /* background-color: #75b4bd; */
+    /* background-color: #98dde3; */
+    /* background-color: rgb(151, 210, 234); */
+    /* background-color: #c7eef0; */
+    /* background-image: url('../../public/WeatherImage/weather_back4.png'); */
+    background-image: url('../../public/WeatherImage/weather_back6.jpg');
     background-size: cover;
+    border-radius: 8px;
 }
 
 #cityinfo #weather-css::-webkit-scrollbar{
@@ -287,8 +357,22 @@
 #cityinfo .no-schedule-weather-day {
     font-size: 30px;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 50px;
 }
+#cityinfo .no-schedule-weater-image {
+    text-align: center;
+    margin-top: 30px;
+}
+#cityinfo span.material-symbols-outlined.no-schedule-weather_span{
+    font-size: 100px;
+    cursor:default;
+}
+#cityinfo .no-schedule-weather-temp{
+    font-size: 30px;
+    text-align: center;
+    margin-top: 30px;
+}
+
 #cityinfo .weather-info-box .weather-day{
     font-size: 22px;
 }
@@ -335,7 +419,7 @@
     display: block;
     background: #fff;
     padding: 0px;
-    margin-left: 17px;
+    /* margin-left: 17px; */
     /* padding: 40px 0; */
     /* box-shadow: 0 0 8px rgb(0 0 0 / 10%); */
 }
@@ -347,12 +431,15 @@
     bottom: 0px;
 }
 
-#cityinfo span.more-city-info {
+#cityinfo .more-city-info {
     cursor: pointer;
     margin: 20px;
-    padding: 20px;
     width: 100px;
     height: 60px;
+    margin-left: 480px;
+    box-shadow: 0 5px 15px rgb(0 0 0 / 8%);
+    font-size: 20px;
+    color: #75b4bd;
 }
 
 #cityinfo .wimg {
@@ -403,8 +490,9 @@
     cursor: pointer;
 }
 
-#cityinfo .place-heart .row {
+#cityinfo .place-heart.row {
     position: relative;
+    margin-bottom: 20px;
 
 }
 

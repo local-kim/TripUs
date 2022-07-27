@@ -18,7 +18,7 @@ public interface MemberMapper {
 	public int emailcheck(String email);
 	public int login(Map<String, String> map);
 	public List<Map<String, Object>> getLoginInfo(String id);
-	public int checkKakaoMember(String id);
+	public int checkKakaoMember(MemberDto dto);
 	
 
 }

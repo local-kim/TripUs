@@ -12,7 +12,15 @@ import { useDispatch } from 'react-redux';
 import { setPlanInfo } from '../../modules/planner';
 import Rating from '@mui/material/Rating';
 
+
+
 const PlanDetailMessage = () => {
+    
+  useEffect(() => {
+    window.scrollTo(0,400)
+  },[])
+  
+    
     return (
         <div className='wrap-list'>
             <div className='content-left'>
@@ -24,7 +32,7 @@ const PlanDetailMessage = () => {
                         <div className='ms-input'>
                             <div className='ms-input-area'>
                                 <div className='input-image'>
-                                    <img src='' alt='' />
+                                    <img src='' alt='my' />
                                 </div>
                                 <div className='input-text'>
                                     <textarea name cols='30' rows='10' className='text-input' maxLength='300'>
@@ -45,13 +53,13 @@ const PlanDetailMessage = () => {
                         <div className='ms-content'>
                             <div className='ms-content-area'>
                                 <div className='content-image'>
-                                    <img src='' alt='' />
+                                    <img src='' alt='user' />
                                     <div className='clear' />
                                 </div>
                                 <div className='content-box'>
                                     <div className='content-info'>
                                         <div className='content-user-name'>
-                                            u-name
+                                            u-name1
                                         </div>
                                         <div className='content-date'>
                                             create_at
@@ -74,13 +82,13 @@ const PlanDetailMessage = () => {
                         <div className='ms-content'>
                             <div className='ms-content-area'>
                                 <div className='content-image'>
-                                    <img src='' alt='' />
+                                    <img src='' alt='user' />
                                     <div className='clear' />
                                 </div>
                                 <div className='content-box'>
                                     <div className='content-info'>
                                         <div className='content-user-name'>
-                                            u-name
+                                            u-name2
                                         </div>
                                         <div className='content-date'>
                                             create_at
