@@ -88,7 +88,7 @@ div{
 
 .btn-quit {
     display: block;
-    padding: 24px;
+    
     border-radius: 4;
     border: none;
     font-size: 0.8rem;
@@ -101,4 +101,10 @@ div{
 
 .sb-avatar__image{
     border-radius: 100%;
+}
+
+.text{
+    font-size: 20px;
+    font-family: Montserrat;
+    font-weight: 600;
 }
