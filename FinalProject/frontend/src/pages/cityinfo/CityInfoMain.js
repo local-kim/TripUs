@@ -510,12 +510,26 @@ const CityInfoMain = () => {
         if (!isLoggedIn) {
             alert("로그인 후 이용해주세요")
         }
-            axios.post(insert_like_url,{place: item, loginNum, cityNum: city_num, check:Number(checked)})
-            .then(res=>{
-                // alert("좋아요 true:",res.data);
-                // setLike_btn(true);
-                like_table();
-            })
+        axios.post(insert_like_url,{
+            // place: item,
+            contentid: String(item.contentid),
+            contenttypeid: String(item.contenttypeid),
+            title: item.title,
+            cat3: item.cat3,
+            addr1: item.addr1,
+            addr2: item.addr2,
+            firstimage: item.firstimage,
+            mapx: String(item.mapx),
+            mapy: String(item.mapy),
+            loginNum,
+            cityNum: city_num,
+            check:Number(checked)
+        })
+        .then(res=>{
+            // alert("좋아요 true:",res.data);
+            // setLike_btn(true);
+            like_table();
+        })
     }
     // 좋아요 OFF
     const delete_btn = (e, contentid) => {
