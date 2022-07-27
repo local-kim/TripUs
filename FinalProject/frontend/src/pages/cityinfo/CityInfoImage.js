@@ -430,9 +430,7 @@ const RecommendCorp = ({num}) => {
     const previous = useCallback(() => slickRef.current.slickPrev(), []);
     const next = useCallback(() => slickRef.current.slickNext(), []);
 
-    useEffect(() => {
-        window.scrollTo(0,0);
-    },[])
+    
     
     return (
         <div className='container'>
