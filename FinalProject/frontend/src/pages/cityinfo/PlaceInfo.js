@@ -40,7 +40,7 @@ const style = {
 };
 
 const PlaceInfo=()=>{
-  const {contentId}=useParams();
+  const {cityNum, contentId}=useParams();
   const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
     //git error catch
@@ -183,7 +183,7 @@ const PlaceInfo=()=>{
   
         axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
         .then(res => {
-          alert("하나 삭제 성공");
+          // alert("하나 삭제 성공");
         })
         .catch(err => console.log(err));
       };
@@ -197,7 +197,7 @@ const PlaceInfo=()=>{
     
           axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
           .then(res => {
-            alert("하나 삭제 성공");
+            // alert("하나 삭제 성공");
           })
           .catch(err => console.log(err));
         };
@@ -231,7 +231,8 @@ const PlaceInfo=()=>{
           }).then(res => {  // json 형식의 response를 받음
             setModalFileName(res.data); // 백엔드에서 보낸 변경된 이미지명을 photo 변수에 넣는다
           }).catch(err => {
-            alert("photourl:",err);
+            // alert("photourl:",err);
+            console.log(err);
           });
         }
 
@@ -249,7 +250,8 @@ const PlaceInfo=()=>{
         //console.log("reviewdatalength:",res.data.length);
         })
         .catch(err => {
-            alert(err);
+            // alert(err);
+            console.log(err);
         }) 
     }
 
@@ -274,13 +276,14 @@ const PlaceInfo=()=>{
           if(!isLoggedIn){
             alert("먼저 로그인해주세요");}
           axios.post(insertUrl,{place_id:contentId,member_num:loginNum,stars,content}).then(res=>{ 
-              alert("성공");
+              // alert("성공");
               pageList();
               setStarsValue("");
               setRefreshReview("");
               setFileName(""); 
             }).catch(err => {
-              alert(err);
+              // alert(err);
+              console.log(err);
             })
           }
 
@@ -290,7 +293,8 @@ const PlaceInfo=()=>{
       axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
       axios.get(placeStarsAvgUrl).then(res=>{
         if(res.data==null||res.data==0||res.data==undefined){
-          alert(res.data);
+          // alert(res.data);
+          console.log(res.data);
         }else{
         setAvgStars(res.data);
       }
@@ -321,7 +325,8 @@ const PlaceInfo=()=>{
         if(!isChecked){
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.post(insertlikeUrl,{
-            place_id:String(placeData.contentId),
+            cityNum,
+            place_id:String(contentId),
             contentid: String(placeData.contentid),
             contenttypeid: String(placeData.contenttypeid),
             title: placeData.title,
@@ -378,7 +383,7 @@ const PlaceInfo=()=>{
             alert("정말 삭제하시겠습니까?");
             setDetailFileData(detailFileData.filter((file, i) => i != idx));
           }).catch(err=>{
-            alert(err);
+            console.log(err);
           })
         }
 
@@ -387,7 +392,7 @@ const PlaceInfo=()=>{
           if(window.confirm("정말 삭제하시겠습니까?")){
             axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.delete(deleteUrl+num).then(res=>{
-            alert("삭제되었습니다.");
+            // alert("삭제되었습니다.");
             if(open===true){
               handleClose();
               pageList();
@@ -507,7 +512,7 @@ const PlaceInfo=()=>{
             console.log("update:",res.data);
             setDetailData2(res.data);
             setModalFileName("");
-            alert("수정완료");
+            //alert("수정완료");
             edithandleClose();
             //setUpdateModalOpen(true);
             onDetail(num);
@@ -517,7 +522,7 @@ const PlaceInfo=()=>{
 
     useEffect(() => {
        kakaomapscript();
-       myLike();
+      //  myLike();
        GetSumLikes();
        AvgStars();
       //uploadImage();
@@ -526,7 +531,7 @@ const PlaceInfo=()=>{
     useEffect(()=>{
      pageList();
      //onOneDelete();
-     
+     myLike();
     },[]);
 
     useEffect(() => {

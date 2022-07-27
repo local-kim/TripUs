@@ -203,11 +203,11 @@ public class ReviewController {
    @PostMapping("/insertlike")
    public void insertLike(@RequestBody HashMap<String, Object> request){
 //      int member_num=18;
-//      System.out.println(request);
+      System.out.println(request);
 	   
 	   PlaceDto place = new PlaceDto();
 		
-		place.setCity_num(Integer.parseInt((String)request.get("cityNum")));
+	   place.setCity_num(Integer.parseInt((String)request.get("cityNum")));
 		
 		place.setContentid((String)request.get("contentid"));
 		place.setContenttypeid((String)request.get("contenttypeid"));
@@ -218,6 +218,8 @@ public class ReviewController {
 		place.setFirstimage((String)request.get("firstimage"));
 		place.setMapx((String)request.get("mapx"));
 		place.setMapy((String)request.get("mapy"));
+		
+		System.out.println(place);
 		
 		if(planService.checkPlace(place.getContentid()) == 0) {
 			planService.insertPlace(place);
