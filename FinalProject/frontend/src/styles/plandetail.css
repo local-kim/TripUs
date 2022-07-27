@@ -1,7 +1,3 @@
-#root .main-main-back header {
-    /* position: relative; */
-}
-
 #plan-detail .plan-header {
     width: 1291px;
     height: 64px;
@@ -23,19 +19,22 @@
     float: left;
 }
 #plan-detail .header-list {
-    width: 105px;
+    width: 85px;
     height: 64px;
     float: left;
     line-height: 64px;
     text-align: center;
     cursor: pointer;
+    /* border: 1px solid black; */
 }
 #plan-detail .header-list:hover {
-    font-weight: bold;
+    /* font-weight: bold; */
 }
 #plan-detail .header-list .txt {
-    width: 85px;
+    width: 65px;
     height: 44px;
+    font-size: 14px;
+    /* border: 1px solid black; */
     margin: 10px 0px 10px 10px;
     line-height: 44px;
     border-radius: 10px;
@@ -85,17 +84,21 @@
     top: (67.18)+15px;
 
     width: 144px;
-    border-top: 2px solid #dedede;
-    border-bottom: 2px solid #dedede;
+    /* border-top: 2px solid #dedede; */
+    /* border-bottom: 2px solid #dedede; */
+    box-shadow: 0px 0px 6px #e5e5e5;
     left: 50%;
     margin-left: -700px;
     background: white;
+    border-radius: 5px;
 }
 #plan-detail .scroll-item-prev {
     height: 30px;
     background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_prev.png) no-repeat;
     background-position: center center;
     margin-bottom: 3px;
+    cursor: pointer;
+    border-bottom: 1px solid #f7f7f7;
 }
 #plan-detail .scroll-item-list {
     width: 100%;
@@ -120,7 +123,8 @@
     width: 100%;
     color: #b3b3b3;
     font-size: 11px;
-    padding-left: 37px;
+    font-weight: bold;
+    padding-left: 50px;
     /* background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_line.gif) no-repeat; */
     background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_line_last.gif) no-repeat;
     background-position: left center;
@@ -139,6 +143,7 @@
     background: url(https://www.earthtory.com/res/img/mypage/plan/sub/plan_nav_next.png) no-repeat;
     background-position: center center;
     margin-top: 3px;
+    border-top: 1px solid #f7f7f7;
 }
 
 
@@ -392,7 +397,7 @@
     height: 100%;
     width: 750px;
     padding-right: 25px;
-    margin-bottom: 400px;
+    margin-bottom: 200px;
 
     border: 0px solid hotpink;
 }
@@ -485,7 +490,7 @@
     border: 0px solid black;
     background: white;
     z-index: 100;
-    margin-top: -25px;
+    margin-top: -23px;
 }
 #plan-detail .day-box:last-child .day-box-distance {
     display: none;

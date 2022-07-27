@@ -332,7 +332,7 @@ const PlanDetailMain = () => {
                                                 <div className='clear' />
                                             </div>
                                             <div className='day-date-right'>
-                                                총 금액(사용안할듯)
+                                                {/* 총 금액(사용안할듯) */}
                                                 <div className='clear' />
                                             </div>
                                         </div>
@@ -348,7 +348,7 @@ const PlanDetailMain = () => {
                                             <img alt='spot' src={day.firstimage !== null ? day.firstimage : '../../empty_image.jpg'} className='spot-img'/>
                                             <div className='spot-content-box'>
                                                 <div className='spot-name'>
-                                                <Link to={`/place/`+day.contentid}>
+                                                <Link to={`/place/`+day.contentid} >
                                                     {day.title}
                                                 </Link>
                                                 </div>

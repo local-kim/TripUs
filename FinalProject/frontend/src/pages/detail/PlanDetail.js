@@ -132,7 +132,7 @@ const PlanDetail = () => {
         .then(res => {
             likeBtnF();
         }).catch(err => {
-            console.log(err)
+            // console.log(err)
         })
     }
 
@@ -173,23 +173,25 @@ const PlanDetail = () => {
             setDimage(res.data[0].image);
             setPlanCount(res.data.length);
             setDdata(res.data);
-        }).catch(err => {
-            alert(err.data);
         })
+        // .catch(err => {
+        //     // alert(err.data);
+        // })
     }
     // 여행 날짜 및 기간 
     const planDate = () => {
         axios.get(dateUrl)
         .then(res => {
-            console.log(res.data);
+            // console.log(res.data);
             setStartDate(res.data[0].start_date);
             setEndDate(res.data[0].end_date);
             setDuringDay(res.data[0].days);
             setMyLogin(res.data[0].member_num);
             setPdata(res.data);
-        }).catch(err => {
-            alert(err.data);
         })
+        // .catch(err => {
+        //     // alert(err.data);
+        // })
     }
 
     // 일자별 데이터
@@ -197,9 +199,10 @@ const PlanDetail = () => {
         axios.get(navUrl)
         .then(res => {
             setNdata(res.data);
-        }).catch(err => {
-            alert(err.data);
         })
+        // .catch(err => {
+        //     // alert(err.data);
+        // })
     }
 
     const planMember = () => {
@@ -207,7 +210,9 @@ const PlanDetail = () => {
         .then(res => {
             setUserName(res.data[0].name);
         }).catch(err => {
-            alert(err.data);
+            // alert(err.data);
+            alert('존재하지 않는 일정');
+            navi('../../../');
         })
     }
 
@@ -220,8 +225,8 @@ const PlanDetail = () => {
         totalLike();
         heartLogin();
         console.log(mainList);
-        console.log("login?"+isLoggedIn);
-        console.log(memLike);
+        // console.log("login?"+isLoggedIn);
+        // console.log(memLike);
     },[])
 
     
@@ -305,7 +310,6 @@ const PlanDetail = () => {
             e.currentTarget.classList.add('on')
          
     }
-    
 
     const [ memLike, setMemLike ] = useState(false)
 
@@ -333,6 +337,7 @@ const PlanDetail = () => {
         
     return (
         <div id = 'plan-detail'>
+            <div id = 'place-top' />
             <div className='plan-header'>
                 <div className='header-logo'>
                     <img src='../../MainLogo.png' alt='...' 
@@ -419,7 +424,12 @@ const PlanDetail = () => {
             {/* 좌측 이동 리스트 - mainList(개요) 시에만 표시 */}
             {mainList == 1 ? 
             <div className='scroll-item'>
-                <div className='scroll-item-prev'></div>
+                {/* <a href = {'#place-top'}> */}
+                <div className='scroll-item-prev' 
+                onClick={() => (
+                    window.scrollTo(0, 0)
+                )}></div>
+                {/* </a> */}
                 <div className='scroll-item-list' >
                     <div className={'scroll-item-btn first'}/>
                 {

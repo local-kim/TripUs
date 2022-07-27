@@ -129,9 +129,10 @@ const PlanDetailMap = () => {
             dayPlan.push(res.data.filter(data => data.day == i + 1));
             console.log(res.data.filter(data => data.day == i + 1));
         }
-    }).catch(err => {
-        alert(err.data)
-    });
+    })
+    // .catch(err => {
+    //     alert(err.data)
+    // });
   }, []);
 
   // navData (Day별) 없는날짜 치우고 여행 있는날짜만 추가
@@ -148,11 +149,15 @@ const PlanDetailMap = () => {
       //   console.log(res.data)
       // }
       
-    }).catch(err => {
-      alert(err.data)
-    });
+    })
+    // .catch(err => {
+    //   alert(err.data)
+    // });
   }, []);
 
+  useEffect(() => {
+    window.scrollTo(0,400)
+  },[])
   
   const changeDay = (i) => {
     console.log(i);
