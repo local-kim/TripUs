@@ -33,6 +33,7 @@ const PlanDetail = () => {
     const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
     const loginName = useSelector(state => state.auth.user.name);
+    const loginProfile = useSelector(state => state.auth.user.profile);
 
     const [ myLogin, setMyLogin ] = useState();
     // console.log(loginNum);
@@ -41,6 +42,7 @@ const PlanDetail = () => {
     const [value, setValue] = React.useState('1');
     const [starsvalue, setStarsValue] = React.useState(0);
 
+    const [detailData,setDetailData]=useState([0]);
 
     const handleChange = (event, newValue) => {
     
@@ -95,6 +97,7 @@ const PlanDetail = () => {
     let navUrl = SPRING_URL + "plan/nav?num="+num;
     let nameUrl = SPRING_URL + "plan/name?num="+num;
     let mapUrl = SPRING_URL + "plan/map?num="+num;
+    let profilePhotoUrl=process.env.REACT_APP_SPRING_URL+"save/";
 
     // 좋아요 관련
     let planLikeUrl = SPRING_URL + "plan/like?num="+num+"&loginNum="+loginNum;
@@ -329,6 +332,17 @@ const PlanDetail = () => {
         }
     }
 
+    const imgDetail = () => {
+        axios.get(detailUrl+num).then(res=>{
+            if(res.file_name ===null){
+              setDetailData(res.data.dto);
+            }
+            else{
+              setDetailData(res.data.dto);
+            }
+        })
+    }
+
     //별점 이미지 = https://www.earthtory.com/res//img/common/web/hotel_star_?.?.png
 
     // const [asd, setAsd] = useState(...Array(ndata.day))
@@ -368,9 +382,9 @@ const PlanDetail = () => {
                 <Box sx={{ flexGrow: 0 }}>
                     <Tooltip title="Open settings">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                        {
-                        isLoggedIn && <Avatar alt={loginName} src="/static/images/avatar/2.jpg" />
-                        }
+                    {
+                  isLoggedIn && <Avatar alt={loginName} src={`${process.env.REACT_APP_SPRING_URL}save/${loginProfile}`} />
+                }
                         {
                         !isLoggedIn && <Avatar src="/static/images/avatar/2.jpg" />
                         }
@@ -475,7 +489,9 @@ const PlanDetail = () => {
                 <div className='cover-bottom'>
                     <div className='bottom-box'>
                         <div className='bottom-head'>
-                            <img alt='' src='../../DetailImage/box-user.png' />
+                        <span className="material-icons">person</span>
+                            {/* <img alt='' src='../../DetailImage/box-user.png' /> */}
+                            {/* <img alt='' src={profilePhotoUrl+detailData[0].file_name} /> */}
                             <span><b style={{color:'white'}}>{userName}</b></span>
                         </div>
                         <div className='bottom-body'>
@@ -550,7 +566,9 @@ const PlanDetail = () => {
                                 < PlanDetailMessage /> 
                      
                 }
+                <div className='clear' />
             </div>
+            <div className='clear' />
             </div>
         </div>
     );
