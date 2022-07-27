@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import MyReviews from "./MyReviews";
 import MyTrips from "./MyTrips";
 
+
 const Mypage = () => {
   // 강제 렌더링
   const [, updateState] = useState();
@@ -23,7 +24,6 @@ const Mypage = () => {
   const [count, setCount] = React.useState(0);
   const [delay, setDelay] = React.useState(1000);
   const [isRunning, toggleIsRunning] = useBoolean(true);
-  const [Image, setImage] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
   const fileInput = useRef(null);
   const { currentPage } = useParams();
   const [data, setData] = useState("");
@@ -38,6 +38,8 @@ const Mypage = () => {
   const [value, setValue] = useState(0);
   const loginProfile = useSelector(state => state.auth.user.profile);
   const loginType = useSelector(state => state.auth.user.type);
+  const [Image, setImage] = useState("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+  
 
   // url
   let pagelistUrl = process.env.REACT_APP_SPRING_URL + "mypage/pagelist?loginNum=" + loginNum; //?currentPage=" + currentPage;
@@ -49,7 +51,31 @@ const Mypage = () => {
   let mypageUrl = process.env.REACT_APP_SPRING_URL + "mypage/profile?loginNum=" + loginNum;
   let photonameUrl = process.env.REACT_APP_SPRING_URL + "mypage/photo";
   let citytripUrl = `${process.env.REACT_APP_SPRING_URL}mypage/citytrip?currentPage=${currentPage}&loginNum=${loginNum}`;
+  let profileUrl = process.env.REACT_APP_SPRING_URL + "mypage/profile?loginNum="+loginNum;
+  
   // let myPlaceUrl = `${process.env.REACT_APP_SPRING_URL}plan/my-place-list?cityNum=${trip.cityNum}?loginNum=${loginNum}`;
+
+  const getData=useCallback(()=>{
+    axios.get(profileUrl)
+    .then(res=>{
+        setDto(res.data.member);
+        setImage(photoUrl + res.data.photo);
+        setPhoto(res.data.photo);
+        console.log(res.data.member);
+    })
+    .catch(err => {
+        alert(err);
+    })
+
+    // axios.get(photonameUrl).then(res=>{
+    //     setImage(photoUrl + res.data);
+    // })
+
+}, [profileUrl, photoUrl])
+
+useEffect(()=>{
+    getData();
+},[getData]);
 
   const [reviewList, setReviewList] = useState([]);
 
@@ -82,18 +108,7 @@ const Mypage = () => {
     pageList();
   }, [currentPage]); //currentPage가 변경될때마다 다시 호출
 
-  const getData = () => {
-    axios
-      .get(mypageUrl)
-      .then((res) => {
-        setDto(res.data.member);
-        // setPhoto(res.data.photo);
-        setImage(photoUrl + res.data.photo);
-      })
-      .catch((err) => {
-        alert(err);
-      });
-  };
+
 
   // 시작시 호출되는 함수
   const pageList = () => {
@@ -107,18 +122,24 @@ const Mypage = () => {
       });
   };
 
+
+
+
+
   return (
     <div id="mypage">
       <div style={{ margin: "0", padding: "0", outline: "0", boxSizing: "border-box" }}>
         <div className="wrapper">
           <div className="container">
             {/* <div className="top-background-div"></div> */}
-            <div className="top-container">
-              <Avatar
-                src={loginProfile}
-                size={200}
+            <div className="top-container" >
+              {
+                  loginType == 2 && <Avatar  src={loginProfile}  size={200}/>
+                }
+                {
+                  loginType == 1 && <Avatar  src={`${process.env.REACT_APP_SPRING_URL}save/${loginProfile}`} size={200} />
+                }
        
-              ></Avatar>
 
               {/* <div className="profilePhoto-text" id="profilePhote">a</div> */}
               
