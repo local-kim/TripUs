@@ -1,7 +1,9 @@
 package data.controller;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -64,13 +66,29 @@ public class CityInfoController {
 		System.out.println(ciservice.getLike(place_id,loginNum));
 		return ciservice.getLike(place_id,loginNum);
 	}
+	
 	@PostMapping("/insertlike")
-		public void insertLike(@RequestBody HashMap<String, Object> request){
-		System.out.println(request);
+	public void insertLike(@RequestBody HashMap<String, Object> request){
+//		System.out.println(request.get("place"));
+//		System.out.println(request.get("place").getClass().getName());
+//		LinkedHashMap<String, String> map = (LinkedHashMap<String, String>)request.get("place");
 //		int place_id=Integer.parseInt(String.valueOf(request.get("place_id")));
-		PlaceDto place = (PlaceDto)request.get("place");
+//		PlaceDto place = (PlaceDto)request.get("place");
+//		System.out.println(map);
 		
-		place.setCity_num((Integer)request.get("cityNum"));
+		PlaceDto place = new PlaceDto();
+		
+		place.setCity_num(Integer.parseInt((String)request.get("cityNum")));
+		
+		place.setContentid((String)request.get("contentid"));
+		place.setContenttypeid((String)request.get("contenttypeid"));
+		place.setTitle((String)request.get("title"));
+		place.setCat3((String)request.get("cat3"));
+		place.setAddr1((String)request.get("addr1"));
+		place.setAddr2((String)request.get("addr2"));
+		place.setFirstimage((String)request.get("firstimage"));
+		place.setMapx((String)request.get("mapx"));
+		place.setMapy((String)request.get("mapy"));
 		
 		if(planService.checkPlace(place.getContentid()) == 0) {
 			planService.insertPlace(place);
