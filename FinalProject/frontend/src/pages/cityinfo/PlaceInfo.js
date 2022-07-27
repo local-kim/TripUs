@@ -271,16 +271,14 @@ const PlaceInfo=()=>{
         const writeReview=(e)=>{
           //e.preventDefault();
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
+          if(!isLoggedIn){
+            alert("먼저 로그인해주세요");}
           axios.post(insertUrl,{place_id:contentId,member_num:loginNum,stars,content}).then(res=>{ 
-            if(!isLoggedIn){
-              alert("먼저 로그인해주세요");
-            }else{
               alert("성공");
               pageList();
               setStarsValue("");
               setRefreshReview("");
               setFileName(""); 
-            }
             }).catch(err => {
               alert(err);
             })
@@ -291,7 +289,7 @@ const PlaceInfo=()=>{
     const AvgStars=()=>{
       axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
       axios.get(placeStarsAvgUrl).then(res=>{
-        if(res.data===0){
+        if(res.data==null||res.data==0||res.data==undefined){
           alert(res.data);
         }else{
         setAvgStars(res.data);
