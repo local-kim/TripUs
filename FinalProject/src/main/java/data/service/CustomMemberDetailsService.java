@@ -47,6 +47,25 @@ public class CustomMemberDetailsService implements UserDetailsService {
         map.put("authority_name", role);
         mapper.saveAuthority(map);
     }
+	@Transactional
+    public void kakaoJoin(MemberSecurityDto member, String role){
+        member.setAccountNonExpired(true);
+        member.setAccountNonLocked(true);
+        member.setCredentialsNonExpired(true);
+        member.setEnabled(true);
+        
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(role));
+
+        member.setAuthorities(grantedAuthorities);
+        member.setType(2);	// 1 : 일반회원
+        mapper.saveMember(member);
+        
+        Map<String, String> map = new HashMap<>();
+        map.put("id", member.getId());
+        map.put("authority_name", role);
+        mapper.saveAuthority(map);
+    }
 	
 	public int checkId(String id) {
 		return mapper.checkId(id);

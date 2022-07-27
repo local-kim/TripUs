@@ -73,9 +73,9 @@ public class MemberService implements MemberServiceInter {
 	}
 
 	@Override
-	public int checkKakaoMember(String id) {
+	public int checkKakaoMember(MemberDto dto) {
 		// TODO Auto-generated method stub
-		return memberMapper.checkKakaoMember(id);
+		return memberMapper.checkKakaoMember(dto);
 	}
 
 }

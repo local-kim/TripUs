@@ -94,6 +94,11 @@ public class MemberController {
 				return false;
 			}
 		}
+		@PostMapping("/insertKakao")
+		public void insertKaKao(@RequestBody MemberDto dto) {
+			memberService.checkKakaoMember(dto);
+			
+		}
 		@GetMapping("/logout")
 		public void logout(
 				HttpSession session
