@@ -101,14 +101,14 @@ div{
 
 .sb-avatar__image{
     border-radius: 100%;
-<<<<<<< HEAD
+
 }
 
 .text{
     font-size: 20px;
     font-family: Montserrat;
     font-weight: 600;
-=======
+
     object-fit:cover;
->>>>>>> branch 'master' of https://github.com/local-kim/FinalProject.git
+
 }
