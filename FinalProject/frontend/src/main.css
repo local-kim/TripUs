@@ -440,9 +440,9 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   }
   
   .top_city_list {
-    padding-top: 40px;
+    padding-top: 10px;
     width: 1112px;
-    height: 550px;
+    height: 500px;
     overflow: hidden;
     
   }

@@ -110,7 +110,12 @@ const MyTrips = ({data2, setCityTrip, loginNum, currentPage}) => {
                               navi(`/plan/detail/${row.tripNum}`);
                             }}
                           />
-                          <div
+             
+                          <div className="share-circle" id="sharedLogo_idx_0" style={{ display: "none" }}>
+                            공유
+                          </div>                      
+                        </div>
+                        <div
                             className="d-day-circle"
                             style={{
                               backgroundColor:
@@ -128,15 +133,11 @@ const MyTrips = ({data2, setCityTrip, loginNum, currentPage}) => {
                             ) : calculateDday(row.startDate) > 0 ? (
                               `D-${calculateDday(row.startDate)}`
                             ) : calculateDday(row.endDate) > 0 ? (
-                              <div style={{ backgroundColor: "red" }}>"여행중"</div>
+                              <div style={{ backgroundColor: "red" }}>여행중</div>
                             ) : (
                               "지난일정"
                             )}
                           </div>
-                          <div className="share-circle" id="sharedLogo_idx_0" style={{ display: "none" }}>
-                            공유
-                          </div>
-                        </div>
                         <div className="uk-width-1-2 info-container">
                           <div className="travel-title">{row.eng_name}</div>
                           <div className="uk-text-meta">
@@ -204,7 +205,7 @@ const MyTrips = ({data2, setCityTrip, loginNum, currentPage}) => {
                             />
 
                             <button className="savebutton" onClick={() => tripnamesave(row.tripNum, row.tripName)}>
-                              <svg width="20" height="20" style={{ paddingRight: "20px" }} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                              <svg width="40px" height="20" style={{ paddingRight: "20px" }} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                   fill="none"
                                   stroke="#000"

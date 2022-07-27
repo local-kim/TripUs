@@ -87,7 +87,7 @@ const options = ['인기순','오름차순' ,'내림차순'];
 
 const Main=(row)=>{
 
-  
+  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
   const [number, setNumber] = React.useState(32838)
   const [number2, setNumber2] = React.useState(30000)
   const [number3, setNumber3] = React.useState(3000)
@@ -129,7 +129,7 @@ const Main=(row)=>{
 
      // redux에서 변수 얻기
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
+
   const loginNum = useSelector(state => state.auth.user.num);
   const loginName = useSelector(state => state.auth.user.name);
   const loginProfile = useSelector(state => state.auth.user.profile);
@@ -761,7 +761,8 @@ const Main=(row)=>{
 
 
                                   </div>
-                                  <div style={{fontSize:'20px', display:'flex' , justifyContent:'center',marginLeft:'15px' , marginTop:'70px'}}>지금 일정 만들기</div>                                                              
+                                  <div style={{fontSize:'20px', display:'flex' , justifyContent:'center',marginLeft:'15px' , marginTop:'130px', cursor:'pointer'}} onClick={() =>  isLoggedIn ? navi('/city/list') : navi('/login')}>  지금 일정 만들기 </div> 
+
                                </div>                   
                             </div>
                         </div>
@@ -772,7 +773,7 @@ const Main=(row)=>{
              <FullpageSection style={sectionStyle5}>                
                     
              <div className="page2Wrap" >
-                      <div style={{margin: '0' , padding: '0' ,alignSelf:'center'}} className="uk-width-3-5@m">                      
+                      <div style={{margin: '0' , padding: '0' ,alignSelf:'center' ,marginTop: '10px'}} className="uk-width-3-5@m">                      
                             <div className="row" style={{height:'150px'}}>
                                 <div style={{
                                         margin: '0',
@@ -784,7 +785,8 @@ const Main=(row)=>{
                                         backgroundColor: '#fff',
                                         height: '100%',
                                         marginLeft:'20px',
-                                        textAlign:'center'
+                                        textAlign:'center',
+                                        
                                         
                                         }}
                                        className = "col s12 m4">
@@ -838,9 +840,17 @@ const Main=(row)=>{
                                             <div style={{color: 'gray' , fontSize:'25px' , textAlign:'center',fontFamily:'Montserrat'}}>추천하기</div>
                                         </h4>
                                     </div>
-                                    <div style={{fontSize:'20px', display:'flex' , justifyContent:'center',marginLeft:'15px' , marginTop:'130px'}}>지금 일정 공유하기</div>  
-                                  </div>                                 
-                                </div>
+
+
+                                     
+                                    <div style={{fontSize:'20px', display:'flex' , justifyContent:'center',marginLeft:'15px' , marginTop:'165px' , cursor:'pointer'}} onClick={() =>  isLoggedIn ? navi('/mypage/1') : navi('/login')}>  지금 일정 공유하기 </div> 
+{/*                                      
+                                     <button onClick={isLoggedIn ? navi('/mypage/1') : navi('/login')}>
+                                        Click
+                                      </button> */}
+                                                                          
+                                      </div>                                 
+                                    </div>
 
                                 
                                  
@@ -903,7 +913,7 @@ const Main=(row)=>{
                              opacity: '0.4',
                              zIndex:'-10',
                              position: 'absolute',
-                             width: '495px',
+                             width: '480px',
                              marginTop: '666px',}}
                               ></div>    
                        
@@ -1045,7 +1055,7 @@ const Main=(row)=>{
                            
                    
 
-                                <div style={{float:'right'  ,borderColor:'#f6f6f6'}}>
+                                <div style={{float:'right'  ,borderColor:'#f6f6f6', marginBottom:'20px'}}>
                                     <React.Fragment>
                                         <ButtonGroup variant="contained" ref={anchorRef} aria-label="split button" style={{zIndex:'1000'}}>
                                             <Button onClick={handleClick}>{options[selectedIndex]}</Button>
