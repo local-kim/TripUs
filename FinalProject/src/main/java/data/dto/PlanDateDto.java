@@ -19,4 +19,5 @@ public class PlanDateDto {
 	private Timestamp start_date;
 	@JsonFormat(pattern = "yyyy-MM-dd" ,timezone="Asia/Seoul")
 	private Timestamp end_date;
+	private String file_name;
 }
