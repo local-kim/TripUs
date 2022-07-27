@@ -8,20 +8,26 @@ import KakaoLogin from 'react-kakao-login';
 import { SearchId, SearchPass } from './index.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../modules/auth';
-import {useCookies}from 'react-cookie';
 import kakao_icon from '../../assets/images/kakao_icon.png';
 import naver_icon from '../../assets/images/naver_icon.png';
 import google_icon from '../../assets/images/google_icon.png';
-import styled from "styled-components";
+
 
 const LoginForm = () => {
-
-   const [password,setPassword] = useState('')
+   const [ id, setId ] = useState('');
+   const [password,setPassword] = useState('');
+   const [ email, setEmail ] = useState('');
    const [SearchId_modal,setSearchId_modal] = useState(false);
    const [SeachPass_modal,setSearchPass_modal] = useState(false);
    const [open, setOpen] = React.useState(false);
    const handleOpen = () => setOpen(true);
    const handleClose = () => setOpen(false);
+   const [ token, setToken ] = useState();
+   const [ profile,setProfile ] = useState();
+   const [ nickname,setNickname ] = useState();
+  
+                
+
 
 
 
@@ -66,6 +72,8 @@ const LoginForm = () => {
     //     })
         
     // }
+  
+
     const onClickLogin = (e) => {
         e.preventDefault();
 
@@ -88,36 +96,113 @@ const LoginForm = () => {
           setInputPw('');
         })
     }
+    //카카오 로그인 API
+
+    // window.kakao.init("e836ea2cbc2eeba0ece8371ed77a25e0");
+    function KakaoLogin() {
+      window.Kakao.Auth.login({
+        //받아오고 싶은 정보
+        scope: 'profile_nickname, profile_image, account_email',
+        //로그인 후 실행되는 코드(res=받아온데이터)
+        success: function (res) {
+          //console.log(res);
+          window.Kakao.API.request({
+            url: '/v2/user/me',
+            success: res => {
+              console.log(JSON.stringify(res));
+
+              
   
-    
-    const onGoogleSignInSuccess = (res) => {
- 
-        const params = new URLSearchParams();
-        params.append("idToken", res.tokenObj.id_token);
-    
-        const googleLogin = async () => {
-          const res = await axios.post("요청 주소", params, {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
+              //이메일 중복확인
+              //-----Username 중복체크
+              const id = res.id;
+              const email = res.kakao_account.email;
+              const restoken = res.access_token;
+              const profile = res.properties.profile_image;
+              const nickname = res.properties.nickname;
+              const emailChkUrl =
+                process.env.REACT_APP_SPRING_URL + 'member/emailcheck?email=' + email;
+  
+              axios.get(emailChkUrl).then(res => {
+                if (res.data === 0) {
+                  //IF, 이메일이 USER TABLE에 없으면 회원가입
+                  const joinurl = process.env.REACT_APP_SPRING_URL+'auth/kakaojoin';
+                  axios
+                    .post(joinurl, {
+                      id: id,
+                      email: email,
+                      // profile: profile,
+                      name: nickname,
+                    })
+                    .then(res => {
+                      // 회원가입 후 프로필, 기타 정보를 박아넣음.  여기서 authenticate url 호출하면 될 것 같기는 함..
+                      // setToken(restoken);
+                      // // setProfile(profile);
+                      // setNickname(nickname);
+                      // setId(id);
+                      // setEmail(email);
+                      // goToMain();
+
+                      dispatch(login(false, {
+                        id: id,
+                        email: email,
+                        name: nickname,
+                        profile: profile
+                      }));
+
+                      navi("/");
+                    });
+                } else {
+                  //로컬스토리지에 저장
+                  setToken(restoken);
+                  // setProfile(profile);
+                  setNickname(nickname);
+                  setId(id);
+                  setEmail(email);
+                  goToMain();
+                }
+              }
+              );
+            },
+            fail: function (error) {
+              console.log(error);
             },
           });
+        },
+      });
+    }
+    const goToMain = () => {
+      navi('/');
+    };
     
-          localStorage.setItem("accessToken", res.data.token.access);
-          localStorage.setItem("refreshToken", res.data.token.refresh);
-        };
+    // const onGoogleSignInSuccess = (res) => {
+ 
+    //     const params = new URLSearchParams();
+    //     params.append("idToken", res.tokenObj.id_token);
     
-        googleLogin();
-      };
+    //     const googleLogin = async () => {
+    //       const res = await axios.post("요청 주소", params, {
+    //         headers: {
+    //           "Content-Type": "application/x-www-form-urlencoded",
+    //         },
+    //       });
+    
+    //       localStorage.setItem("accessToken", res.data.token.access);
+    //       localStorage.setItem("refreshToken", res.data.token.refresh);
+    //     };
+    
+    //     googleLogin();
+    //   };
 
-    //로그인 성공했을 떄 처리 함수 
-    const successGoogle = (response) => {
-        console.log(response);
-    }
+    // //로그인 성공했을 떄 처리 함수 
+    // const successGoogle = (response) => {
+    //     console.log(response);
+    // }
         
-    //로그인 실패했을 때 처리 함수 
-    const failGoogle = (response) => {
-        console.log(response);
-    }
+    // //로그인 실패했을 때 처리 함수 
+    // const failGoogle = (response) => {
+    //     console.log(response);
+    // }
     // <GoogleLogin
     // clientId="362168925347-7h80oeftm2cub12235gac45dvhjo9fce.apps.googleusercontent.com"
     // buttonText="Login"
@@ -218,11 +303,8 @@ const LoginForm = () => {
       <div className='socialBtn-container'>
         <div className='socialBtn'>
         
-        <button type='button'
-
-                // jsKey={'e836ea2cbc2eeba0ece8371ed77a25e0'}
-   
-              >kakao</button>
+        <button type='button' onClick={KakaoLogin} style={{border:'0',backgroundColor:'#fff'}}><img src={kakao_icon}/></button>
+       
         </div>
         {/* <div className='socialBtn'>
           <img src={naver_icon} alt='네이버'></img>
