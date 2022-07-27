@@ -7,6 +7,7 @@
     margin: 0 auto;
     width: 1080px;
     text-align: center;
+    margin-top: 50px;
 }
 .member_join_list{
     width: 640px;
@@ -115,7 +116,6 @@
     margin-left: 5px;
     vertical-align: top;
 }
-
 #addressSearch {
     display: block;
     overflow: hidden;
@@ -168,9 +168,10 @@
     line-height: 1;
 }
 .btn_type1 {
-    border: 1px solid #75b4bd;
-    background-color: #fff;
-    color: #75b4bd;
+    margin-top: 10px;
+    border: 0;
+    background-color: #ffc573;
+    color: #fff
    
 }
 .btn_type2 {
@@ -180,7 +181,7 @@
 .btn_type1, .btn_type2 {
     display: block;
     overflow: hidden;
-    width: 100%;
+    width: 332px;
     height: 54px;
     border-radius: 3px;
     font-size: 0;
@@ -189,6 +190,7 @@
 
 .section_login .btn_member {
     margin-top: 10px;
+   
 }
 /* .btn_type1 .txt_type {
     color: #fff;
@@ -331,7 +333,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 25%;
+   
 }
 .sns_text{
     font-size: 12px;

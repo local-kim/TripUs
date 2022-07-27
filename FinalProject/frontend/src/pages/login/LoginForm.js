@@ -8,7 +8,7 @@ import KakaoLogin from 'react-kakao-login';
 import { SearchId, SearchPass } from './index.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../modules/auth';
-import kakao_icon from '../../assets/images/kakao_icon.png';
+import kakao_icon from '../../assets/images/icon_login_kakao.png';
 import naver_icon from '../../assets/images/naver_icon.png';
 import google_icon from '../../assets/images/google_icon.png';
 
@@ -133,6 +133,7 @@ const LoginForm = () => {
                       email: email,
                       // profile: profile,
                       name: nickname,
+                      type: 2
                     })
                     .then(res => {
                       // 회원가입 후 프로필, 기타 정보를 박아넣음.  여기서 authenticate url 호출하면 될 것 같기는 함..
@@ -142,24 +143,66 @@ const LoginForm = () => {
                       // setId(id);
                       // setEmail(email);
                       // goToMain();
-
+                      axios
+                    .post(process.env.REACT_APP_SPRING_URL+'auth/kakaologin', {
+                      id: id
+                    })
+                    .then(res => {
+                      console.log(res.data);
+                      
                       dispatch(login(false, {
                         id: id,
                         email: email,
                         name: nickname,
-                        profile: profile
+                        profile: profile,
+                        type: 2,
+                        num: res.data.num
                       }));
 
                       navi("/");
-                    });
+                    })
+                    .catch(err => console.log(err));
+
+                      // dispatch(login(false, {
+                      //   id: id,
+                      //   email: email,
+                      //   name: nickname,
+                      //   profile: profile,
+                      //   type: 2
+                      // }));
+
+                      // navi("/");
+                    })
+                    .catch(err => console.log(err));
                 } else {
-                  //로컬스토리지에 저장
-                  setToken(restoken);
-                  // setProfile(profile);
-                  setNickname(nickname);
-                  setId(id);
-                  setEmail(email);
-                  goToMain();
+                  // //로컬스토리지에 저장
+                  // setToken(restoken);
+                  // // setProfile(profile);
+                  // setNickname(nickname);
+                  // setId(id);
+                  // setEmail(email);
+                  // goToMain();
+
+                  axios
+                    .post(process.env.REACT_APP_SPRING_URL+'auth/kakaologin', {
+                      id: id
+                    })
+                    .then(res => {
+                      console.log(res.data);
+                      
+                      dispatch(login(false, {
+                        id: id,
+                        email: email,
+                        name: nickname,
+                        profile: profile,
+                        type: 2,
+                        num: res.data.num
+                      }));
+
+                      navi("/");
+                    })
+                    .catch(err => console.log(err));
+
                 }
               }
               );
@@ -285,7 +328,7 @@ const LoginForm = () => {
           <input type="password" id="LoginPass" value={inputPw} onChange={handleInputPw} required></input>
         </div>
         <div className='forgot_pass'>
-          <a href='/findPassword'>비밀번호를 잊으셨나요?</a>
+          <a href='/find'>비밀번호를 잊으셨나요?</a>
         </div>
         <div className='login_btn'>
           <button type='submit' id='loginBtn'>로그인</button>
@@ -299,7 +342,6 @@ const LoginForm = () => {
         <div className='divider'></div>
         <span>or</span>
       </div>
-      <div className='sns_text'>SNS 간편 로그인</div>
       <div className='socialBtn-container'>
         <div className='socialBtn'>
         

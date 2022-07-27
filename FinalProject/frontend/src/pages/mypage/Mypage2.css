@@ -96,7 +96,7 @@ b, strong {
   outline: none;
   cursor: pointer;
   background-color: #fff;
-  margin-left: 20px;
+  
 }
 
 .container .text {
@@ -214,6 +214,15 @@ audio, canvas, iframe, img, svg, video {
 
 #mypage .uk-width-1-2 {
   width: 50%;
+  overflow: hidden;
+
+ transform: scale(1.1);
+ 
+ transition: all 1s;
+ -webkit-transition: all 1s;
+ 
+ 
+ 
 }
 
 #mypage .uk-width-1-3\@m {
@@ -411,7 +420,7 @@ svg:not(:root) {
 
 .travel-title {
   font-family: 'Montserrat' !important;
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: #000;
 }
@@ -525,5 +534,23 @@ svg:not(:root) {
 }
 
 .pagination li{
-  padding-left: 15px;
+  width:30px;
+  color:black;
+  font-size: 15px;
+  
 }
+
+.pagination li:hover{
+  width:30px;
+  color:black;
+  
+}
+
+.pagination li{
+  color:gray
+}
+
+.active a{
+  color:black;
+}
+

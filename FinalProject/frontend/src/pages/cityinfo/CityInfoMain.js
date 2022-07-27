@@ -279,8 +279,8 @@ const CityInfoMain = () => {
     // API
     // 날씨 
     // const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
-    const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
-    // const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
+    // const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
+    const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
     // const API_KEY="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D";  // 웅쓰꺼
     
     // // 일정 계획 데이타
@@ -901,7 +901,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item);
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -958,7 +958,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1015,7 +1015,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1072,7 +1072,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1129,7 +1129,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1186,7 +1186,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {
@@ -1243,7 +1243,7 @@ const CityInfoMain = () => {
                                                             insert_btn(event, item.contentid)
                                                         }}>favorite_border</span>
                                                 }
-                                                <Link to={`/place/${item.contentid}`}>
+                                                <Link to={`/place/${city_num}/${item.contentid}`}>
                                                     <Card value={item} sx={{width: 250, height: 300, marginRight: 12}}>
                                                         <CardActionArea>
                                                             {

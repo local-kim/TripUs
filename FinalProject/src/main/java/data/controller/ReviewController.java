@@ -20,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import data.dto.PlaceDto;
 import data.dto.ReviewDto;
+import data.service.PlanService;
 import data.service.ReviewService;
 import util.FileUtil;
 
@@ -31,6 +34,9 @@ public class ReviewController {
    
    @Autowired
    private ReviewService reviewService;
+   
+   @Autowired
+   private PlanService planService;
    
    List<String> photoName=new ArrayList<String>(); //리엑트에서 업로드한 이미지명
    //@Autowired
@@ -198,6 +204,27 @@ public class ReviewController {
    public void insertLike(@RequestBody HashMap<String, Object> request){
 //      int member_num=18;
       System.out.println(request);
+	   
+	   PlaceDto place = new PlaceDto();
+		
+	   place.setCity_num(Integer.parseInt((String)request.get("cityNum")));
+		
+		place.setContentid((String)request.get("contentid"));
+		place.setContenttypeid((String)request.get("contenttypeid"));
+		place.setTitle((String)request.get("title"));
+		place.setCat3((String)request.get("cat3"));
+		place.setAddr1((String)request.get("addr1"));
+		place.setAddr2((String)request.get("addr2"));
+		place.setFirstimage((String)request.get("firstimage"));
+		place.setMapx((String)request.get("mapx"));
+		place.setMapy((String)request.get("mapy"));
+		
+		System.out.println(place);
+		
+		if(planService.checkPlace(place.getContentid()) == 0) {
+			planService.insertPlace(place);
+		}
+		
       int place_id=Integer.parseInt(String.valueOf(request.get("place_id")));
       int loginNum=(Integer)request.get("loginNum");
       request.get("check");

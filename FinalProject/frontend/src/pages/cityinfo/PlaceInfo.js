@@ -40,7 +40,7 @@ const style = {
 };
 
 const PlaceInfo=()=>{
-  const {contentId}=useParams();
+  const {cityNum, contentId}=useParams();
   const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
     //git error catch
@@ -183,7 +183,7 @@ const PlaceInfo=()=>{
   
         axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
         .then(res => {
-          alert("하나 삭제 성공");
+          // alert("하나 삭제 성공");
         })
         .catch(err => console.log(err));
       };
@@ -197,7 +197,7 @@ const PlaceInfo=()=>{
     
           axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
           .then(res => {
-            alert("하나 삭제 성공");
+            // alert("하나 삭제 성공");
           })
           .catch(err => console.log(err));
         };
@@ -231,7 +231,8 @@ const PlaceInfo=()=>{
           }).then(res => {  // json 형식의 response를 받음
             setModalFileName(res.data); // 백엔드에서 보낸 변경된 이미지명을 photo 변수에 넣는다
           }).catch(err => {
-            alert("photourl:",err);
+            // alert("photourl:",err);
+            console.log(err);
           });
         }
 
@@ -249,7 +250,8 @@ const PlaceInfo=()=>{
         //console.log("reviewdatalength:",res.data.length);
         })
         .catch(err => {
-            alert(err);
+            // alert(err);
+            console.log(err);
         }) 
     }
 
@@ -271,18 +273,17 @@ const PlaceInfo=()=>{
         const writeReview=(e)=>{
           //e.preventDefault();
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
+          if(!isLoggedIn){
+            alert("먼저 로그인해주세요");}
           axios.post(insertUrl,{place_id:contentId,member_num:loginNum,stars,content}).then(res=>{ 
-            if(!isLoggedIn){
-              alert("먼저 로그인해주세요");
-            }else{
-              alert("성공");
+              // alert("성공");
               pageList();
               setStarsValue("");
               setRefreshReview("");
               setFileName(""); 
-            }
             }).catch(err => {
-              alert(err);
+              // alert(err);
+              console.log(err);
             })
           }
 
@@ -291,8 +292,9 @@ const PlaceInfo=()=>{
     const AvgStars=()=>{
       axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
       axios.get(placeStarsAvgUrl).then(res=>{
-        if(res.data===0){
-          alert(res.data);
+        if(res.data==null||res.data==0||res.data==undefined){
+          // alert(res.data);
+          console.log(res.data);
         }else{
         setAvgStars(res.data);
       }
@@ -322,7 +324,21 @@ const PlaceInfo=()=>{
 
         if(!isChecked){
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-          axios.post(insertlikeUrl,{place_id:String(contentId),loginNum,check:Number(isChecked)}).then(res=>{
+          axios.post(insertlikeUrl,{
+            cityNum,
+            place_id:String(contentId),
+            contentid: String(placeData.contentid),
+            contenttypeid: String(placeData.contenttypeid),
+            title: placeData.title,
+            cat3: placeData.cat3,
+            addr1: placeData.addr1,
+            addr2: placeData.addr2,
+            firstimage: placeData.firstimage,
+            mapx: String(placeData.mapx),
+            mapy: String(placeData.mapy),
+            loginNum,
+            check:Number(isChecked)
+          }).then(res=>{
           //alert("좋아요 true:",res.data);
           setLike(res.data.check);
         })}
@@ -367,7 +383,7 @@ const PlaceInfo=()=>{
             alert("정말 삭제하시겠습니까?");
             setDetailFileData(detailFileData.filter((file, i) => i != idx));
           }).catch(err=>{
-            alert(err);
+            console.log(err);
           })
         }
 
@@ -376,7 +392,7 @@ const PlaceInfo=()=>{
           if(window.confirm("정말 삭제하시겠습니까?")){
             axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.delete(deleteUrl+num).then(res=>{
-            alert("삭제되었습니다.");
+            // alert("삭제되었습니다.");
             if(open===true){
               handleClose();
               pageList();
@@ -496,7 +512,7 @@ const PlaceInfo=()=>{
             console.log("update:",res.data);
             setDetailData2(res.data);
             setModalFileName("");
-            alert("수정완료");
+            //alert("수정완료");
             edithandleClose();
             //setUpdateModalOpen(true);
             onDetail(num);
@@ -506,7 +522,7 @@ const PlaceInfo=()=>{
 
     useEffect(() => {
        kakaomapscript();
-       myLike();
+      //  myLike();
        GetSumLikes();
        AvgStars();
       //uploadImage();
@@ -515,8 +531,12 @@ const PlaceInfo=()=>{
     useEffect(()=>{
      pageList();
      //onOneDelete();
-     
+     myLike();
     },[]);
+
+    useEffect(() => {
+      window.scrollTo(0,0)
+    },[])
 
     //modal
     
@@ -526,6 +546,7 @@ const PlaceInfo=()=>{
     //   var i3 = document.getElementById("uploadimgalt").style.visibility="visible"; 
     // }
 
+    let placeData;
 
     //kakomap + tourapi3
     const kakaomapscript = () => {
@@ -534,6 +555,7 @@ const PlaceInfo=()=>{
         delete axios.defaults.headers.common['Authorization'];
         axios.get(apiUrl)
         .then((res) => {
+          placeData = res.data.response.body.items.item;
         const apidata=res.data.response.body.items.item;
         const placex=apidata.mapx;  //관광지 위치(x좌표)
         const placey=apidata.mapy;  //관광지 위치(y좌표)
@@ -801,12 +823,12 @@ const PlaceInfo=()=>{
                       <div style={{height:'180px',width:'550px',justifyItems:'center'}}>
 
                       <div className='detailmodal'>
-                       <div className='detailmodalimgs' style={{display:'flex',marginBottom:'30px',width:'550px',height:'180px'}}>
+                       <div className='detailmodalimgs' style={{display:'flex',marginBottom:'30px',width:'550px',height:'180px',justifyContent: 'center'}}>
                       {       
                             detailFileData&&detailFileData.map((row,idx)=>(
 
                               
-                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} className='detailimg'/>
+                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{maxWidth:'400px',maxHeight:'400px',objectFit:'contain'}} className='detailimg'/>
                               
                           
                           
@@ -1033,7 +1055,7 @@ const PlaceInfo=()=>{
                   <div style={{width:'1090px',height:'500px',display:'flex',overflow:'scroll',overflowX:'hidden'}}>
                   <div>
                     {/* <p>{reviewData}</p> */}
-                    {reviewData.length == 0 ? <p style={{color:'gray'}}>후기글을 없습니다</p>: ""}
+                    {reviewData.length == 0 ? <p style={{color:'gray'}}>작성된 후기글이 없습니다</p>: ""}
                     {
                       reviewData&&reviewData.map((row,idx)=>(
                         <div style={{display:'flex',borderBottom:'1px solid #a3a3a3',margin:'10px',width:'1072px'}} >
@@ -1065,7 +1087,7 @@ const PlaceInfo=()=>{
                       }
                           </div>
                        <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
-                        <div style={{flexGrow:'3'}}>
+                        <div style={{flexGrow:'3',backgroundColor:'white'}}>
                         {row.created_at}&nbsp;&nbsp;&nbsp;
                        <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
                        </div>
