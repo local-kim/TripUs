@@ -45,6 +45,7 @@ const RouteMain = () => {
         <Route path="/google" element={<GoogleLogin/>}/>
         <Route path="/find" element={<FindPassword/>} />
         <Route path="/change" element={<ChangePassword/>} />
+        <Route path="/kakao-join" element={<KakaoLogin/>} />
         
         {/* Planning */}
         {/* <Route path="/plan/calendar/:cityNum" element={<Calendar/>} />

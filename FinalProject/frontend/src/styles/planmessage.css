@@ -13,7 +13,8 @@
     width: 717px;
     height: 100%;
     background-color: white;
-    border: 1px solid #c8c8ca;
+    /* border: 1px solid #c8c8ca; */
+    box-shadow: 0px 2px 4px #e5e5e5;
     margin-bottom: 30px;
 }
 

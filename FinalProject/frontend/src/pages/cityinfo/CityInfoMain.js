@@ -257,6 +257,7 @@ const CityInfoMain = () => {
     const [areaCode,setAreaCode]=useState('');
     const [sigunguCode,setSigunguCode]=useState('');
     const [cityname,setCityname]=useState('');
+    const [engname, setEngname]=useState('');
     const [keyWord,setKeyWord]=useState('');  // 검색 input 관광지 contentid 담는 변수
     const [page,setPage]=useState(2);   // 관광지 목록 데이타 페이지
     const [keyword_contenttypeid, setKeyword_contenttypeid] = useState('');
@@ -349,10 +350,10 @@ const CityInfoMain = () => {
         keyWord_url += `&contentTypeId=${keyword_contenttypeid}`;
     }
 
-    
 
     
     useEffect(() => {
+        window.scrollTo(0,0);
         place_area_Data();
         trip_weather_Data();
         like_table();
@@ -367,6 +368,7 @@ const CityInfoMain = () => {
             setAreaCode(response.data.area_code);
             setSigunguCode(response.data.sigungu_code);
             setCityname(response.data.name);
+            setEngname(response.data.eng_name);
             console.log(response.data.area_code);
             
             // console.log(areaUrl + response.data.area_code + response.data.sigungu_code);
@@ -508,12 +510,26 @@ const CityInfoMain = () => {
         if (!isLoggedIn) {
             alert("로그인 후 이용해주세요")
         }
-            axios.post(insert_like_url,{place: item, loginNum, cityNum: city_num, check:Number(checked)})
-            .then(res=>{
-                // alert("좋아요 true:",res.data);
-                // setLike_btn(true);
-                like_table();
-            })
+        axios.post(insert_like_url,{
+            // place: item,
+            contentid: String(item.contentid),
+            contenttypeid: String(item.contenttypeid),
+            title: item.title,
+            cat3: item.cat3,
+            addr1: item.addr1,
+            addr2: item.addr2,
+            firstimage: item.firstimage,
+            mapx: String(item.mapx),
+            mapy: String(item.mapy),
+            loginNum,
+            cityNum: city_num,
+            check:Number(checked)
+        })
+        .then(res=>{
+            // alert("좋아요 true:",res.data);
+            // setLike_btn(true);
+            like_table();
+        })
     }
     // 좋아요 OFF
     const delete_btn = (e, contentid) => {
@@ -690,7 +706,7 @@ const CityInfoMain = () => {
         <div id='cityinfo' style={muiStyle} >
         
             <div className='title-city'>
-                {cityname}&ensp;<span>Ulleung</span>
+                <span className='kor-name'>{cityname}</span>&ensp;<span className='eng-name'>{engname}</span>
             </div>    
             <div>
                 <CityInfoImage num={city_num}/>
@@ -699,7 +715,7 @@ const CityInfoMain = () => {
                 <div className='scheduleContainer'>
                     <div style={{display:'flex',marginTop:'20px',marginBottom:'10px'}}>
                         {
-                            cityPlan ?
+                            cityPlan.length === 0 ?
                             <div className='schedule-title-add-box'>
                                     <div className='schedule-title'>My Plan</div>
                             </div>
@@ -729,9 +745,8 @@ const CityInfoMain = () => {
                                     <span class="material-symbols-outlined no-schedule">event_busy</span><br/>
                                     <div style={{fontFamily:'Montserrat'}}>일정을 등록해주세요</div>
                                     <div className="no-schedule-add-date-box">
-                                        <div className="no-schedule-add-date" onClick={()=> isLoggedIn ? naVi(`/plan/city/${num}`) :alert(('로그인하셈') (naVi('/login')))}>Add Plan</div>
+                                        <div className="no-schedule-add-date" onClick={()=> isLoggedIn ? naVi(`/plan/city/${num}`) : (naVi('/login'))}>Add Plan</div>
                                     </div>
-                                    <div style={{marginTop:'270px'}}>메롱</div>
                                 </div>
                                 :
                                 ''
@@ -884,12 +899,12 @@ const CityInfoMain = () => {
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
+                                                                <Typography style={{fontSize:'18px',fontFamily:'Montserrat'}} gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
+                                                        <CardActions style={{fontSize:'12px',marginTop:'3px',padding:'2px',maxWidth:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
