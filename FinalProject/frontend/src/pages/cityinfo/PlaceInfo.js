@@ -17,6 +17,8 @@ import { useSelector } from 'react-redux';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Component from './Component';
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 
 
@@ -65,19 +67,19 @@ const PlaceInfo=()=>{
     const [liked,setLiked]=useState(0);
 
     //tab화면전환시 지도 출력        
-    const handleChange = (event, newValue) => {
-    setValue(newValue);
-    if(newValue==='1'){
-    return kakaomapscript();
-    }
-    };
+    // const handleChange = (event, newValue) => {
+    // setValue(newValue);
+    // if(newValue==='1'){
+    // return kakaomapscript();
+    // }
+    // };
 
     //지도api & 관광지 api 
     //const contentId=CityInfoMainContendId; //city페이지에서 contentid받는곳
     // const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
     //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
-    const placeApikey="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D"; //재호님 인증키
-    // const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
+    //const placeApikey="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D"; //재호님 인증키
+     const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; // 일웅님 인증키
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
@@ -143,6 +145,7 @@ const PlaceInfo=()=>{
     const [multiUploadFile,setMultiUploadFile]=useState([]);
      //file change 시 호출 이벤트
      const uploadImage=(e)=>{
+
       console.log("그냥 체인지");
       //const uploadFile=e.target.files[0];
       const uploadFile=e.target.files;
@@ -150,8 +153,11 @@ const PlaceInfo=()=>{
       //imageFile.append("uploadFile",uploadFile);// spring의 @RequestParam으로 들어감
       for(let i =0; i< uploadFile.length;i++){
          imageFile.append("imagefile",uploadFile[i]);
-          console.log("imageFile[]:",uploadFile[i]);
+        //  if(deleteFileImage ===true){
+        //   imageFile.deppend("imagefile",uploadFile[i]);
+        //  }
         }
+        
         axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
         axios({
           method: 'POST',
@@ -159,14 +165,44 @@ const PlaceInfo=()=>{
           data: imageFile,
           headers: {'Content-Type': 'multipart/form-data'}
         }).then(res => {  // json 형식의 response를 받음
-          console.log("axiosmultiphoto",res.data);
            setFileName(res.data); // 백엔드에서 보낸 변경된 이미지명을 photo 변수에 넣는다
+           console.log("upload-image:",res.data);
         }).catch(err=>{
             console.log("err",err);
         })
         
       }
 
+
+      // 파일 삭제
+      const deleteFileImage = (idx) => {
+        URL.revokeObjectURL(filename);
+        // URL.revokeObjectURL(modalfilename);
+        setFileName(filename.filter((file, i) => i != idx));
+        // setModalFileName(modalfilename.filter((file, i) => i != idx));
+  
+        axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
+        .then(res => {
+          alert("하나 삭제 성공");
+        })
+        .catch(err => console.log(err));
+      };
+  
+        // 파일 삭제
+        const deleteModalFileImage = (idx) => {
+          // URL.revokeObjectURL(filename);
+          URL.revokeObjectURL(modalfilename);
+          // setFileName(filename.filter((file, i) => i != idx));
+          setModalFileName(modalfilename.filter((file, i) => i != idx));
+    
+          axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
+          .then(res => {
+            alert("하나 삭제 성공");
+          })
+          .catch(err => console.log(err));
+        };
+
+    
       useEffect(() => {
         console.log("filename"+filename);
       }, [filename])
@@ -210,7 +246,7 @@ const PlaceInfo=()=>{
         }else{
             setReviewData(res.data);
           }
-        console.log("reviewdatalength:",res.data.length);
+        //console.log("reviewdatalength:",res.data.length);
         })
         .catch(err => {
             alert(err);
@@ -306,8 +342,8 @@ const PlaceInfo=()=>{
       //mylike select 호출
       const myLike=()=>{
         axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-        axios.get(likeUrl).then(res=>{
-          console.log("mylikedat:",res.data);
+        axios.get(likeUrl).then(res=>{  
+          //console.log("mylikedat:",res.data);
           if(res.data==null||res.data==0){
           setLike(res.data);
           setIsChecked(false);
@@ -324,11 +360,12 @@ const PlaceInfo=()=>{
 
 
         //사진 하나 삭제 11
-        const onOneDelete=(review_photo_num)=>{
+        const onOneDelete=(review_photo_num, idx)=>{
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           axios.delete(onedeleteUrl+review_photo_num).then(res=>{
             console.log("onOneDelete:",res.data);
-            alert("정말 삭제하시겠습니까?")
+            alert("정말 삭제하시겠습니까?");
+            setDetailFileData(detailFileData.filter((file, i) => i != idx));
           }).catch(err=>{
             alert(err);
           })
@@ -458,6 +495,7 @@ const PlaceInfo=()=>{
           axios.post(updateUrl,{num, stars, content}).then(res=>{
             console.log("update:",res.data);
             setDetailData2(res.data);
+            setModalFileName("");
             alert("수정완료");
             edithandleClose();
             //setUpdateModalOpen(true);
@@ -560,14 +598,34 @@ const PlaceInfo=()=>{
     
     });
 
-      // 파일 삭제
-    const deleteFileImage = (idx) => {
-      URL.revokeObjectURL(filename);
-      URL.revokeObjectURL(modalfilename);
-      setFileName(filename.filter((file, i) => i != idx));
-      setModalFileName(modalfilename.filter((file, i) => i != idx));
-    };
-    
+    //   // 파일 삭제
+    // const deleteFileImage = (idx) => {
+    //   URL.revokeObjectURL(filename);
+    //   // URL.revokeObjectURL(modalfilename);
+    //   setFileName(filename.filter((file, i) => i != idx));
+    //   // setModalFileName(modalfilename.filter((file, i) => i != idx));
+
+    //   axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
+    //   .then(res => {
+    //     alert("하나 삭제 성공");
+    //   })
+    //   .catch(err => console.log(err));
+    // };
+
+    //   // 파일 삭제
+    //   const deleteModalFileImage = (idx) => {
+    //     // URL.revokeObjectURL(filename);
+    //     URL.revokeObjectURL(modalfilename);
+    //     // setFileName(filename.filter((file, i) => i != idx));
+    //     setModalFileName(modalfilename.filter((file, i) => i != idx));
+  
+    //     axios.get(process.env.REACT_APP_SPRING_URL+"review/deleteUploadPhoto?idx="+idx)
+    //     .then(res => {
+    //       alert("하나 삭제 성공");
+    //     })
+    //     .catch(err => console.log(err));
+    //   };
+
     return (
         <div id='place'>
         <div className='place_info'>
@@ -663,7 +721,7 @@ const PlaceInfo=()=>{
                 </div>
             </div>
 
-             {/* 상세보기 */}
+             {/* 상세모달 */}
 
             <div>
                   <Modal
@@ -676,7 +734,15 @@ const PlaceInfo=()=>{
                       <Typography id="modal-modal-title" variant="h6" component="h2">
                       <div style={{display:'inline-flex',width:'665px'}}>
                         <div>
-                          <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px',objectFit:'cover'}}/>
+                          {
+                            detailData[0].file_name==null?
+                            <div className='photo1'>
+                            <span className="material-icons">
+                              person
+                            </span>
+                          </div>:
+                           <img src={profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px',objectFit:'cover'}}/>
+                          }
                       </div>
 
                         <div style={{marginLeft:'10px',fontSize:'16px'}}>
@@ -725,28 +791,45 @@ const PlaceInfo=()=>{
                       </div>:""}
                       </Typography>
 
-                       <div style={{display:'flex',flexDirection:'row',justifyContent:'center'}}>
-                        <div>
-                      {detailidx==0?"":<button className='ReviewPrev' onClick={()=>onPrevDetail(detailData[0].num, detailidx)}>←</button>} 
-                       </div>
-                       <div>
+                       <div style={{display:'flex',justifyContent:'space-between',alignItems:'end',height:'250px'}}>
+                        {/* <div style={{marginTop:'20px',display:'fixed'}}> */}
+                      {detailidx==0?<button className='ReviewPrev btn btn-arrow' style={{opacity:'0%'}}>ᐸ</button>:<button className='ReviewPrev btn btn-arrow' onClick={()=>onPrevDetail(detailData[0].num, detailidx)}>ᐸ</button>} 
+                       {/* </div> */}
+                       <div style={{display:'flex',flexDirection:'column'}}>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                      <div style={{justifyContent:'center',display:'flex'}}>
-                      {
-                      detailFileData&&detailFileData.map((row,idx)=>(
-                      <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} />
-                           ))}
+                        
+                      <div style={{height:'180px',width:'550px',justifyItems:'center'}}>
+
+                      <div className='detailmodal'>
+                       <div className='detailmodalimgs' style={{display:'flex',marginBottom:'30px',width:'550px',height:'180px'}}>
+                      {       
+                            detailFileData&&detailFileData.map((row,idx)=>(
+
+                              
+                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} className='detailimg'/>
+                              
+                          
+                          
+                          
+                          
+                            ))
+                      }
                       </div>
-                      <div style={{justifyContent:'center',display:'flex'}}>
-                         {/* <pre style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre> */}
+                      </div>
+
+                      <div>
                          <pre style={{width:'550px',height:'250px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre>
                       </div>
+
+                      </div>
+                     
                       </Typography>
                       </div>
-                      <div>
-                        {detailidx>=(reviewData.length-1)?"":<button className='ReviewNext' onClick={()=>onNextDetail(detailData[0].num, detailidx)}>→</button>}
-                      </div>
+                      {/* <div style={{marginTop:'20px',display:'fixed'}}> */}
+                        {detailidx>=(reviewData.length-1)?<button className='ReviewNext btn btn-arrow' style={{opacity:'0%'}} onClick={()=>onNextDetail(detailData[0].num, detailidx)}>ᐳ</button>:<button className='ReviewNext btn btn-arrow' onClick={()=>onNextDetail(detailData[0].num, detailidx)}>ᐳ</button>}
+                      {/* </div> */}
                         </div>
+
                     </Box>
                   </Modal>
                 </div>
@@ -763,9 +846,17 @@ const PlaceInfo=()=>{
                   >
                     <Box sx={style}>
                       <Typography id="modal-modal-title" variant="h6" component="h2">
-                      <div style={{display:'inline-flex',width:'450px',justifyContent:'left'}}>
+                      <div style={{display:'inline-flex',width:'665px'}}>
                         <div>
-                          <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px',objectFit:'cover'}}/>
+                          {
+                            detailData[0].file_name==null?
+                            <div className='photo1'>
+                            <span className="material-icons">
+                              person
+                            </span>
+                          </div>:
+                               <img src={profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px',objectFit:'cover'}}/>
+                          }
                           {/* <img src={detailData[0].file_name==null?Ayong:profilePhotoUrl+detailData[0].file_name} alt="프로필사진" style={{width:'50px',height:'50px',borderRadius:'25px'}}/> */}
                       </div>
 
@@ -789,18 +880,60 @@ const PlaceInfo=()=>{
 
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                       <div style={{justifyContent:'center',display:'flex'}}>
+                      {/* { */}
+                      {/* detailFileData&&detailFileData.map((row,idx)=>( */}
+                        {/* <div> */}
+                      {/* <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} /> */}
+                           {/* <button type="button" onClick={()=>{onOneDelete(editDetailData[idx].review_photo_num, idx);}}>삭제</button> */}
+                           {/* </div> */}
+                           {/* ))}   */}
+
+                      {/*기존에 있던 사진*/}
+                    <div style={{justifyContent:'center',display:'flex',height:'150px',marginTop:'50px'}}>
                       {
-                      detailFileData&&detailFileData.map((row,idx)=>(
+                        detailFileData&&detailFileData.map((row,idx)=>(
                         <div>
-                      <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} />
-                           <button type="button" onClick={()=>{
-                            onOneDelete(editDetailData[idx].review_photo_num);
-                           }}>삭제</button>
-                           </div>
+                          {/* <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} /> */}
+                          <div  style={{backgroundImage:`url(${detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]})`,width:'100px',height:'100px',backgroundSize:'contain',textAlign:'right',marginLeft:'13px'}}>
+                            {/* <button type="button" onClick={()=>{onOneDelete(editDetailData[idx].review_photo_num, idx);}}>삭제</button> */}
+                            <div style={{color:'red',fontWeight:'bold',cursor:'pointer'}}   onClick={()=>{onOneDelete(editDetailData[idx].review_photo_num, idx);}}>
+                              <i class="fa-solid fa-circle-minus"></i>
+                            </div>
+                          </div>
+                        </div>
+// =======
+//                       <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} />
+//                            <button type="button" onClick={()=>{
+//                             onOneDelete(editDetailData[idx].review_photo_num, idx);
+//                            }}>삭제</button>
+//                            </div>
+// >>>>>>> branch 'master' of https://github.com/local-kim/FinalProject.git
                            ))}  
+                      
+
+                     {/*추가하는 사진->upload image*/}
+                    {
+                      modalfilename&&modalfilename.map((row,idx)=>(
+                    <div>
+                      {/* <img src={photoUrl2+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
+                      <button type="button" onClick={()=>{
+                        deleteModalFileImage(idx);
+                        console.log(idx+"삭제");
+                      }}>삭제</button> */}
+                        <div style={{backgroundImage:`url(${photoUrl2+row})`,width:'100px',height:'100px',backgroundSize:'contain',textAlign:'right',marginLeft:'13px'}}>
+                          <div style={{color:'red',fontWeight:'bold',cursor:'pointer'}}  onClick={()=>{
+                          deleteModalFileImage(idx);
+                          // console.log(idx+"삭제");
+                          }}>
+                            <i class="fa-solid fa-circle-minus"></i>
+                          </div>
+                        </div>
+                     </div>
+                      ))}
+                      </div>
                       </div>
                       <div style={{justifyContent:'center',display:'flex'}}>
-                         <textarea style={{width:'400px',height:'180px',border:'1px solid #aaaaaa'}} defaultValue={editDetailData[0].content} onChange={(e)=>{
+                         <textarea style={{width:'550px',height:'250px',border:'1px solid #aaaaaa'}} defaultValue={editDetailData[0].content} onChange={(e)=>{
                           setContent(e.target.value);
                          }}></textarea>
                       </div>
@@ -810,9 +943,11 @@ const PlaceInfo=()=>{
                           onUpdate(editDetailData[0].num);
                          }}>수정완료</button>
 
-                         {/*imgfile */}
-                <label for="file2">
-                  <div class="btn-upload"><i class="fa-solid fa-image"></i></div>
+                  {/*imgfile */}      
+                  <label for="file2">
+                  <div class="btn-upload">
+                  <span class="material-icons-outlined">add_photo_alternate</span>
+                    </div>
                   </label>
                   <input type='file' name='modal-upload' accept='image/*' multiple onChange={modaluploadImage} onClick={()=>console.log("modal")} id="file2" />
                     {/*map돌릴예정*/}
@@ -822,7 +957,7 @@ const PlaceInfo=()=>{
                      <img src={photoUrl2+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
                      <button type="button" onClick={()=>{
                       // onOneDelete(editDetailData[idx].review_photo_num);
-                      deleteFileImage(idx);
+                      deleteModalFileImage(idx);
                      }}>삭제</button>
                      </div>
                       ))}
@@ -848,33 +983,19 @@ const PlaceInfo=()=>{
                   setStars(newValue);
                 }}/> 
 
-                  {/*map돌릴예정*/}
-
-                  {
-                      filename&&filename.map((row,idx)=>(
-                        <div>
-                     <img src={photoUrl+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
-                     <button type="button" onClick={()=>{
-                      // onOneDelete(editDetailData[idx].review_photo_num);
-                      deleteFileImage(idx);
-                     }}>삭제</button>
-                     </div>
-                      ))
-                  }
-
                      {/* </Box>  */}
                      <div style={{display:'inline-flex',justifyContent:'right',marginLeft:'10px;'}}>
 
                      <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage} onClick={()=>console.log("그냥")}  id="file" />
                   {/* <i class="fa-solid fa-image"> <input type='file' name='upload' accept='image/*' multiple onChange={uploadImage}/> </i> */}
-                  <p>{filename}</p>
+                  {/* <p>{filename}</p> */}
 
                     {/*imgfile */}
-                    <label for="file">
+                    {/* <label for="file">
                     <div class="btn-upload"><i class="fa fa-upload"></i>
                         &nbsp;upload
                     </div>
-                   </label>
+                   </label> */}
 
                 <button type='button' className='btn_review_write' onClick={writeReview}>Review</button>
                 
@@ -882,7 +1003,27 @@ const PlaceInfo=()=>{
 
                 </div>
                 <div style={{display:'inline-flex'}}>
+                  <div style={{display:'flex',flexDirection:'column'}}>
                 <textarea placeholder='50글자내로 작성해주세요🥕' className='review' value={refreshReview} onChange={(e)=>{setContent(e.target.value);}}></textarea>
+                <div style={{display:'flex',justifyContent:'left'}}>
+                <label for="file">
+                    <div class="btn-upload">
+                      <span class="material-icons-outlined">add_photo_alternate</span>
+                    </div>
+                   </label>
+                {
+                      filename&&filename.map((row,idx)=>(
+                        <div>
+                          <div style={{backgroundImage:`url(${photoUrl+row})`,width:'80px',height:'80px',backgroundSize:'contain',textAlign:'right',marginLeft:'13px',marginTop:'5px'}}>
+                            <div style={{color:'red',fontWeight:'bold',cursor:'pointer'}}  onClick={()=>{deleteFileImage(idx);}}>
+                            <i class="fa-solid fa-circle-minus"></i>
+                            </div>
+                            </div>
+                    </div>
+                      ))
+                  }
+                  </div>
+                  </div>
                 </div>
                 </div>
             </div> 
@@ -898,7 +1039,15 @@ const PlaceInfo=()=>{
                         <div style={{display:'flex',borderBottom:'1px solid #a3a3a3',margin:'10px',width:'1072px'}} >
                         <div style={{flexDirection:'column',justifyContent:'center'}}>
                           <div>
-                         <img src={row.file_name==null?Ayong:profilePhotoUrl+row.file_name} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                            {
+                              row.file_name==null?
+                              <div className='photo1'>
+                            <span className="material-icons">
+                              person
+                            </span>
+                          </div>:
+                              <img src={profilePhotoUrl+row.file_name} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                            }
                           </div>
                           <div style={{marginTop:'5px',textAlign:'center'}}>
                           {row.name}

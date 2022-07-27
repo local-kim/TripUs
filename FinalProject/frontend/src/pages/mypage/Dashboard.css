@@ -1,22 +1,27 @@
 .fc .fc-toolbar-title {
     font-size: 1.75em;
     margin: 0;
+    border-right: 1px solid white;
     
 }
 
 .fc .fc-scrollgrid-liquid {
     
     margin-top: 20px;
-    height: 660px;
+    height: 520px;
+    border: 1px solid white;
+
+    border-right: none;
+    border-left: none;
     
 }
 
 
 .fc .fc-toolbar.fc-header-toolbar {
 
-    margin-top: 150px;
+    margin-top: 70px;
     margin-right: 450px;
-    margin-left: 450px;
+    margin-left: 700px;
 
 }
 
@@ -25,15 +30,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 150px;
+    margin-top: 90px;
 }
 
 
 .fc .fc-view-harness-active > .fc-view {
     position: absolute;
-    margin-right: 400px;
-    margin-left: 400px;
-    margin-bottom: 400px;
+    margin-right: 300px;
+    margin-left: 300px;
+    margin-bottom: 430px;
+    border-right: none;
+    border-left: none;
     
 
 }
@@ -47,6 +54,8 @@
     margin-right: 3px;
     color: rgba(0, 0, 0, 0);
     opacity: 100%;
+    border-right: none;
+    border-left: none;
 }
 
 
@@ -60,3 +69,69 @@ div.app .fc-view-harness.fc-view-harness-active{
 .fc.fc-media-screen.fc-direction-ltr.fc-theme-standard{
     height: 700px;
 }
+
+.fc .fc-col-header-cell-cushion {
+    display: inline-block;
+    padding: 2px 4px;
+    color: black;
+    font-family: monospace;
+    border-right: none;
+    border-left: none;
+}
+
+.fc .fc-daygrid-day-number {
+    position: relative;
+    z-index: 4;
+    padding: 4px;
+    color: black;
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.75em;
+    margin: 0;
+    font-family: monospace;
+}
+
+.fc .fc-button-primary:disabled {
+    font-family: monospace;
+
+}
+
+
+.fc .fc-toolbar-title {
+
+    display: table-caption;
+}
+
+.fc .fc-scrollgrid-section-liquid >td {
+    height: 100%;
+    /* border: 1px solid white; */
+    border-right: none;
+    border-left: none;
+}
+
+.fc .fc-scrollgrid-section-liquid {
+    height: 100%;
+    border: 1px solid white;
+    border-right: none;
+    border-left: none;
+}
+
+.fc-scroller-harness{
+    border-right: none;
+    border-left: none;
+}
+
+
+
+
+.fc-scrollgrid-liquid th{
+    
+    border-right: none;
+    border-left: none;  
+}
+ 
+.fc td{
+    border-right: none;
+    border-left: none;  
+} 

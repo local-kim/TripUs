@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import data.dto.CityDto;
 import data.dto.LikeDto;
+import data.dto.PlaceDto;
 import data.dto.ReviewDto;
 import data.dto.TripDto;
 import data.dto.WeatherDto;
 import data.service.CityInfoService;
+import data.service.PlanService;
 
 @RestController
 @RequestMapping("/city")
@@ -27,6 +29,9 @@ public class CityInfoController {
 
 	@Autowired
 	private CityInfoService ciservice;
+	
+	@Autowired
+	private PlanService planService;
 	
 	@GetMapping("/citydata")
 	public CityDto getData(@RequestParam int num) {
@@ -62,10 +67,19 @@ public class CityInfoController {
 	@PostMapping("/insertlike")
 		public void insertLike(@RequestBody HashMap<String, Object> request){
 		System.out.println(request);
-		int place_id=Integer.parseInt(String.valueOf(request.get("place_id")));
+//		int place_id=Integer.parseInt(String.valueOf(request.get("place_id")));
+		PlaceDto place = (PlaceDto)request.get("place");
+		
+		place.setCity_num((Integer)request.get("cityNum"));
+		
+		if(planService.checkPlace(place.getContentid()) == 0) {
+			planService.insertPlace(place);
+		}
+		
 		int loginNum=(Integer)request.get("loginNum");
 		request.get("check");
-		ciservice.insertLike(place_id,loginNum);
+		
+		ciservice.insertLike(Integer.parseInt(place.getContentid()), loginNum);
 	}
 	@DeleteMapping("/deletelike")
 	public void deleteLike(@RequestParam String place_id,@RequestParam int loginNum) {

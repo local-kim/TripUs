@@ -29,4 +29,14 @@ public interface MainPageMapper {
 	//모든 유저 일정 개수
 	public int allUserTrip();
 	
+	//모든 유저수
+	public int allUser();
+	
+	//모든 여행지 
+	public int allPlace();
+	
+	//모든 리뷰댓글 
+	public int allReview();
+	
+	
 }

@@ -1,3 +1,7 @@
+.swiper{
+  overflow: initial !important;
+}
+
 .css-19r6kue-MuiContainer-root {
   width: 100%;
   margin-left: auto;
@@ -102,9 +106,9 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   }
   
   
-  div.title{
+  /* div.title{
     text-align: center;
-  } 
+  }  */
   
   /* div.menu{
     
@@ -438,7 +442,7 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   .top_city_list {
     padding-top: 40px;
     width: 1112px;
-    height: 450px;
+    height: 550px;
     overflow: hidden;
     
   }
@@ -679,14 +683,19 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
   background-image:url(./assets/images/seoul2.jpg);  
   background-position: center;
   background-size: cover;
+  text-align: center;
+  z-index: 1000;
+  
  
 
 }
 
 .page3img{
-  background-image:url(./assets/images/junjoo1.jpg);  
+  background-image:url(./assets/images/seoul6.jpg);  
   background-position: center;
   background-size: cover;
+  text-align: center;
+  z-index: 1000;
 
 }
 
@@ -709,3 +718,8 @@ header.css-11b3ww9-MuiPaper-root-MuiAppBar-root{
 a {
   text-decoration: none;
 }
+
+.animated-container{
+  justify-content: center;
+}
+

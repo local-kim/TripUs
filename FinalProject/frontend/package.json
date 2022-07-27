@@ -47,6 +47,7 @@
     "react-scroll-button": "^2.0.0",
     "react-slick": "^0.29.0",
     "react-use": "^17.4.0",
+    "reactjs-infinite-carousel": "^0.1.17",
     "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
     "redux-persist": "^6.0.0",

@@ -332,7 +332,7 @@ const PlanDetailMain = () => {
                                                 <div className='clear' />
                                             </div>
                                             <div className='day-date-right'>
-                                                총 금액(사용안할듯)
+                                                {/* 총 금액(사용안할듯) */}
                                                 <div className='clear' />
                                             </div>
                                         </div>
@@ -348,7 +348,7 @@ const PlanDetailMain = () => {
                                             <img alt='spot' src={day.firstimage !== null ? day.firstimage : '../../empty_image.jpg'} className='spot-img'/>
                                             <div className='spot-content-box'>
                                                 <div className='spot-name'>
-                                                <Link to={`/place/`+day.contentid}>
+                                                <Link to={`/place/`+day.contentid} >
                                                     {day.title}
                                                 </Link>
                                                 </div>
@@ -357,7 +357,7 @@ const PlanDetailMain = () => {
                                                     <div className='sinfo-cat2'>{day.cat2_name}</div>
                                                     <div className='sinfo-line' />
                                                     <div className='sinfo-txt'>
-                                                    review&nbsp;<Rating name="read-only" style={{position:'relative', top:'5px'}} value={day.avg_star} readOnly size="small" precision={0.1} />({day.avg_star == 0 ? `리뷰없음` : day.avg_star})
+                                                    review&nbsp;<Rating name="read-only" style={{position:'relative', top:'5px', zIndex:'10'}} value={day.avg_star} readOnly size="small" precision={0.1} />({day.avg_star == 0 ? `리뷰없음` : day.avg_star})
                                                     </div>
                                                     <div className='clear' />
                                                 </div>

@@ -14,6 +14,9 @@ public interface MainPageServiceInter	{
 	public List<CityDto> getData3();
 	public List<CityDto> getData4();
 	public int allUserTrip();
+	public int allUser();
+	public int allPlace();
+	public int allReview();
 	
 	
 }

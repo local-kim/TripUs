@@ -94,9 +94,6 @@ const MyTrips = ({data2, setCityTrip, loginNum, currentPage}) => {
             label="지난 일정 보기" />
           </div>
 
-          
-          
-
           {data2.list &&
             data2.list.map((row, index) => (
               <span id="resultArea">
@@ -221,7 +218,7 @@ const MyTrips = ({data2, setCityTrip, loginNum, currentPage}) => {
 
                             <span className="small-text" style={{ paddingTop: "20px" }}>
                               <span style={{ paddingTop: "10px" }}>
-                                {row.startDate}-{row.endDate}
+                                {row.startDate} ~ {row.endDate}
                               </span>
                             </span>
                           </div>
