@@ -350,10 +350,10 @@ const CityInfoMain = () => {
         keyWord_url += `&contentTypeId=${keyword_contenttypeid}`;
     }
 
-    
 
     
     useEffect(() => {
+        window.scrollTo(0,0);
         place_area_Data();
         trip_weather_Data();
         like_table();
@@ -733,7 +733,6 @@ const CityInfoMain = () => {
                                     <div className="no-schedule-add-date-box">
                                         <div className="no-schedule-add-date" onClick={()=> isLoggedIn ? naVi(`/plan/city/${num}`) : (naVi('/login'))}>Add Plan</div>
                                     </div>
-                                    <div style={{marginTop:'270px'}}>메롱</div>
                                 </div>
                                 :
                                 ''
