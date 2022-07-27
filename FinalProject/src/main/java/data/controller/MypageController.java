@@ -28,10 +28,12 @@ import org.springframework.web.multipart.MultipartFile;
 import data.dto.CityTripDto;
 import data.dto.ItineraryDto;
 import data.dto.MemberDto;
+import data.dto.MemberSecurityDto;
 import data.dto.ProfileDto;
 import data.dto.ReviewPlaceDto;
 import data.dto.TripDto;
 import data.mapper.MyPageMapper;
+import data.service.CustomMemberDetailsService;
 import data.service.MypageService;
 import data.service.MypageServiceInter;
 import data.service.UserPageService;
@@ -48,6 +50,9 @@ public class MypageController {
 	
 	@Autowired
 	private UserPageService userPageService;
+	
+	@Autowired
+	private CustomMemberDetailsService memberService;
 	
 	@Autowired
 	MyPageMapper mapper;
@@ -156,7 +161,7 @@ public class MypageController {
 	}
 	
 	@PostMapping("/update2")
-	public void updateProfile2(@RequestBody MemberDto dto, @RequestParam int loginNum)
+	public MemberSecurityDto updateProfile2(@RequestBody MemberDto dto, @RequestParam int loginNum, @RequestParam String id)
 	{
 //			dto.setNum(loginNum);
 //			
@@ -167,6 +172,11 @@ public class MypageController {
 		
 		System.out.println(dto);
 		service.updateProfile2(dto);
+		
+		MemberSecurityDto member = memberService.getLoginInfo(id);	// 프로필 사진도 같이 받아옴
+//      System.out.println(member);
+      
+		return member;
 	}
 	
 	@GetMapping("/citytrip")
