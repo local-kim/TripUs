@@ -722,7 +722,14 @@ const CityInfoMain = () => {
                             :
                             <div className='schedule-title-add-box'>
                                     <div className='schedule-title'>My Plan&nbsp;
-                                        <div className="add-date" onClick={()=> isLoggedIn ? naVi(`/plan/city/${num}`) : naVi(`/city/${num}`)}>Add Plan</div>
+                                        <div className="add-date" onClick={()=> {
+                                            if(isLoggedIn){
+                                             naVi(`/plan/city/${num}`)
+                                            } else {
+                                                alert("로그인 후 등록해주세요")
+                                                naVi('/login')
+                                            }
+                                        }}>Add Plan</div>
                                     </div>
                             </div>
                         }
@@ -745,7 +752,14 @@ const CityInfoMain = () => {
                                     <span class="material-symbols-outlined no-schedule">event_busy</span><br/>
                                     <div style={{fontFamily:'Montserrat'}}>일정을 등록해주세요</div>
                                     <div className="no-schedule-add-date-box">
-                                        <div className="no-schedule-add-date" onClick={()=> isLoggedIn ? naVi(`/plan/city/${num}`) : (naVi('/login'))}>Add Plan</div>
+                                        <div className="no-schedule-add-date" onClick={()=> {
+                                            if(isLoggedIn){
+                                             naVi(`/plan/city/${num}`)
+                                            } else {
+                                                alert("로그인 후 등록해주세요")
+                                                naVi('/login')
+                                            }
+                                        }}>Add Plan</div>
                                     </div>
                                 </div>
                                 :

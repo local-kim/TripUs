@@ -36,6 +36,8 @@ const Mypage = () => {
   const loginNum = useSelector((state) => state.auth.user.num);
 
   const [value, setValue] = useState(0);
+  const loginProfile = useSelector(state => state.auth.user.profile);
+  const loginType = useSelector(state => state.auth.user.type);
 
   // url
   let pagelistUrl = process.env.REACT_APP_SPRING_URL + "mypage/pagelist?loginNum=" + loginNum; //?currentPage=" + currentPage;
@@ -113,7 +115,7 @@ const Mypage = () => {
             {/* <div className="top-background-div"></div> */}
             <div className="top-container">
               <Avatar
-                src={Image}
+                src={loginProfile}
                 size={200}
                 onClick={() => {
                   fileInput.current.click();

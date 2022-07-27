@@ -64,6 +64,14 @@ public class AuthController {
         return new ResponseEntity<>(member, httpHeaders, HttpStatus.OK);
     }
     
+    @PostMapping("/kakaologin")
+    public MemberSecurityDto kakaoLogin(@RequestBody LoginDto loginDto) {
+        MemberSecurityDto member = service.getLoginInfo(loginDto.getId());	// 프로필 사진도 같이 받아옴
+        System.out.println(member);
+        
+        return member;
+    }
+    
     @PostMapping("/join")
     public ResponseEntity<String> join(@RequestBody MemberSecurityDto member){
     	service.join(member, "ROLE_USER");	// 일반회원 가입시 ROLE_USER로 권한 설정
