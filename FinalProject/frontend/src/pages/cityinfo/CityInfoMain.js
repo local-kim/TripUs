@@ -477,7 +477,6 @@ const CityInfoMain = () => {
         })
     },[start_date,end_date])
 
-<<<<<<< HEAD
     // // 내 좋아요 현황
     // useEffect(() => {
     //     myLike();
@@ -505,7 +504,7 @@ const CityInfoMain = () => {
     }
 
     // 좋아요 ON
-    const insert_btn = (e, contentid) => {
+    const insert_btn = (e, item) => {
         if (!isLoggedIn) {
             alert("로그인 후 이용해주세요")
         }

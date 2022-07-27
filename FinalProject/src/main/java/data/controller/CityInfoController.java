@@ -70,7 +70,7 @@ public class CityInfoController {
 //		int place_id=Integer.parseInt(String.valueOf(request.get("place_id")));
 		PlaceDto place = (PlaceDto)request.get("place");
 		
-		place.setCity_num((Integer)request.get("city_num"));
+		place.setCity_num((Integer)request.get("cityNum"));
 		
 		if(planService.checkPlace(place.getContentid()) == 0) {
 			planService.insertPlace(place);
@@ -79,7 +79,7 @@ public class CityInfoController {
 		int loginNum=(Integer)request.get("loginNum");
 		request.get("check");
 		
-		ciservice.insertLike(place.getCity_num(), loginNum);
+		ciservice.insertLike(Integer.parseInt(place.getContentid()), loginNum);
 	}
 	@DeleteMapping("/deletelike")
 	public void deleteLike(@RequestParam String place_id,@RequestParam int loginNum) {
