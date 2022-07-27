@@ -518,6 +518,10 @@ const PlaceInfo=()=>{
      
     },[]);
 
+    useEffect(() => {
+      window.scrollTo(0,0)
+    },[])
+
     //modal
     
 
@@ -801,12 +805,12 @@ const PlaceInfo=()=>{
                       <div style={{height:'180px',width:'550px',justifyItems:'center'}}>
 
                       <div className='detailmodal'>
-                       <div className='detailmodalimgs' style={{display:'flex',marginBottom:'30px',width:'550px',height:'180px'}}>
+                       <div className='detailmodalimgs' style={{display:'flex',marginBottom:'30px',width:'550px',height:'180px',justifyContent: 'center'}}>
                       {       
                             detailFileData&&detailFileData.map((row,idx)=>(
 
                               
-                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} className='detailimg'/>
+                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{maxWidth:'400px',maxHeight:'400px',objectFit:'contain'}} className='detailimg'/>
                               
                           
                           
@@ -1033,7 +1037,7 @@ const PlaceInfo=()=>{
                   <div style={{width:'1090px',height:'500px',display:'flex',overflow:'scroll',overflowX:'hidden'}}>
                   <div>
                     {/* <p>{reviewData}</p> */}
-                    {reviewData.length == 0 ? <p style={{color:'gray'}}>후기글을 없습니다</p>: ""}
+                    {reviewData.length == 0 ? <p style={{color:'gray'}}>작성된 후기글이 없습니다</p>: ""}
                     {
                       reviewData&&reviewData.map((row,idx)=>(
                         <div style={{display:'flex',borderBottom:'1px solid #a3a3a3',margin:'10px',width:'1072px'}} >
@@ -1065,7 +1069,7 @@ const PlaceInfo=()=>{
                       }
                           </div>
                        <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
-                        <div style={{flexGrow:'3'}}>
+                        <div style={{flexGrow:'3',backgroundColor:'white'}}>
                         {row.created_at}&nbsp;&nbsp;&nbsp;
                        <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
                        </div>
