@@ -44,6 +44,7 @@ const initialState = {
 export default function reducer(state = initialState, action){
 	switch(action.type){
 		case LOGIN:
+      console.log(action.user);
 			return {
 				isLoggedIn: true,
         saveId: action.saveId,

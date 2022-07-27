@@ -278,9 +278,9 @@ const CityInfoMain = () => {
 
     // API
     // 날씨 
-    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
+    // const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
     // const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
-    // const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
+    const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
     // const API_KEY="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D";  // 웅쓰꺼
     
     // // 일정 계획 데이타
@@ -722,7 +722,14 @@ const CityInfoMain = () => {
                             :
                             <div className='schedule-title-add-box'>
                                     <div className='schedule-title'>My Plan&nbsp;
-                                        <div className="add-date" onClick={()=> isLoggedIn ? naVi(`/plan/city/${num}`) : naVi(`/city/${num}`)}>Add Plan</div>
+                                        <div className="add-date" onClick={()=> {
+                                            if(isLoggedIn){
+                                             naVi(`/plan/city/${num}`)
+                                            } else {
+                                                alert("로그인 후 등록해주세요")
+                                                naVi('/login')
+                                            }
+                                        }}>Add Plan</div>
                                     </div>
                             </div>
                         }
@@ -745,7 +752,14 @@ const CityInfoMain = () => {
                                     <span class="material-symbols-outlined no-schedule">event_busy</span><br/>
                                     <div style={{fontFamily:'Montserrat'}}>일정을 등록해주세요</div>
                                     <div className="no-schedule-add-date-box">
-                                        <div className="no-schedule-add-date" onClick={()=> isLoggedIn ? naVi(`/plan/city/${num}`) : (naVi('/login'))}>Add Plan</div>
+                                        <div className="no-schedule-add-date" onClick={()=> {
+                                            if(isLoggedIn){
+                                             naVi(`/plan/city/${num}`)
+                                            } else {
+                                                alert("로그인 후 등록해주세요")
+                                                naVi('/login')
+                                            }
+                                        }}>Add Plan</div>
                                     </div>
                                 </div>
                                 :

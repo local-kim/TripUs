@@ -271,16 +271,14 @@ const PlaceInfo=()=>{
         const writeReview=(e)=>{
           //e.preventDefault();
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
+          if(!isLoggedIn){
+            alert("먼저 로그인해주세요");}
           axios.post(insertUrl,{place_id:contentId,member_num:loginNum,stars,content}).then(res=>{ 
-            if(!isLoggedIn){
-              alert("먼저 로그인해주세요");
-            }else{
               alert("성공");
               pageList();
               setStarsValue("");
               setRefreshReview("");
               setFileName(""); 
-            }
             }).catch(err => {
               alert(err);
             })
@@ -291,7 +289,7 @@ const PlaceInfo=()=>{
     const AvgStars=()=>{
       axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
       axios.get(placeStarsAvgUrl).then(res=>{
-        if(res.data===0){
+        if(res.data==null||res.data==0||res.data==undefined){
           alert(res.data);
         }else{
         setAvgStars(res.data);
@@ -322,7 +320,20 @@ const PlaceInfo=()=>{
 
         if(!isChecked){
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-          axios.post(insertlikeUrl,{place_id:String(contentId),loginNum,check:Number(isChecked)}).then(res=>{
+          axios.post(insertlikeUrl,{
+            place_id:String(placeData.contentId),
+            contentid: String(placeData.contentid),
+            contenttypeid: String(placeData.contenttypeid),
+            title: placeData.title,
+            cat3: placeData.cat3,
+            addr1: placeData.addr1,
+            addr2: placeData.addr2,
+            firstimage: placeData.firstimage,
+            mapx: String(placeData.mapx),
+            mapy: String(placeData.mapy),
+            loginNum,
+            check:Number(isChecked)
+          }).then(res=>{
           //alert("좋아요 true:",res.data);
           setLike(res.data.check);
         })}
@@ -518,6 +529,10 @@ const PlaceInfo=()=>{
      
     },[]);
 
+    useEffect(() => {
+      window.scrollTo(0,0)
+    },[])
+
     //modal
     
 
@@ -526,6 +541,7 @@ const PlaceInfo=()=>{
     //   var i3 = document.getElementById("uploadimgalt").style.visibility="visible"; 
     // }
 
+    let placeData;
 
     //kakomap + tourapi3
     const kakaomapscript = () => {
@@ -534,6 +550,7 @@ const PlaceInfo=()=>{
         delete axios.defaults.headers.common['Authorization'];
         axios.get(apiUrl)
         .then((res) => {
+          placeData = res.data.response.body.items.item;
         const apidata=res.data.response.body.items.item;
         const placex=apidata.mapx;  //관광지 위치(x좌표)
         const placey=apidata.mapy;  //관광지 위치(y좌표)
@@ -801,12 +818,12 @@ const PlaceInfo=()=>{
                       <div style={{height:'180px',width:'550px',justifyItems:'center'}}>
 
                       <div className='detailmodal'>
-                       <div className='detailmodalimgs' style={{display:'flex',marginBottom:'30px',width:'550px',height:'180px'}}>
+                       <div className='detailmodalimgs' style={{display:'flex',marginBottom:'30px',width:'550px',height:'180px',justifyContent: 'center'}}>
                       {       
                             detailFileData&&detailFileData.map((row,idx)=>(
 
                               
-                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} className='detailimg'/>
+                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{maxWidth:'400px',maxHeight:'400px',objectFit:'contain'}} className='detailimg'/>
                               
                           
                           
@@ -1033,7 +1050,7 @@ const PlaceInfo=()=>{
                   <div style={{width:'1090px',height:'500px',display:'flex',overflow:'scroll',overflowX:'hidden'}}>
                   <div>
                     {/* <p>{reviewData}</p> */}
-                    {reviewData.length == 0 ? <p style={{color:'gray'}}>후기글을 없습니다</p>: ""}
+                    {reviewData.length == 0 ? <p style={{color:'gray'}}>작성된 후기글이 없습니다</p>: ""}
                     {
                       reviewData&&reviewData.map((row,idx)=>(
                         <div style={{display:'flex',borderBottom:'1px solid #a3a3a3',margin:'10px',width:'1072px'}} >
@@ -1065,7 +1082,7 @@ const PlaceInfo=()=>{
                       }
                           </div>
                        <div style={{display:'inline-flex',height:'30px',marginTop:'5px'}}>
-                        <div style={{flexGrow:'3'}}>
+                        <div style={{flexGrow:'3',backgroundColor:'white'}}>
                         {row.created_at}&nbsp;&nbsp;&nbsp;
                        <Rating name="read-only" value={row.stars} readOnly size="small" precision={0.5} />&nbsp;({row.stars}점)
                        </div>

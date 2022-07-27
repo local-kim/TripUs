@@ -18,6 +18,8 @@ import MainLogo from '../assets/images/MainLogo.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../modules/auth';
 
+
+
 const ResponsiveAppBar = () => {
 
 
@@ -37,6 +39,7 @@ const ResponsiveAppBar = () => {
   const loginNum = useSelector(state => state.auth.user.num);
   const loginName = useSelector(state => state.auth.user.name);
   const loginProfile = useSelector(state => state.auth.user.profile);
+  const loginType = useSelector(state => state.auth.user.type);
 
   const pages = ['여행지', '인기 일정', 'About'];
   const pageLinks = ['city/list', 'plan/list', ''];
@@ -65,6 +68,26 @@ const ResponsiveAppBar = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+   
+//카카오톡 로그아웃
+
+const KakaoLogout = () => {
+  if (window.Kakao.Auth.getAccessToken()) {
+    window.Kakao.API.request({
+      url: '/v1/user/unlink',
+      success: function (response) {
+        console.log(response);
+      },
+      fail: function (error) {
+        console.log(error);
+      },
+    });
+    alert('로그아웃이 완료되었습니다.');
+    window.Kakao.Auth.setAccessToken(undefined);
+  }
+};
+
+
 
   // 헤더 숨기기
   if ((window.location.pathname.startsWith('/plan')) && !window.location.pathname.startsWith('/plan/list')) return null;
@@ -170,7 +193,10 @@ const ResponsiveAppBar = () => {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 {
-                  isLoggedIn && <Avatar alt={loginName} src={`${process.env.REACT_APP_SPRING_URL}save/${loginProfile}`} />
+                  isLoggedIn && loginType == 2 && <Avatar alt={loginName} src={loginProfile} />
+                }
+                {
+                  isLoggedIn && loginType == 1 && <Avatar alt={loginName} src={`${process.env.REACT_APP_SPRING_URL}save/${loginProfile}`} />
                 }
                 {
                   !isLoggedIn && <Avatar src="/static/images/avatar/2.jpg" />
@@ -201,7 +227,12 @@ const ResponsiveAppBar = () => {
 
                     if(index === loginSettings.length - 1){ // 마지막 메뉴(로그아웃)를 클릭했을 때
                       localStorage.removeItem('jwtToken');
+                      localStorage.removeItem('persist:root');
+                      localStorage.removeItem('kakao_13541ddd20e5c786378637deb831a2be');
+                      KakaoLogout();
                       dispatch(logout());
+                      
+
                     }
                     else{
                       navi(loginLinks[index]);
