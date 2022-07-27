@@ -143,16 +143,35 @@ const LoginForm = () => {
                       // setId(id);
                       // setEmail(email);
                       // goToMain();
-
+                      axios
+                    .post(process.env.REACT_APP_SPRING_URL+'auth/kakaologin', {
+                      id: id
+                    })
+                    .then(res => {
+                      console.log(res.data);
+                      
                       dispatch(login(false, {
                         id: id,
                         email: email,
                         name: nickname,
                         profile: profile,
-                        type: 2
+                        type: 2,
+                        num: res.data.num
                       }));
 
                       navi("/");
+                    })
+                    .catch(err => console.log(err));
+
+                      // dispatch(login(false, {
+                      //   id: id,
+                      //   email: email,
+                      //   name: nickname,
+                      //   profile: profile,
+                      //   type: 2
+                      // }));
+
+                      // navi("/");
                     })
                     .catch(err => console.log(err));
                 } else {
@@ -309,7 +328,7 @@ const LoginForm = () => {
           <input type="password" id="LoginPass" value={inputPw} onChange={handleInputPw} required></input>
         </div>
         <div className='forgot_pass'>
-          <a href='/findPassword'>비밀번호를 잊으셨나요?</a>
+          <a href='/find'>비밀번호를 잊으셨나요?</a>
         </div>
         <div className='login_btn'>
           <button type='submit' id='loginBtn'>로그인</button>
