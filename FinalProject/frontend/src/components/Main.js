@@ -135,8 +135,8 @@ const Main=(row)=>{
   const loginProfile = useSelector(state => state.auth.user.profile);
   const loginType = useSelector(state => state.auth.user.type);
 
-  const pages = ['여행지', '일정 보기', '인기 일정', 'About']; //일정 만들기
-  const pageLinks = ['city/list', 'plan/detail/1', 'plan/list', '']; //, 'plan/city/108'
+  const pages = ['여행지', '인기 일정', 'About']; //일정 만들기 , '일정 보기'
+  const pageLinks = ['city/list', 'plan/list', '']; //, 'plan/city/108', 'plan/detail/1'
 
   const loginSettings = ['Mypage', 'Schedule','Logout'];
   const loginLinks = ['mypage/1', 'dashboard','logout'];
