@@ -15,8 +15,11 @@ const TripList = ({tripList}) => {
         tripList && tripList.map((trip, index) => (
           <div className="trip" key={index}>
             <div className="trip-wrap-1">
-              <div>
-                <img className="trip-img" src={`../city_image/${trip.image}`} alt={trip.image} />
+              <div style={{overflow:'hidden'}}>
+                <img className="trip-img" src={`../city_image/${trip.image}` } alt={trip.image} 
+                 onClick={() => {
+                  navi(`/plan/detail/${trip.tripNum}`);
+                }}/>
               </div>
               <div className="trip-info-wrap">
                 <div className="city-eng-name">{trip.eng_name}</div>
@@ -31,10 +34,16 @@ const TripList = ({tripList}) => {
               </div>
 
               <div className="trip-wrap-2">
-                <div className="trip-name">
+                <div className="trip-name"
+                 onClick={() => {
+                  navi(`/plan/detail/${trip.tripNum}`);
+                }}
+                >
                   {/* <span class="material-symbols-outlined">label</span> */}
                   {/* <span class="material-icons">label</span> */}
                   {trip.tripName}
+
+                  
                 </div>
 
                 <div className='trip-date'>{trip.startDate} ~ {trip.endDate}</div>
