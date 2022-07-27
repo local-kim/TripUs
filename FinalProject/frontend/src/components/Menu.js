@@ -41,10 +41,10 @@ const ResponsiveAppBar = () => {
   const pages = ['여행지', '인기 일정', 'About'];
   const pageLinks = ['city/list', 'plan/list', ''];
 
-  const loginSettings = ['마이페이지', '내 여행','로그아웃'];
+  const loginSettings = ['Mypage', 'Schedule ', 'Logout'];
   const loginLinks = ['mypage/1', 'dashboard','logout'];
 
-  const logoutSettings = ['로그인', '회원가입'];
+  const logoutSettings = ['Login', 'Join'];
   const logoutLinks = ['login', 'join'];
 
   const [anchorElNav, setAnchorElNav] = useState(null);

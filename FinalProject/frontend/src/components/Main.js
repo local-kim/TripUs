@@ -137,7 +137,7 @@ const Main=(row)=>{
   const pages = ['여행지', '일정 보기', '인기 일정', 'About']; //일정 만들기
   const pageLinks = ['city/list', 'plan/detail/1', 'plan/list', '']; //, 'plan/city/108'
 
-  const loginSettings = ['Mypage', 'Dashboard','Logout'];
+  const loginSettings = ['Mypage', 'Schedule','Logout'];
   const loginLinks = ['mypage/1', 'dashboard','logout'];
 
   const logoutSettings = ['Login', 'Join'];
