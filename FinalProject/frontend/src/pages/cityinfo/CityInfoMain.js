@@ -533,13 +533,13 @@ const CityInfoMain = () => {
     }
     // 좋아요 OFF
     const delete_btn = (e, contentid) => {
-            axios.delete(process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+contentid+"&loginNum="+loginNum,{place_id:String(contentid), loginNum : loginNum})
-            .then(res=>{
-                console.log("delete_like_url : "+ delete_like_url)
-                // alert("좋아요 false");
-                like_table();
-                // setLike_btn(false);
-            })
+        axios.delete(process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+contentid+"&loginNum="+loginNum,{place_id:String(contentid), loginNum : loginNum})
+        .then(res=>{
+            console.log("delete_like_url : "+ delete_like_url)
+            // alert("좋아요 false");
+            like_table();
+            // setLike_btn(false);
+        })
     }
 
     // like table에서 place_id랑 loginNum 가져와서 클릭한 카드의 contentid 비교해서 insert,delete 버튼 실행하기
@@ -955,7 +955,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${item.contentid}`}>
@@ -1012,7 +1012,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${item.contentid}`}>
@@ -1069,7 +1069,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${item.contentid}`}>
@@ -1126,7 +1126,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${item.contentid}`}>
@@ -1183,7 +1183,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${item.contentid}`}>
@@ -1240,7 +1240,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${item.contentid}`}>
