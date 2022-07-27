@@ -117,9 +117,7 @@ const Mypage = () => {
               <Avatar
                 src={loginProfile}
                 size={200}
-                onClick={() => {
-                  fileInput.current.click();
-                }}
+       
               ></Avatar>
 
               {/* <div className="profilePhoto-text" id="profilePhote">a</div> */}
