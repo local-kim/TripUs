@@ -277,8 +277,8 @@ const CityInfoMain = () => {
 
     // API
     // 날씨 
-    // const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
-    const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
+    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
+    // const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
     // const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
     // const API_KEY="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D";  // 웅쓰꺼
     
@@ -535,6 +535,16 @@ const CityInfoMain = () => {
         })
     }
 
+    // // 일정만들기 로그인 확인
+    // const Add_Plan_login_check = () => {
+    //     if (!isLoggedIn) {
+    //         alert("로그인 후 이용해주세요")
+    //     }
+    //     if{
+    //         naVi(`../plan/city/${num}`)
+    //     }
+    // }
+
 
     // 검색
     useEffect(() => {
@@ -680,27 +690,34 @@ const CityInfoMain = () => {
         <div id='cityinfo' style={muiStyle} >
         
             <div className='title-city'>
-                {cityname}
+                {cityname}&ensp;<span>Ulleung</span>
             </div>    
             <div>
                 <CityInfoImage num={city_num}/>
             </div>
             <div style={{display:'flex'}}>
                 <div className='scheduleContainer'>
-                    <div style={{display:'flex'}}>
-                        <div className='schedule-title-add-box'>
-                            <span className='schedule-title'>다가오는 여행</span><span class="material-symbols-rounded add-date" onClick={()=>{
-                                        naVi(`../plan/city/${num}`);
-                                    }}>calendar_add_on</span>
-                        </div>
+                    <div style={{display:'flex',marginTop:'20px',marginBottom:'10px'}}>
+                        {
+                            cityPlan ?
+                            <div className='schedule-title-add-box'>
+                                    <div className='schedule-title'>My Plan</div>
+                            </div>
+                            :
+                            <div className='schedule-title-add-box'>
+                                    <div className='schedule-title'>My Plan&nbsp;
+                                        <div className="add-date" onClick={()=> isLoggedIn ? naVi(`/plan/city/${num}`) : naVi(`/city/${num}`)}>Add Plan</div>
+                                    </div>
+                            </div>
+                        }
                         {
                             cityPlan.length === 0 ?
                             <div className='weather-title'>
-                                오늘의 날씨
+                                Today Weather
                             </div>
                             :
                             <div className='weather-title'>
-                                예상되는 날씨
+                                Weather
                             </div>
                         }
                     </div>
@@ -710,7 +727,11 @@ const CityInfoMain = () => {
                                 cityPlan.length === 0 ?
                                 <div className='no-schedule-box'>
                                     <span class="material-symbols-outlined no-schedule">event_busy</span><br/>
-                                    <span>일정을 등록해주세요</span>
+                                    <div style={{fontFamily:'Montserrat'}}>일정을 등록해주세요</div>
+                                    <div className="no-schedule-add-date-box">
+                                        <div className="no-schedule-add-date" onClick={()=> isLoggedIn ? naVi(`/plan/city/${num}`) :alert(('로그인하셈') (naVi('/login')))}>Add Plan</div>
+                                    </div>
+                                    <div style={{marginTop:'270px'}}>메롱</div>
                                 </div>
                                 :
                                 ''
@@ -766,7 +787,7 @@ const CityInfoMain = () => {
                                                         (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? 'rainy' : 
                                                         (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? 'cloudy' : 'sunny'
                                                     }
-                                                </span>
+                                                </span><br/>
                                             </div>
                                             <div className='no-schedule-weather-temp'>
                                                 {item.maxTa}℃&nbsp;/&nbsp;{item.minTa}℃
@@ -813,7 +834,7 @@ const CityInfoMain = () => {
                     <Box>
                         <TabContext value={value} >
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                                <TabList onChange={handleChange} aria-label="lab API tabs example">
+                                <TabList style={{fontFamily:'Montserrat'}} onChange={handleChange} aria-label="lab API tabs example">
                                     <Tab label="전체보기" value="1" />
                                     <Tab label="관광명소" value="1214" />
                                     <Tab label="음식점" value="39" />
@@ -856,19 +877,19 @@ const CityInfoMain = () => {
                                                         <CardActionArea>
                                                             {
                                                                 item.firstimage ? 
-                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
+                                                                <CardMedia className='tabtag-image' component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
                                                                 <CardMedia width="250" height="200" alt="">
                                                                     <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography gutterBottom component="div">
+                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions>
+                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -877,7 +898,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='1' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
+                                <span className='more-city-info' value='1' onClick={()=>{moreinfo(value,keyWord)}}>더..?</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='1214'>
@@ -913,19 +934,19 @@ const CityInfoMain = () => {
                                                         <CardActionArea>
                                                             {
                                                                 item.firstimage ? 
-                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
+                                                                <CardMedia className='tabtag-image' component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
                                                                 <CardMedia width="250" height="200" alt="">
                                                                     <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions>
+                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -934,7 +955,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='1214' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
+                                <span className='more-city-info' value='1214' onClick={()=>{moreinfo(value,keyWord)}}>더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='39'>
@@ -970,19 +991,19 @@ const CityInfoMain = () => {
                                                         <CardActionArea>
                                                             {
                                                                 item.firstimage ? 
-                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
+                                                                <CardMedia className='tabtag-image' component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
                                                                 <CardMedia width="250" height="200" alt="">
                                                                     <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions>
+                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -991,7 +1012,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='39' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
+                                <span className='more-city-info' value='39' onClick={()=>{moreinfo(value,keyWord)}}>더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='38'>
@@ -1027,19 +1048,19 @@ const CityInfoMain = () => {
                                                         <CardActionArea>
                                                             {
                                                                 item.firstimage ? 
-                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
+                                                                <CardMedia className='tabtag-image' component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
                                                                 <CardMedia width="250" height="200" alt="">
                                                                     <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions>
+                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -1048,7 +1069,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='38' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
+                                <div className='more-city-info' value='38' onClick={()=>{moreinfo(value,keyWord)}}>더보기</div>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='15'>
@@ -1084,19 +1105,19 @@ const CityInfoMain = () => {
                                                         <CardActionArea>
                                                             {
                                                                 item.firstimage ? 
-                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
+                                                                <CardMedia className='tabtag-image' component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
                                                                 <CardMedia width="250" height="200" alt="">
                                                                     <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions>
+                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -1105,7 +1126,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='15' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
+                                <span className='more-city-info' value='15' onClick={()=>{moreinfo(value,keyWord)}}>더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='28'>
@@ -1141,19 +1162,19 @@ const CityInfoMain = () => {
                                                         <CardActionArea>
                                                             {
                                                                 item.firstimage ? 
-                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
+                                                                <CardMedia className='tabtag-image' component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
                                                                 <CardMedia width="250" height="200" alt="">
                                                                     <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions>
+                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -1162,7 +1183,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='28' onClick={()=>{moreinfo(value,keyWord,keyWord)}}>+더보기</span>
+                                <span className='more-city-info' value='28' onClick={()=>{moreinfo(value,keyWord,keyWord)}}>더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='32'>
@@ -1198,19 +1219,19 @@ const CityInfoMain = () => {
                                                         <CardActionArea>
                                                             {
                                                                 item.firstimage ? 
-                                                                <CardMedia component="img" width="250" height="180" image = {item.firstimage} alt=""/>
+                                                                <CardMedia className='tabtag-image' component="img" width="250" height="180" image = {item.firstimage} alt=""/>
                                                                 :
                                                                 <CardMedia width="250" height="200" alt="">
                                                                     <span class="material-symbols-outlined span-no-image">image_not_supported</span>
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography gutterBottom variant="h7" component="div">
+                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions>
+                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -1219,7 +1240,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='32' onClick={()=>{moreinfo(value,keyWord)}}>+더보기</span>
+                                <span className='more-city-info' value='32' onClick={()=>{moreinfo(value,keyWord)}}>더보기</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                         </TabContext>
