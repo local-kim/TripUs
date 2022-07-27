@@ -328,7 +328,7 @@ const LoginForm = () => {
           <input type="password" id="LoginPass" value={inputPw} onChange={handleInputPw} required></input>
         </div>
         <div className='forgot_pass'>
-          <a href='/findPassword'>비밀번호를 잊으셨나요?</a>
+          <a href='/find'>비밀번호를 잊으셨나요?</a>
         </div>
         <div className='login_btn'>
           <button type='submit' id='loginBtn'>로그인</button>
