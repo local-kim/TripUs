@@ -108,4 +108,5 @@ div{
     font-size: 20px;
     font-family: Montserrat;
     font-weight: 600;
+    object-fit:cover;
 }

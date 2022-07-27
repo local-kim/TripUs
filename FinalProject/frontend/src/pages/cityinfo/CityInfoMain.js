@@ -16,7 +16,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CityInfoImage from './CityInfoImage';
 import CityInfoMore from './CityInfoMore';
-import { add, addDays, differenceInDays, format, subYears } from 'date-fns';
+import { add, addDays, addYears, differenceInDays, format, subYears } from 'date-fns';
 import { useInView } from "react-intersection-observer"
 import { PlaceItem } from '../plan';
 import { height } from '@mui/system';
@@ -280,8 +280,8 @@ const CityInfoMain = () => {
     // 날씨 
     // const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
     // const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
-    const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
-    // const API_KEY="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D";  // 웅쓰꺼
+    // const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
+    const API_KEY="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D";  // 웅쓰꺼
     
     // // 일정 계획 데이타
     const [cityPlan,setCityPlan]=useState([]);
@@ -368,7 +368,7 @@ const CityInfoMain = () => {
             setAreaCode(response.data.area_code);
             setSigunguCode(response.data.sigungu_code);
             setCityname(response.data.name);
-            setEngname(response.data.eng_name);
+            setEngname(response.data.eng_name.toUpperCase());
             console.log(response.data.area_code);
             
             // console.log(areaUrl + response.data.area_code + response.data.sigungu_code);
@@ -533,13 +533,13 @@ const CityInfoMain = () => {
     }
     // 좋아요 OFF
     const delete_btn = (e, contentid) => {
-            axios.delete(process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+contentid+"&loginNum="+loginNum,{place_id:String(contentid), loginNum : loginNum})
-            .then(res=>{
-                console.log("delete_like_url : "+ delete_like_url)
-                // alert("좋아요 false");
-                like_table();
-                // setLike_btn(false);
-            })
+        axios.delete(process.env.REACT_APP_SPRING_URL+"city/deletelike?place_id="+contentid+"&loginNum="+loginNum,{place_id:String(contentid), loginNum : loginNum})
+        .then(res=>{
+            console.log("delete_like_url : "+ delete_like_url)
+            // alert("좋아요 false");
+            like_table();
+            // setLike_btn(false);
+        })
     }
 
     // like table에서 place_id랑 loginNum 가져와서 클릭한 카드의 contentid 비교해서 insert,delete 버튼 실행하기
@@ -799,9 +799,10 @@ const CityInfoMain = () => {
                                 w_data && w_data.map((item,index) => (
                                     <div style={{marginRight:'5px'}}>
                                         <div className='no-schedule-weather-info-box'>
+                                            
                                             <div className='no-schedule-weather-day'>
                                                 {
-                                                    format(new Date(item.tm), "MM/dd (eee)", {locale: ko})
+                                                    format(addYears(new Date(item.tm),1), "MM/dd (eee)", {locale: ko})
                                                 }
                                             </div>
                                             <div className='no-schedule-weater-image'>
@@ -813,7 +814,7 @@ const CityInfoMain = () => {
                                                         (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? 'partly_cloudy_day' : 
                                                         (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? 'thunderstorm' : 
                                                         (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? 'cloudy_snowing' : 
-                                                        (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? 'rainy' : 
+                                                        (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '55' && item.avgWs > '2.2')) ? 'rainy' : 
                                                         (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? 'cloudy' : 'sunny'
                                                     }
                                                 </span><br/>
@@ -830,7 +831,7 @@ const CityInfoMain = () => {
                                         <div className='weather-info-box' style={{display:'flex'}}>
                                             <div className='weather-day'>
                                                 {
-                                                    format(new Date(item.tm), "MM/dd (eee)", {locale: ko})
+                                                    format(addYears(new Date(item.tm),1), "MM/dd (eee)", {locale: ko})
                                                 }
                                             </div>
                                             <div className='weater-image'>
@@ -842,7 +843,7 @@ const CityInfoMain = () => {
                                                         (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? 'partly_cloudy_day' : 
                                                         (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? 'thunderstorm' : 
                                                         (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? 'cloudy_snowing' : 
-                                                        (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? 'rainy' : 
+                                                        (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '55' && item.avgWs > '2.2')) ? 'rainy' : 
                                                         (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? 'cloudy' : 'sunny'
                                                     }
                                                 </span>
@@ -913,7 +914,7 @@ const CityInfoMain = () => {
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography style={{fontSize:'18px',fontFamily:'Montserrat'}} gutterBottom component="div">
+                                                                <Typography style={{fontSize:'18px',fontFamily:'Montserrat',maxHeight:'54px',height:'54px',overFlow:'hidden'}} gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
@@ -927,7 +928,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='1' onClick={()=>{moreinfo(value,keyWord)}}>더..?</span>
+                                <span className='more-city-info' value='1' onClick={()=>{moreinfo(value,keyWord)}}>More..?</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='1214'>
@@ -955,7 +956,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${city_num}/${item.contentid}`}>
@@ -970,12 +971,12 @@ const CityInfoMain = () => {
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
+                                                                <Typography gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
+                                                        <CardActions>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -984,7 +985,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='1214' onClick={()=>{moreinfo(value,keyWord)}}>더보기</span>
+                                <span className='more-city-info' value='1214' onClick={()=>{moreinfo(value,keyWord)}}>More..?</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='39'>
@@ -1012,7 +1013,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${city_num}/${item.contentid}`}>
@@ -1027,12 +1028,12 @@ const CityInfoMain = () => {
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
+                                                                <Typography gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
+                                                        <CardActions>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -1041,7 +1042,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='39' onClick={()=>{moreinfo(value,keyWord)}}>더보기</span>
+                                <span className='more-city-info' value='39' onClick={()=>{moreinfo(value,keyWord)}}>More..?</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='38'>
@@ -1069,7 +1070,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${city_num}/${item.contentid}`}>
@@ -1084,12 +1085,12 @@ const CityInfoMain = () => {
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
+                                                                <Typography gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
+                                                        <CardActions>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -1098,7 +1099,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <div className='more-city-info' value='38' onClick={()=>{moreinfo(value,keyWord)}}>더보기</div>
+                                <div className='more-city-info' value='38' onClick={()=>{moreinfo(value,keyWord)}}>More..?</div>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='15'>
@@ -1126,7 +1127,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${city_num}/${item.contentid}`}>
@@ -1141,12 +1142,12 @@ const CityInfoMain = () => {
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
+                                                                <Typography gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
+                                                        <CardActions>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -1155,7 +1156,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='15' onClick={()=>{moreinfo(value,keyWord)}}>더보기</span>
+                                <span className='more-city-info' value='15' onClick={()=>{moreinfo(value,keyWord)}}>More..?</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='28'>
@@ -1183,7 +1184,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${city_num}/${item.contentid}`}>
@@ -1198,12 +1199,12 @@ const CityInfoMain = () => {
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
+                                                                <Typography gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
+                                                        <CardActions>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -1212,7 +1213,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='28' onClick={()=>{moreinfo(value,keyWord,keyWord)}}>더보기</span>
+                                <span className='more-city-info' value='28' onClick={()=>{moreinfo(value,keyWord,keyWord)}}>More..?</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='32'>
@@ -1240,7 +1241,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item)
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${city_num}/${item.contentid}`}>
@@ -1255,12 +1256,12 @@ const CityInfoMain = () => {
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography style={{fontSize:'20px',fontFamily:'Montserrat'}} gutterBottom component="div">
+                                                                <Typography gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions style={{fontSize:'15px',marginTop:'3px',padding:'2px',width:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
+                                                        <CardActions>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>
@@ -1269,7 +1270,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='32' onClick={()=>{moreinfo(value,keyWord)}}>더보기</span>
+                                <span className='more-city-info' value='32' onClick={()=>{moreinfo(value,keyWord)}}>More..?</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                         </TabContext>
