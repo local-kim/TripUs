@@ -101,21 +101,11 @@ div{
 
 .sb-avatar__image{
     border-radius: 100%;
-<<<<<<< HEAD
-
-=======
     object-fit:cover;
->>>>>>> branch 'master' of https://github.com/local-kim/FinalProject.git
 }
 
 .text{
     font-size: 20px;
     font-family: Montserrat;
     font-weight: 600;
-<<<<<<< HEAD
-
-    object-fit:cover;
-
-=======
->>>>>>> branch 'master' of https://github.com/local-kim/FinalProject.git
 }
