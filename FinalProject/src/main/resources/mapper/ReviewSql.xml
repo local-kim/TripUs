@@ -38,7 +38,7 @@
 		SELECT ifnull(truncate(avg(stars),2), 0) from review where place_id=#{place_id}
 	</select>
 	<select id="getSumLikes" parameterType="String" resultType="int">
-		select sum(`check`) from `like` where place_id = #{place_id}
+		select ifnull(sum(`check`),0) from `like` where place_id = #{place_id}
 	</select>
 	  <select id="getLike" parameterType="Map" resultType="int">
       select count(*) from `like` where `like`.member_num = #{loginNum} and place_id = #{place_id} and `check`=1 
