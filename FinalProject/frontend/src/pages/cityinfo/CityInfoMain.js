@@ -279,9 +279,9 @@ const CityInfoMain = () => {
     // API
     // 날씨 
     // const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
-    // const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
+    const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
     // const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
-    const API_KEY="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D";  // 웅쓰꺼
+    // const API_KEY="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D";  // 웅쓰꺼
     
     // // 일정 계획 데이타
     const [cityPlan,setCityPlan]=useState([]);
@@ -914,12 +914,12 @@ const CityInfoMain = () => {
                                                                 </CardMedia>
                                                             }
                                                             <CardContent>
-                                                                <Typography style={{fontSize:'18px',fontFamily:'Montserrat',maxHeight:'54px',height:'54px',overFlow:'hidden'}} gutterBottom component="div">
+                                                                <Typography gutterBottom component="div">
                                                                     {item.title}
                                                                 </Typography>
                                                             </CardContent>
                                                         </CardActionArea>
-                                                        <CardActions style={{fontSize:'12px',marginTop:'3px',padding:'2px',maxWidth:'70px',backgroundColor:'rgb(240 240 245)',borderRadius:'20px', textAlign:'center',justifyContent:'center'}}>
+                                                        <CardActions>
                                                             {contentTypeId[item.cat3]}
                                                         </CardActions>
                                                     </Card>

@@ -69,12 +69,12 @@
 #cityinfo .css-o69gx8-MuiCardMedia-root {
     width: 250px;
     height: 200px;
-    border-radius: 0px 0px 8px 8px;
+    border-radius: 0px 0px 0px 0px;
 }
 #cityinfo .css-o69gx8-MuiCardMedia-root:hover {
     width: 250px;
     height: 200px;
-    border-radius: 0px 0px 8px 8px;
+    border-radius: 0px 0px 0px 0px;
     opacity: 0.8;
 }
 
@@ -304,7 +304,7 @@
     border-bottom: 1px solid rgb(240, 240, 240);
 }
 #cityinfo .css-jpu672-MuiPaper-root-MuiCard-root {
-    border-radius: 8px 8px 0px 0px;
+    border-radius: 8px 8px 8px 8px;
     box-shadow: 0 5px 15px rgb(0 0 0 / 8%);
 }
 #cityinfo .place-list-box {
@@ -449,7 +449,7 @@
     margin: 20px;
     width: 100px;
     height: 60px;
-    margin-left: 480px;
+    margin-left: 500px;
     box-shadow: 0 5px 15px rgb(0 0 0 / 8%);
     font-size: 20px;
     color: #75b4bd;
