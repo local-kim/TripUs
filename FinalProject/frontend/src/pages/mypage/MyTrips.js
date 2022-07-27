@@ -79,7 +79,7 @@ const MyTrips = ({data2, setCityTrip, loginNum, currentPage}) => {
               나의 일정
             </span>
 
-            <FormControlLabel control={
+            {/* <FormControlLabel control={
               <Checkbox
                 checked={checked}
                 onChange={handleChange}
@@ -91,7 +91,7 @@ const MyTrips = ({data2, setCityTrip, loginNum, currentPage}) => {
                   },
                 }}
               />} 
-            label="지난 일정 보기" />
+            label="지난 일정 보기" /> */}
           </div>
 
           {data2.list &&

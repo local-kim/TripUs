@@ -67,7 +67,7 @@ public class AuthController {
     @PostMapping("/kakaologin")
     public MemberSecurityDto kakaoLogin(@RequestBody LoginDto loginDto) {
         MemberSecurityDto member = service.getLoginInfo(loginDto.getId());	// 프로필 사진도 같이 받아옴
-        System.out.println(member);
+//        System.out.println(member);
         
         return member;
     }

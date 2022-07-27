@@ -19,6 +19,7 @@ public class ReviewPlaceDto {
 	private Timestamp created_at;
 	private String title;
 	private String cat3_name;
+	private int city_num;
 	private String city_name;
 	private String firstimage;
 }

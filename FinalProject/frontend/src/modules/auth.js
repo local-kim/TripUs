@@ -1,6 +1,7 @@
 // Actions
 const LOGIN = 'auth/LOGIN';
 const LOGOUT = 'auth/LOGOUT';
+const CHANGE_PHOTO = 'auth/CHANGE_PHOTO';
 const SET_TOKEN = 'auth/SET_TOKEN';
 const SET_CURRENT_USER = 'auth/SET_CURRENT_USER';
 
@@ -17,7 +18,14 @@ export const logout = () => (
   {
     type: LOGOUT
   }
-)
+);
+
+export const changePhoto = (user) => (
+	{
+		type: CHANGE_PHOTO,
+    user: user
+	}
+);
 
 // export const setToken = () => (
 //   {
@@ -44,17 +52,20 @@ const initialState = {
 export default function reducer(state = initialState, action){
 	switch(action.type){
 		case LOGIN:
-      console.log(action.user);
 			return {
 				isLoggedIn: true,
         saveId: action.saveId,
-        // isAuthenticated: true,
         user: action.user
 			};
     case LOGOUT:
       return {
         ...state,
         isLoggedIn: false
+      };
+    case CHANGE_PHOTO:
+      return {
+        ...state,
+        user: action.user
       };
     // case SET_TOKEN:
     //   return {

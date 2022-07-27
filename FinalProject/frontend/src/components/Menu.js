@@ -84,6 +84,7 @@ const KakaoLogout = () => {
     });
     alert('로그아웃이 완료되었습니다.');
     window.Kakao.Auth.setAccessToken(undefined);
+    navi("/");
   }
 };
 
@@ -231,7 +232,7 @@ const KakaoLogout = () => {
                       localStorage.removeItem('kakao_13541ddd20e5c786378637deb831a2be');
                       KakaoLogout();
                       dispatch(logout());
-                      
+                      navi("/");
 
                     }
                     else{
