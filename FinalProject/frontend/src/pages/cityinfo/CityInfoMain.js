@@ -16,7 +16,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import CityInfoImage from './CityInfoImage';
 import CityInfoMore from './CityInfoMore';
-import { add, addDays, differenceInDays, format, subYears } from 'date-fns';
+import { add, addDays, addYears, differenceInDays, format, subYears } from 'date-fns';
 import { useInView } from "react-intersection-observer"
 import { PlaceItem } from '../plan';
 import { height } from '@mui/system';
@@ -799,9 +799,10 @@ const CityInfoMain = () => {
                                 w_data && w_data.map((item,index) => (
                                     <div style={{marginRight:'5px'}}>
                                         <div className='no-schedule-weather-info-box'>
+                                            
                                             <div className='no-schedule-weather-day'>
                                                 {
-                                                    format(new Date(item.tm), "MM/dd (eee)", {locale: ko})
+                                                    format(addYears(new Date(item.tm),1), "MM/dd (eee)", {locale: ko})
                                                 }
                                             </div>
                                             <div className='no-schedule-weater-image'>
@@ -813,7 +814,7 @@ const CityInfoMain = () => {
                                                         (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? 'partly_cloudy_day' : 
                                                         (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? 'thunderstorm' : 
                                                         (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? 'cloudy_snowing' : 
-                                                        (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? 'rainy' : 
+                                                        (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '55' && item.avgWs > '2.2')) ? 'rainy' : 
                                                         (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? 'cloudy' : 'sunny'
                                                     }
                                                 </span><br/>
@@ -830,7 +831,7 @@ const CityInfoMain = () => {
                                         <div className='weather-info-box' style={{display:'flex'}}>
                                             <div className='weather-day'>
                                                 {
-                                                    format(new Date(item.tm), "MM/dd (eee)", {locale: ko})
+                                                    format(addYears(new Date(item.tm),1), "MM/dd (eee)", {locale: ko})
                                                 }
                                             </div>
                                             <div className='weater-image'>
@@ -842,7 +843,7 @@ const CityInfoMain = () => {
                                                         (item.iscs == "" || item.iscs != "") && ( '2' < item.avgWs || item.avgWs == '3.7') && ( '59' < item.avgRhm < '61') && (('35' < maxTa && minTa < '26') || ( '29' < maxTa && minTa < '20')) ? 'partly_cloudy_day' : 
                                                         (item.sumRn > '40') || ((item.iscs == "" || item.iscs != "") && (item.sumRn > '30' || item.sumRn == '') && ((item.avgWs > '5' && item.avgRhm > '80') || ('75' < item.avgRhm < '78' && (avgWs == "3.3" || avgWs == "1.5") && ((maxTa > '26' && minTa < '17') || (maxTa > '31' && minTa < '25'))))) ? 'thunderstorm' : 
                                                         (item.iscs == "" || item.iscs != "") && item.ddMes != "" ? 'cloudy_snowing' : 
-                                                        (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '50' && item.avgWs > '2')) ? 'rainy' : 
+                                                        (item.iscs == "" || item.iscs != "") && ((item.sumRn != "" ) || (item.avgRhm > '55' && item.avgWs > '2.2')) ? 'rainy' : 
                                                         (item.iscs == "" || item.iscs != "") && item.sumRn == '' && ((item.avgWs > '4' && item.avgRhm > '50') || (item.avgWs < '3' && item.avgRhm < '50'))? 'cloudy' : 'sunny'
                                                     }
                                                 </span>
