@@ -505,7 +505,7 @@ const PlanDetail = () => {
                                     <img src='../../DetailImage/share.png' alt='share' 
                                     style={{width:'17px', height:'17px'}}/> 1&nbsp;
                                 </div>
-                                <div className='bottom-price'>
+                                {/* <div className='bottom-price'>
                                     <select>
                                         <option>KRW</option>
                                         <option>USD</option>
@@ -515,7 +515,7 @@ const PlanDetail = () => {
                                         00,000,000
                                     </span>
                                     <div className='clear' />
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div className='clear' />
