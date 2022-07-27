@@ -143,16 +143,35 @@ const LoginForm = () => {
                       // setId(id);
                       // setEmail(email);
                       // goToMain();
-
+                      axios
+                    .post(process.env.REACT_APP_SPRING_URL+'auth/kakaologin', {
+                      id: id
+                    })
+                    .then(res => {
+                      console.log(res.data);
+                      
                       dispatch(login(false, {
                         id: id,
                         email: email,
                         name: nickname,
                         profile: profile,
-                        type: 2
+                        type: 2,
+                        num: res.data.num
                       }));
 
                       navi("/");
+                    })
+                    .catch(err => console.log(err));
+
+                      // dispatch(login(false, {
+                      //   id: id,
+                      //   email: email,
+                      //   name: nickname,
+                      //   profile: profile,
+                      //   type: 2
+                      // }));
+
+                      // navi("/");
                     })
                     .catch(err => console.log(err));
                 } else {
