@@ -477,21 +477,43 @@ const CityInfoMain = () => {
         })
     },[start_date,end_date])
 
+    // // 내 좋아요 현황
+    // useEffect(() => {
+    //     myLike();
+    // },[])
+    // const myLike=()=>{
+    //     if(!isLoggedIn){
+    //         return;
+    //     }
+    //     axios.get(like_url).then(res=>{
+    //         console.log(res.data)
+    //         if(res.data==null||res.data == 0){
+    //             // setLike_btn(res.data);
+    //             setChecked(false);
+    //         }else{
+    //             setLike_btn(res.data);
+    //             setChecked(true);
+    //         }
+    //     }).catch(err => {
+    //         alert(err);
+    //     })
+    // }
     // contenttype 12 + 14
     const place_12_14 = () => {
         setCategoryPlace1([...place12, ...place14]);
     }
 
-    const insert_btn = (e, contentid) => {
+    // 좋아요 ON
+    const insert_btn = (e, item) => {
         if (!isLoggedIn) {
             alert("로그인 후 이용해주세요")
-        } 
-        axios.post(insert_like_url,{place_id:String(contentid),loginNum,check:Number(checked)})
-        .then(res=>{
-            // alert("좋아요 true:",res.data);
-            // setLike_btn(true);
-            like_table();
-        })
+        }
+            axios.post(insert_like_url,{place: item, loginNum, cityNum: city_num, check:Number(checked)})
+            .then(res=>{
+                // alert("좋아요 true:",res.data);
+                // setLike_btn(true);
+                like_table();
+            })
     }
     // 좋아요 OFF
     const delete_btn = (e, contentid) => {
@@ -847,7 +869,7 @@ const CityInfoMain = () => {
                                                     :
                                                     <span class="material-icons heart_span" style={{color:'#ccc'}} 
                                                         onClick={()=>{
-                                                            insert_btn(event, item.contentid)
+                                                            insert_btn(event, item);
                                                         }}>favorite_border</span>
                                                 }
                                                 <Link to={`/place/${item.contentid}`}>

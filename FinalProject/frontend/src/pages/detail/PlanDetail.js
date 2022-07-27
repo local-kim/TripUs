@@ -441,7 +441,7 @@ const PlanDetail = () => {
             : ''}
             {/* 대표 이미지 */}
             <div className='main-image'
-                // style={{backgroundImage:'url(../../city_detail_image/yeosu.jpg)'}}>
+                // style={{backgroundImage:'url(../../city_detail_image/seoul2.jpg)'}}>
                 style={{backgroundImage:'url(../../city_detail_image/'+dimage+')'}}>
                 <div className='top-box'>
                     {/* 좋아요 버튼 on/off */}
