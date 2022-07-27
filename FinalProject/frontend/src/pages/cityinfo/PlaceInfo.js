@@ -322,7 +322,20 @@ const PlaceInfo=()=>{
 
         if(!isChecked){
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
-          axios.post(insertlikeUrl,{place_id:String(contentId),loginNum,check:Number(isChecked)}).then(res=>{
+          axios.post(insertlikeUrl,{
+            place_id:String(placeData.contentId),
+            contentid: String(placeData.contentid),
+            contenttypeid: String(placeData.contenttypeid),
+            title: placeData.title,
+            cat3: placeData.cat3,
+            addr1: placeData.addr1,
+            addr2: placeData.addr2,
+            firstimage: placeData.firstimage,
+            mapx: String(placeData.mapx),
+            mapy: String(placeData.mapy),
+            loginNum,
+            check:Number(isChecked)
+          }).then(res=>{
           //alert("좋아요 true:",res.data);
           setLike(res.data.check);
         })}
@@ -526,6 +539,7 @@ const PlaceInfo=()=>{
     //   var i3 = document.getElementById("uploadimgalt").style.visibility="visible"; 
     // }
 
+    let placeData;
 
     //kakomap + tourapi3
     const kakaomapscript = () => {
@@ -534,6 +548,7 @@ const PlaceInfo=()=>{
         delete axios.defaults.headers.common['Authorization'];
         axios.get(apiUrl)
         .then((res) => {
+          placeData = res.data.response.body.items.item;
         const apidata=res.data.response.body.items.item;
         const placex=apidata.mapx;  //관광지 위치(x좌표)
         const placey=apidata.mapy;  //관광지 위치(y좌표)
