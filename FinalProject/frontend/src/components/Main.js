@@ -133,6 +133,7 @@ const Main=(row)=>{
   const loginNum = useSelector(state => state.auth.user.num);
   const loginName = useSelector(state => state.auth.user.name);
   const loginProfile = useSelector(state => state.auth.user.profile);
+  const loginType = useSelector(state => state.auth.user.type);
 
   const pages = ['여행지', '일정 보기', '인기 일정', 'About']; //일정 만들기
   const pageLinks = ['city/list', 'plan/detail/1', 'plan/list', '']; //, 'plan/city/108'
@@ -530,8 +531,11 @@ const Main=(row)=>{
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              {
+                  isLoggedIn && loginType == 2 && <Avatar alt={loginName} src={loginProfile} />
+                }
                 {
-                  isLoggedIn && <Avatar alt={loginName} src={`${process.env.REACT_APP_SPRING_URL}save/${loginProfile}`} />
+                  isLoggedIn && loginType == 1 && <Avatar alt={loginName} src={`${process.env.REACT_APP_SPRING_URL}save/${loginProfile}`} />
                 }
                 {
                   !isLoggedIn && <Avatar src="/static/images/avatar/2.jpg" />
