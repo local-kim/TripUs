@@ -258,6 +258,7 @@
     background-color: white;
     margin-right: 15px;
     padding: 3px 3px;
+    cursor: pointer;
 }
 #plan-detail .bottom-box .bottom-head .material-icons {
     margin: 0 auto;

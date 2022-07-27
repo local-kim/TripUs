@@ -88,7 +88,9 @@ const PlanDetail = () => {
     const [endDate, setEndDate] = useState(format(new Date(), "yyyy-MM-dd"));
     const [duringDay, setDuringDay] = useState('');
     const [userName, setUserName] = useState('');
-    const [planCount, setPlanCount] = useState('');
+    const [planCount, setPlanCount] = useState(0);
+    const [userFile, setUserFile ] = useState('');
+    const [userNumber, setUserNumber ] = useState('');
     
     const SPRING_URL = process.env.REACT_APP_SPRING_URL;
     
@@ -214,6 +216,8 @@ const PlanDetail = () => {
         axios.get(nameUrl)
         .then(res => {
             setUserName(res.data[0].name);
+            setUserFile(res.data[0].file_name);
+            setUserNumber(res.data[0].member_num);
         }).catch(err => {
             // alert(err.data);
             swal("","존재하지 않는 일정","warning");
@@ -489,9 +493,12 @@ const PlanDetail = () => {
                 <div className='cover-bottom'>
                     <div className='bottom-box'>
                         <div className='bottom-head'>
-                        <span className="material-icons">person</span>
+                        {/* <span className="material-icons">person</span> */}
                             {/* <img alt='' src='../../DetailImage/box-user.png' /> */}
-                            {/* <img alt='' src={profilePhotoUrl+detailData[0].file_name} /> */}
+                            <img alt='돌려줘' src={profilePhotoUrl+userFile}
+                                onClick={() => (
+                                    navi(`../../../user/`+userNumber)
+                                )} />
                             <span><b style={{color:'white'}}>{userName}</b></span>
                         </div>
                         <div className='bottom-body'>

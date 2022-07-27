@@ -17,12 +17,12 @@ const ReviewList = ({reviewList}) => {
       {
         reviewList && reviewList.map((review, index) => (
           <div className='review' key={index}>
-            <img className='img' src={review.firstimage} alt='' onClick={() => navigate(`/place/${review.place_id}`)}/>
+            <img className='img' src={review.firstimage} alt='' onClick={() => navigate(`/place/${review.city_num}/${review.place_id}`)}/>
 
             <div style={{width: '-webkit-fill-available'}}>
               <div className='place-wrap'>
                 <div className='place'>
-                  <span className='title' onClick={() => navigate(`/place/${review.place_id}`)}>{review.title}</span>
+                  <span className='title' onClick={() => navigate(`/place/${review.city_num}/${review.place_id}`)}>{review.title}</span>
                   <span className='cat'>{review.cat3_name} • {review.city_name}</span>
                 </div>
 
