@@ -354,7 +354,7 @@ const PlanDetailMain = () => {
                                             <img alt='spot' src={day.firstimage !== null ? day.firstimage : '../../empty_image.jpg'} className='spot-img'/>
                                             <div className='spot-content-box'>
                                                 <div className='spot-name'>
-                                                <Link to={`/place/`+day.contentid} >
+                                                <Link to={`/place/${day.city_num}/${day.contentid}`} >
                                                     {day.title}
                                                 </Link>
                                                 </div>

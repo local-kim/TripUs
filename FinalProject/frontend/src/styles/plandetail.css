@@ -410,6 +410,7 @@
 
 #plan-detail .list-left {
     height: 100%;
+    min-height: 400px;
     width: 750px;
     padding-right: 25px;
     margin-bottom: 200px;
