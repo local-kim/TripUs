@@ -1006,7 +1006,7 @@ const Main=(row)=>{
 
                             <Myslide></Myslide>
                 
-                                     <div className="more_btn" style={{marginTop:'50px'}}> <Link to = {`plan/list`} style={{color:'black'}}> {allUserTrip} 개의 추천일정 모두보기</Link> </div> 
+                                     <div className="more_btn" style={{marginTop:'70px'}}> <Link to = {`plan/list`} style={{color:'black'}}> {allUserTrip} 개의 추천일정 모두보기</Link> </div> 
                             
                         </div>
                     </div>  
