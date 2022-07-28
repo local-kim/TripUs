@@ -11,6 +11,6 @@
 	</select>
 	
 	<select id="getReviewList" parameterType="int" resultType="review-place">
-		select review.num as review_num, title, cat3_name, city.name as city_name, place_id, stars, content, created_at, firstimage from review, city, place, service_type_code where review.place_id=place.contentid and review.member_num=#{memberNum} and service_type_code.cat3=place.cat3 and city_num=city.num order by created_at desc
+		select review.num as review_num, title, cat3_name, city.num as city_num, city.name as city_name, place_id, stars, content, created_at, firstimage from review, city, place, service_type_code where review.place_id=place.contentid and review.member_num=#{memberNum} and service_type_code.cat3=place.cat3 and city_num=city.num order by created_at desc
 	</select>
 </mapper>

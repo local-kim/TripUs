@@ -6,11 +6,12 @@ import axios from 'axios';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { nextDay } from 'date-fns';
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
     const[trip,setTrip] = useState('');
     const loginNum = useSelector(state => state.auth.user.num);
-
+    const navi = useNavigate();
 
     let calendarUrl=process.env.REACT_APP_SPRING_URL + "calendar/?loginNum="+loginNum;
     let dDay; 
@@ -62,11 +63,15 @@ const Dashboard = () => {
                                     events=
                                         {trip && trip.map((row, index)=>(
                                            
-                                            {                                               
+                                            {          
+
+                                     
                                                 title : row.name, 
-                                                color :calculateDday(row.startDate) < 0 && calculateDday(row.endDate) > 0 ? "red" : calculateDday(row.startDate) < 0 ? "gray" : "#98ddE3", //기본이 그냥 파랑임
+                                                color :calculateDday(row.startDate) < 0 && calculateDday(row.endDate) > 0 ? "#ffd467" : calculateDday(row.startDate) < 0 ? "gray" : "#98ddE3", //기본이 그냥 파랑임
                                                 start: row.startDate,
                                                 end: new Date(row.endDate).getTime(),
+                                                url: `/plan/detail/${row.num}`
+                                                
                                                                                       
                                             }
     

@@ -43,6 +43,7 @@ const PlaceInfo=()=>{
   const {cityNum, contentId}=useParams();
   const loginNum = useSelector(state => state.auth.user.num); //로그인번호 유지
   const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
+  const userPage = useNavigate();
     //git error catch
        //CityInfoMain에서 Api contentId 받기 (pcontentId)  [126078]
       // const location = useLocation();
@@ -77,9 +78,9 @@ const PlaceInfo=()=>{
     //지도api & 관광지 api 
     //const contentId=CityInfoMainContendId; //city페이지에서 contentid받는곳
     // const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
-    //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
+    const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
     //const placeApikey="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D"; //재호님 인증키
-     const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
+     //const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; // 일웅님 인증키
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
@@ -246,6 +247,7 @@ const PlaceInfo=()=>{
             //alert("x");
         }else{
             setReviewData(res.data);
+            console.log("pagelist:",res.data);
           }
         //console.log("reviewdatalength:",res.data.length);
         })
@@ -755,7 +757,7 @@ const PlaceInfo=()=>{
                     <Box sx={style}>
                       <Typography id="modal-modal-title" variant="h6" component="h2">
                       <div style={{display:'inline-flex',width:'665px'}}>
-                        <div>
+                        <div onClick={()=>userPage(`/user/${detailData[0].member_num}`)} style={{cursor:'pointer'}}>
                           {
                             detailData[0].file_name==null?
                             <div className='photo1'>
@@ -820,7 +822,11 @@ const PlaceInfo=()=>{
                        <div style={{display:'flex',flexDirection:'column'}}>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         
-                      <div style={{height:'180px',width:'550px',justifyItems:'center'}}>
+                      <div style={{height:'193px',width:'550px',justifyItems:'center'}}>
+
+                      <div>
+                         <pre style={{width:'550px',fontFamily:'inherit',fontSize:'17px'}} >{detailData[0].content}</pre>
+                      </div>
 
                       <div className='detailmodal'>
                        <div className='detailmodalimgs' style={{display:'flex',marginBottom:'30px',width:'550px',height:'180px',justifyContent: 'center'}}>
@@ -838,11 +844,7 @@ const PlaceInfo=()=>{
                       }
                       </div>
                       </div>
-
-                      <div>
-                         <pre style={{width:'550px',height:'250px',border:'1px solid #aaaaaa'}} >{detailData[0].content}</pre>
-                      </div>
-
+                          
                       </div>
                      
                       </Typography>
@@ -1060,7 +1062,7 @@ const PlaceInfo=()=>{
                       reviewData&&reviewData.map((row,idx)=>(
                         <div style={{display:'flex',borderBottom:'1px solid #a3a3a3',margin:'10px',width:'1072px'}} >
                         <div style={{flexDirection:'column',justifyContent:'center'}}>
-                          <div>
+                          <div onClick={()=>userPage(`/user/${row.member_num}`)} style={{cursor:'pointer'}}>
                             {
                               row.file_name==null?
                               <div className='photo1'>
@@ -1068,7 +1070,7 @@ const PlaceInfo=()=>{
                               person
                             </span>
                           </div>:
-                              <img src={profilePhotoUrl+row.file_name} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}}/>
+                              <img src={profilePhotoUrl+row.file_name} alt='ganzi' style={{width:'50px',height:'50px',borderRadius:'25px'}} />
                             }
                           </div>
                           <div style={{marginTop:'5px',textAlign:'center'}}>

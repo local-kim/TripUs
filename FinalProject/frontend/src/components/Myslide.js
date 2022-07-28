@@ -12,6 +12,14 @@ const Heemin1 = styled.div`
 
 
 
+
+.trip-name {
+    
+  font-size: ${props=>(props.idx==1?'20px':props.idx==0?'15px':'15px')};
+  font-weight : ${props=>(props.idx==1?'500':'')};
+
+}
+
 .plan-item
 
 {
@@ -33,7 +41,7 @@ const Heemin1 = styled.div`
   }
 
   .rankCircle{
-    margin-Left: ${props=>(props.idx==1?'115px':'0px')};
+  margin-Left: ${props=>(props.idx==1?'115px':props.idx==0?'90px':'90px')};
    font-size: ${props=>(props.idx==1?'20px':props.idx==0?'14px':'14px')};
    font-weight:  ${props=>(props.idx==1?'bold':props.idx==0?'normal':'normal')};
    margin-bottom: ${props=>(props.idx==1?'90px':'0px')};
@@ -41,7 +49,23 @@ const Heemin1 = styled.div`
    
   }
 
+
+  .date{
+    font-size: ${props=>(props.idx==1?'15px':props.idx==0?'13px':'13px')};
+  }
+
+
+  .member-name{
+  
+    font-size: ${props=>(props.idx==1?'15px':props.idx==0?'13px':'13px')};
+  }
 `
+
+
+  
+
+
+
 
 const Myslide = () => {
   let planUrl = `${process.env.REACT_APP_SPRING_URL}plan/rank3`;

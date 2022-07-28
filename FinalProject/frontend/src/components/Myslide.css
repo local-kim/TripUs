@@ -157,7 +157,7 @@ b, strong {
   }
   
   #plan-list2 .plan-item .trip-name{
-    font-size: 15px;
+   
     margin-bottom: 20px;
     margin-top: 5px;
   }
@@ -176,14 +176,14 @@ b, strong {
   #plan-list2 .plan-item .date,
   #plan-list2 .plan-item .days{
     font-family: 'Montserrat';
-    font-size: 13px;
+    
     font-weight: 500;
     color: gray;
     margin-bottom: 5px;
   }
   
   #plan-list2 .plan-item .member-name{
-    font-size: 13px;
+    
     color: rgb(110, 110, 110);
   }
   

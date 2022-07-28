@@ -258,6 +258,7 @@
     background-color: white;
     margin-right: 15px;
     padding: 3px 3px;
+    cursor: pointer;
 }
 #plan-detail .bottom-box .bottom-head .material-icons {
     margin: 0 auto;
@@ -690,7 +691,7 @@
 }
 #plan-detail .spot-number {
     float: left;
-    width: 20px;
+    width: 22px;
     height: 18px;
     line-height: 18px;
     color: white;

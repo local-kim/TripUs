@@ -32,7 +32,7 @@ const KakaoShareButton = ({row}) => {
         title: `${row.tripName}`,
         description: `${row.startDate}~${row.endDate}  
            (${row.days-1}박 ${row.days}일)` , 
-        imageUrl: 'https://www.myro.co.kr/myro_image/city/busan.jpg', 
+        imageUrl: `https://www.myro.co.kr/myro_image/city/${row.image}`, 
          
         link: {
           mobileWebUrl: url,
@@ -40,9 +40,8 @@ const KakaoShareButton = ({row}) => {
         },
       },
       social: {
-        likeCount: 286,
-        commentCount: 45,
-        sharedCount: 845,
+        likeCount: 9,
+ 
       },
       buttons: [
         {

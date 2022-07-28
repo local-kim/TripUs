@@ -5,7 +5,8 @@ import DaumPostcode from "react-daum-postcode";
 import './profile.css';
 import Avatar from 'react-avatar';
 import { set } from 'date-fns';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { changePhoto } from '../../modules/auth';
 
 
 
@@ -13,8 +14,9 @@ import { useSelector } from 'react-redux';
 
 const Profile = () => {
     
- 
+    const dispatch = useDispatch();
     const loginNum = useSelector(state => state.auth.user.num);
+    const loginId = useSelector(state => state.auth.user.id);
     const {num,Currentpage}=useParams();
     const [dto,setDto] =useState('');
     //url
@@ -143,8 +145,8 @@ const Profile = () => {
 
 
     
-     let updateUrl = process.env.REACT_APP_SPRING_URL + "mypage/update?loginNum="+loginNum
-     let updateUrl2 = process.env.REACT_APP_SPRING_URL + "mypage/update2?loginNum="+loginNum
+     let updateUrl = process.env.REACT_APP_SPRING_URL + "mypage/update?loginNum="+loginNum + "&id=" + loginId;
+     let updateUrl2 = process.env.REACT_APP_SPRING_URL + "mypage/update2?loginNum="+loginNum + "&id=" + loginId;
      const save=()=>{
         console.log(photo);
         // setDto({
@@ -158,7 +160,11 @@ const Profile = () => {
         axios.post(updateUrl2,{
             ...dto,
             registered_at: null
-        }).then(res=>{window.location.reload();})
+        }).then(res=>{
+            console.log(res.data);
+            dispatch(changePhoto(res.data)); // redux에 로그인 유저 정보 저장
+            window.location.reload();
+        })
         .catch(err => console.log(err));
         
     }
