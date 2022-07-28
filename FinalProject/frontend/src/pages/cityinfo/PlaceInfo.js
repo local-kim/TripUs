@@ -834,7 +834,7 @@ const PlaceInfo=()=>{
                             detailFileData&&detailFileData.map((row,idx)=>(
 
                               
-                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{maxWidth:'400px',maxHeight:'400px',objectFit:'contain'}} className='detailimg'/>
+                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{maxWidth:'400px',maxHeight:'400px',objectFit:'contain',marginRight:'5px'}} className='detailimg'/>
                               
                           
                           
