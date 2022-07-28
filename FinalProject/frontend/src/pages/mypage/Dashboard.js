@@ -70,6 +70,8 @@ const Dashboard = () => {
                                                 color :calculateDday(row.startDate) < 0 && calculateDday(row.endDate) > 0 ? "#ffd467" : calculateDday(row.startDate) < 0 ? "gray" : "#98ddE3", //기본이 그냥 파랑임
                                                 start: row.startDate,
                                                 end: new Date(row.endDate).getTime(),
+                                                url: `/plan/detail/${row.num}`
+                                                
                                                                                       
                                             }
     
