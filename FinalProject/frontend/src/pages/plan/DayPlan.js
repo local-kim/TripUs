@@ -18,6 +18,8 @@ const DayPlan = ({view, setView, day, setDay, focus, setFocus}) => {
   const navigate = useNavigate();
   // const {day} = useParams();
 
+  const API_KEY = process.env.REACT_APP_TOUR_API_KEY_SY;  // 뒷 두글자만 바꾸면 됨
+
   // redux에서 변수 얻기
   const dispatch = useDispatch();
   const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
@@ -67,14 +69,14 @@ const DayPlan = ({view, setView, day, setDay, focus, setFocus}) => {
   }, [inView]);
 
   // 추천 장소 url(arrange=P)
-  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${trip.area_code}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${trip.area_code}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
   if(trip.sigungu_code){  // 시군구 코드가 있는 도시이면
     areaUrl += `&sigunguCode=${trip.sigungu_code}`;
   }
 
   // 키워드 검색 url
-  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${trip.area_code}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${API_KEY}&keyword=${keyword}&areaCode=${trip.area_code}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
   if(trip.sigungu_code){  // 시군구 코드가 있는 도시이면
     keywordUrl += `&sigunguCode=${trip.sigungu_code}`;
