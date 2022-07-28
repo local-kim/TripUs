@@ -324,7 +324,8 @@ const DayPlan = ({view, setView, day, setDay, focus, setFocus}) => {
         <div className='right'>
           {/* 장소 검색창 */}
           <TextField id="" label="검색할 키워드를 입력하세요" variant="outlined" size="small" fullWidth onKeyPress={(e) => {
-            if(e.key === 'Enter' && e.target.value !== ''){
+            // if(e.key === 'Enter' && e.target.value !== ''){
+            if(e.key === 'Enter'){
               setKeyword(e.target.value);
               e.target.value = '';
               setPlaces([]);

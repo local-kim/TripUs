@@ -99,7 +99,7 @@ div.place_review_write button.btn_review_write{
   .btn-upload {
     width: 100px;
     height: 50px;
-    margin-top: 13px;
+    /* margin-top: 13px; */
     background: #f1f1f1;
     border-radius: 3px;
     cursor: pointer;

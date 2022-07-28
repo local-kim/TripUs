@@ -158,7 +158,7 @@ const Plan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}) => {
                 setDay(index + 1);
                 setFocus(index);
               }}>장소 추가</button>
-              <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
+              {/* <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button> */}
             </div>
           ))
         }

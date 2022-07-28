@@ -158,6 +158,7 @@
   margin: 5px;
   border-color: rgb(85, 181, 190);
   color: rgb(85, 181, 190);
+  width: 120px;
 }
 
 #plan .day .btn-place:hover{
@@ -322,7 +323,7 @@
 
 #day-plan .right .api-place-list{
   /* max-height: 50%; */
-  height: 66vh;
+  height: 68vh;
 }
 
 #day-plan .right .api-place-list .place-list{
