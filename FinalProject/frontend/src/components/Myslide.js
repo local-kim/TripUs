@@ -4,13 +4,21 @@ import 'swiper/css';
 import '../App.css';
 import axios from 'axios';
 import './Myslide.css'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import rankLogo from '../assets/images/rank.png';
 
 const Heemin1 = styled.div`
 
 
+
+
+.trip-name {
+    
+  font-size: ${props=>(props.idx==1?'20px':props.idx==0?'15px':'15px')};
+  font-weight : ${props=>(props.idx==1?'500':'')};
+
+}
 
 .plan-item
 
@@ -33,7 +41,7 @@ const Heemin1 = styled.div`
   }
 
   .rankCircle{
-    margin-Left: ${props=>(props.idx==1?'115px':'0px')};
+  margin-Left: ${props=>(props.idx==1?'115px':props.idx==0?'90px':'90px')};
    font-size: ${props=>(props.idx==1?'20px':props.idx==0?'14px':'14px')};
    font-weight:  ${props=>(props.idx==1?'bold':props.idx==0?'normal':'normal')};
    margin-bottom: ${props=>(props.idx==1?'90px':'0px')};
@@ -41,11 +49,25 @@ const Heemin1 = styled.div`
    
   }
 
+
+  .date{
+    font-size: ${props=>(props.idx==1?'15px':props.idx==0?'13px':'13px')};
+  }
+
+
+  .member-name{
+  
+    font-size: ${props=>(props.idx==1?'15px':props.idx==0?'13px':'13px')};
+  }
 `
 
-const Myslide = () => {
-  const navi = useNavigate();
 
+  
+
+
+
+
+const Myslide = () => {
   let planUrl = `${process.env.REACT_APP_SPRING_URL}plan/rank3`;
 
   const [tripList, setTripList] = useState([]);
@@ -66,17 +88,17 @@ const Myslide = () => {
         <div className='trip-wrap'>
           {
             tripList && tripList.map((trip, idx) => (
-              // <Link to={`/plan/detail/${trip.tripNum}`}>
+              <Link to={`/plan/detail/${trip.tripNum}`}>
                 <Heemin1 idx={idx}>
       
                 {/* <img src={rankLogo} alt='' style={{width:'60px'}}/> */}
                 <div className='plan-item'>
 
-                  <div className='city-img' style={{backgroundImage:`url(../../city_image/${trip.image})`,cursor:'pointer'}} onClick={() => navi(`/plan/detail/${trip.tripNum}`)}>
+                  <div className='city-img' style={{backgroundImage:`url(../../city_image/${trip.image})`}}>
                   </div>
                   <div className='info-wrap'>
                     <div style={{display:'flex',justifyContent:'space-between'}}>
-                      <div className='trip-name' style={{cursor:'pointer'}} onClick={() => navi(`/plan/detail/${trip.tripNum}`)}>{trip.tripName}</div>
+                      <div className='trip-name'>{trip.tripName}</div>
                       
                       <div className='likes'>
                         <i className="fa-solid fa-heart"></i>
@@ -84,7 +106,7 @@ const Myslide = () => {
                       </div>
                     </div>
                     <div className='date'>{trip.start_date} ~ {trip.end_date} ({trip.days}일)</div>
-                    <span className='member-name' style={{cursor:'pointer'}} onClick={() => navi(`/user/${trip.memberNum}`)}>{trip.memberName}님</span>
+                    <div className='member-name'>{trip.memberName}님</div>
 
                     <div className='rankCircle' style={{
                                 
@@ -114,7 +136,7 @@ const Myslide = () => {
 
                 </Heemin1>
 
-              // </Link>
+              </Link>
             ))
           }
         </div>
