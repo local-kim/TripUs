@@ -47,7 +47,8 @@
 * 지도 위에서 경로 보기
 * `redux`를 사용하여 일정 배열을 전역으로 저장
 
-(이미지 넣을건데 api가 말썽이에요)
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183984155-1ac56c73-72cb-4e89-9a7e-77a7f0d28d7b.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183984169-c972e883-cc07-466e-8113-f738ce9ae321.gif"></p>
+
 * 관광정보 API의 키워드 검색 서비스를 이용한 장소 검색
 * 장소 카테고리 필터링
 
