@@ -14,7 +14,7 @@
 ### Tool
 * Java, Spring Boot, MyBatis
 * React, Axios, Redux
-* AWS, MySql
+* AWS, MySQL
 
 ### API
 * 한국관광공사 Tour API
