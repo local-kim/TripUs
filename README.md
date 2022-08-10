@@ -35,30 +35,37 @@
 
 ## 현지
 ## 일정 만들기
-<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183881985-aab6eb9f-2242-4d42-875a-f690cd6f4670.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183887316-b9bf00e2-053b-4c43-8f81-47a600a1dce5.gif"></p>
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183881985-aab6eb9f-2242-4d42-875a-f690cd6f4670.gif"></p>
 
 * 캘린더에서 여행 기간 선택
 
-<p align="center"><img width="600" alt="" src="https://user-images.githubusercontent.com/63040140/183887316-b9bf00e2-053b-4c43-8f81-47a600a1dce5.gif"></p>
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183887316-b9bf00e2-053b-4c43-8f81-47a600a1dce5.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183891376-971c66de-9c95-4272-afe2-7f6d4715edad.gif"></p>
 
-* 장소 추가, 삭제
+* 관광정보 API에서 불러온 추천 장소와 DB에서 가져온 내가 저장한 장소
+* 일정에 장소 추가, 삭제
+* 드래그 앤 드랍으로 순서 변경
 * 지도 위에서 경로 보기
+
+이미지 넣을건데 api가 말썽이에요
+* 장소 검색
+* 장소 카테고리 필터링
+
+<p align="center"><img width="49%" style="margin:1%;" alt="" src="https://user-images.githubusercontent.com/63040140/183895437-41254a7f-e035-4e72-a451-a2a23a98afa9.gif"><img width="49%" style="margin:1%;" alt="" src="https://user-images.githubusercontent.com/63040140/183895446-8d7a35d6-b87f-4bbf-b7ae-686a42671aad.gif"></p>
+
+* 전체 날짜별 일정과 경로 보기
+* 페이지 이탈 경고
+
+## 일정 수정하기
+
+## 인기 일정
+
+## 여행지 목록
+
+## 유저 페이지
 
 ---
 
 ## 재호
- 
-<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183892421-7a71999b-25a8-457a-90b3-5d783ea34ea1.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183892489-9c95419d-c060-42cb-8b8a-9782063b098a.gif"></p>
-
-* 도시 검색
-
-<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183888510-b8d1c250-a3d7-4b30-827f-92f1308e0881.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183888669-c6f39860-cc54-4665-8d29-9c665824e9d1.gif"></p>
-
-* 도시 이미지 및 일정, 날씨 확인
-
-<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183888725-373f845a-3461-4e9e-afe3-2871d3d91fef.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183899352-c6434898-cced-456b-abea-f111f2572cbf.gif"></p>
-
-* 카테고리별 장소 리스트 및 좋아요
 
 ---
 
