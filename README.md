@@ -48,11 +48,14 @@
 
 ## 재호
  
-<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183888510-b8d1c250-a3d7-4b30-827f-92f1308e0881.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183888669-c6f39860-cc54-4665-8d29-9c665824e9d1.gif"></p>
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183892421-7a71999b-25a8-457a-90b3-5d783ea34ea1.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183892489-9c95419d-c060-42cb-8b8a-9782063b098a.gif"></p>
 
 * 도시 이미지 및 일정 날씨 확인
 
 <p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183888510-b8d1c250-a3d7-4b30-827f-92f1308e0881.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183888669-c6f39860-cc54-4665-8d29-9c665824e9d1.gif"></p>
+
+![cityinfosearch2]()
+
 ---
 
 ## 희민
