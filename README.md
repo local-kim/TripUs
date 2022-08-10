@@ -11,7 +11,7 @@
 * 사용자들이 남기는 장소 리뷰 & 별점
 
 ### Tool
-* Java, Spring Boot, MyBatis
+* Java, Spring Boot, Spring Security, MyBatis
 * React, Axios, Redux
 * AWS, MySQL
 
