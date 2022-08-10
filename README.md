@@ -13,7 +13,7 @@
 
 ### Tool
 * Java, Spring Boot, MyBatis
-* React, Axios
+* React, Axios, Redux
 * AWS, MySql
 
 ### API
