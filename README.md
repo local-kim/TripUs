@@ -1,5 +1,5 @@
 # Trip:Us
-![TRIP_US_LOGO-BLACK_title](https://user-images.githubusercontent.com/63040140/183838909-ae6dd896-889a-43bf-b7dc-8ac7868af882.png)
+<p align="center"><img width="200" alt="logo" src="https://user-images.githubusercontent.com/63040140/183838909-ae6dd896-889a-43bf-b7dc-8ac7868af882.png"></p>
 
 장기화된 코로나 펜데믹 현상으로 인해 외부 활동이 제한되어 답답했던
 그 동안의 우리들의 마음을 위로해줄 국내 여행 계획, 공유 사이트
