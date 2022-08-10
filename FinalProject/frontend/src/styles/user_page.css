@@ -15,7 +15,7 @@
   height: 100px;
   border-radius: 100%;
   /* object-fit: cover; */
-  background-size: contain;
+  background-size: cover;
   color: white;
   /* font-size: 50px; */
 }
@@ -162,7 +162,7 @@ cursor: pointer;
 
 #review-list .review{
   /* border: '1px solid gray'; */
-  width: 600px;
+  width: 750px;
   /* margin: 20px auto; */
   margin: 0 auto;
   padding: 25px 15px;
@@ -173,12 +173,14 @@ cursor: pointer;
 }
 
 #review-list .review:not(:last-child){
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #eeeeee;
 }
 
 #review-list .img{
-  width: 57px;
+  max-width: 57px;
+  min-width: 57px;
   height: 57px;
+  object-fit: cover;
   border-radius: 5px;
   margin-right: 20px;
   cursor: pointer;
@@ -217,4 +219,18 @@ cursor: pointer;
   margin: 10px 0 0 2px;
   font-family: inherit;
   font-size: inherit;
+}
+
+#review-list .no-image{
+  min-width: 57px;
+  max-width: 57px;
+  height: 57px;
+  border-radius: 5px;
+  background-color: #eeeeee;
+  color: gray;
+  margin-right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }

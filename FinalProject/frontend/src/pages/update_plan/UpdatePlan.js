@@ -22,6 +22,8 @@ const UpdatePlan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}
   });
 
   const [plan, setPlan] = useState(useSelector(state => state.planner.plan));
+  // const [initPlan, setInitPlan] = useState([]);
+  let initPlan = [];  // DB에서 plan 받아올 배열
   // console.log(plan);
 
   // const [focus, setFocus] = useState(0);
@@ -29,10 +31,12 @@ const UpdatePlan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}
   let tripUrl = `${process.env.REACT_APP_SPRING_URL}plan/trip-info?tripNum=`;
   let planUrl = `${process.env.REACT_APP_SPRING_URL}plan/place-list?tripNum=`;
 
-  // redux에 plan이 없을 때만 axios로 DB에서 일정 가져오기
+  // redux에 plan이 없을 때 or redux에 저장된 tripNum이 다를 때 axios로 DB에서 일정 가져오기
   // plan이 있으면 그거 사용하기
   useEffect(() => {
-    if(plan.length === 0){
+    if(plan.length === 0 || tripInfo.tripNum != tripNum){
+      // console.log("일정 가져옴");
+
       axios.all([axios.get(tripUrl + tripNum), axios.get(planUrl + tripNum)])
       .then(
         axios.spread((res1, res2) => {
@@ -40,15 +44,22 @@ const UpdatePlan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}
           setTripInfo(res1.data);
           dispatch(saveTrip({...res1.data, areaCode: res1.data.area_code, sigunguCode: res1.data.sigungu_code}));
 
+          // console.log(res2.data);
+          // console.log(initPlan);
+
           // plan 처리
           for(let i = 0; i < res1.data.days; i++){
-            plan.push(res2.data.filter(place => place.day == i + 1));
-            // console.log(`day ${i + 1}`, plan[i]);
+            initPlan.push(res2.data.filter(place => place.day == i + 1));
+            // console.log(initPlan);
           }
+
         })
       )
       .then(()=>{
-        dispatch(savePlan(plan));
+        // console.log(initPlan);
+        setPlan(initPlan);
+        // console.log(plan);
+        dispatch(savePlan(initPlan));
       })
       .catch(err => console.log(err));
     }
@@ -71,7 +82,7 @@ const UpdatePlan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}
 
   // kakao map
   const kakaoMapScript = () => {
-    const container = document.getElementById('map'); // 지도를 표시할 div  
+    const container = document.getElementById('map'); // 지도를 표시할 div
 
     const options = {
       center: new kakao.maps.LatLng(tripInfo.y, tripInfo.x), // 지도의 중심좌표
@@ -141,7 +152,8 @@ const UpdatePlan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}
   };
 
   useEffect(() => {
-    kakaoMapScript();
+    if(tripInfo.tripNum == tripNum)
+      kakaoMapScript();
   }, [focus, tripInfo]);
 
   return (
@@ -149,39 +161,40 @@ const UpdatePlan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}
       <div id='map'></div>
 
       <div className='box-wrap'>
-        <div className='title'>{tripInfo.cityName} 여행</div>
-        {
-          tripInfo.days == 1 ? <div className='period'>{tripInfo.startDate} ({tripInfo.days}일)</div> : <div className='period'>{tripInfo.startDate} ~ {tripInfo.endDate} ({tripInfo.days}일)</div>
-        }
+        {tripInfo.tripNum == tripNum && <div>
+          <div className='title'>{tripInfo.tripName}</div>
+          {
+            tripInfo.days == 1 ? <div className='period'>{tripInfo.startDate} ({tripInfo.days}일)</div> : <div className='period'>{tripInfo.startDate} ~ {tripInfo.endDate} ({tripInfo.days}일)</div>
+          }
 
-        <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={updatePlan}>일정 저장하기</button>
-        {
-          // days 만큼 반복문 돌리기
-          tripInfo && [...Array(tripInfo.days)].map((day, index) => (
-            <div key={index + 1} className='day'>
-              <span className='title' onClick={() => setFocus(index)}>Day {index + 1}</span>
+          <button type='button' className='btn btn-primary btn-sm btn-plan' onClick={updatePlan}>일정 저장하기</button>
+          {
+            // days 만큼 반복문 돌리기
+            tripInfo && [...Array(tripInfo.days)].map((day, index) => (
+              <div key={index + 1} className='day'>
+                <span className='title' onClick={() => setFocus(index)}>Day {index + 1}</span>
 
-              <div className='day-place-list'>
-                {
-                  plan[index] && plan[index].map((place, i) => (
-                    <div className='place-list-item' key={i}>
-                      <NumPlaceItem place={place} num={i + 1} focus={focus === (index) ? true : false}/>
-                    </div>
-                  ))
-                }
+                <div className='day-place-list'>
+                  {
+                    plan[index] && plan[index].map((place, i) => (
+                      <div className='place-list-item' key={i}>
+                        <NumPlaceItem place={place} num={i + 1} focus={focus === (index) ? true : false}/>
+                      </div>
+                    ))
+                  }
+                </div>
+                <button type='button' className='btn btn-outline-primary btn-sm btn-place' onClick={() => {
+                  // navigate(`/plan/update/${tripNum}/${index + 1}`);
+                  setView(2);
+                  setDay(index + 1);
+                  setFocus(index);
+                }}>장소 추가</button>
+                <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
               </div>
-              <button type='button' className='btn btn-outline-primary btn-sm btn-place' onClick={() => {
-                // navigate(`/plan/update/${tripNum}/${index + 1}`);
-                setView(2);
-                setDay(index + 1);
-                setFocus(index);
-              }}>장소 추가</button>
-              <button type='button' className='btn btn-outline-secondary btn-sm btn-memo'>메모 추가</button>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>}
       </div>
-
     </div>
   );
 };

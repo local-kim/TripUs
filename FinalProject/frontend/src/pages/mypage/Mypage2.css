@@ -491,12 +491,14 @@ svg:not(:root) {
 }
 
 #my-reviews .review:not(:last-child){
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid #eeeeee;
 }
 
 #my-reviews .img{
-  width: 57px;
+  max-width: 57px;
+  min-width: 57px;
   height: 57px;
+  object-fit: cover;
   border-radius: 5px;
   margin-right: 20px;
   cursor: pointer;
@@ -535,6 +537,20 @@ svg:not(:root) {
   margin: 10px 0 0 2px;
   font-family: inherit;
   font-size: inherit;
+}
+
+#my-reviews .no-image{
+  min-width: 57px;
+  max-width: 57px;
+  height: 57px;
+  border-radius: 5px;
+  background-color: #eeeeee;
+  color: gray;
+  margin-right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 .pagination li{
