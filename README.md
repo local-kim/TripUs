@@ -34,10 +34,15 @@
 ---
 
 ## 현지
-<p align="center"><img width="600" alt="" src="https://user-images.githubusercontent.com/63040140/183881985-aab6eb9f-2242-4d42-875a-f690cd6f4670.gif"></p>
+## 일정 만들기
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183881985-aab6eb9f-2242-4d42-875a-f690cd6f4670.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183887316-b9bf00e2-053b-4c43-8f81-47a600a1dce5.gif"></p>
 
 * 캘린더에서 여행 기간 선택
 
+<p align="center"><img width="600" alt="" src="https://user-images.githubusercontent.com/63040140/183887316-b9bf00e2-053b-4c43-8f81-47a600a1dce5.gif"></p>
+
+* 장소 추가, 삭제
+* 지도 위에서 경로 보기
 
 ---
 
