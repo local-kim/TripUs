@@ -36,8 +36,9 @@
 
 * `react-date-range` 패키지를 사용하여 캘린더에서 여행 기간 선택
 
-<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183970760-352d7a19-edc9-417d-b156-43f5d6377c08.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183891376-971c66de-9c95-4272-afe2-7f6d4715edad.gif"></p>
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183970760-352d7a19-edc9-417d-b156-43f5d6377c08.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183975640-d54c6ac3-b372-467e-9381-11185bb1dc69.gif"></p>
 
+* 날짜별 일정 편집
 * 관광정보 API의 지역기반 조회 서비스에서 불러온 추천 장소와 DB에서 가져온 내가 저장한 장소
 * `react-intersection-observer` 패키지를 사용하여 추천 장소 리스트는 스크롤 페이징으로 구현
 * 일정에 장소 추가, 삭제
