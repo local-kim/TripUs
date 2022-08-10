@@ -56,10 +56,10 @@
 
 * 도시 이미지 및 일정, 날씨 확인
 
-<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183888725-373f845a-3461-4e9e-afe3-2871d3d91fef.gif"><img width="50%" alt="" src=""></p>
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183888725-373f845a-3461-4e9e-afe3-2871d3d91fef.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183899352-c6434898-cced-456b-abea-f111f2572cbf.gif"></p>
 
 * 카테고리별 장소 리스트 및 좋아요
-* 
+
 ---
 
 ## 희민
