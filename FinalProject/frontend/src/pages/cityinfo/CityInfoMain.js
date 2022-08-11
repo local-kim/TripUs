@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import Box from '@mui/material/Box';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -202,7 +202,9 @@ const CityInfoMain = () => {
         C01160001: '캠핑코스',
         C01170001: '맛코스',
       }
+    
 
+    
     // 회원넘버, 로그인중?
     const loginNum = useSelector(state => state.auth.user.num);
     const isLoggedIn = useSelector(state => state.auth.isLoggedIn); //로그인여부 체크
@@ -261,6 +263,7 @@ const CityInfoMain = () => {
     const [keyWord,setKeyWord]=useState('');  // 검색 input 관광지 contentid 담는 변수
     const [page,setPage]=useState(2);   // 관광지 목록 데이타 페이지
     const [keyword_contenttypeid, setKeyword_contenttypeid] = useState('');
+    // const [y,setY] = useState(1451);
     
     const [categoryPlace0,setCategoryPlace0] = useState([]);  // 전체보기
     const [categoryPlace1,setCategoryPlace1] = useState([]);  // 12 명소
@@ -274,12 +277,23 @@ const CityInfoMain = () => {
     const [place12,setPlace12] = useState([]);
     const [place14,setPlace14] = useState([]);
     
-    
+    // 맨 아래로 화면 전환
+    // 1
+    // const messagesEndRef = useRef(null)
+    // const scrollToBottom = () => {
+    //     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+    // }
+    // useEffect(() => {
+    //     scrollToBottom();
+    // }, [categoryPlace0,categoryPlace1,categoryPlace2,categoryPlace3,categoryPlace4,categoryPlace5,categoryPlace6]);
+    // 2
+    const [ navy, setNavy ] = useState(0);
+
 
     // API
     // 날씨 
-    // const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";       // 내꺼
-    const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
+    const API_KEY="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D";  // 내꺼
+    // const API_KEY="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D";  // 현지씌꺼
     // const API_KEY="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D";  // 시연씌꺼
     // const API_KEY="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D";  // 웅쓰꺼
     
@@ -471,6 +485,8 @@ const CityInfoMain = () => {
         })
     }
 
+    
+
     // 날씨 API 데이터
     useEffect(()=>{
         axios.get(weather_url)
@@ -500,6 +516,7 @@ const CityInfoMain = () => {
     //         alert(err);
     //     })
     // }
+
     // contenttype 12 + 14
     const place_12_14 = () => {
         setCategoryPlace1([...place12, ...place14]);
@@ -928,7 +945,11 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='1' onClick={()=>{moreinfo(value,keyWord)}}>More..?</span>
+                                <span className='more-city-info' value='1' onClick={()=>{
+                                    moreinfo(value,keyWord);
+                                    setNavy(navy + Number(710));
+                                    window.scrollTo(0, navy + Number(710))
+                                    }}>More..?</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='1214'>
@@ -1213,7 +1234,7 @@ const CityInfoMain = () => {
                                         ))
                                     }
                                 </div>
-                                <span className='more-city-info' value='28' onClick={()=>{moreinfo(value,keyWord,keyWord)}}>More..?</span>
+                                <span className='more-city-info' value='28' onClick={()=>{moreinfo(value,keyWord)}}>More..?</span>
                                 {/* </div> 서브카테고리 div 닫는거 */}
                             </TabPanel>
                             <TabPanel value='32'>

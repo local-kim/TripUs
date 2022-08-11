@@ -38,7 +38,12 @@ const MyReviews = ({reviewList}) => {
       {
         reviewList && reviewList.map((review, index) => (
           <div className='review' key={index}>
-            <img className='img' src={review.firstimage} alt='' onClick={() => navigate(`/place/${review.city_num}/${review.place_id}`)}/>
+            {/* <img className='img' src={review.firstimage} alt='' onClick={() => navigate(`/place/${review.city_num}/${review.place_id}`)}/> */}
+
+            {
+              // 이미지 없으면 표시하지 않음
+              review.firstimage ? <img className='img' src={review.firstimage} alt='' onClick={() => navigate(`/place/${review.city_num}/${review.place_id}`)}/> : <span className="no-image material-symbols-outlined" onClick={() => navigate(`/place/${review.city_num}/${review.place_id}`)}>image_not_supported</span>
+            }
 
             <div style={{width: '-webkit-fill-available'}}>
               <div className='place-wrap'>

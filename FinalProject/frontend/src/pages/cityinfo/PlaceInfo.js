@@ -78,9 +78,9 @@ const PlaceInfo=()=>{
     //지도api & 관광지 api 
     //const contentId=CityInfoMainContendId; //city페이지에서 contentid받는곳
     // const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
-    const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
+    // const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
     //const placeApikey="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D"; //재호님 인증키
-     //const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
+     const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; // 일웅님 인증키
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
@@ -276,8 +276,8 @@ const PlaceInfo=()=>{
           //e.preventDefault();
           axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('jwtToken')}`; 
           if(!isLoggedIn){
-            alert("먼저 로그인해주세요");}
-          axios.post(insertUrl,{place_id:contentId,member_num:loginNum,stars,content}).then(res=>{ 
+            alert("먼저 로그인해주세요"); }else{
+            axios.post(insertUrl,{place_id:contentId,member_num:loginNum,stars,content}).then(res=>{ 
               // alert("성공");
               pageList();
               setStarsValue("");
@@ -287,6 +287,8 @@ const PlaceInfo=()=>{
               // alert(err);
               console.log(err);
             })
+          }
+          
           }
 
 
@@ -834,7 +836,7 @@ const PlaceInfo=()=>{
                             detailFileData&&detailFileData.map((row,idx)=>(
 
                               
-                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{maxWidth:'400px',maxHeight:'400px',objectFit:'contain'}} className='detailimg'/>
+                            <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:""} alt={detailFileData.row} style={{maxWidth:'400px',maxHeight:'400px',objectFit:'contain',marginRight:'5px'}} className='detailimg'/>
                               
                           
                           
@@ -918,7 +920,7 @@ const PlaceInfo=()=>{
                         detailFileData&&detailFileData.map((row,idx)=>(
                         <div>
                           {/* <img src={detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]} alt={detailFileData.row} style={{width:'150px',height:'150px',objectFit:'contain'}} /> */}
-                          <div  style={{backgroundImage:`url(${detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]})`,width:'100px',height:'100px',backgroundSize:'contain',textAlign:'right',marginLeft:'13px'}}>
+                          <div  style={{backgroundImage:`url(${detailFileData[idx]?photoUrl+detailFileData[idx]:photoUrl+detailFileData[idx]})`,width:'100px',height:'100px',backgroundSize:'cover',textAlign:'right',marginLeft:'13px'}}>
                             {/* <button type="button" onClick={()=>{onOneDelete(editDetailData[idx].review_photo_num, idx);}}>삭제</button> */}
                             <div style={{color:'red',fontWeight:'bold',cursor:'pointer'}}   onClick={()=>{onOneDelete(editDetailData[idx].review_photo_num, idx);}}>
                               <i class="fa-solid fa-circle-minus"></i>
@@ -944,7 +946,7 @@ const PlaceInfo=()=>{
                         deleteModalFileImage(idx);
                         console.log(idx+"삭제");
                       }}>삭제</button> */}
-                        <div style={{backgroundImage:`url(${photoUrl2+row})`,width:'100px',height:'100px',backgroundSize:'contain',textAlign:'right',marginLeft:'13px'}}>
+                        <div style={{backgroundImage:`url(${photoUrl2+row})`,width:'100px',height:'100px',backgroundSize:'cover',textAlign:'right',marginLeft:'13px'}}>
                           <div style={{color:'red',fontWeight:'bold',cursor:'pointer'}}  onClick={()=>{
                           deleteModalFileImage(idx);
                           // console.log(idx+"삭제");
@@ -962,8 +964,8 @@ const PlaceInfo=()=>{
                          }}></textarea>
                       </div>
 
-                      <div style={{justifyContent:'center',display:'inline-flex'}}>
-                         <button type='button' className='btn btn-default' style={{border:'1px solid gray'}} onClick={()=>{
+                      <div style={{justifyContent:'center',display:'flex',marginTop: '10px'}}>
+                         <button type='button' className='btn btn-default' style={{border:'1px solid gray', marginRight:'10px'}} onClick={()=>{
                           onUpdate(editDetailData[0].num);
                          }}>수정완료</button>
 
@@ -975,7 +977,7 @@ const PlaceInfo=()=>{
                   </label>
                   <input type='file' name='modal-upload' accept='image/*' multiple onChange={modaluploadImage} onClick={()=>console.log("modal")} id="file2" />
                     {/*map돌릴예정*/}
-                    {
+                    {/* {
                       modalfilename&&modalfilename.map((row,idx)=>(
                         <div>
                      <img src={photoUrl2+row} style={{width:'120px',marginLeft:'130px'}} alt= "1" />
@@ -984,7 +986,7 @@ const PlaceInfo=()=>{
                       deleteModalFileImage(idx);
                      }}>삭제</button>
                      </div>
-                      ))}
+                      ))} */}
                       </div>
                       </Typography>
                     </Box>
@@ -1031,7 +1033,7 @@ const PlaceInfo=()=>{
                 <textarea placeholder='50글자내로 작성해주세요🥕' className='review' value={refreshReview} onChange={(e)=>{setContent(e.target.value);}}></textarea>
                 <div style={{display:'flex',justifyContent:'left'}}>
                 <label for="file">
-                    <div class="btn-upload">
+                    <div class="btn-upload" style={{marginTop:'13px'}}>
                       <span class="material-icons-outlined">add_photo_alternate</span>
                     </div>
                    </label>

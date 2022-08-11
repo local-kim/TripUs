@@ -44,7 +44,8 @@ const DayPlaceList = ({dayPlan, setDayPlan, removePlace}) => {
                             }
                           </div> */}
                         
-                          <button type='button' className='edit-btn btn btn-danger btn-sm' onClick={() => removePlace(index)}>−</button>
+                          {/* <button type='button' className='edit-btn btn btn-danger btn-sm' onClick={() => removePlace(index)}>−</button> */}
+                          <button type='button' className='edit-btn btn btn-danger btn-sm' onClick={() => removePlace(index)}><span class="material-symbols-rounded">remove</span></button>
                         </div>
                       </div>
                     )}

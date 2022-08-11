@@ -14,6 +14,8 @@ import ko from 'date-fns/locale/ko';
 const { kakao } = window;
 
 const UpdateDayPlan = ({view, setView, day, setDay, focus, setFocus}) => {
+  const API_KEY = process.env.REACT_APP_TOUR_API_KEY_SY;  // 뒷 두글자만 바꾸면 됨
+
   const navigate = useNavigate();
   // const {tripNum, day} = useParams();
   const {tripNum} = useParams();
@@ -74,14 +76,14 @@ const UpdateDayPlan = ({view, setView, day, setDay, focus, setFocus}) => {
   }, [inView]);
 
   // 추천 장소 url(arrange=P)
-  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&areaCode=${trip.areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let areaUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?ServiceKey=${API_KEY}&areaCode=${trip.areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
   if(trip.sigunguCode){  // 시군구 코드가 있는 도시이면
     areaUrl += `&sigunguCode=${trip.sigunguCode}`;
   }
 
   // 키워드 검색 url
-  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${process.env.REACT_APP_TOUR_API_KEY}&keyword=${keyword}&areaCode=${trip.areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
+  let keywordUrl = `http://api.visitkorea.or.kr/openapi/service/rest/KorService/searchKeyword?ServiceKey=${API_KEY}&keyword=${keyword}&areaCode=${trip.areaCode}&numOfRows=10&arrange=B&MobileOS=ETC&MobileApp=AppTest&_type=json`;
 
   if(trip.sigunguCode){  // 시군구 코드가 있는 도시이면
     keywordUrl += `&sigunguCode=${trip.sigunguCode}`;
@@ -299,14 +301,14 @@ const UpdateDayPlan = ({view, setView, day, setDay, focus, setFocus}) => {
         <div className='left'>
           <div style={{textAlign:'center',color:'gray',fontSize:'14px'}}>{format(add(new Date(trip.startDate), {days: day - 1}), "MM/dd (eee)", {locale: ko})}</div>
           <div className='title-wrap'>
-            {
+          {
               // day1이면 이전 날짜 버튼 안보임
-              day == 1 ? <button type='button' className='btn btn-sm btn-arrow' style={{opacity:'0',cursor:'default'}}>ᐸ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={prevDay}>ᐸ</button>
+              day == 1 ? <span class="material-symbols-rounded btn-arrow" style={{opacity:'0',cursor:'default'}}>chevron_left</span> : <span class="material-symbols-rounded btn-arrow" style={{cursor:'pointer'}} onClick={prevDay}>chevron_left</span>
             }
             <span className='title'>DAY {day}</span>
             {
               // 마지막 날이면 다음 날짜 버튼 안보임
-              day == trip.days ? <button type='button' className='btn btn-sm btn-arrow' style={{opacity:'0',cursor:'default'}}>ᐳ</button> : <button type='button' className='btn btn-sm btn-arrow' onClick={nextDay}>ᐳ</button>
+              day == trip.days ? <span class="material-symbols-rounded btn-arrow" style={{opacity:'0',cursor:'default'}}>chevron_right</span> : <span class="material-symbols-rounded btn-arrow" style={{cursor:'pointer'}} onClick={nextDay}>chevron_right</span>
             }
           </div>
 

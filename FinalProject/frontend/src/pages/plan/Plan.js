@@ -27,7 +27,11 @@ const Plan = ({view, setView, day, setDay, setIsBlocking, focus, setFocus}) => {
 
     axios.post(insertUrl, {
       plan: plan,
-      trip: trip,
+      trip: {
+        ...trip,
+        startDate: format(trip.startDate, "yyyy-MM-dd"),
+        endDate: format(trip.endDate, "yyyy-MM-dd")
+      },
       loginNum: loginNum
     })
     .then(res => {
