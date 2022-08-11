@@ -306,9 +306,9 @@ const JoinForm = (props) => {
                               },
                               // validate: (value) => value === user_email_check,
                             })}/>
+                            {errors.email && <p style={{color:'#1e87f0'}}>{errors.email?.message}</p>}
                             <button type='button' className='btn'
                               onClick={onEmailCheck}>중복확인</button>
-                            {errors.email && <p style={{color:'#1e87f0'}}>{errors.email?.message}</p>}
                             </td>
                         </tr>
                         <tr>

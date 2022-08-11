@@ -29,7 +29,7 @@ const ChangePassword = () => {
       <div>
           <label class="label-text" for="findUserPwdEmail">새로운 비밀번호</label>
           <div class="uk-form-controls">
-            <input class="uk-input" type="text" id="findUserPwdEmail" placeholder="" onChange={(e) => setPassword(e.target.value)}/>
+            <input class="uk-input" type="password" id="findUserPwdEmail" placeholder="" onChange={(e) => setPassword(e.target.value)}/>
           </div>
       </div>
 
