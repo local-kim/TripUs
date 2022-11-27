@@ -5,13 +5,20 @@ spring:
     livereload:
       enabled: true
   
-# mysql
+# mysql (aws)
+  #datasource:
+    #driver-class-name: c#om.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://boccu.cemjnnwtaor1.us-west-2.rds.amazonaws.com:3306/final_project?serverTimezone=Asia/Seoul
+    #username: boccu
+    #password: 12341234
+
+#mysql (local/(local 각자 로컬 계정에 맞게 수정하시면됩니다))
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://boccu.cemjnnwtaor1.us-west-2.rds.amazonaws.com:3306/final_project?serverTimezone=Asia/Seoul
-    username: boccu
-    password: 12341234
-
+    url: jdbc:mysql://localhost:3306/final_project?serverTimezone=Asia/Seoul
+    username: root
+    password: 1234
+    
 # mybatis
 mybatis:
   type-aliases-package: data.mapper,data.dto

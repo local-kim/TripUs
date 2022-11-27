@@ -78,9 +78,11 @@ const PlaceInfo=()=>{
     //지도api & 관광지 api 
     //const contentId=CityInfoMainContendId; //city페이지에서 contentid받는곳
     // const contentId=126078; //임시 contentid 값 추후 cityInfo에서 contentid 넘겨받기 [ 광안리해수욕장 : 126078] [강화도 : 125502] [강화도 동막해변:127291]
-    // const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
-    //const placeApikey="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D"; //재호님 인증키
-     const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
+     //const placeApikey="sRb6GSV%2FXAgOAdS%2FpBID9d0lsR8QfJ78C4bJYMZCu2MItPGIbX8JvFumAqXoFD61AoXODAxJdlrUaDwDavWlsg%3D%3D"; //내인증키
+     //env opentour api key
+     const placeApikey=process.env.REACT_APP_TOUR_API_KEY_SY;
+     //const placeApikey="hG2QkKkmuiN38w%2BeGu53VbRK%2BBNzKRpnjbLE%2BHDXZ0dHzgbBQ67K67NsuR5xOAs%2BErSqbSpOpk1UKBnj4dvlnA%3D%3D"; //재호님 인증키
+    // const placeApikey="YHbvEJEqXIWLqYGKEDkCqF7V08yazpZHKk3gWVyGKJpuhY5ZowEIwkt9i8nmTs%2F5BMBmSKWuyX349VO5JN6Tsg%3D%3D"; //현지언니 인증키
     //const placeApikey="7Et3sUoEnYoi9UiGk4tJayBnDo4ZMQ%2FM%2FOkEKTJMSjXkoukxdqrTDOu3WAzTgO5QsOTQOBSKfwMMuIbl8LyblA%3D%3D"; // 일웅님 인증키
     const [placeTitle, setPlaceTitle] = useState();
     const [placeAddr, setPlaceAddr] = useState();
@@ -559,8 +561,9 @@ const PlaceInfo=()=>{
         delete axios.defaults.headers.common['Authorization'];
         axios.get(apiUrl)
         .then((res) => {
-          placeData = res.data.response.body.items.item;
-        const apidata=res.data.response.body.items.item;
+          placeData = res.data.response.body.items.item[0];
+          console.log("placeData:",placeData);
+        const apidata=res.data.response.body.items.item[0];
         const placex=apidata.mapx;  //관광지 위치(x좌표)
         const placey=apidata.mapy;  //관광지 위치(y좌표)
         const placetitle=apidata.title; //관광지명
@@ -575,8 +578,6 @@ const PlaceInfo=()=>{
         setCat1name(cat1);
         setCat2name(cat2);
         setCat3name(cat3);
-
-        
         // console.log("placeimgurl:",placeimg);
         //console.log("placeaddr2:",placeaddr2);
 
@@ -616,7 +617,7 @@ const PlaceInfo=()=>{
     axios.get(apiUrl2).then((res) => {
 
         //console.log("apiUrl2",res.data.response.body.items.item); 대/중/소분류 axios
-        const api2data=res.data.response.body.items.item;
+        const api2data=res.data.response.body.items.item[0];
         const servicetypecodename=api2data.name;
         setCattypename(servicetypecodename);
 
