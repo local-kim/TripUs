@@ -87,13 +87,36 @@
 
 * 카테고리별 더보기 및 키워드 검색
 
+## 장소 페이지
+<p align="center">
+<img width="50%" alt="" src="https://user-images.githubusercontent.com/74584001/205443228-f606e235-7c6d-44d0-b89e-2ad7977487d8.gif">
+</p>
+
+* useParams를 이용하여 도시페이지에서 contentId 받아옴
+* 관광정보 API에 contentId를 넣어 관광지 세부정보 출력
+
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/74584001/205443825-fb972633-b09c-4999-99f1-35f5b548354c.gif"><img width="50%" alt="ㅇ" src="https://user-images.githubusercontent.com/74584001/205473749-a11b6e13-f223-45c4-9263-87f3dd03c16c.gif"></p>
+
+* 장소에 대한 총 좋아요 수
+* 장소 좋아요 체크 및 해제
+
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/74584001/205444074-620dc321-da0f-4e22-8ae4-0f288e66e278.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/74584001/205444134-63283076-d399-4d23-b9d6-1211c1b38b5d.gif"></p>
+
+* 로그인 전 리뷰 작성 시 경고  
+* 로그인 후 리뷰 작성 및 별점
+* 평균 별점 확인
+
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/74584001/205444926-a9920a4d-df17-44b6-8071-694e702071ea.gif"><img width="50%" alt="ㅇ" src="https://user-images.githubusercontent.com/74584001/205475548-d7cfb428-907f-4864-86ad-5c6409853870.gif"></p>
+
+* 리뷰 수정 및 삭제
+
+<p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/74584001/205475686-145a8467-ea07-4b31-a7e6-6650123a15ba.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/74584001/205445182-43389449-b78d-42c3-8ee7-5da6b999b577.gif"></p>
+
+* 리뷰 목록 및 상세보기 
+
 ---
 
 ## 희민
-
----
-
-## 시연
 
 ---
 
