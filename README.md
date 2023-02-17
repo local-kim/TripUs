@@ -3,17 +3,17 @@
 
 > 장기화된 코로나 펜데믹 현상으로 인해 외부 활동이 제한되어 답답했던 그 동안의 우리들의 마음을 위로해줄 국내 여행 계획, 공유 사이트
 
-### Feature
+### Features
 * 국내 지역별 관광지
 * 여행지 날씨 정보
 * 지도 위에서 확인하는 여행 경로
 * 내가 만든 일정 공유
 * 사용자들이 남기는 장소 리뷰 & 별점
 
-### Tool
-* Java, Spring Boot, Spring Security, MyBatis
+### Tools
+* Java, Spring Boot, Spring Security, MyBatis, Maven
 * React, Axios, Redux
-* AWS, MySQL
+* AWS RDS, MySQL
 
 ### API
 * 한국관광공사 Tour API
@@ -23,7 +23,11 @@
 * 카카오 공유하기 API
 * 카카오 로그인 API
 
-### Contributor
+### Database
+<p align="center"><img width="700px" alt="" src="https://user-images.githubusercontent.com/63040140/219573813-2741b0e6-4f2e-48eb-aab4-8497d55bc063.png"></p>
+
+
+### Contributors
 * 김서윤 : 로그인, 회원가입, 소셜 로그인
 * 김현지(팀장) : 일정 생성, 일정 수정, 여행지 목록, 인기 일정, 유저 페이지
 * 김희민 : 헤더, 메인 페이지, 마이페이지, 프로필 수정, 일정 공유, 여행 일정 캘린더
@@ -31,7 +35,9 @@
 * 정일웅 : 일정 상세 페이지
 * 최재호 : 여행지 상세 페이지, 여행 기간 날씨, 장소 목록, 장소 저장
 
-## 일정 만들기
+# DEMO
+## 김현지
+### 일정 만들기
 <p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183881985-aab6eb9f-2242-4d42-875a-f690cd6f4670.gif"></p>
 
 * `react-date-range` 패키지를 사용하여 캘린더에서 여행 기간 선택
@@ -58,19 +64,21 @@
 * 페이지 이탈 경고
 * 일정 생성 버튼을 누르면 여행 정보(도시, 기간)와 일정(장소 id, day, order)이 DB에 저장 후 일정 상세 페이지로 이동
 
-## 인기 일정
+### 인기 일정
 <p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183935964-edf53b6b-08e2-430b-b64f-9da9d3a94a0b.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183937511-37f5ed43-2bc9-497d-8e73-330c2875e3fd.gif"></p>
 
 * DB에서 좋아요 순으로 일정을 가져옴
 * 계절별 추천 일정 토글 버튼
 * 일정의 시작 날짜의 달을 가져와 3-5월, 6-8월, 9-11월, 12-2월을 각 봄, 여름, 가을, 겨울로 분류
 
-## 유저 페이지
+### 유저 페이지
 <p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/63040140/183941054-b98e6c57-90ad-4444-8965-0611692c0089.gif"></p>
 
 * 다른 회원이 생성한 일정과 작성한 후기를 볼 수 있음
+<br>
 
-## 도시 페이지
+## 최재호
+### 도시 페이지
 <p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183892421-7a71999b-25a8-457a-90b3-5d783ea34ea1.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183892489-9c95419d-c060-42cb-8b8a-9782063b098a.gif"></p>
 
 * 도시 검색
@@ -86,8 +94,10 @@
 <p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183902047-e4e42e21-4053-4443-bb2a-14707cdd8f30.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/100552783/183901177-f96cae50-d9ec-4857-9bbf-8d91e3b439cf.gif"></p>
 
 * 카테고리별 더보기 및 키워드 검색
+<br>
 
-## 장소 페이지
+## 단시연
+### 장소 페이지
 <p align="center">
 <img width="50%" alt="" src="https://user-images.githubusercontent.com/74584001/205443228-f606e235-7c6d-44d0-b89e-2ad7977487d8.gif">
 </p>
@@ -113,17 +123,3 @@
 <p align="center"><img width="50%" alt="" src="https://user-images.githubusercontent.com/74584001/205475686-145a8467-ea07-4b31-a7e6-6650123a15ba.gif"><img width="50%" alt="" src="https://user-images.githubusercontent.com/74584001/205445182-43389449-b78d-42c3-8ee7-5da6b999b577.gif"></p>
 
 * 리뷰 목록 및 상세보기 
-
----
-
-## 희민
-
----
-
-## 서윤
-
----
-
-## 일웅
-
----
