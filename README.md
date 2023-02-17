@@ -24,8 +24,7 @@
 * 카카오 로그인 API
 
 ### Database
-<p align="center"><img width="700px" alt="" src="https://user-images.githubusercontent.com/63040140/219573813-2741b0e6-4f2e-48eb-aab4-8497d55bc063.png"></p>
-
+<p align="center"><img width="800px" alt="" src="https://user-images.githubusercontent.com/63040140/219578753-3bea44fe-04cf-49f1-8327-1bd72b499781.png"></p>
 
 ### Contributors
 * 김서윤 : 로그인, 회원가입, 소셜 로그인
@@ -34,6 +33,7 @@
 * 단시연 : 장소 상세 페이지, 장소 저장, 별점/리뷰
 * 정일웅 : 일정 상세 페이지
 * 최재호 : 여행지 상세 페이지, 여행 기간 날씨, 장소 목록, 장소 저장
+<br>
 
 # DEMO
 ## 김현지
